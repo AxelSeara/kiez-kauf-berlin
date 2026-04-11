@@ -25,11 +25,11 @@ export default async function StoreDetailPage({
   return (
     <main className="space-y-4">
       <Link href={`/${locale}`} className="mono text-sm text-neutral-700 hover:text-black">
-        {"<-"} {dictionary.searchButton}
+        {"<-"} {dictionary.backToSearch}
       </Link>
 
       <section className="note-card note-tape p-5">
-        <span className="stamp">Store Note</span>
+        <span className="stamp">{dictionary.storeNoteBadge}</span>
         <h2 className="mt-3 text-2xl font-semibold">{detail.store.name}</h2>
         <p className="mt-1 text-neutral-700">{detail.store.address}</p>
         <p className="mono text-xs text-neutral-600">{detail.store.openingHours}</p>
@@ -53,7 +53,7 @@ export default async function StoreDetailPage({
           {detail.offers.map((item, index) => (
             <li key={item.offer.id} className="rounded-xl border border-black/30 bg-white p-3">
               <p className="mono mb-1 text-[0.7rem] uppercase tracking-[0.16em] text-neutral-500">
-                Item {String(index + 1).padStart(2, "0")}
+                {dictionary.itemLabel} {String(index + 1).padStart(2, "0")}
               </p>
               <p className="font-medium">{item.product.normalizedName}</p>
               <p className="text-sm text-neutral-700">

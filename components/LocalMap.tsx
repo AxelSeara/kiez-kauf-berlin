@@ -2,15 +2,38 @@
 
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useMemo, useRef } from "react";
-import type { Map as MapLibreMap } from "maplibre-gl";
+import type { Map as MapLibreMap, StyleSpecification } from "maplibre-gl";
 import type { SearchResult } from "@/lib/types";
+
+const BASE_BW_STYLE: StyleSpecification = {
+  version: 8,
+  sources: {
+    osm: {
+      type: "raster",
+      tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+      tileSize: 256,
+      attribution: "© OpenStreetMap contributors"
+    }
+  },
+  layers: [
+    {
+      id: "osm",
+      type: "raster",
+      source: "osm"
+    }
+  ]
+};
 
 export function LocalMap({
   center,
-  results
+  results,
+  userMarkerLabel,
+  className
 }: {
   center: { lat: number; lng: number };
   results: SearchResult[];
+  userMarkerLabel: string;
+  className?: string;
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -32,9 +55,9 @@ export function LocalMap({
 
       map = new maplibregl.Map({
         container: containerRef.current,
-        style: process.env.NEXT_PUBLIC_MAP_STYLE_URL ?? "https://demotiles.maplibre.org/style.json",
+        style: BASE_BW_STYLE,
         center: [center.lng, center.lat],
-        zoom: 13
+        zoom: 14
       });
       const mapInstance = map;
 
@@ -42,7 +65,7 @@ export function LocalMap({
 
       new maplibregl.Marker({ color: "#111111" })
         .setLngLat([center.lng, center.lat])
-        .setPopup(new maplibregl.Popup().setText("You are here"))
+        .setPopup(new maplibregl.Popup().setText(userMarkerLabel))
         .addTo(mapInstance);
 
       results.slice(0, 20).forEach((item) => {
@@ -65,12 +88,14 @@ export function LocalMap({
       mounted = false;
       map?.remove();
     };
-  }, [center.lat, center.lng, markerSeed, results]);
+  }, [center.lat, center.lng, markerSeed, results, userMarkerLabel]);
 
   return (
     <div
       ref={containerRef}
-      className="h-[320px] w-full overflow-hidden rounded-[1.25rem] border-2 border-black bg-white shadow-[6px_6px_0_rgba(15,15,15,0.08)]"
+      className={`bw-map w-full overflow-hidden rounded-[1.25rem] border-2 border-black bg-white shadow-[6px_6px_0_rgba(15,15,15,0.08)] ${
+        className ?? "h-[320px]"
+      }`}
     />
   );
 }

@@ -1,4 +1,4 @@
-export type Locale = "de" | "en";
+export type Locale = "de" | "en" | "es";
 
 export type Store = {
   id: string;

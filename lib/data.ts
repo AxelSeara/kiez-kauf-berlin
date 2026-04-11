@@ -3,7 +3,8 @@ import { mockOffers, mockProducts, mockStores } from "@/lib/mock-data";
 import { hasSupabase, supabase } from "@/lib/supabase";
 import type { Offer, Product, SearchResult, Store, StoreDetail } from "@/lib/types";
 
-const BERLIN_CENTER = { lat: 52.52, lng: 13.405 };
+// Berlin Mitte (Alexanderplatz area) as the default map/search center.
+const BERLIN_CENTER = { lat: 52.5208, lng: 13.4094 };
 
 function toRadians(value: number): number {
   return (value * Math.PI) / 180;

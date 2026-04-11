@@ -92,6 +92,16 @@ button {
   font-family: var(--font-mono), "Courier New", monospace;
 }
 
+.bw-map .maplibregl-canvas {
+  filter: grayscale(1) contrast(1.06) brightness(1.02);
+}
+
+.bw-map .maplibregl-popup-content {
+  border: 1px solid #111111;
+  border-radius: 0.6rem;
+  box-shadow: none;
+}
+
 input,
 button,
 select {
