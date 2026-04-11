@@ -95,6 +95,111 @@ type SupabaseSearchDatasetRow = {
   product_group: string;
 };
 
+type SupabaseCanonicalProductRow = {
+  id: number;
+  normalized_name: string;
+  display_name_en: string | null;
+  display_name_es: string | null;
+  display_name_de: string | null;
+  synonyms: string[] | null;
+  product_group: string;
+};
+
+type DatasetSearchStrategy = "product_name" | "canonical_multilingual" | "group_keyword";
+
+type DatasetSearchResponse = {
+  rows: JoinedRow[];
+  strategy: DatasetSearchStrategy;
+};
+
+const KEYWORD_GROUP_MAP: Array<{ group: string; terms: string[] }> = [
+  {
+    group: "beverages",
+    terms: ["beer", "bier", "cerveza", "drink", "bebida", "getraenk", "getrank"]
+  },
+  {
+    group: "fresh_produce",
+    terms: ["garlic", "knoblauch", "ajo", "vegetable", "verdura", "gemuese", "gemuse"]
+  },
+  {
+    group: "household",
+    terms: ["pliers", "zange", "alicates", "tool", "herramienta", "werkzeug"]
+  }
+];
+
+let canonicalCatalogCache:
+  | {
+      loadedAt: number;
+      rows: SupabaseCanonicalProductRow[];
+    }
+  | null = null;
+
+const CANONICAL_CACHE_TTL_MS = 1000 * 60 * 10;
+
+function normalizedContains(a: string, b: string): boolean {
+  return a.includes(b) || b.includes(a);
+}
+
+function inferProductGroupsFromKeyword(query: string): string[] {
+  const normalized = normalizeQuery(query);
+  if (!normalized) {
+    return [];
+  }
+
+  return KEYWORD_GROUP_MAP.filter(({ terms }) => terms.some((term) => normalizedContains(normalized, term))).map(
+    ({ group }) => group
+  );
+}
+
+async function getCanonicalCatalog(): Promise<SupabaseCanonicalProductRow[]> {
+  if (!supabase) {
+    return [];
+  }
+
+  if (canonicalCatalogCache && Date.now() - canonicalCatalogCache.loadedAt < CANONICAL_CACHE_TTL_MS) {
+    return canonicalCatalogCache.rows;
+  }
+
+  const { data, error } = await supabase
+    .from("canonical_products")
+    .select("id, normalized_name, display_name_en, display_name_es, display_name_de, synonyms, product_group")
+    .limit(1000);
+
+  if (error) {
+    throw new Error(`Supabase canonical products query failed: ${error.message}`);
+  }
+
+  const rows = (data ?? []) as SupabaseCanonicalProductRow[];
+  canonicalCatalogCache = {
+    loadedAt: Date.now(),
+    rows
+  };
+  return rows;
+}
+
+function findCanonicalProductIdsByQuery(query: string, products: SupabaseCanonicalProductRow[]): number[] {
+  const normalized = normalizeQuery(query);
+  if (!normalized) {
+    return [];
+  }
+
+  const matched = products.filter((product) => {
+    const terms = [
+      product.normalized_name,
+      product.display_name_en ?? "",
+      product.display_name_es ?? "",
+      product.display_name_de ?? "",
+      ...(product.synonyms ?? [])
+    ]
+      .map((item) => normalizeQuery(item))
+      .filter(Boolean);
+
+    return terms.some((term) => normalizedContains(term, normalized));
+  });
+
+  return matched.map((product) => product.id);
+}
+
 function rankResults(rows: JoinedRow[], args: { query: string; lat: number; lng: number; radius: number }): SearchResult[] {
   const normalized = normalizeQuery(args.query);
 
@@ -210,20 +315,35 @@ async function getSupabaseRowsLegacy(): Promise<JoinedRow[]> {
     .filter((row): row is JoinedRow => row !== null);
 }
 
-async function searchSupabaseRowsFromDataset(args: { query: string; limit?: number }): Promise<JoinedRow[] | null> {
+async function searchSupabaseRowsFromDataset(args: { query: string; limit?: number }): Promise<DatasetSearchResponse | null> {
   if (!supabase) {
     return null;
   }
 
   const normalized = normalizeQuery(args.query);
+  const canonicalProducts = await getCanonicalCatalog();
+  const canonicalIds = findCanonicalProductIdsByQuery(normalized, canonicalProducts);
+  const inferredGroups = canonicalIds.length === 0 ? inferProductGroupsFromKeyword(normalized) : [];
+  const limit = args.limit ?? 800;
 
-  const { data, error } = await supabase
+  let query = supabase
     .from("search_product_establishment_dataset")
     .select(
       "establishment_id, canonical_product_id, source_type, confidence, validation_status, why_this_product_matches, updated_at, establishment_name, address, district, lat, lon, osm_category, app_categories, product_normalized_name, product_group"
-    )
-    .ilike("product_normalized_name", `%${normalized}%`)
-    .limit(args.limit ?? 800);
+    );
+
+  let strategy: DatasetSearchStrategy = "product_name";
+  if (canonicalIds.length > 0) {
+    query = query.in("canonical_product_id", canonicalIds);
+    strategy = "canonical_multilingual";
+  } else if (inferredGroups.length > 0) {
+    query = query.in("product_group", inferredGroups);
+    strategy = "group_keyword";
+  } else {
+    query = query.ilike("product_normalized_name", `%${normalized}%`);
+  }
+
+  const { data, error } = await query.limit(limit);
 
   if (error) {
     const message = (error.message || "").toLowerCase();
@@ -242,7 +362,9 @@ async function searchSupabaseRowsFromDataset(args: { query: string; limit?: numb
 
   const rows = (data ?? []) as SupabaseSearchDatasetRow[];
 
-  return rows.map((row) => {
+  return {
+    strategy,
+    rows: rows.map((row) => {
     const storeId = String(row.establishment_id);
     const productId = String(row.canonical_product_id);
     const offerId = `candidate_${storeId}_${productId}_${row.source_type ?? "unknown"}`;
@@ -279,7 +401,8 @@ async function searchSupabaseRowsFromDataset(args: { query: string; limit?: numb
       whyThisProductMatches: row.why_this_product_matches,
       sourceType: row.source_type
     } satisfies JoinedRow;
-  });
+    })
+  };
 }
 
 async function getStoreDetailFromDataset(id: string): Promise<StoreDetail | null> {
@@ -366,18 +489,27 @@ export async function searchOffers(args: {
   const radius = typeof args.radiusMeters === "number" ? args.radiusMeters : 2000;
 
   let rows: JoinedRow[];
+  let datasetStrategy: DatasetSearchStrategy | null = null;
   if (hasSupabase) {
-    const datasetRows = await searchSupabaseRowsFromDataset({ query: args.query });
-    rows = datasetRows ?? (await getSupabaseRowsLegacy());
+    const datasetResponse = await searchSupabaseRowsFromDataset({ query: args.query });
+    if (datasetResponse) {
+      rows = datasetResponse.rows;
+      datasetStrategy = datasetResponse.strategy;
+    } else {
+      rows = await getSupabaseRowsLegacy();
+    }
   } else {
     rows = getMockRows();
   }
 
   const normalized = normalizeQuery(args.query);
-  const filtered = rows.filter((row) => {
-    const productName = normalizeQuery(row.product.normalizedName);
-    return productName === normalized || productName.includes(normalized);
-  });
+  const filtered =
+    datasetStrategy === "canonical_multilingual" || datasetStrategy === "group_keyword"
+      ? rows
+      : rows.filter((row) => {
+          const productName = normalizeQuery(row.product.normalizedName);
+          return productName === normalized || productName.includes(normalized);
+        });
 
   return rankResults(filtered, { query: args.query, lat, lng, radius });
 }
@@ -406,3 +538,8 @@ export async function getStoreDetail(id: string): Promise<StoreDetail | null> {
 export function getBerlinCenter() {
   return BERLIN_CENTER;
 }
+
+export const __private = {
+  inferProductGroupsFromKeyword,
+  findCanonicalProductIdsByQuery
+};

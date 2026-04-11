@@ -29,6 +29,7 @@ export type Dictionary = {
   validationRejected: string;
   unknownCategory: string;
   unknownConfidence: string;
+  distanceLabel: string;
   storeProductsTitle: string;
   priceUnknown: string;
   availabilityInStock: string;
@@ -39,8 +40,12 @@ export type Dictionary = {
   languageLabel: string;
   geolocationError: string;
   geolocationReady: string;
+  geolocationRemembered: string;
   queryRequiredError: string;
   searchRequestError: string;
+  searchingLabel: string;
+  resultsCountLabel: string;
+  mapEmptyState: string;
   mapYouAreHere: string;
   itemLabel: string;
   backToSearch: string;
@@ -79,6 +84,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     validationRejected: "Verworfen",
     unknownCategory: "Nicht klassifiziert",
     unknownConfidence: "Keine Angabe",
+    distanceLabel: "Distanz",
     storeProductsTitle: "Produkte in dieser Filiale",
     priceUnknown: "Preis nicht verfuegbar",
     availabilityInStock: "Auf Lager",
@@ -87,10 +93,14 @@ const dictionaries: Record<Locale, Dictionary> = {
     updatedLabel: "Aktualisiert",
     centerLabel: "Zentrum",
     languageLabel: "Sprache",
-    geolocationError: "Standort konnte nicht ermittelt werden. Bitte Fallback verwenden.",
+    geolocationError: "Standort konnte nicht ermittelt werden. Du kannst trotzdem suchen.",
     geolocationReady: "Standort aktiv",
+    geolocationRemembered: "Zuletzt genutzter Standort aktiv",
     queryRequiredError: "Bitte gib einen Produktnamen ein.",
     searchRequestError: "Die Suche ist fehlgeschlagen.",
+    searchingLabel: "Suche laeuft",
+    resultsCountLabel: "Treffer",
+    mapEmptyState: "Produkt suchen, dann erscheinen Pins auf der Karte.",
     mapYouAreHere: "Dein Standort",
     itemLabel: "Artikel",
     backToSearch: "Zurueck zur Suche",
@@ -127,6 +137,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     validationRejected: "Rejected",
     unknownCategory: "Unclassified",
     unknownConfidence: "N/A",
+    distanceLabel: "Distance",
     storeProductsTitle: "Products in this store",
     priceUnknown: "Price unavailable",
     availabilityInStock: "In stock",
@@ -135,10 +146,14 @@ const dictionaries: Record<Locale, Dictionary> = {
     updatedLabel: "Updated",
     centerLabel: "Center",
     languageLabel: "Language",
-    geolocationError: "We could not detect your location. Please use fallback.",
+    geolocationError: "We could not detect your location. You can still search.",
     geolocationReady: "Location ready",
+    geolocationRemembered: "Using your last known location",
     queryRequiredError: "Please provide a product query.",
     searchRequestError: "Search request failed.",
+    searchingLabel: "Searching",
+    resultsCountLabel: "results",
+    mapEmptyState: "Search a product to place pins on the map.",
     mapYouAreHere: "You are here",
     itemLabel: "Item",
     backToSearch: "Back to search",
@@ -175,6 +190,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     validationRejected: "Descartado",
     unknownCategory: "Sin categoria",
     unknownConfidence: "Sin dato",
+    distanceLabel: "Distancia",
     storeProductsTitle: "Productos en esta tienda",
     priceUnknown: "Precio no disponible",
     availabilityInStock: "En stock",
@@ -183,10 +199,14 @@ const dictionaries: Record<Locale, Dictionary> = {
     updatedLabel: "Actualizado",
     centerLabel: "Centro",
     languageLabel: "Idioma",
-    geolocationError: "No se pudo obtener tu ubicacion. Usa el modo manual.",
+    geolocationError: "No se pudo obtener tu ubicacion. Puedes seguir buscando igual.",
     geolocationReady: "Ubicacion lista",
+    geolocationRemembered: "Usando tu ultima ubicacion guardada",
     queryRequiredError: "Escribe un producto para buscar.",
     searchRequestError: "La busqueda ha fallado.",
+    searchingLabel: "Buscando",
+    resultsCountLabel: "resultados",
+    mapEmptyState: "Busca un producto y veras los pins en el mapa.",
     mapYouAreHere: "Tu ubicacion",
     itemLabel: "Articulo",
     backToSearch: "Volver a la busqueda",

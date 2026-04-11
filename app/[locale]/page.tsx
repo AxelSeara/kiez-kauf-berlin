@@ -16,7 +16,6 @@ export default async function LocaleHomePage({
 
   return (
     <SearchExperience
-      locale={locale}
       dictionary={getDictionary(locale)}
       initialCenter={getBerlinCenter()}
     />
