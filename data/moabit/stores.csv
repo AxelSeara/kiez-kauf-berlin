@@ -1,0 +1,290 @@
+id,name,address,district,opening_hours,lat,lng,shop_type,osm_ref,source
+osm_node_667451730,Abu Laila,"Beusselstraße 69, 10553, Berlin",Moabit,09:00-23:00,52.528676,13.328418,bakery,node/667451730,osm-overpass
+osm_node_2882043823,Adler Getränke und Kiosk,"Wiclefstraße 50, 10551, Berlin",Moabit,,52.530383,13.33391,beverages,node/2882043823,osm-overpass
+osm_node_4381394723,Afro Asia,"Torfstraße 24, Berlin",Moabit,Mo-Sa 09:00-20:00,52.540745,13.350994,convenience,node/4381394723,osm-overpass
+osm_node_4381394724,Afro Market,Berlin,Moabit,,52.541211,13.350372,convenience,node/4381394724,osm-overpass
+osm_node_7773607314,Afroshop Casa-Tropical,Berlin,Moabit,,52.546442,13.348819,convenience,node/7773607314,osm-overpass
+osm_node_7127961262,Al Schark,Berlin,Moabit,,52.530249,13.328276,supermarket,node/7127961262,osm-overpass
+osm_node_9851080877,Alamir,"Huttenstraße 72, 10553, Berlin",Moabit,,52.527275,13.328136,convenience,node/9851080877,osm-overpass
+osm_node_8499326127,Aldi,"Saatwinkler Damm 8, 13627, Berlin",Charlottenburg-Nord,Mo-Sa 07:00-22:00,52.538901,13.327089,supermarket,node/8499326127,osm-overpass
+osm_way_142947685,Aldi,"Invalidenstraße 59, 10557, Berlin",Moabit,Mo-Sa 07:00-22:00,52.524181,13.364082,supermarket,way/142947685,osm-overpass
+osm_node_707425912,Alezz Market,"Reinickendorfer Straße 24, 13347, Berlin",Gesundbrunnen,,52.546125,13.369625,supermarket,node/707425912,osm-overpass
+osm_node_411899540,All in One Shop,Berlin,Moabit,,52.528263,13.343015,convenience,node/411899540,osm-overpass
+osm_node_10768171561,Alnatura Backshop,"10551, Berlin",Moabit,Mo-Sa 08:00-20:00,52.526791,13.332864,bakery,node/10768171561,osm-overpass
+osm_node_4761858224,Alnatura Super Natur Markt,Berlin,Moabit,Mo-Sa 08:00-21:00; PH off,52.526766,13.332649,supermarket,node/4761858224,osm-overpass
+osm_node_250195921,Alte Roland-Apotheke,"Turmstraße 15, 10559, Berlin",Moabit,Mo-Fr 09:00-18:30; Sa 09:00-13:00,52.526463,13.350122,pharmacy,node/250195921,osm-overpass
+osm_node_8208959404,Am Park,"Ottostraße 9, 10555, Berlin",Moabit,,52.52563,13.334893,kiosk,node/8208959404,osm-overpass
+osm_node_3334327193,Apotheke 4.0,"Turmstraße 29, 10551, Berlin",Moabit,Mo-Sa 08:00-20:00,52.526505,13.341753,pharmacy,node/3334327193,osm-overpass
+osm_node_658444284,Apotheke am Augustenburger Platz,"Triftstraße 37, 13353, Berlin",Wedding,Mo-Fr 09:00-19:00; Sa 09:00-14:00,52.541849,13.350374,pharmacy,node/658444284,osm-overpass
+osm_node_816598789,Apotheke am Hansaplatz,"Bartningallee 5, 10557, Berlin",Hansaviertel,Mo-Fr 09:00-18:30; Sa 09:00-13:00,52.518775,13.342923,pharmacy,node/816598789,osm-overpass
+osm_way_59806041,Apotheke im Berliner Hauptbahnhof,"Europaplatz 1, 10557, Berlin",Moabit,Mo-Su 07:00-21:00,52.525576,13.369563,pharmacy,way/59806041,osm-overpass
+osm_way_1410373889,Apotheke im Schultheiss Quartier,"Stromstraße 14, 10551, Berlin",Moabit,Mo-Sa 09:00-20:00,52.528124,13.34369,pharmacy,way/1410373889,osm-overpass
+osm_node_13290631064,Arino Bäckerei,Berlin,Moabit,,52.547344,13.347097,bakery,node/13290631064,osm-overpass
+osm_node_7761726675,Arino Spätkauf,Berlin,Moabit,,52.547417,13.346984,convenience,node/7761726675,osm-overpass
+osm_node_645677469,Arminius Apotheke,"Turmstraße 38, 10551, Berlin",Moabit,Mo-Fr 08:30-18:30; Sa 08:30-14:00,52.526814,13.33655,pharmacy,node/645677469,osm-overpass
+osm_node_2745722989,Asia - asiatische Lebensmittel Geschenkartikel,"Bredowstraße 2, 10551, Berlin",Moabit,Mo-Th 10:00-19:00; Fr 10:00-19:30; Sa 10:00-16:00,52.526951,13.340121,convenience,node/2745722989,osm-overpass
+osm_node_4138580438,Atti Asia Markt,"Luxemburger Straße 31, 13353, Berlin",Moabit,Mo-Fr 10:30-20:00; Su off; Sa 10:30-19:00,52.545469,13.358112,convenience,node/4138580438,osm-overpass
+osm_node_8333748450,avec,Berlin,Moabit,,52.520073,13.347694,convenience,node/8333748450,osm-overpass
+osm_node_3121381082,Ayoub,Berlin,Moabit,,52.52782,13.326313,butcher,node/3121381082,osm-overpass
+osm_node_4454150182,AZZAM,"Turmstraße 57-58, 10551, Berlin",Moabit,Mo-Sa 08:00-19:00; PH off,52.527456,13.329965,supermarket,node/4454150182,osm-overpass
+osm_node_317179425,Back & Snack,"Müllerstraße 30, 13353, Berlin",Moabit,Mo-Su 04:00-18:00,52.547499,13.357712,bakery,node/317179425,osm-overpass
+osm_node_2566382658,Back & Späti,Berlin,Moabit,"Mo-Sa 06:30-02:00, Su 07:30-02:00",52.545772,13.379604,convenience,node/2566382658,osm-overpass
+osm_way_437780958,Back Baron,Berlin,Moabit,,52.542962,13.365216,bakery,way/437780958,osm-overpass
+osm_way_438832771,Back Baron,Berlin,Moabit,,52.536682,13.34254,bakery,way/438832771,osm-overpass
+osm_node_867497539,Back und Späti Zwang,"Gotzkowskystraße 30, 10555, Berlin",Moabit,,52.525533,13.330366,convenience,node/867497539,osm-overpass
+osm_node_8896048660,Back- und Getränkeshop Yasar,"Krefelder Straße 18, 10555, Berlin",Moabit,"PH,Mo-Su 12:00-24:00",52.524603,13.3397,convenience,node/8896048660,osm-overpass
+osm_node_5923190751,Bäckerei Spätkauf,"Neue Hochstraße 30, Berlin",Moabit,24/7,52.542887,13.375765,convenience,node/5923190751,osm-overpass
+osm_node_811203054,Backshop & Kiosk,Berlin,Moabit,,52.532315,13.34989,kiosk,node/811203054,osm-overpass
+osm_node_13228333034,Backshop 2 Side,Berlin,Moabit,"Mo-Fr 07:30-18:30; Sa,Su 08:00-19:00",52.534256,13.358664,bakery,node/13228333034,osm-overpass
+osm_node_762607353,BackTreff,Berlin,Moabit,,52.54158,13.349851,bakery,node/762607353,osm-overpass
+osm_node_707452472,Backwaren,"Reinickendorfer Straße 26, 13347, Berlin",Moabit,Mo-Sa 06:00-19:00; Su 07:00-14:00,52.546399,13.369616,convenience,node/707452472,osm-overpass
+osm_way_59806042,Backwerk,Berlin,Moabit,"Mo-Fr 03:00-24:00; Sa,Su 00:00-24:00",52.525217,13.368783,bakery,way/59806042,osm-overpass
+osm_node_2288146328,Baker's Turmstraße 85,"Turmstraße 85, 10551, Berlin",Moabit,,52.526316,13.338131,bakery,node/2288146328,osm-overpass
+osm_node_10755840510,Barakat Supermarkt,"Müllerstraße 160, Berlin",Moabit,Mo-Sa 09:00-20:00,52.54409,13.362723,convenience,node/10755840510,osm-overpass
+osm_node_1699353556,Baskent,"Föhrer Straße 13, Berlin",Moabit,,52.541725,13.349675,supermarket,node/1699353556,osm-overpass
+osm_node_10719447727,Bazarche Hafez,"Alt-Moabit 45, Berlin",Moabit,Mo-Sa 10:00-20:00,52.524282,13.331708,convenience,node/10719447727,osm-overpass
+osm_node_2110645717,Berlin Shop,Berlin,Moabit,,52.544386,13.378889,beverages,node/2110645717,osm-overpass
+osm_node_7533520606,Beron Market,Berlin,Moabit,,52.526746,13.3515,convenience,node/7533520606,osm-overpass
+osm_node_4304633809,Beste Späti,"Triftstraße 5, Berlin",Moabit,,52.544552,13.360268,convenience,node/4304633809,osm-overpass
+osm_node_2305236082,Bil's Space,"Prinz-Eugen-Straße 21, Berlin",Moabit,,52.547471,13.364919,convenience,node/2305236082,osm-overpass
+osm_way_117162669,Bio Company,"Turmstraße 42, 10551, Berlin",Moabit,"Mo-Sa 08:00-21:00; Mo-Sa 07:30-21:00 open ""Backstand ab 7:30 Uhr geöffnet """,52.527051,13.335118,supermarket,way/117162669,osm-overpass
+osm_node_312854886,Bio-Bäckerei Bucco,"Ravenéstraße 1, 13347, Berlin",Moabit,Mo-Fr 08:00-18:00; Sa 08:00-12:00; Su off,52.542804,13.370521,bakery,node/312854886,osm-overpass
+osm_node_1515489375,Bioladen Café,"Tegeler Straße 30, 13353, Berlin",Wedding,Mo-Fr 10:00-18:00; Sa 09:00-17:00; Su 09:00-16:00,52.542684,13.35627,convenience,node/1515489375,osm-overpass
+osm_node_707425776,Bolu,"Reinickendorfer Straße 108, 13347, Berlin",Wedding,Mo-Fr 07:00-20:00; Sa 07:00-18:00,52.545392,13.369075,supermarket,node/707425776,osm-overpass
+osm_way_117162764,Bolu,Berlin,Moabit,Mo-Fr 07:00-20:00; Sa 07:00-18:00,52.527032,13.335743,supermarket,way/117162764,osm-overpass
+osm_node_10159681697,Bridge,Berlin,Moabit,Su 12:00-18:00; Mo-Sa 08:00-22:00,52.533178,13.367887,kiosk,node/10159681697,osm-overpass
+osm_node_3344192316,Brotmeisterei Steinecke,"Kieler Straße 5, 10115, Berlin",Mitte,Sa 06:00-18:00; Su 06:00-13:00; Mo-Fr 05:00-19:00,52.534107,13.370295,bakery,node/3344192316,osm-overpass
+osm_node_2303852086,C&C,"Müllerstraße 151, Berlin",Moabit,Mo-Fr 07:30-23:00; Sa 08:30-23:00,52.546644,13.358285,kiosk,node/2303852086,osm-overpass
+osm_node_8348765322,Cafe Bäckerei Moa,Berlin,Moabit,,52.531774,13.34433,bakery,node/8348765322,osm-overpass
+osm_node_607756448,Cafe Desd,"Schulzendorfer Straße 13, 13347, Berlin",Gesundbrunnen,,52.540153,13.375365,bakery,node/607756448,osm-overpass
+osm_node_3925316787,Cafeteria & Backshop,"Alt-Moabit 84b, 10555, Berlin",Moabit,"Mo-Fr 04:00-20:00; Sa,Su 06:00-20:00",52.525556,13.340279,bakery,node/3925316787,osm-overpass
+osm_node_4419487707,Calvin Discount,"Calvinstraße 1, 10557, Berlin",Moabit,Mo-Sa 07:30-20:30,52.524014,13.352052,supermarket,node/4419487707,osm-overpass
+osm_node_5693005986,Cevik Bäckerei,Berlin,Moabit,"PH,Su-Fr 13:00-23:00+",52.548024,13.349178,bakery,node/5693005986,osm-overpass
+osm_node_4453818128,Ceylin Elif,"Wittstocker Straße 4, 10553, Berlin",Moabit,,52.531151,13.327563,kiosk,node/4453818128,osm-overpass
+osm_way_1311962700,City Kiosk,Berlin,Moabit,,52.544782,13.361328,kiosk,way/1311962700,osm-overpass
+osm_node_613536373,CoffeeCake&Food,"Helmholtzstraße 27, 10587, Berlin",Charlottenburg,Mo-Fr 07:00-15:00,52.521906,13.325999,bakery,node/613536373,osm-overpass
+osm_node_597174895,Confiserie Reichert,"Kirchstraße 17, 10557, Berlin",Moabit,Mo-Fr 06:00-18:00; Sa 06:00-13:00; Su 06:00-12:00,52.52285,13.349111,bakery,node/597174895,osm-overpass
+osm_node_2313631478,Croissanterie Bäckerei,Berlin,Moabit,Mo-Fr 05:00-17:00; PH off,52.532703,13.326344,bakery,node/2313631478,osm-overpass
+osm_node_6635160123,Dadly,"Beusselstraße 44R, 10553, Berlin",Moabit,,52.53345,13.328036,supermarket,node/6635160123,osm-overpass
+osm_node_10003644032,Day-n-night Späti,"Bremer Straße 11, 10551, Berlin",Moabit,Mo-Fr 10:00-24:00; Sa 10:00-01:00,52.529336,13.338537,convenience,node/10003644032,osm-overpass
+osm_node_4381394738,Dein Spätzi,Berlin,Moabit,,52.541151,13.350445,convenience,node/4381394738,osm-overpass
+osm_way_1410373916,Demski,Berlin,Moabit,Mo-Sa 10:00-19:00,52.527876,13.343699,health_food,way/1410373916,osm-overpass
+osm_node_10762166139,denns BioMarkt,"Müllerstraße 34, Berlin",Moabit,"Mo-Sa 07:30-21:00; Su,PH off",52.548491,13.355935,bakery,node/10762166139,osm-overpass
+osm_node_6131114962,Denns BioMarkt,"Müllerstraße 34, 13353, Berlin",Wedding,Mo-Sa 08:00-21:00,52.548499,13.355885,supermarket,node/6131114962,osm-overpass
+osm_node_11396070387,Denns BioMarkt,Berlin,Moabit,06:30-22:00,52.52538,13.369635,bakery,node/11396070387,osm-overpass
+osm_node_12201930620,Denns BioMarkt,"Turmstraße 29, 10551, Berlin",Wedding,"Mo-Sa 08:00-21:00; Su,PH off",52.526498,13.342136,supermarket,node/12201930620,osm-overpass
+osm_way_402792868,Denns BioMarkt,Berlin,Moabit,Mo-Su 06:30-22:00,52.525469,13.369842,supermarket,way/402792868,osm-overpass
+osm_node_4225752738,Der kleine Laden,"Scharnhorststraße 8, Berlin",Moabit,Mo-Fr 07:00-22:00; Sa 08:00-22:00,52.533739,13.371298,convenience,node/4225752738,osm-overpass
+osm_node_3221929062,Der kleine Laden Spätkauf,"Wiesenstraße 62, 13357, Berlin",Gesundbrunnen,,52.545046,13.377772,convenience,node/3221929062,osm-overpass
+osm_node_645677466,die Neue Apotheke,"Turmstraße 77, 10551, Berlin",Moabit,Mo-Fr 08:00-19:00; Sa 09:00-18:00,52.526533,13.335731,pharmacy,node/645677466,osm-overpass
+osm_node_4454150177,Dilek Shop,"Turmstraße 62, 10551, Berlin",Moabit,,52.527142,13.329325,kiosk,node/4454150177,osm-overpass
+osm_way_60202996,Ditsch,Berlin,Moabit,"Mo-Fr 04:00-24:00, Sa,Su 00:00-00:00",52.525254,13.369831,bakery,way/60202996,osm-overpass
+osm_way_437595031,Ditsch,Berlin,Moabit,Mo-Fr 05:00-20:00; Sa 08:00-17:00; Su 10:00-17:00,52.542743,13.366903,bakery,way/437595031,osm-overpass
+osm_node_29927324,dm,"Turmstraße 59, 10551, Berlin",Moabit,Mo-Sa 08:00-21:30,52.527506,13.329441,chemist,node/29927324,osm-overpass
+osm_node_429739553,dm,"Luisenstraße 48-52, 10117, Berlin",Mitte,Mo-Fr 08:30-20:00; Sa 09:00-18:30,52.523755,13.379599,chemist,node/429739553,osm-overpass
+osm_node_2293371035,dm,"Turmstraße 29, 10551, Berlin",Moabit,Mo-Fr 08:00-21:30; Sa 08:30-21:30,52.526504,13.341591,chemist,node/2293371035,osm-overpass
+osm_node_3335122693,dm,"Müllerstraße 153a-154, 13353, Berlin",Wedding,Mo-Sa 08:30-20:30,52.545853,13.35957,chemist,node/3335122693,osm-overpass
+osm_node_6069128813,dm,"Chausseestraße 40, 10115, Berlin",Moabit,Mo-Fr 08:30-21:00; Sa 09:00-21:00,52.533768,13.379361,chemist,node/6069128813,osm-overpass
+osm_node_8367193173,dm,"Heidestraße 40, 10557, Berlin",Moabit,Mo-Sa 08:30-21:00,52.532561,13.365858,chemist,node/8367193173,osm-overpass
+osm_way_1410961504,dm,Berlin,Moabit,Mo-Sa 09:00-21:00,52.526954,13.343679,chemist,way/1410961504,osm-overpass
+osm_way_1410961512,dm,Berlin,Moabit,Mo-Sa 09:00-21:00,52.526727,13.343681,chemist,way/1410961512,osm-overpass
+osm_node_2827585882,Doğan Supermarkt,"Beusselstraße 76, 10553, Berlin",Moabit,,52.527704,13.328312,supermarket,node/2827585882,osm-overpass
+osm_node_4469979941,Domberger Brot-Werk,"Essener Straße 11, 10555, Berlin",Moabit,Mo 11:00-18:30; Sa 08:00-13:00; PH off; Tu-Fr 08:00-18:00,52.523899,13.338329,bakery,node/4469979941,osm-overpass
+osm_node_9395604410,Dr. Back Shop,"Schönwalder Straße 17, 13347, Berlin",Moabit,,52.542007,13.370383,bakery,node/9395604410,osm-overpass
+osm_node_4298702900,Drinks House,"Burgsdorfstraße 3, 13353, Berlin",Wedding,Mo-Su 11:30-23:00,52.54261,13.362053,convenience,node/4298702900,osm-overpass
+osm_node_2827585866,Ed & Fred Nussdepot,"Huttenstraße 8, 10553, Berlin",Moabit,Mo-Su 10:00-21:00,52.527853,13.325801,convenience,node/2827585866,osm-overpass
+osm_node_988558155,Edeka,"Stephanstraße 37-43, 10559, Berlin",Moabit,Mo-Sa 07:00-22:00,52.531999,13.344607,supermarket,node/988558155,osm-overpass
+osm_way_43364093,Edeka,"Sprengelstraße 37, 13353, Berlin",Wedding,Mo-Fr 08:00-20:00; Sa 08:00-20:00; PH off,52.541611,13.355571,supermarket,way/43364093,osm-overpass
+osm_node_371817090,EDEKA,"Wiclefstraße 60-62, 10551, Berlin",Moabit,Mo-Sa 08:00-20:00,52.530125,13.337396,supermarket,node/371817090,osm-overpass
+osm_node_6808350137,EDEKA,"Invalidenstraße 74, 10557, Berlin",Moabit,Mo-Sa 07:00-21:00,52.527328,13.372971,supermarket,node/6808350137,osm-overpass
+osm_node_12956133299,EDEKA,"Lehrter Straße 24, 10557, Berlin",Moabit,Mo-Sa 07:00-21:00,52.531201,13.361904,supermarket,node/12956133299,osm-overpass
+osm_node_8693899527,EDEKA Fromm,"Müllerstraße 12 a-c, 13353, Berlin",Moabit,Mo-Sa 07:00-22:00,52.542859,13.365894,supermarket,node/8693899527,osm-overpass
+osm_node_4892038733,Edeka Sapphire,"Chausseestraße 43, 10115, Berlin",Mitte,Mo-Sa 07:00-21:00,52.534251,13.378755,supermarket,node/4892038733,osm-overpass
+osm_node_283443676,EDEKA Y.Reichelt,"Levetzowstraße 10-10a, 10555, Berlin",Moabit,Mo-Fr 07:00-21:00; Sa 07:00-21:00,52.5208,13.334345,supermarket,node/283443676,osm-overpass
+osm_node_11134671308,EDEKA Zahl,"Helmholtzstraße 3 c, 10587, Berlin",Moabit,Mo-Sa 07:00-22:00,52.520163,13.319847,supermarket,node/11134671308,osm-overpass
+osm_node_2827585846,El Reda Lebensmittel,Berlin,Moabit,,52.527647,13.327841,butcher,node/2827585846,osm-overpass
+osm_node_12386393412,Elbi Kiosk,Berlin,Moabit,,52.521973,13.335729,kiosk,node/12386393412,osm-overpass
+osm_node_4558385311,ESEN,"Turmstraße 6, 10559, Berlin",Moabit,Mo-Sa 08:00-20:00,52.526669,13.353031,convenience,node/4558385311,osm-overpass
+osm_node_346137917,Et Dünyasi,"Müllerstraße 10-11, 13353, Berlin",Moabit,,52.542381,13.367504,butcher,node/346137917,osm-overpass
+osm_node_1659884040,Eurogida,Berlin,Moabit,Mo-Sa 07:00-20:00,52.548285,13.356333,supermarket,node/1659884040,osm-overpass
+osm_way_117162664,Eurogida,"Turmstraße 43, Berlin",Moabit,Mo-Sa 07:00-20:00,52.527067,13.334795,supermarket,way/117162664,osm-overpass
+osm_node_3683023907,Express Shop Leo,Berlin,Moabit,,52.546532,13.359208,kiosk,node/3683023907,osm-overpass
+osm_node_13623752143,FAV' Kiosk,Berlin,Moabit,,52.527977,13.379464,kiosk,node/13623752143,osm-overpass
+osm_node_6510008627,Feuerland-Apotheke,"Chausseestraße 42, 10115, Berlin",Moabit,Mo-Fr 08:00-19:00; Sa 09:00-16:00,52.533959,13.379112,pharmacy,node/6510008627,osm-overpass
+osm_node_4131336489,Finesse,"Helmholtzstraße 22, 10587, Berlin",Moabit,Mo-Su 11:00-23:00,52.522133,13.327276,convenience,node/4131336489,osm-overpass
+osm_node_6712455251,Fleischerei Bünger,"Müllerstraße 156A, Berlin",Moabit,Mo-Fr 07:00-18:30; Sa 08:30-15:00,52.545377,13.3605,butcher,node/6712455251,osm-overpass
+osm_node_617112621,Freundliche Bäckerei,"Beusselstraße 44T, 10553, Berlin",Moabit,"Mo-Fr 04:00-18:00; Sa,Su 05:00-18:00; PH 05:00-14:00",52.533178,13.328053,bakery,node/617112621,osm-overpass
+osm_node_4642493362,Freundlicher Kiosk,"Beusselstraße 44R, 10553, Berlin",Moabit,,52.533551,13.328042,convenience,node/4642493362,osm-overpass
+osm_node_2386082873,FrischeParadies,"Morsestraße 2, 10587, Berlin",Charlottenburg,"Mo-Fr 08:00-20:00; Sa 08:00-18:00; Su,PH off",52.521642,13.321366,supermarket,node/2386082873,osm-overpass
+osm_node_1653588605,Getränke Hoffmann,"Seestraße 20, 13353, Berlin",Wedding,Mo-Fr 09:00-20:00; Sa 09:00-18:00,52.546511,13.345917,beverages,node/1653588605,osm-overpass
+osm_node_2283101504,Getränke Hoffmann,"27, 10557, Berlin",Hansaviertel,"Mo-Fr, 10:00-19:00; Sa 10:00-16:00",52.520296,13.341776,beverages,node/2283101504,osm-overpass
+osm_node_4412294194,Getränkemarkt Robin,"Brüsseler Straße 12, 13353, Berlin",Moabit,"Mo-Th 07:00-01:00, Fr,Sa 07:00-02:00",52.54725,13.350312,convenience,node/4412294194,osm-overpass
+osm_node_4774716422,Getränkepoint,"Lindower Straße 14, 13347, Berlin",Wedding,,52.544491,13.368703,convenience,node/4774716422,osm-overpass
+osm_node_1659325636,Go Asia,"Müllerstraße 30a, 13353, Berlin",Moabit,Mo-Sa 09:00-21:00,52.547702,13.357376,supermarket,node/1659325636,osm-overpass
+osm_node_5785097564,Go Asia,"Turmstraße 29, 10551, Berlin",Moabit,Mo-Sa 09:00-21:00,52.526551,13.341696,supermarket,node/5785097564,osm-overpass
+osm_node_2759623440,Goldstück,"Triftstraße 44, 13353, Berlin",Wedding,"Mo-Fr 07:00-16:00; Sa,Su 08:00-13:00",52.542224,13.352172,bakery,node/2759623440,osm-overpass
+osm_node_1912183755,GP GetränkeMarkt,"Beusselstraße 43, 10553, Berlin",Moabit,,52.53248,13.328715,convenience,node/1912183755,osm-overpass
+osm_node_728707803,Grüner Laden,"Bundesratufer 5, 10555, Berlin",Moabit,Mo-Fr 10:00-19:00; Sa 09:00-14:00,52.523,13.340015,supermarket,node/728707803,osm-overpass
+osm_node_6508696685,Habibi,"Stendaler Straße, 10559, Berlin",Moabit,Mo-Sa 09:00-20:00,52.532841,13.350594,supermarket,node/6508696685,osm-overpass
+osm_node_7766335064,Habibi,"Müllerstraße 157, Berlin",Moabit,Mo-Sa 08:00-22:00,52.544994,13.361179,greengrocer,node/7766335064,osm-overpass
+osm_node_530715872,Hansis Brot,"Kiautschoustraße 1, 13353, Berlin",Moabit,We-Fr 09:00-19:00; Sa 09:00-14:00,52.541123,13.357266,bakery,node/530715872,osm-overpass
+osm_node_647943536,Hubertus Apotheke am Salzufer,"Salzufer 13/14, 10587, Berlin",Charlottenburg,"Mo-Fr 08:30-18:00; Sa,Su off",52.518356,13.322868,pharmacy,node/647943536,osm-overpass
+osm_node_366186442,Hutten-Apotheke,"Gotzkowskystraße 1, 10555, Berlin",Moabit,Mo-Fr 08:30-19:00; Sa 09:00-14:00,52.527039,13.330279,pharmacy,node/366186442,osm-overpass
+osm_node_932295139,Ihr Meisterbäcker,"Franklinstraße 19, Berlin",Moabit,Mo-Fr 06:30-14:00,52.521354,13.327812,bakery,node/932295139,osm-overpass
+osm_node_1405879358,Ihr Meisterbäcker,"Elberfelder Straße 2, 10555, Berlin",Moabit,Mo off; Tu-Th 06:30-19:00; Fr 06:30-17:00; Sa 06:30-13:00; Su 07:00-12:00,52.524348,13.335998,bakery,node/1405879358,osm-overpass
+osm_node_8892904362,Il Lucano,Berlin,Moabit,Mo-Fr 08:00-15:00,52.52182,13.325504,deli,node/8892904362,osm-overpass
+osm_node_4318477525,Ilkyaz Getränke Abholmärkte,"Wiesenstraße 21-23, 13357, Berlin",Moabit,"Mo-Fr 07:30-18:30, Sa 8:00-18:00",52.548259,13.373868,beverages,node/4318477525,osm-overpass
+osm_node_3081225430,Indomarkt,"Reinickendorfer Straße 118, Berlin",Moabit,Mo-Sa 11:00-18:00; PH off,52.542549,13.369523,supermarket,node/3081225430,osm-overpass
+osm_node_6735980499,Insel City Backshop,Berlin,Moabit,,52.546666,13.359093,bakery,node/6735980499,osm-overpass
+osm_node_1866365545,Internet-Telecafe,"Alt-Moabit 86, 10555, Berlin",Moabit,"Mo-Su,PH 08:00-04:00",52.525401,13.341578,convenience,node/1866365545,osm-overpass
+osm_node_366536622,Jagow-Apotheke,"Jagowstraße 24, 10555, Berlin",Moabit,Mo-Th 08:30-19:30; Fr 08:30-18:30; Sa 08:30-14:00,52.524205,13.33432,pharmacy,node/366536622,osm-overpass
+osm_node_4381394733,Jamal Afro Shop,Berlin,Moabit,,52.541068,13.350554,convenience,node/4381394733,osm-overpass
+osm_node_6569710892,Jiby,"Perleberger Straße 54, 10559, Berlin",Moabit,"Mo-Fr 08:00-02:00, Sa 09:00-02:00",52.53182,13.349594,convenience,node/6569710892,osm-overpass
+osm_node_707409445,Jokum,"Gerichtstraße 58, 13347, Berlin",Moabit,Mo-Sa 06:00-18:00,52.544532,13.368625,bakery,node/707409445,osm-overpass
+osm_node_2546237577,Kado Coffee & Backshop,Berlin,Moabit,,52.544319,13.378783,bakery,node/2546237577,osm-overpass
+osm_node_11538208255,Kaffee mit Zucker?,Berlin,Moabit,,52.53566,13.357235,kiosk,node/11538208255,osm-overpass
+osm_way_403077774,Kamps,Berlin,Moabit,Mo-Sa 04:30-21:00; Su 06:00-22:00,52.524744,13.369222,bakery,way/403077774,osm-overpass
+osm_way_407323356,Kamps,Berlin,Moabit,Mo-Sa 05:00-21:00; Su 06:00-21:00,52.524737,13.37019,bakery,way/407323356,osm-overpass
+osm_way_1410961516,Kamps,"Turmstraße, Berlin",Moabit,Su 07:00-14:00; Mo 06:00-20:00; Tu-Sa 06:30-20:00,52.526475,13.343764,bakery,way/1410961516,osm-overpass
+osm_node_4632040465,Kauf Kompakt,Berlin,Moabit,24/7,52.525431,13.341258,kiosk,node/4632040465,osm-overpass
+osm_way_1410376784,Kaufland,"Perleberger Straße 42, 10559, Berlin",Moabit,Mo-Sa 07:00-22:00,52.528497,13.343887,supermarket,way/1410376784,osm-overpass
+osm_node_4686702514,Kiez Kiosk 21,Berlin,Moabit,,52.524429,13.334614,kiosk,node/4686702514,osm-overpass
+osm_node_2557705836,Kiez Shop,"Turmstraße 34, 10551, Berlin",Moabit,,52.526607,13.339698,kiosk,node/2557705836,osm-overpass
+osm_node_4411581590,Kiez-Shop 558,"Beusselstraße 72, 10553, Berlin",Moabit,,52.528301,13.328452,kiosk,node/4411581590,osm-overpass
+osm_node_3157747970,Kiosk,"Virchowweg 6, 10117, Berlin",Moabit,"Mo-Fr 09:00-15:00; PH,Sa,Su off",52.524287,13.376453,convenience,node/3157747970,osm-overpass
+osm_node_6761500187,Kiosk & Backshop,Berlin,Moabit,Mo-Sa 06:00-21:00,52.545246,13.36916,convenience,node/6761500187,osm-overpass
+osm_node_6575314493,Kiosk 106,"Alt-Moabit 106, 10559, Berlin",Moabit,,52.524513,13.348643,kiosk,node/6575314493,osm-overpass
+osm_node_4411620089,Kiosk 24,"Beusselstraße 24, 10553, Berlin",Moabit,,52.529134,13.328861,kiosk,node/4411620089,osm-overpass
+osm_node_7129308477,Kiosk Backshop Morgenstund Berlin,"Werftstraße 21, 10557, Berlin",Moabit,"Mo-Fr 06:00-20:00, Sa 07:00-19:00",52.522841,13.35959,convenience,node/7129308477,osm-overpass
+osm_node_2827585872,Kiosk für den Kiez,Berlin,Moabit,,52.52768,13.327506,kiosk,node/2827585872,osm-overpass
+osm_node_8759425992,Kivo's Back & Kiezshop,"Luxemburger Straße 1, 13353, Berlin",Wedding,,52.54631,13.358636,convenience,node/8759425992,osm-overpass
+osm_node_271282692,Kolberger Apotheke,"Gerichtstraße 18, 13347, Berlin",Gesundbrunnen,Mo-Fr 08:30-18:00; Sa 08:30-13:00,52.543989,13.373598,pharmacy,node/271282692,osm-overpass
+osm_node_7124253648,Konditorei Damaskus,"Turmstraße 78, Berlin",Moabit,"Mo-Th 09:00-21:30; Fr 09:00-13:00,14:30-21:30; Sa 09:00-21:30; PH,Su 12:00-19:30",52.526483,13.336327,bakery,node/7124253648,osm-overpass
+osm_node_3374665796,Krankenhaus-Apotheke,Berlin,Moabit,Mo-Fr 07:30-17:00; Sa 09:00-12:00,52.543861,13.344667,pharmacy,node/3374665796,osm-overpass
+osm_node_3149431447,Krokodil Späti,"Samoastraße 23, Berlin",Moabit,,52.542334,13.353849,convenience,node/3149431447,osm-overpass
+osm_node_5548816495,Late Night Spätkauf68,"Reinickendorfer Straße 116, 13347, Berlin",Wedding,"Mo-Th 09:00-24:00, Fr 11:00-23:00, Sa 11:00-23:00",52.542969,13.369479,convenience,node/5548816495,osm-overpass
+osm_node_12846982203,LaVanta,"Wilsnacker Straße 12, Berlin",Moabit,"Mo-Fr 06:30-15:30; Sa,Su 08:00-13:00",52.527297,13.351741,bakery,node/12846982203,osm-overpass
+osm_node_3683023909,Le Crobag,Berlin,Moabit,"Mo-Fr 04:00-20:00; Sa,Su,PH 04:00-18:00",52.546341,13.35889,bakery,node/3683023909,osm-overpass
+osm_way_83809039,Le Crobag,Berlin,Moabit,24/7,52.524804,13.370257,bakery,way/83809039,osm-overpass
+osm_node_9015007575,Le prunier,"Sickingenstraße 1, 10553, Berlin",Moabit,,52.532955,13.327597,convenience,node/9015007575,osm-overpass
+osm_node_1781504927,Lehrter Shop,"Lehrter Straße 1, 10557, Berlin",Moabit,"Mo-Fr 06:00-23:00; Sa 07:00-23:00; Su,PH 08:00-18:00",52.526063,13.365391,kiosk,node/1781504927,osm-overpass
+osm_node_307983960,Leo Apotheke,"Müllerstraße 152, 13353, Berlin",Wedding,Mo-Fr 08:30-19:00; Sa 09:00-14:00,52.546419,13.358656,pharmacy,node/307983960,osm-overpass
+osm_node_3283808615,Leo mit Biss,Berlin,Moabit,,52.546674,13.358879,bakery,node/3283808615,osm-overpass
+osm_node_585473264,Lessing Apotheke,"Reinickendorfer Straße 12, 13347, Berlin",Moabit,Mo-Fr 08:30-19:00; Sa 09:00-14:00; Su off,52.542088,13.370166,pharmacy,node/585473264,osm-overpass
+osm_node_1203692599,Lidl,"Luisenstraße 52, 10117, Berlin",Mitte,Mo-Sa 07:00-21:00,52.524443,13.379524,supermarket,node/1203692599,osm-overpass
+osm_node_4224268256,Lidl,"Müllerstraße 25, 13353, Berlin",Wedding,Mo-Sa 07:00-22:00,52.546413,13.359924,supermarket,node/4224268256,osm-overpass
+osm_relation_15762589,Lidl,"Quitzowstraße 23, 10559, Berlin",Moabit,Mo-Sa 07:00-21:00,52.535777,13.352705,supermarket,relation/15762589,osm-overpass
+osm_way_1410374598,Lindner,Berlin,Moabit,Mo-Sa 10:00-19:00,52.527277,13.344024,deli,way/1410374598,osm-overpass
+osm_node_4019236256,Lotto Presse Shop,"Platz vor dem Neuen Tor 2, Berlin",Moabit,Mo-Fr 05:00-18:00,52.529117,13.37924,kiosk,node/4019236256,osm-overpass
+osm_node_4411472398,Lotto Shop,"Emdener Straße 57, 10551, Berlin",Moabit,Sa 08:00-21:00; Mo-Fr 08:00-21:00,52.527532,13.333224,kiosk,node/4411472398,osm-overpass
+osm_way_1413026953,LPG BioMarkt,Berlin,Moabit,Mo-Sa 08:00-21:00; PH off,52.523622,13.346139,supermarket,way/1413026953,osm-overpass
+osm_way_1413027644,LPG-Backshop,Berlin,Moabit,Mo-Sa 07:00-21:00,52.523745,13.346068,bakery,way/1413027644,osm-overpass
+osm_node_650633578,Ludwigs-Apotheke,"Essener Straße 16, 10555, Berlin",Moabit,Mo-Fr 09:00-19:00; Sa 09:00-14:00,52.523569,13.336335,pharmacy,node/650633578,osm-overpass
+osm_node_6712455252,M&M Back,"Müllerstraße 156A, Berlin",Moabit,"Mo-Fr 06:00-17:00; Sa 08:00-15:00; Su,PH 08:00-15:00",52.545428,13.360409,bakery,node/6712455252,osm-overpass
+osm_node_10928623111,Makka,Berlin,Moabit,,52.530153,13.345543,supermarket,node/10928623111,osm-overpass
+osm_node_1659884034,Märkische Apotheke,"Müllerstraße 33, 13353, Berlin",Wedding,Mo-Fr 08:30-19:00; Sa 09:00-18:00,52.548347,13.356214,pharmacy,node/1659884034,osm-overpass
+osm_node_939667458,Media Point,"Föhrer Straße 12, Berlin",Moabit,,52.541667,13.349423,convenience,node/939667458,osm-overpass
+osm_node_380498345,MediosApotheke,"Luisenstraße 54/55, 10117, Berlin",Moabit,Mo-Fr 08:00-19:00; Sa 09:00-14:00,52.52472,13.379458,pharmacy,node/380498345,osm-overpass
+osm_node_9672153450,Mein Hoffi,Berlin,Moabit,Mo-Sa 08:00-22:00,52.545145,13.357615,beverages,node/9672153450,osm-overpass
+osm_node_4568676153,Melek,"Wiclefstraße 21, 10551, Berlin",Moabit,"Mo-Sa 05:00-19:00; Su,PH 06:00-19:00",52.53078,13.3336,bakery,node/4568676153,osm-overpass
+osm_node_910429973,Melek-Backshop,Berlin,Moabit,,52.535425,13.377321,bakery,node/910429973,osm-overpass
+osm_node_12691114993,Mian Market,"Birkenstraße 22, 10559, Berlin",Moabit,Mo-Sa 11:00-21:00; Su 13:00-20:00,52.531741,13.344271,convenience,node/12691114993,osm-overpass
+osm_node_5820609154,Mini-Markt,Berlin,Moabit,,52.526426,13.349292,convenience,node/5820609154,osm-overpass
+osm_node_11225237887,Minimarkt Am Leo,Berlin,Moabit,Mo-Sa 07:00-02:00,52.548181,13.359755,convenience,node/11225237887,osm-overpass
+osm_node_2288123588,MOABeat,Berlin,Moabit,"Mo,We-Fr 08:00-22:45; Sa 12:00-22:45; Su 16:00-22:45; Tu off",52.520688,13.352555,kiosk,node/2288123588,osm-overpass
+osm_node_2288127751,Moabiter Apotheke,"Alt-Moabit 18, 10559, Berlin",Moabit,"Mo-Fr 08:00-18:30, Sa 08:00-14:00; PH off",52.524357,13.352241,pharmacy,node/2288127751,osm-overpass
+osm_node_4454150172,Moabiter Spätkauf,"Beusselstraße 73, 10553, Berlin",Moabit,,52.528207,13.328452,kiosk,node/4454150172,osm-overpass
+osm_node_704781852,Mond & Stern,"Birkenstraße 58, 10559, Berlin",Moabit,"Mo-Fr 05:30-18:00; Sa 06:00-14:00; PH,Su 08:00-14:00",52.530917,13.34589,bakery,node/704781852,osm-overpass
+osm_node_2874933561,Moonshine Deluxe,Berlin,Moabit,,52.529927,13.345089,kiosk,node/2874933561,osm-overpass
+osm_node_2654574019,Moonshine Spätkauf,Berlin,Moabit,24/7,52.524315,13.330072,convenience,node/2654574019,osm-overpass
+osm_node_10733516692,Mr. Bäcker,Berlin,Moabit,,52.540252,13.369927,bakery,node/10733516692,osm-overpass
+osm_node_3140301723,Müller Eck,"Müllerstraße 163A, Berlin",Moabit,"Mo-Fr 07:00-03:00, Sa 08:00-03:00",52.543405,13.363886,convenience,node/3140301723,osm-overpass
+osm_node_459799715,Müller-Apotheke,"Müllerstraße 156C, Berlin",Moabit,Mo-Fr 08:30-19:00; Sa 09:00-16:00,52.545171,13.360831,pharmacy,node/459799715,osm-overpass
+osm_node_9741661166,Multishop,"Pankstraße 79, Berlin",Moabit,,52.547051,13.372622,kiosk,node/9741661166,osm-overpass
+osm_way_27162702,Netto,"Müllerstraße 10-11, 13353, Berlin",Wedding,Mo-Sa 08:00-21:00,52.542578,13.367691,supermarket,way/27162702,osm-overpass
+osm_node_10562009263,Netto Marken-Discount,"Alt-Moabit 86 A, 10555, Berlin",Moabit,Mo-Sa 07:00-22:00,52.525365,13.341872,supermarket,node/10562009263,osm-overpass
+osm_way_24964657,Netto Marken-Discount,"Gerichtstraße 60-61, 13347, Berlin",Gesundbrunnen,Mo-Sa 07:00-22:00,52.543894,13.370915,supermarket,way/24964657,osm-overpass
+osm_way_53190801,Netto Marken-Discount,"Lehrter Straße 57, 10557, Berlin",Moabit,Mo-Sa 07:00-22:00,52.532305,13.36002,supermarket,way/53190801,osm-overpass
+osm_node_10159681696,NHI Global Food Market,Berlin,Moabit,,52.533025,13.367441,supermarket,node/10159681696,osm-overpass
+osm_node_3166307701,Norma,"Bremer Straße 9, 10551, Berlin",Moabit,Mo-Fr 08:00-20:00; Sa 08:00-18:00,52.5276,13.338821,supermarket,node/3166307701,osm-overpass
+osm_node_5874035764,Nuts & Co,"Turmstraße 68, 10551, Berlin",Moabit,"Mo-Sa 10:00-22:00; Su,PH 12:00-22:00",52.526946,13.331455,deli,node/5874035764,osm-overpass
+osm_node_2110613369,Oldenburger Apotheke,"Oldenburger Straße 37, 10551, Berlin",Moabit,"Mo,Th 08:30-19:00; Tu,We,Fr 08:30-18:30; Sa 08:30-13:00",52.530257,13.335933,pharmacy,node/2110613369,osm-overpass
+osm_node_428142582,PENNY,Berlin,Moabit,Mo-Sa 07:00-21:00,52.533095,13.345433,supermarket,node/428142582,osm-overpass
+osm_node_440805106,PENNY,"Turmstraße, 10551, Berlin",Moabit,Mo-Sa 07:00-22:00,52.526798,13.331712,supermarket,node/440805106,osm-overpass
+osm_way_53542190,PENNY,"Gerichtstraße 4, Berlin",Moabit,Mo-Sa 07:00-22:00,52.543004,13.37825,supermarket,way/53542190,osm-overpass
+osm_way_104781628,PENNY,"Alt-Moabit 9, 10557, Berlin",Moabit,Mo-Sa 07:00-22:00,52.523806,13.358449,supermarket,way/104781628,osm-overpass
+osm_node_4234162693,Penny Underground,"Müllerstraße 153, Berlin",Moabit,Mo-Sa 07:00-22:00,52.546001,13.359364,supermarket,node/4234162693,osm-overpass
+osm_node_6632057685,Posty,"Lehrter Straße 24E, 10557, Berlin",Moabit,Mo-Sa 08:00-23:59; Su 13:00-20:00,52.531583,13.361669,convenience,node/6632057685,osm-overpass
+osm_node_2281112713,Quadro 7,"Helmholtzstraße 29, 10587, Berlin",Moabit,Mo-Fr 06:00-19:00; Sa 08:00-18:00,52.521785,13.325349,kiosk,node/2281112713,osm-overpass
+osm_node_13336072227,Rewe,"Turmstraße 48, 10551, Berlin",Moabit,"Mo-Fr 06:00-24:00, Sa 06:00-23:30",52.52715,13.333042,supermarket,node/13336072227,osm-overpass
+osm_way_25779478,Rewe,"Bartningallee 3, 10557, Berlin",Hansaviertel,Mo-Sa 07:00-22:00,52.518825,13.342337,supermarket,way/25779478,osm-overpass
+osm_node_261743904,REWE,"Turmstraße 60, 10551, Berlin",Moabit,Mo-Sa 06:30-23:00,52.527612,13.32916,supermarket,node/261743904,osm-overpass
+osm_node_8367158861,REWE,"Heidestraße 41, 10557, Berlin",Moabit,Mo-Sa 07:00-22:00,52.532281,13.366039,supermarket,node/8367158861,osm-overpass
+osm_way_407270362,REWE City,Berlin,Moabit,"Mo-Sa 06:00-23:00; Su, PH 08:00-22:00",52.524118,13.369526,supermarket,way/407270362,osm-overpass
+osm_node_5016416505,REWE To Go,Berlin,Moabit,,52.530673,13.328074,convenience,node/5016416505,osm-overpass
+osm_node_5471841985,REWE To Go,"Rathenower Straße 8, Berlin",Moabit,24/7,52.525502,13.357027,convenience,node/5471841985,osm-overpass
+osm_node_9442262038,REWE To Go,Berlin,Moabit,"PH,Mo-Su 00:00-24:00+",52.520787,13.333638,convenience,node/9442262038,osm-overpass
+osm_node_6445505420,Rossmann,"Invalidenstraße 73, 10557, Berlin",Moabit,Mo-Fr 08:00-20:00; Sa 08:00-19:00; Su off; PH off,52.527109,13.37222,chemist,node/6445505420,osm-overpass
+osm_node_8693899528,Rossmann,"Müllerstraße 12, 13353, Berlin",Moabit,Mo-Sa 08:00-22:00,52.542974,13.365694,chemist,node/8693899528,osm-overpass
+osm_way_407320713,Rossmann,"Europaplatz 1, 10557, Berlin",Moabit,Mo-Sa 07:00-22:00; Su 08:00-22:00; PH 08:00-22:00,52.524372,13.370497,chemist,way/407320713,osm-overpass
+osm_node_2827585874,Rostocker Getränke,"Rostocker Straße 1, 10553, Berlin",Moabit,,52.527735,13.326987,kiosk,node/2827585874,osm-overpass
+osm_node_1440942901,Schäfer's,"Invalidenstraße 97, 10115, Berlin",Moabit,Mo-Fr 06:00-18:00; Sa 07:00-17:00; Su 08:00-17:00,52.528844,13.377746,bakery,node/1440942901,osm-overpass
+osm_node_4341320107,Schäfer's,"Luisenstraße 46, 10117, Berlin",Mitte,Mo-Fr 06:00-19:00; Sa 06:00-18:00; Su 08:00-18:00,52.523356,13.379711,bakery,node/4341320107,osm-overpass
+osm_way_268901430,Schäfer's,"Altonaer Straße 18, 10557, Berlin",Hansaviertel,Mo-Fr 06:30-18:00; Sa 07:00-15:00; Su 08:00-15:00,52.518797,13.341908,bakery,way/268901430,osm-overpass
+osm_node_2482984708,Sengül Market,"Triftstraße 5, 13353, Berlin",Wedding,,52.544487,13.36006,supermarket,node/2482984708,osm-overpass
+osm_way_429271490,ServiceStore DB,Berlin,Moabit,"Mo-Su,PH 06:00-23:00",52.524971,13.370143,kiosk,way/429271490,osm-overpass
+osm_node_8588995991,Shell,Berlin,Moabit,,52.519911,13.35501,convenience,node/8588995991,osm-overpass
+osm_way_36936293,Shell,"Kaiserin-Augusta-Allee 9-9a, 10553, Berlin",Moabit,,52.525557,13.324308,kiosk,way/36936293,osm-overpass
+osm_way_305635147,Shell Shop,Berlin,Moabit,,52.525639,13.324363,convenience,way/305635147,osm-overpass
+osm_node_3266123514,Sila-Markt,"Turmstraße 37, 10551, Berlin",Moabit,,52.526784,13.336889,supermarket,node/3266123514,osm-overpass
+osm_node_12307298106,Snack&Shop,Berlin,Moabit,,52.519672,13.341375,convenience,node/12307298106,osm-overpass
+osm_node_4799571388,Souvenir & more,"Reinickendorfer Straße 8, Berlin",Moabit,,52.541444,13.370232,convenience,node/4799571388,osm-overpass
+osm_way_429271491,Spar Express,"Europaplatz 1, 10557, Berlin",Moabit,,52.524938,13.370166,convenience,way/429271491,osm-overpass
+osm_node_2736043858,Spät & Backshop,Berlin,Moabit,Mo-Sa 06:00-22:00; Su 08:00-22:00,52.53966,13.371205,convenience,node/2736043858,osm-overpass
+osm_node_4789968670,Späti,Berlin,Moabit,,52.529374,13.336138,convenience,node/4789968670,osm-overpass
+osm_node_12133394673,Späti,Berlin,Moabit,,52.524156,13.329564,convenience,node/12133394673,osm-overpass
+osm_node_4188213618,Späti 38,"Lehrter Straße 38, 10557, Berlin",Moabit,,52.534625,13.358888,convenience,node/4188213618,osm-overpass
+osm_node_10015418517,Späti am Leopold,"Nazarethkirchstraße 53, 13347, Berlin",Moabit,Mo-Sa 00:00-00:00,52.547299,13.35839,convenience,node/10015418517,osm-overpass
+osm_node_7053084877,Späti by Sticky,"Turmstraße 47, 10551, Berlin",Moabit,,52.527047,13.334003,convenience,node/7053084877,osm-overpass
+osm_node_4304633635,Späti Vape City,"Triftstraße 4, Berlin",Moabit,,52.544597,13.360447,convenience,node/4304633635,osm-overpass
+osm_node_10770738600,Spätimo,"Siemensstraße 13, 10551, Berlin",Moabit,"Mo-Su,PH 06:30-24:00",52.532728,13.333226,convenience,node/10770738600,osm-overpass
+osm_node_312820851,Spätkauf,"Gerichtstraße 78, 13347, Berlin",Gesundbrunnen,Mo-Sa 07:30-23:00; Su 14:00-20:00,52.542918,13.376473,convenience,node/312820851,osm-overpass
+osm_node_1597742298,Spätkauf,"Birkenstraße 21, 10559, Berlin",Moabit,,52.531349,13.345717,convenience,node/1597742298,osm-overpass
+osm_node_4244678196,Spätkauf,Berlin,Moabit,,52.535491,13.35759,convenience,node/4244678196,osm-overpass
+osm_node_4686702513,Spätkauf,"Alt-Moabit, Berlin",Moabit,24/7,52.524558,13.33524,convenience,node/4686702513,osm-overpass
+osm_node_6430624973,Spätkauf &,"Beusselstraße 44a, 10553, Berlin",Moabit,,52.533199,13.328708,convenience,node/6430624973,osm-overpass
+osm_node_530715910,Spätkauf & Backwaren,"Sprengelstraße 2, Berlin",Moabit,,52.542862,13.359053,convenience,node/530715910,osm-overpass
+osm_node_5193755040,Spätkauf 80,"Turmstraße 80, 10551, Berlin",Moabit,,52.52644,13.336913,convenience,node/5193755040,osm-overpass
+osm_node_11025761916,Spätkauf Spree,"Beusselstraße 3, Berlin",Moabit,Mo-Th 09:00-00:00; Fr 09:00-01:00; Sa 10:00-01:00,52.525104,13.328004,convenience,node/11025761916,osm-overpass
+osm_node_11796133141,Spätshop 33,Berlin,Moabit,,52.548347,13.348788,convenience,node/11796133141,osm-overpass
+osm_node_6571876492,Spätshop Perleberger Straße,"Perleberger Straße 3, 10559, Berlin",Moabit,,52.535566,13.356311,convenience,node/6571876492,osm-overpass
+osm_node_2557710789,Spree-Apotheke,"Alt-Moabit 86b, 10555, Berlin",Moabit,"Mo-Fr 08:00-19:00, Sa 09:00-14:00",52.525326,13.342,pharmacy,node/2557710789,osm-overpass
+osm_node_370058976,Steinecke,Berlin,Moabit,"Mo-Fr 06:30-18:00; Sa,Su 06:30-12:00",52.521003,13.353868,bakery,node/370058976,osm-overpass
+osm_node_2500313060,Steinecke,"Helmholtzstraße 9, 10587, Berlin",Charlottenburg,Mo-Fr 06:30-18:00; Sa 06:30-16:00; Su 08:00-12:00,52.5214,13.324755,bakery,node/2500313060,osm-overpass
+osm_node_5368793413,Steinecke,"Chausseestraße 38, 10115, Berlin",Mitte,Mo-Fr 06:00-18:00; Sa 07:00-14:00,52.533521,13.379672,bakery,node/5368793413,osm-overpass
+osm_node_3760539861,Stern Bäckerei,"Brüsseler Straße 44, 13353, Berlin",Wedding,"Mo-Fr 05:30-18:00; Sa 05:30-16:00; Su,PH 07:00-16:00",52.547315,13.35098,bakery,node/3760539861,osm-overpass
+osm_node_5053480962,Stern Bäckerei,"Turmstraße 13, Berlin",Moabit,,52.526495,13.350746,bakery,node/5053480962,osm-overpass
+osm_node_707452479,Stettiner Feinschmecker,"Reinickendorfer Straße 35, 13347, Berlin",Gesundbrunnen,Mo-Fr 09:00-18:00; Sa 09:00-13:00,52.547936,13.369488,deli,node/707452479,osm-overpass
+osm_node_4351511591,Tabak -Point,Berlin,Moabit,,52.545648,13.358429,kiosk,node/4351511591,osm-overpass
+osm_node_5363333353,Tabak & Getränke Shop,Berlin,Moabit,"Mo-Fr 07:00-23:00; Sa 08:00-23:00; Su,PH off",52.521234,13.322172,convenience,node/5363333353,osm-overpass
+osm_node_7297159360,Tabakwaren Sahiner,"Birkenstraße 32, Berlin",Moabit,Mo-Fr 06:00-21:00; Sa 06:30-21:00,52.532417,13.341587,kiosk,node/7297159360,osm-overpass
+osm_node_3140302231,Tele Cafe,"Burgsdorfstraße 14, Berlin",Moabit,,52.542897,13.363097,kiosk,node/3140302231,osm-overpass
+osm_node_10674188131,Tele Center,"Wilhelmshavener Straße 70, 10551, Berlin",Moabit,"Mo-Fr 09:00-01:00, Sa 10:00-01:00",52.527144,13.341164,convenience,node/10674188131,osm-overpass
+osm_node_10808973452,Thoben,Berlin,Moabit,"Mo-Sa 06:00-18:00; Su,PH 08:00-18:00",52.52696,13.3311,bakery,node/10808973452,osm-overpass
+osm_node_11373954350,Tojo-Spätkauf,"Bochumer Straße 7, 10555, Berlin",Moabit,"Mo-Th 07:00-19:00, Fr-Sa 07:00-14:00",52.523276,13.337933,convenience,node/11373954350,osm-overpass
+osm_node_2288123584,Traumbäckerei,Berlin,Moabit,,52.520097,13.355878,bakery,node/2288123584,osm-overpass
+osm_node_5648395321,Trinkstelle,"Brüsseler Straße 49, 13353, Berlin",Moabit,Mo-Su 10:30-23:00,52.548019,13.352085,convenience,node/5648395321,osm-overpass
+osm_node_4454150184,Turm Bäckerei Café,"Turmstraße 56, 10551, Berlin",Moabit,"Mo-Th,Sa 06:30-20:00; Fr,Su 07:00-16:00",52.527431,13.330291,bakery,node/4454150184,osm-overpass
+osm_node_4965896087,u Zosi – Polnische Delikatessen,Berlin,Moabit,Mo-Fr 08:00-21:00; Sa 09:00-18:00,52.526491,13.350645,convenience,node/4965896087,osm-overpass
+osm_node_2297383210,Ultra Kiosk,"Antonstraße 42, 13347, Berlin",Wedding,Mo-Sa 08:00-20:00,52.546557,13.362469,convenience,node/2297383210,osm-overpass
+osm_node_10559266027,Urban Mix Moabit,"Alt-Moabit 107, Berlin",Moabit,,52.524478,13.349016,convenience,node/10559266027,osm-overpass
+osm_node_6712455232,Vatan Bäckerei,Berlin,Moabit,,52.545109,13.360976,bakery,node/6712455232,osm-overpass
+osm_node_6596706590,Von morgens bis Späti,Berlin,Moabit,"Mo-Th 07:00-02:00, Fr,Sa 07:00-03:00",52.545928,13.344898,convenience,node/6596706590,osm-overpass
+osm_node_4593021190,Wald Kiosk,"Waldstraße 40, 10551, Berlin",Moabit,,52.530996,13.331201,convenience,node/4593021190,osm-overpass
+osm_node_4005527182,Weihe,"Beusselstraße 44 n-q, 10553, Berlin",Moabit,,52.535973,13.322891,greengrocer,node/4005527182,osm-overpass
+osm_way_83809037,Wiener Feinbäcker Heberer,"Europaplatz 1, 10557, Berlin",Moabit,Mo-Su 05:00-21:00,52.525014,13.370113,bakery,way/83809037,osm-overpass
+osm_node_11948437821,Wilsnacker Shop,Berlin,Moabit,,52.52751,13.351323,convenience,node/11948437821,osm-overpass
+osm_node_13625354036,Wolkenspäti,"Stromstraße 65, 10555, Berlin",Moabit,Mon-Thu 9h-23h Fri 9h-00h Sat 10h-00h,52.524868,13.34237,kiosk,node/13625354036,osm-overpass
+osm_node_459166572,Zieten Apotheke,"Gerichtstraße 31, 13347, Berlin",Wedding,Mo-Fr 08:30-18:30; Sa 09:00-13:00,52.54497,13.368633,pharmacy,node/459166572,osm-overpass
+osm_node_3629578699,Zora Supermarkt,"Alt-Moabit 74, 10555, Berlin",Moabit,Mo-Sa 10:00-20:00,52.524193,13.333199,supermarket,node/3629578699,osm-overpass
+osm_node_11199678483,Zwischen Bier und Angel,"Neue Hochstraße 31, Berlin",Moabit,,52.542184,13.37526,convenience,node/11199678483,osm-overpass

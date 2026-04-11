@@ -20,6 +20,8 @@ export type Dictionary = {
   noResults: string;
   openStore: string;
   routeAction: string;
+  matchedProductLabel: string;
+  storeProductsTitle: string;
   priceUnknown: string;
   availabilityInStock: string;
   availabilityLowStock: string;
@@ -61,6 +63,8 @@ const dictionaries: Record<Locale, Dictionary> = {
     noResults: "Keine Treffer im Radius. Probiere einen groesseren Radius oder einen anderen Produktnamen.",
     openStore: "Details zur Filiale",
     routeAction: "Route starten",
+    matchedProductLabel: "Produkt",
+    storeProductsTitle: "Produkte in dieser Filiale",
     priceUnknown: "Preis nicht verfuegbar",
     availabilityInStock: "Auf Lager",
     availabilityLowStock: "Wenig Bestand",
@@ -100,6 +104,8 @@ const dictionaries: Record<Locale, Dictionary> = {
     noResults: "No matches in this radius. Try a wider radius or another product name.",
     openStore: "Store details",
     routeAction: "Get directions",
+    matchedProductLabel: "Product",
+    storeProductsTitle: "Products in this store",
     priceUnknown: "Price unavailable",
     availabilityInStock: "In stock",
     availabilityLowStock: "Low stock",
@@ -139,6 +145,8 @@ const dictionaries: Record<Locale, Dictionary> = {
     noResults: "No hay resultados en este radio. Prueba con un radio mayor u otro producto.",
     openStore: "Ver tienda",
     routeAction: "Como llegar",
+    matchedProductLabel: "Producto",
+    storeProductsTitle: "Productos en esta tienda",
     priceUnknown: "Precio no disponible",
     availabilityInStock: "En stock",
     availabilityLowStock: "Queda poco",

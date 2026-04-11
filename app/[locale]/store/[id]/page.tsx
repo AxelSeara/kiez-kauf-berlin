@@ -48,7 +48,7 @@ export default async function StoreDetailPage({
       </section>
 
       <section className="note-card paper-lines p-5">
-        <h3 className="mb-3 text-xl font-semibold">{dictionary.resultsTitle}</h3>
+        <h3 className="mb-3 text-xl font-semibold">{dictionary.storeProductsTitle}</h3>
         <ul className="space-y-3">
           {detail.offers.map((item, index) => (
             <li key={item.offer.id} className="rounded-xl border border-black/30 bg-white p-3">
@@ -56,14 +56,6 @@ export default async function StoreDetailPage({
                 {dictionary.itemLabel} {String(index + 1).padStart(2, "0")}
               </p>
               <p className="font-medium">{item.product.normalizedName}</p>
-              <p className="text-sm text-neutral-700">
-                {typeof item.offer.priceOptional === "number"
-                  ? `${item.offer.priceOptional.toFixed(2)} EUR`
-                  : dictionary.priceUnknown}
-              </p>
-              <p className="mono text-xs text-neutral-600">
-                {dictionary.updatedLabel}: {new Date(item.offer.updatedAt).toLocaleString()}
-              </p>
             </li>
           ))}
         </ul>

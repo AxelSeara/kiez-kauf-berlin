@@ -14,16 +14,6 @@ type SearchPayload = {
   results: SearchResult[];
 };
 
-function formatAvailability(result: SearchResult, dictionary: Dictionary): string {
-  if (result.offer.availability === "in_stock") {
-    return dictionary.availabilityInStock;
-  }
-  if (result.offer.availability === "low_stock") {
-    return dictionary.availabilityLowStock;
-  }
-  return dictionary.availabilityUnknown;
-}
-
 export function SearchExperience({
   locale,
   dictionary,
@@ -268,17 +258,9 @@ export function SearchExperience({
                 <h3 className="text-lg font-semibold">{result.store.name}</h3>
                 <p className="text-sm text-neutral-700">{result.store.address}</p>
                 <p className="mono text-xs text-neutral-600">
-                  {result.product.normalizedName} - {Math.round(result.distanceMeters)}m
+                  {dictionary.matchedProductLabel}: {result.product.normalizedName}
                 </p>
-                <p className="mono text-xs text-neutral-600">
-                  {formatAvailability(result, dictionary)} - {dictionary.updatedLabel}{" "}
-                  {result.freshnessHours}h
-                </p>
-                <p className="text-sm">
-                  {typeof result.offer.priceOptional === "number"
-                    ? `${result.offer.priceOptional.toFixed(2)} EUR`
-                    : dictionary.priceUnknown}
-                </p>
+                <p className="mono text-xs text-neutral-600">{Math.round(result.distanceMeters)}m</p>
               </div>
 
               <div className="flex gap-2">

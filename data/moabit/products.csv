@@ -1,0 +1,21 @@
+id,normalized_name,brand,category
+pr_anchor_001,hafermilch 1l,Oatly,getraenke
+pr_anchor_002,vollmilch 1l,,getraenke
+pr_anchor_003,eier 10 stueck,,lebensmittel
+pr_anchor_004,brot weizen,,lebensmittel
+pr_anchor_005,reis basmati 1kg,,lebensmittel
+pr_anchor_006,pasta fusilli 500g,Barilla,lebensmittel
+pr_anchor_007,tomatensauce 500g,,lebensmittel
+pr_anchor_008,olivenoel 1l,,lebensmittel
+pr_anchor_009,aepfel 1kg,,frischwaren
+pr_anchor_010,bananen 1kg,,frischwaren
+pr_anchor_011,kartoffeln 2kg,,frischwaren
+pr_anchor_012,zwiebeln 1kg,,frischwaren
+pr_anchor_013,zahnpasta sensitive,Elmex,drogerie
+pr_anchor_014,shampoo 300ml,,drogerie
+pr_anchor_015,waschmittel 20 wl,,haushalt
+pr_anchor_016,spuelmittel 500ml,,haushalt
+pr_anchor_017,toilettenpapier 8 rollen,,haushalt
+pr_anchor_018,kaffee gemahlen 500g,,getraenke
+pr_anchor_019,tee schwarz 25 beutel,,getraenke
+pr_anchor_020,wasser still 1.5l,,getraenke

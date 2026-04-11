@@ -14,7 +14,7 @@ MVP web responsive para buscar productos concretos y encontrar tiendas de barrio
 
 1. Usuario busca producto exacto.
 2. App usa geolocalizacion del navegador o fallback por direccion.
-3. API `/api/search` devuelve ofertas ordenadas por match exacto, distancia y frescura del dato.
+3. API `/api/search` devuelve tiendas relevantes ordenadas por match exacto, distancia y frescura del dato.
 4. Usuario pulsa `Route starten / Get directions`.
 5. API `/api/analytics/route-click` registra evento unico por `interactionId`.
 
@@ -59,3 +59,17 @@ npm test
 ```
 
 Incluye pruebas de ranking y detalle de tienda.
+
+## Data pipeline (Moabit)
+
+Genera automaticamente una base inicial de tiendas y plantilla de relaciones producto-tienda:
+
+```bash
+npm run data:moabit
+```
+
+Archivos de salida:
+
+- `data/moabit/stores.csv` (tiendas de Moabit desde OpenStreetMap)
+- `data/moabit/products.csv` (catalogo de productos ancla)
+- `data/moabit/store_products_template.csv` (plantilla de relaciones tienda-producto para verificacion)
