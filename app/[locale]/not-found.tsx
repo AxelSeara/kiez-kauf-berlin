@@ -12,10 +12,11 @@ export default function LocaleNotFoundPage() {
   const dictionary = getDictionary(locale);
 
   return (
-    <main className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
-      <h2 className="text-2xl font-bold">{dictionary.notFoundTitle}</h2>
-      <p className="mt-2 text-slate-600">{dictionary.notFoundDescription}</p>
-      <Link href="/" className="mt-4 inline-flex rounded-lg bg-slate-900 px-4 py-2 text-white">
+    <main className="surface-card p-6 text-center md:p-8">
+      <p className="section-title">Error</p>
+      <h2 className="mt-2 text-2xl font-semibold tracking-tight">{dictionary.notFoundTitle}</h2>
+      <p className="mt-2 text-sm text-neutral-600">{dictionary.notFoundDescription}</p>
+      <Link href="/" className="btn-primary mt-5 inline-flex px-4 py-2 text-sm font-medium">
         {dictionary.backHome}
       </Link>
     </main>

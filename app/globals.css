@@ -4,25 +4,22 @@
 
 :root {
   color-scheme: light;
-  --bg: #fbfbf9;
-  --paper: #ffffff;
-  --ink: #0f0f0f;
-  --ink-soft: #4a4a4a;
-  --line: #d6d6d4;
+  --bg: #f3f4f6;
+  --surface: #ffffff;
+  --ink: #101214;
+  --ink-soft: #4a5563;
+  --line: #d8dde3;
+  --line-strong: #bcc6d1;
+  --accent: #1f4b7a;
+  --accent-soft: #e8f0f9;
 }
 
 body {
   margin: 0;
   font-family: var(--font-display), "Helvetica Neue", sans-serif;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(251, 251, 249, 0.95)),
-    repeating-linear-gradient(
-      0deg,
-      transparent 0px,
-      transparent 27px,
-      rgba(0, 0, 0, 0.015) 27px,
-      rgba(0, 0, 0, 0.015) 28px
-    );
+    radial-gradient(circle at 0% 0%, rgba(31, 75, 122, 0.06), transparent 40%),
+    linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
   color: var(--ink);
 }
 
@@ -35,71 +32,84 @@ button {
   font-family: var(--font-mono), "Courier New", monospace;
 }
 
-.note-card {
-  position: relative;
-  border: 2px solid var(--ink);
-  border-radius: 1.25rem;
-  background: var(--paper);
-  box-shadow: 6px 6px 0 0 rgba(15, 15, 15, 0.08);
+.surface-card {
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--surface);
+  box-shadow: 0 8px 20px rgba(16, 18, 20, 0.05);
 }
 
-.paper-lines {
-  background:
-    linear-gradient(var(--paper), var(--paper)) padding-box,
-    repeating-linear-gradient(
-      180deg,
-      transparent 0px,
-      transparent 31px,
-      rgba(15, 15, 15, 0.07) 31px,
-      rgba(15, 15, 15, 0.07) 32px
-    ) border-box;
+.field-input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: #ffffff;
+  padding: 0.68rem 0.8rem;
+  color: var(--ink);
+  transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 
-.note-tape {
-  position: relative;
+.field-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(31, 75, 122, 0.14);
 }
 
-.note-tape::before,
-.note-tape::after {
-  content: "";
-  position: absolute;
-  width: 54px;
-  height: 14px;
-  background: rgba(15, 15, 15, 0.08);
-  border: 1px solid rgba(15, 15, 15, 0.15);
-  border-radius: 6px;
-  top: -8px;
+.btn-primary {
+  border: 1px solid var(--accent);
+  border-radius: 0.75rem;
+  background: var(--accent);
+  color: #ffffff;
+  transition: background-color 120ms ease, border-color 120ms ease, transform 120ms ease;
 }
 
-.note-tape::before {
-  left: 20px;
-  transform: rotate(-7deg);
+.btn-primary:hover {
+  background: #163a61;
+  border-color: #163a61;
 }
 
-.note-tape::after {
-  right: 20px;
-  transform: rotate(8deg);
+.btn-secondary {
+  border: 1px solid var(--line-strong);
+  border-radius: 0.75rem;
+  background: #ffffff;
+  color: var(--ink);
+  transition: border-color 120ms ease, background-color 120ms ease;
 }
 
-.stamp {
-  display: inline-flex;
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  padding: 0.15rem 0.7rem;
-  letter-spacing: 0.09em;
-  font-size: 0.72rem;
+.btn-secondary:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.section-title {
+  font-size: 0.73rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  color: var(--ink-soft);
+  font-family: var(--font-mono), "Courier New", monospace;
+}
+
+.status-text {
+  font-size: 0.77rem;
+  color: var(--ink-soft);
   font-family: var(--font-mono), "Courier New", monospace;
 }
 
 .bw-map .maplibregl-canvas {
-  filter: grayscale(1) contrast(1.06) brightness(1.02);
+  filter: grayscale(0.92) contrast(1.06) brightness(1.02);
 }
 
 .bw-map .maplibregl-popup-content {
-  border: 1px solid #111111;
+  border: 1px solid var(--line-strong);
   border-radius: 0.6rem;
-  box-shadow: none;
+  box-shadow: 0 6px 16px rgba(16, 18, 20, 0.12);
+  font-family: var(--font-display), "Helvetica Neue", sans-serif;
+  color: var(--ink);
+}
+
+.bw-map .maplibregl-ctrl-group {
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 4px 12px rgba(16, 18, 20, 0.1);
 }
 
 input,

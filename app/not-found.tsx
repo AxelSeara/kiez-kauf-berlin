@@ -6,12 +6,15 @@ export default function NotFoundPage() {
   const dictionary = getDictionary(getDefaultLocale());
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-xl flex-col items-center justify-center gap-4 px-6 text-center">
-      <h1 className="text-3xl font-bold">{dictionary.notFoundTitle}</h1>
-      <p className="text-slate-600">{dictionary.notFoundDescription}</p>
-      <Link href="/" className="rounded-lg bg-slate-900 px-4 py-2 text-white">
-        {dictionary.backHome}
-      </Link>
+    <main className="mx-auto flex min-h-screen max-w-xl items-center px-6">
+      <section className="surface-card w-full p-8 text-center">
+        <p className="section-title">Error</p>
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight">{dictionary.notFoundTitle}</h1>
+        <p className="mt-2 text-sm text-neutral-600">{dictionary.notFoundDescription}</p>
+        <Link href="/" className="btn-primary mt-5 inline-flex px-4 py-2 text-sm font-medium">
+          {dictionary.backHome}
+        </Link>
+      </section>
     </main>
   );
 }

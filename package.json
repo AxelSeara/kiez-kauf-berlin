@@ -11,7 +11,7 @@
     "data:moabit": "node scripts/fetch-moabit-dataset.mjs"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.49.8",
+    "@supabase/supabase-js": "^2.103.0",
     "maplibre-gl": "^5.4.0",
     "next": "^15.3.0",
     "react": "^19.0.0",

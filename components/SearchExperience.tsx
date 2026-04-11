@@ -156,131 +156,158 @@ export function SearchExperience({
   }
 
   return (
-    <section className="space-y-5">
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.55fr)_minmax(340px,1fr)] lg:items-start">
-        <LocalMap
-          center={center}
-          results={results}
-          userMarkerLabel={dictionary.mapYouAreHere}
-          className="h-[46vh] min-h-[340px] lg:h-[68vh] lg:min-h-[520px]"
-        />
-
-        <div className="note-card paper-lines p-4 md:p-5 lg:sticky lg:top-4">
-          <div className="mb-3 flex items-center justify-between gap-2">
-            <span className="stamp">{dictionary.noteBadge}</span>
-            <p className="mono text-[0.68rem] text-neutral-600">{dictionary.noteTagline}</p>
-          </div>
-
-          <div className="space-y-2.5">
+    <section className="space-y-4 md:space-y-5">
+      <section className="surface-card p-4 md:p-5">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1.22fr)_minmax(0,0.78fr)]">
+          <div className="space-y-3">
+            <p className="section-title">{dictionary.searchButton}</p>
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  void runSearch();
+                }
+              }}
               placeholder={dictionary.searchPlaceholder}
-              className="w-full rounded-xl border border-black/30 bg-white px-4 py-2.5 focus:border-black focus:outline-none"
+              className="field-input"
             />
 
-            <div className="grid gap-2 sm:grid-cols-[auto_1fr]">
-              <label className="mono flex items-center gap-2 rounded-xl border border-black/30 px-3 text-xs text-neutral-700">
-                {dictionary.radiusLabel}
+            <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
+              <label className="flex items-center justify-between gap-3 rounded-xl border border-[#d8dde3] px-3 py-2">
+                <span className="mono text-[0.72rem] uppercase tracking-[0.1em] text-neutral-500">
+                  {dictionary.radiusLabel}
+                </span>
                 <input
                   type="number"
                   min={0.5}
                   max={10}
                   step={0.5}
                   value={radiusKm}
-                  onChange={(event) => setRadiusKm(Number(event.target.value))}
-                  className="w-14 border-0 bg-transparent text-right focus:outline-none"
+                  onChange={(event) => {
+                    const next = Number(event.target.value);
+                    if (!Number.isNaN(next)) {
+                      setRadiusKm(Math.min(10, Math.max(0.5, next)));
+                    }
+                  }}
+                  className="mono w-16 border-0 bg-transparent text-right text-sm text-neutral-700 focus:outline-none"
                 />
               </label>
               <button
                 type="button"
                 onClick={runSearch}
                 disabled={isLoading}
-                className="rounded-xl border border-black bg-black px-4 py-2.5 text-sm font-medium text-white transition hover:bg-white hover:text-black disabled:opacity-50"
+                className="btn-primary px-5 py-2.5 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-55"
               >
                 {dictionary.searchButton}
               </button>
             </div>
+          </div>
 
+          <div className="space-y-3 rounded-xl border border-[#d8dde3] bg-[#f8fafc] p-3">
+            <p className="section-title">{dictionary.addressSectionTitle}</p>
             <button
               type="button"
               onClick={useBrowserLocation}
-              className="w-full rounded-xl border border-black px-4 py-2 text-sm text-black transition hover:bg-black hover:text-white"
+              className="btn-secondary w-full px-4 py-2 text-sm font-medium"
             >
               {dictionary.useMyLocation}
             </button>
-
-            <div className="rounded-xl border border-black/20 bg-white/85 p-3">
-              <p className="mono text-[0.66rem] font-semibold uppercase tracking-[0.12em] text-neutral-700">
-                {dictionary.addressSectionTitle}
-              </p>
-              <label className="sr-only" htmlFor="address-fallback">
-                {dictionary.locationFallbackLabel}
-              </label>
-              <div className="mt-2 space-y-2">
-                <input
-                  id="address-fallback"
-                  value={fallbackAddress}
-                  onChange={(event) => setFallbackAddress(event.target.value)}
-                  placeholder={dictionary.locationFallbackPlaceholder}
-                  autoComplete="street-address"
-                  className="w-full rounded-xl border border-black/30 bg-white px-4 py-2 focus:border-black focus:outline-none"
-                />
-                <button
-                  type="button"
-                  onClick={resolveFallbackAddress}
-                  className="w-full rounded-xl border border-black/30 px-4 py-2 text-sm text-neutral-700 transition hover:border-black hover:text-black"
-                >
-                  {dictionary.resolveLocationButton}
-                </button>
-              </div>
-            </div>
+            <label className="sr-only" htmlFor="address-fallback">
+              {dictionary.locationFallbackLabel}
+            </label>
+            <input
+              id="address-fallback"
+              value={fallbackAddress}
+              onChange={(event) => setFallbackAddress(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  void resolveFallbackAddress();
+                }
+              }}
+              placeholder={dictionary.locationFallbackPlaceholder}
+              autoComplete="street-address"
+              className="field-input"
+            />
+            <button
+              type="button"
+              onClick={() => void resolveFallbackAddress()}
+              className="btn-secondary w-full px-4 py-2 text-sm"
+            >
+              {dictionary.resolveLocationButton}
+            </button>
           </div>
+        </div>
 
-          <p className="mono mt-2.5 text-[0.68rem] text-neutral-700">
+        <div className="mt-3 border-t border-[#e4e8ee] pt-2.5">
+          <p className="status-text">
             {dictionary.centerLabel}: {centerLabel}
           </p>
-          {locationMessage ? <p className="mono text-[0.68rem] text-neutral-800">{locationMessage}</p> : null}
-          {errorMessage ? <p className="mono text-[0.68rem] text-neutral-700">{errorMessage}</p> : null}
+          {locationMessage ? <p className="status-text text-[#1f4b7a]">{locationMessage}</p> : null}
+          {errorMessage ? <p className="status-text text-[#8b1d1d]">{errorMessage}</p> : null}
         </div>
-      </div>
+      </section>
 
-      <div className="space-y-3">
-        <h2 className="text-2xl font-semibold">{dictionary.resultsTitle}</h2>
-        {results.length === 0 ? (
-          <p className="note-card rounded-xl border-dashed p-4 text-neutral-700">{dictionary.noResults}</p>
-        ) : null}
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.4fr)_minmax(320px,1fr)] lg:items-start">
+        <LocalMap
+          center={center}
+          results={results}
+          userMarkerLabel={dictionary.mapYouAreHere}
+          className="h-[45vh] min-h-[320px] lg:sticky lg:top-4 lg:h-[70vh] lg:min-h-[520px]"
+        />
 
-        {results.map((result) => (
-          <article key={result.offer.id} className="note-card p-4 md:p-5">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div className="space-y-1">
-                <h3 className="text-lg font-semibold">{result.store.name}</h3>
-                <p className="text-sm text-neutral-700">{result.store.address}</p>
-                <p className="mono text-xs text-neutral-600">
-                  {dictionary.matchedProductLabel}: {result.product.normalizedName}
-                </p>
-                <p className="mono text-xs text-neutral-600">{Math.round(result.distanceMeters)}m</p>
+        <section className="space-y-3">
+          <div className="surface-card p-4">
+            <h2 className="text-xl font-semibold tracking-tight">{dictionary.resultsTitle}</h2>
+            <p className="status-text mt-1">
+              {results.length} {dictionary.itemLabel.toLowerCase()}
+            </p>
+          </div>
+
+          {results.length === 0 ? (
+            <p className="surface-card p-4 text-sm text-neutral-600">{dictionary.noResults}</p>
+          ) : null}
+
+          {results.map((result) => (
+            <article key={result.offer.id} className="surface-card p-4">
+              <div className="space-y-3">
+                <div className="space-y-1">
+                  <h3 className="text-base font-semibold">{result.store.name}</h3>
+                  <p className="text-sm text-neutral-600">{result.store.address}</p>
+                  <p className="mono text-[0.72rem] text-neutral-500">
+                    {result.store.district} · {result.store.openingHours}
+                  </p>
+                </div>
+
+                <div className="rounded-lg border border-[#e1e6ec] bg-[#f8fafc] p-2.5">
+                  <p className="mono text-[0.72rem] uppercase tracking-[0.08em] text-neutral-500">
+                    {dictionary.matchedProductLabel}
+                  </p>
+                  <p className="mt-0.5 text-sm font-medium text-neutral-800">{result.product.normalizedName}</p>
+                  <p className="mono mt-1 text-[0.72rem] text-neutral-500">{Math.round(result.distanceMeters)} m</p>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <Link
+                    href={`/${locale}/store/${result.store.id}`}
+                    className="btn-secondary px-4 py-2 text-sm"
+                  >
+                    {dictionary.openStore}
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => void trackRouteClick(result)}
+                    className="btn-primary px-4 py-2 text-sm font-medium"
+                  >
+                    {dictionary.routeAction}
+                  </button>
+                </div>
               </div>
-
-              <div className="flex gap-2">
-                <Link
-                  href={`/${locale}/store/${result.store.id}`}
-                  className="rounded-xl border border-black/40 px-4 py-2 text-sm text-neutral-800 transition hover:border-black"
-                >
-                  {dictionary.openStore}
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => void trackRouteClick(result)}
-                  className="rounded-xl border border-black bg-black px-4 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-black"
-                >
-                  {dictionary.routeAction}
-                </button>
-              </div>
-            </div>
-          </article>
-        ))}
+            </article>
+          ))}
+        </section>
       </div>
     </section>
   );

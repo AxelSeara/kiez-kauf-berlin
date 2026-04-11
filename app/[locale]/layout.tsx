@@ -18,12 +18,13 @@ export default async function LocaleLayout({
   const dictionary = getDictionary(locale);
 
   return (
-    <div className="mx-auto min-h-screen w-full max-w-6xl px-4 pb-8 pt-4 md:px-8 md:pt-5">
-      <header className="note-card mb-4 overflow-hidden px-4 py-3 md:px-5 md:py-4">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight md:text-[1.7rem]">{dictionary.appTitle}</h1>
-            <p className="mt-0.5 max-w-xl text-xs text-neutral-700 md:text-sm">{dictionary.appSubtitle}</p>
+    <div className="mx-auto min-h-screen w-full max-w-[1180px] px-4 pb-8 pt-4 md:px-8 md:pt-6">
+      <header className="surface-card mb-5 px-4 py-4 md:px-6 md:py-5">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="space-y-1">
+            <p className="section-title">Berlin local search</p>
+            <h1 className="text-2xl font-semibold tracking-tight md:text-[1.95rem]">{dictionary.appTitle}</h1>
+            <p className="max-w-2xl text-sm text-neutral-600 md:text-[0.97rem]">{dictionary.appSubtitle}</p>
           </div>
           <LanguageSwitcher locale={locale} label={dictionary.languageLabel} />
         </div>
