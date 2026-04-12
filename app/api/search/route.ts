@@ -1,12 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { searchOffers } from "@/lib/data";
+import { getBerlinCenter, searchOffers } from "@/lib/data";
 
-function parseNumber(value: string | null): number | undefined {
-  if (!value) {
-    return undefined;
+const DEFAULT_RADIUS_METERS = 2000;
+const MIN_RADIUS_METERS = 300;
+const MAX_RADIUS_METERS = 15000;
+
+function parseNumber(value: string | null): number | null {
+  if (value === null || value === "") {
+    return null;
   }
   const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : undefined;
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value));
 }
 
 export async function GET(request: NextRequest) {
@@ -23,9 +31,30 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const lat = parseNumber(searchParams.get("lat"));
-    const lng = parseNumber(searchParams.get("lng"));
-    const radius = parseNumber(searchParams.get("radius"));
+    const rawLat = searchParams.get("lat");
+    const rawLng = searchParams.get("lng");
+    const rawRadius = searchParams.get("radius");
+
+    const parsedLat = parseNumber(rawLat);
+    const parsedLng = parseNumber(rawLng);
+    const parsedRadius = parseNumber(rawRadius);
+
+    if (rawLat !== null && parsedLat === null) {
+      return NextResponse.json({ error: "Invalid lat parameter." }, { status: 400 });
+    }
+    if (rawLng !== null && parsedLng === null) {
+      return NextResponse.json({ error: "Invalid lng parameter." }, { status: 400 });
+    }
+    if (rawRadius !== null && parsedRadius === null) {
+      return NextResponse.json({ error: "Invalid radius parameter." }, { status: 400 });
+    }
+
+    const berlinCenter = getBerlinCenter();
+    const lat = clamp(parsedLat ?? berlinCenter.lat, -90, 90);
+    const lng = clamp(parsedLng ?? berlinCenter.lng, -180, 180);
+    const radius = Math.round(
+      clamp(parsedRadius ?? DEFAULT_RADIUS_METERS, MIN_RADIUS_METERS, MAX_RADIUS_METERS)
+    );
 
     const results = await searchOffers({
       query: q,
@@ -37,7 +66,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       query: q,
       origin: { lat, lng },
-      radius: radius ?? 2000,
+      radius,
       results
     });
   } catch (error) {

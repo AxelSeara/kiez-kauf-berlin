@@ -23,6 +23,30 @@ function haversineMeters(aLat: number, aLng: number, bLat: number, bLng: number)
   return earthRadius * part2;
 }
 
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value));
+}
+
+function getBoundingBoxFromRadius(args: {
+  lat: number;
+  lng: number;
+  radiusMeters: number;
+}): { minLat: number; maxLat: number; minLng: number; maxLng: number } {
+  const lat = clamp(args.lat, -90, 90);
+  const lng = clamp(args.lng, -180, 180);
+  const radius = Math.max(100, args.radiusMeters);
+  const latDelta = radius / 111320;
+  const cosLat = Math.max(0.1, Math.abs(Math.cos(toRadians(lat))));
+  const lngDelta = radius / (111320 * cosLat);
+
+  return {
+    minLat: clamp(lat - latDelta, -90, 90),
+    maxLat: clamp(lat + latDelta, -90, 90),
+    minLng: clamp(lng - lngDelta, -180, 180),
+    maxLng: clamp(lng + lngDelta, -180, 180)
+  };
+}
+
 type JoinedRow = {
   offer: Offer;
   product: Product;
@@ -340,7 +364,13 @@ async function getSupabaseRowsLegacy(): Promise<JoinedRow[]> {
     .filter((row): row is JoinedRow => row !== null);
 }
 
-async function searchSupabaseRowsFromDataset(args: { query: string; limit?: number }): Promise<DatasetSearchResponse | null> {
+async function searchSupabaseRowsFromDataset(args: {
+  query: string;
+  lat: number;
+  lng: number;
+  radiusMeters: number;
+  limit?: number;
+}): Promise<DatasetSearchResponse | null> {
   if (!supabase) {
     return null;
   }
@@ -349,13 +379,24 @@ async function searchSupabaseRowsFromDataset(args: { query: string; limit?: numb
   const canonicalProducts = await getCanonicalCatalog();
   const canonicalIds = findCanonicalProductIdsByQuery(normalized, canonicalProducts);
   const inferredGroups = canonicalIds.length === 0 ? inferProductGroupsFromKeyword(normalized) : [];
-  const limit = args.limit ?? 800;
+  const limit = args.limit ?? 450;
+  const bounds = getBoundingBoxFromRadius({
+    lat: args.lat,
+    lng: args.lng,
+    radiusMeters: args.radiusMeters
+  });
 
   let query = supabase
     .from("search_product_establishment_dataset")
     .select(
       "establishment_id, canonical_product_id, source_type, confidence, validation_status, why_this_product_matches, updated_at, establishment_name, address, district, lat, lon, osm_category, app_categories, product_normalized_name, product_group"
     );
+
+  query = query
+    .gte("lat", bounds.minLat)
+    .lte("lat", bounds.maxLat)
+    .gte("lon", bounds.minLng)
+    .lte("lon", bounds.maxLng);
 
   let strategy: DatasetSearchStrategy = "product_name";
   if (canonicalIds.length > 0) {
@@ -368,7 +409,10 @@ async function searchSupabaseRowsFromDataset(args: { query: string; limit?: numb
     query = query.ilike("product_normalized_name", `%${normalized}%`);
   }
 
-  const { data, error } = await query.limit(limit);
+  const { data, error } = await query
+    .order("confidence", { ascending: false, nullsFirst: false })
+    .order("updated_at", { ascending: false })
+    .limit(limit);
 
   if (error) {
     const message = (error.message || "").toLowerCase();
@@ -516,7 +560,12 @@ export async function searchOffers(args: {
   let rows: JoinedRow[];
   let datasetStrategy: DatasetSearchStrategy | null = null;
   if (hasSupabase) {
-    const datasetResponse = await searchSupabaseRowsFromDataset({ query: args.query });
+    const datasetResponse = await searchSupabaseRowsFromDataset({
+      query: args.query,
+      lat,
+      lng,
+      radiusMeters: radius
+    });
     if (datasetResponse) {
       rows = datasetResponse.rows;
       datasetStrategy = datasetResponse.strategy;

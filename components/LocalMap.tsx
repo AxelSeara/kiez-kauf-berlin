@@ -3,7 +3,6 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef, useState } from "react";
 import type {
-  LngLatBoundsLike,
   Map as MapLibreMap,
   Marker as MapLibreMarker,
   StyleSpecification
@@ -142,11 +141,13 @@ export function LocalMap({
   const mapRef = useRef<MapLibreMap | null>(null);
   const maplibreRef = useRef<typeof import("maplibre-gl") | null>(null);
   const userMarkerRef = useRef<MapLibreMarker | null>(null);
-  const resultMarkersRef = useRef<MapLibreMarker[]>([]);
+  const resultMarkersRef = useRef<Map<string, MapLibreMarker>>(new Map());
+  const lastBoundsKeyRef = useRef<string>("");
   const [mapReady, setMapReady] = useState(false);
 
   useEffect(() => {
     let mounted = true;
+    const resultMarkers = resultMarkersRef.current;
 
     async function initMap() {
       if (!containerRef.current || mapRef.current) {
@@ -183,21 +184,19 @@ export function LocalMap({
 
     return () => {
       mounted = false;
-      userMarkerRef.current?.remove();
-      resultMarkersRef.current.forEach((marker) => marker.remove());
-      resultMarkersRef.current = [];
+      userMarkerRef.current = null;
+      resultMarkers.clear();
       mapRef.current?.remove();
       mapRef.current = null;
       maplibreRef.current = null;
+      lastBoundsKeyRef.current = "";
       setMapReady(false);
     };
   }, []);
 
   useEffect(() => {
     const map = mapRef.current;
-    const maplibregl = maplibreRef.current;
-
-    if (!map || !maplibregl || !mapReady) {
+    if (!map || !mapReady) {
       return;
     }
 
@@ -254,18 +253,33 @@ export function LocalMap({
       map.setPaintProperty("search-radius-line", "line-color", radiusLineColor);
       map.setPaintProperty("search-radius-line", "line-opacity", radiusLineOpacity);
     }
+  }, [center.lat, center.lng, radiusMeters, themeMode, mapReady]);
 
-    userMarkerRef.current?.remove();
-    resultMarkersRef.current.forEach((marker) => marker.remove());
-    resultMarkersRef.current = [];
+  useEffect(() => {
+    const map = mapRef.current;
+    const maplibregl = maplibreRef.current;
+    if (!map || !maplibregl || !mapReady) {
+      return;
+    }
 
-    const userMarkerElement = createPinElement("user", 0);
-    userMarkerElement.addEventListener("click", () => triggerHaptic(7));
+    if (!userMarkerRef.current) {
+      const userMarkerElement = createPinElement("user", 0);
+      userMarkerElement.addEventListener("click", () => triggerHaptic(7));
 
-    userMarkerRef.current = new maplibregl.Marker({ element: userMarkerElement, anchor: "bottom" })
+      userMarkerRef.current = new maplibregl.Marker({ element: userMarkerElement, anchor: "bottom" }).addTo(map);
+    }
+
+    userMarkerRef.current
       .setLngLat([center.lng, center.lat])
-      .setPopup(new maplibregl.Popup({ closeButton: false }).setText(userMarkerLabel))
-      .addTo(map);
+      .setPopup(new maplibregl.Popup({ closeButton: false }).setText(userMarkerLabel));
+  }, [center.lat, center.lng, userMarkerLabel, mapReady]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    const maplibregl = maplibreRef.current;
+    if (!map || !maplibregl || !mapReady) {
+      return;
+    }
 
     const appendPopupLine = (
       container: HTMLDivElement,
@@ -280,6 +294,12 @@ export function LocalMap({
     };
 
     const visibleResults = results.slice(0, MAX_PIN_RESULTS);
+    const nextVisibleIds = new Set<string>();
+    const radiusGeoJSON = buildRadiusPolygon(
+      { lat: center.lat, lng: center.lng },
+      Math.max(100, radiusMeters)
+    );
+
     visibleResults.forEach((item, index) => {
       const popupContainer = document.createElement("div");
       popupContainer.className = "map-popup";
@@ -307,16 +327,35 @@ export function LocalMap({
         appendPopupLine(popupContainer, "validation", validationLabel, validation);
       }
 
-      const markerElement = createPinElement("result", index);
-      markerElement.addEventListener("click", () => triggerHaptic(7));
+      const markerId = String(item.offer.id);
+      const existingMarker = resultMarkersRef.current.get(markerId);
+      if (existingMarker) {
+        existingMarker
+          .setLngLat([item.store.lng, item.store.lat])
+          .setPopup(new maplibregl.Popup({ closeButton: false, offset: 14 }).setDOMContent(popupContainer));
+        existingMarker.getElement().classList.toggle("map-pin-top", index === 0);
+      } else {
+        const markerElement = createPinElement("result", index);
+        markerElement.addEventListener("click", () => triggerHaptic(7));
 
-      const marker = new maplibregl.Marker({ element: markerElement, anchor: "bottom" })
-        .setLngLat([item.store.lng, item.store.lat])
-        .setPopup(new maplibregl.Popup({ closeButton: false, offset: 14 }).setDOMContent(popupContainer))
-        .addTo(map);
+        const marker = new maplibregl.Marker({ element: markerElement, anchor: "bottom" })
+          .setLngLat([item.store.lng, item.store.lat])
+          .setPopup(new maplibregl.Popup({ closeButton: false, offset: 14 }).setDOMContent(popupContainer))
+          .addTo(map);
 
-      resultMarkersRef.current.push(marker);
+        resultMarkersRef.current.set(markerId, marker);
+      }
+
+      nextVisibleIds.add(markerId);
     });
+
+    for (const [markerId, marker] of resultMarkersRef.current.entries()) {
+      if (nextVisibleIds.has(markerId)) {
+        continue;
+      }
+      marker.remove();
+      resultMarkersRef.current.delete(markerId);
+    }
 
     const circleCoordinates = radiusGeoJSON.features[0]?.geometry.coordinates[0] ?? [];
     const boundsFromCircle = circleCoordinates.reduce(
@@ -328,11 +367,24 @@ export function LocalMap({
       boundsFromCircle
     );
 
-    map.fitBounds(bounds as LngLatBoundsLike, {
-      padding: 56,
-      maxZoom: 14.5,
-      duration: 260
-    });
+    const boundsKey = [
+      center.lat.toFixed(5),
+      center.lng.toFixed(5),
+      String(Math.round(radiusMeters)),
+      ...visibleResults.map(
+        (item) =>
+          `${item.offer.id}:${item.store.lat.toFixed(5)}:${item.store.lng.toFixed(5)}`
+      )
+    ].join("|");
+
+    if (boundsKey !== lastBoundsKeyRef.current) {
+      map.fitBounds(bounds, {
+        padding: 56,
+        maxZoom: 14.5,
+        duration: 260
+      });
+      lastBoundsKeyRef.current = boundsKey;
+    }
   }, [
     center.lat,
     center.lng,
