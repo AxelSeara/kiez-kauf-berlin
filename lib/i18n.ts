@@ -33,6 +33,9 @@ export type Dictionary = {
   unknownCategory: string;
   unknownConfidence: string;
   distanceLabel: string;
+  walkTimeLabel: string;
+  bikeTimeLabel: string;
+  etaApproxLabel: string;
   storeProductsTitle: string;
   priceUnknown: string;
   availabilityInStock: string;
@@ -45,8 +48,10 @@ export type Dictionary = {
   darkModeLabel: string;
   lightModeLabel: string;
   geolocationError: string;
+  geolocationDenied: string;
   geolocationReady: string;
   geolocationRemembered: string;
+  manualPinHint: string;
   queryRequiredError: string;
   searchRequestError: string;
   searchingLabel: string;
@@ -103,6 +108,9 @@ const dictionaries: Record<Locale, Dictionary> = {
     unknownCategory: "Ohne Typ",
     unknownConfidence: "Keine Angabe",
     distanceLabel: "Distanz",
+    walkTimeLabel: "Zu Fuss",
+    bikeTimeLabel: "Fahrrad",
+    etaApproxLabel: "ca.",
     storeProductsTitle: "Produkte in dieser Filiale",
     priceUnknown: "Preis nicht verfuegbar",
     availabilityInStock: "Auf Lager",
@@ -115,8 +123,10 @@ const dictionaries: Record<Locale, Dictionary> = {
     darkModeLabel: "Dunkel",
     lightModeLabel: "Hell",
     geolocationError: "Standort nicht gefunden. Du kannst trotzdem suchen.",
+    geolocationDenied: "Standortzugriff ist aus. Du kannst den Pin manuell setzen.",
     geolocationReady: "Standort aktiv",
     geolocationRemembered: "Letzter Standort aktiv",
+    manualPinHint: "GPS aus? Zieh den Pin an die richtige Stelle.",
     queryRequiredError: "Bitte gib einen Produktnamen ein.",
     searchRequestError: "Suche fehlgeschlagen. Bitte nochmal versuchen.",
     searchingLabel: "Suche...",
@@ -171,6 +181,9 @@ const dictionaries: Record<Locale, Dictionary> = {
     unknownCategory: "Unclassified",
     unknownConfidence: "N/A",
     distanceLabel: "Distance",
+    walkTimeLabel: "Walk",
+    bikeTimeLabel: "Bike",
+    etaApproxLabel: "~",
     storeProductsTitle: "Products in this store",
     priceUnknown: "Price unavailable",
     availabilityInStock: "In stock",
@@ -183,8 +196,10 @@ const dictionaries: Record<Locale, Dictionary> = {
     darkModeLabel: "Dark",
     lightModeLabel: "Light",
     geolocationError: "Could not get your location. You can still search.",
+    geolocationDenied: "Location access is off. You can set the pin manually.",
     geolocationReady: "Location on",
     geolocationRemembered: "Using your last location",
+    manualPinHint: "No GPS? Drag the pin to your spot.",
     queryRequiredError: "Type something to search.",
     searchRequestError: "Search failed. Please try again.",
     searchingLabel: "Searching...",
@@ -239,6 +254,9 @@ const dictionaries: Record<Locale, Dictionary> = {
     unknownCategory: "Sin tipo",
     unknownConfidence: "Sin dato",
     distanceLabel: "Distancia",
+    walkTimeLabel: "Andando",
+    bikeTimeLabel: "Bici",
+    etaApproxLabel: "aprox.",
     storeProductsTitle: "Productos en esta tienda",
     priceUnknown: "Precio no disponible",
     availabilityInStock: "En stock",
@@ -251,8 +269,10 @@ const dictionaries: Record<Locale, Dictionary> = {
     darkModeLabel: "Oscuro",
     lightModeLabel: "Claro",
     geolocationError: "No pude ubicarte. Igual puedes buscar.",
+    geolocationDenied: "Sin acceso a ubicacion. Puedes mover el pin manualmente.",
     geolocationReady: "Ubicacion activa",
     geolocationRemembered: "Usando tu ultima ubicacion",
+    manualPinHint: "Sin GPS? Arrastra el pin a tu zona.",
     queryRequiredError: "Escribe algo para buscar.",
     searchRequestError: "La busqueda fallo. Intenta de nuevo.",
     searchingLabel: "Buscando...",

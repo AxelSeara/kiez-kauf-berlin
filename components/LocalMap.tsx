@@ -7,6 +7,7 @@ import type {
   Marker as MapLibreMarker,
   StyleSpecification
 } from "maplibre-gl";
+import { buildDirectionsUrl, estimateTravelMinutes } from "@/lib/maps";
 import type { SearchResult } from "@/lib/types";
 
 const BASE_BW_STYLE: StyleSpecification = {
@@ -120,6 +121,13 @@ function formatDistance(distanceMeters: number) {
   return `${(distanceMeters / 1000).toFixed(1)} km`;
 }
 
+function formatEtaLabel(prefix: string, minutes: number) {
+  if (!Number.isFinite(minutes) || minutes <= 0) {
+    return `${prefix} 1 min`;
+  }
+  return `${prefix} ${minutes} min`;
+}
+
 function buildRadiusPolygon(center: { lat: number; lng: number }, radiusMeters: number, points = 72) {
   const coordinates: [number, number][] = [];
   const latRad = (center.lat * Math.PI) / 180;
@@ -205,9 +213,15 @@ export function LocalMap({
   themeMode,
   userMarkerLabel,
   berlinOnlyHint,
+  manualCenterEnabled,
+  onManualCenterChange,
   matchedProductLabel,
   storeCategoryLabel,
   distanceLabel,
+  walkTimeLabel,
+  bikeTimeLabel,
+  etaApproxLabel,
+  routeActionLabel,
   validationLabel,
   validationLikelyLabel,
   validationValidatedLabel,
@@ -220,9 +234,15 @@ export function LocalMap({
   themeMode: "light" | "dark";
   userMarkerLabel: string;
   berlinOnlyHint: string;
+  manualCenterEnabled?: boolean;
+  onManualCenterChange?: (center: { lat: number; lng: number }) => void;
   matchedProductLabel: string;
   storeCategoryLabel: string;
   distanceLabel: string;
+  walkTimeLabel: string;
+  bikeTimeLabel: string;
+  etaApproxLabel: string;
+  routeActionLabel: string;
   validationLabel: string;
   validationLikelyLabel: string;
   validationValidatedLabel: string;
@@ -300,7 +320,14 @@ export function LocalMap({
         dragRotate: false
       });
 
-      map.addControl(new maplibregl.NavigationControl(), "top-right");
+      map.addControl(
+        new maplibregl.NavigationControl({
+          showCompass: false,
+          showZoom: true,
+          visualizePitch: false
+        }),
+        "top-right"
+      );
       map.on("load", () => {
         if (!mounted) {
           return;
@@ -468,11 +495,26 @@ export function LocalMap({
         const userMarkerElement = createPinElement("user", 0);
         userMarkerElement.addEventListener("click", () => triggerHaptic(7));
 
-        const marker = new maplibregl.Marker({ element: userMarkerElement, anchor: "bottom" });
+        const marker = new maplibregl.Marker({
+          element: userMarkerElement,
+          anchor: "bottom",
+          draggable: manualCenterEnabled
+        });
         marker
           .setLngLat([safeCenterLng, safeCenterLat])
           .setPopup(new maplibregl.Popup({ closeButton: false }).setText(userMarkerLabel))
           .addTo(map);
+
+        marker.on("dragstart", () => triggerHaptic(8));
+        marker.on("dragend", () => {
+          const point = marker.getLngLat();
+          const nextCenter = { lat: point.lat, lng: point.lng };
+          if (isValidCenterPoint(nextCenter)) {
+            onManualCenterChange?.(nextCenter);
+            triggerHaptic([8, 20, 8]);
+          }
+        });
+
         userMarkerRef.current = marker;
         return;
       }
@@ -480,6 +522,7 @@ export function LocalMap({
       userMarkerRef.current
         .setLngLat([safeCenterLng, safeCenterLat])
         .setPopup(new maplibregl.Popup({ closeButton: false }).setText(userMarkerLabel));
+      userMarkerRef.current.setDraggable(Boolean(manualCenterEnabled));
     } catch (userMarkerError) {
       if (DEV_DEBUG) {
         console.error("[map-data-guard] User marker update failed", {
@@ -489,7 +532,7 @@ export function LocalMap({
         });
       }
     }
-  }, [safeCenter.lat, safeCenter.lng, userMarkerLabel, mapReady]);
+  }, [manualCenterEnabled, onManualCenterChange, safeCenter.lat, safeCenter.lng, userMarkerLabel, mapReady]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -501,7 +544,7 @@ export function LocalMap({
     try {
       const appendPopupLine = (
         container: HTMLDivElement,
-        kind: "product" | "distance" | "category" | "validation",
+        kind: "product" | "distance" | "category" | "validation" | "walk" | "bike",
         label: string,
         value: string
       ) => {
@@ -557,10 +600,35 @@ export function LocalMap({
           appendPopupLine(popupContainer, "distance", distanceLabel, formatDistance(item.distanceMeters));
           appendPopupLine(
             popupContainer,
+            "walk",
+            walkTimeLabel,
+            formatEtaLabel(etaApproxLabel, estimateTravelMinutes(item.distanceMeters, "walk"))
+          );
+          appendPopupLine(
+            popupContainer,
+            "bike",
+            bikeTimeLabel,
+            formatEtaLabel(etaApproxLabel, estimateTravelMinutes(item.distanceMeters, "bike"))
+          );
+          appendPopupLine(
+            popupContainer,
             "category",
             storeCategoryLabel,
             primaryCategory(item, unknownCategoryLabel)
           );
+
+          const routeLink = document.createElement("a");
+          routeLink.className = "map-popup-route";
+          routeLink.href = buildDirectionsUrl({
+            destinationLat: lat,
+            destinationLng: lng,
+            originLat: safeCenter.lat,
+            originLng: safeCenter.lng
+          });
+          routeLink.target = "_blank";
+          routeLink.rel = "noreferrer";
+          routeLink.textContent = routeActionLabel;
+          popupContainer.appendChild(routeLink);
 
           const validation = validationLabelFor(
             item.validationStatus,
@@ -645,15 +713,19 @@ export function LocalMap({
   }, [
     safeCenter.lat,
     safeCenter.lng,
+    bikeTimeLabel,
     distanceLabel,
+    etaApproxLabel,
     matchedProductLabel,
     radiusMeters,
     results,
+    routeActionLabel,
     storeCategoryLabel,
     unknownCategoryLabel,
     validationLabel,
     validationLikelyLabel,
     validationValidatedLabel,
+    walkTimeLabel,
     mapReady
   ]);
 

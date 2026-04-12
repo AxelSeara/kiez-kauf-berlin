@@ -13,6 +13,35 @@ export function buildDirectionsUrl(args: {
   return `https://www.openstreetmap.org/?mlat=${destinationLat}&mlon=${destinationLng}#map=16/${destinationLat}/${destinationLng}`;
 }
 
+type TravelMode = "walk" | "bike";
+
+const TRAVEL_ESTIMATION = {
+  walk: {
+    speedKmh: 4.8,
+    routeFactor: 1.3
+  },
+  bike: {
+    speedKmh: 14,
+    routeFactor: 1.2
+  }
+} as const;
+
+export function estimateRouteDistanceMeters(distanceMeters: number, mode: TravelMode): number {
+  if (!Number.isFinite(distanceMeters) || distanceMeters <= 0) {
+    return 0;
+  }
+  return distanceMeters * TRAVEL_ESTIMATION[mode].routeFactor;
+}
+
+export function estimateTravelMinutes(distanceMeters: number, mode: TravelMode): number {
+  const routeDistanceMeters = estimateRouteDistanceMeters(distanceMeters, mode);
+  if (routeDistanceMeters <= 0) {
+    return 0;
+  }
+  const metersPerMinute = (TRAVEL_ESTIMATION[mode].speedKmh * 1000) / 60;
+  return Math.max(1, Math.round(routeDistanceMeters / metersPerMinute));
+}
+
 export function normalizeQuery(q: string): string {
   return q
     .toLowerCase()

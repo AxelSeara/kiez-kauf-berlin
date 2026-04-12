@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { LocalMap } from "@/components/LocalMap";
 import { track } from "@vercel/analytics";
 import type { Dictionary } from "@/lib/i18n";
+import { buildDirectionsUrl, estimateTravelMinutes } from "@/lib/maps";
 import type { SearchResult } from "@/lib/types";
 
 type SearchPayload = {
@@ -12,6 +13,8 @@ type SearchPayload = {
   radius: number;
   results: SearchResult[];
 };
+
+type GeolocationPermissionState = "unknown" | "prompt" | "granted" | "denied" | "unsupported";
 
 type NoResultsGuidance =
   | {
@@ -25,6 +28,7 @@ type NoResultsGuidance =
 
 const LOCATION_CACHE_KEY = "kiezkauf:last-location";
 const LOCATION_CACHE_TTL_MS = 1000 * 60 * 30;
+const AUTO_GEO_SESSION_KEY = "kiezkauf:auto-geolocation-requested-v1";
 const BERLIN_FALLBACK_CENTER = { lat: 52.5208, lng: 13.4094 };
 const MIN_RADIUS_KM = 0.5;
 const MAX_RADIUS_KM = 15;
@@ -100,6 +104,13 @@ function formatDistance(distanceMeters: number) {
   return `${(distanceMeters / 1000).toFixed(1)} km`;
 }
 
+function formatEtaLabel(prefix: string, minutes: number) {
+  if (!Number.isFinite(minutes) || minutes <= 0) {
+    return `${prefix} 1 min`;
+  }
+  return `${prefix} ${minutes} min`;
+}
+
 function clampRadiusKm(radiusKm: number) {
   return Math.min(MAX_RADIUS_KM, Math.max(MIN_RADIUS_KM, radiusKm));
 }
@@ -162,7 +173,7 @@ function UiIcon({
   kind,
   className
 }: {
-  kind: "search" | "distance" | "product" | "category" | "validation" | "note";
+  kind: "search" | "distance" | "product" | "category" | "validation" | "note" | "walk" | "bike";
   className?: string;
 }) {
   const commonProps = {
@@ -219,6 +230,25 @@ function UiIcon({
     );
   }
 
+  if (kind === "walk") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 24 24" className={className ?? "h-4 w-4"}>
+        <circle cx="12" cy="4.5" r="1.7" {...commonProps} />
+        <path d="M11 8l3 2 2-1.2M12.2 9.2l-2.4 4.5m2.4-1.2l2.8 1.6M10 22l1.8-4.8m2.7-1l-1.2 5.8" {...commonProps} />
+      </svg>
+    );
+  }
+
+  if (kind === "bike") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 24 24" className={className ?? "h-4 w-4"}>
+        <circle cx="6" cy="17" r="3.2" {...commonProps} />
+        <circle cx="18" cy="17" r="3.2" {...commonProps} />
+        <path d="M8.5 10h4.2l1.5 3.1m-4.2 0L12.7 17m0-7l-2.3 3m6.9 0h-3.1m-1.5-3h3.9" {...commonProps} />
+      </svg>
+    );
+  }
+
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24" className={className ?? "h-4 w-4"}>
       <path d="M5 6h14M5 12h10M5 18h8" {...commonProps} />
@@ -240,6 +270,7 @@ export function SearchExperience({
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
+  const [geolocationPermission, setGeolocationPermission] = useState<GeolocationPermissionState>("unknown");
   const [locationMessage, setLocationMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
@@ -271,14 +302,113 @@ export function SearchExperience({
     console.warn("[map-data-guard] Runtime center became invalid, using safe fallback for map/search", center);
   }, [center]);
 
-  function pulse(pattern: number | number[] = 10) {
+  const pulse = useCallback((pattern: number | number[] = 10) => {
     const now = Date.now();
     if (now - lastHapticAtRef.current < 80) {
       return;
     }
     lastHapticAtRef.current = now;
     triggerHaptic(pattern);
-  }
+  }, []);
+
+  const requestBrowserLocation = useCallback((options?: { auto?: boolean }) => {
+    const isAutoRequest = options?.auto === true;
+    if (!isAutoRequest) {
+      pulse(8);
+    }
+    trackEvent("geolocation_request", {
+      source: isAutoRequest ? "auto" : "user"
+    });
+
+    if (isLocating) {
+      return;
+    }
+
+    if (!navigator.geolocation) {
+      setGeolocationPermission("unsupported");
+      setErrorMessage(isAutoRequest ? null : dictionary.geolocationError);
+      setLocationMessage(dictionary.manualPinHint);
+      trackEvent("geolocation_unavailable", {});
+      if (!isAutoRequest) {
+        pulse(22);
+      }
+      return;
+    }
+
+    const applyPosition = (position: GeolocationPosition) => {
+      const nextCenter = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      if (!isValidCenterPoint(nextCenter)) {
+        setErrorMessage(dictionary.geolocationError);
+        setIsLocating(false);
+        if (DEV_DEBUG) {
+          console.warn("[map-data-guard] Ignoring malformed browser geolocation coordinates", position.coords);
+        }
+        return;
+      }
+      setGeolocationPermission("granted");
+      setCenter(nextCenter);
+      setLocationMessage(dictionary.geolocationReady);
+      setErrorMessage(null);
+      setIsLocating(false);
+      trackEvent("geolocation_success", {
+        accuracy_m: Math.round(position.coords.accuracy)
+      });
+      pulse([10, 22, 10]);
+
+      try {
+        localStorage.setItem(
+          LOCATION_CACHE_KEY,
+          JSON.stringify({
+            ...nextCenter,
+            accuracy: position.coords.accuracy,
+            timestamp: Date.now()
+          })
+        );
+      } catch {
+        // Ignore localStorage write errors.
+      }
+    };
+
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      applyPosition,
+      (error) => {
+        navigator.geolocation.getCurrentPosition(
+          applyPosition,
+          (secondError) => {
+            const denied =
+              error.code === error.PERMISSION_DENIED || secondError.code === secondError.PERMISSION_DENIED;
+            if (denied) {
+              setGeolocationPermission("denied");
+              setLocationMessage(dictionary.geolocationDenied);
+              setErrorMessage(null);
+            } else {
+              setErrorMessage(dictionary.geolocationError);
+            }
+            setIsLocating(false);
+            trackEvent("geolocation_error", {
+              denied
+            });
+            if (!isAutoRequest) {
+              pulse(26);
+            }
+          },
+          { enableHighAccuracy: false, timeout: 20000, maximumAge: 120000 }
+        );
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+    );
+  }, [
+    dictionary.geolocationDenied,
+    dictionary.geolocationError,
+    dictionary.geolocationReady,
+    dictionary.manualPinHint,
+    isLocating,
+    pulse
+  ]);
 
   useEffect(() => {
     try {
@@ -316,6 +446,98 @@ export function SearchExperience({
       // Ignore bad local cache and keep default center.
     }
   }, [dictionary.geolocationRemembered]);
+
+  useEffect(() => {
+    let cancelled = false;
+    let permissionStatus: PermissionStatus | null = null;
+
+    const syncPermissionState = (state: string) => {
+      if (cancelled) {
+        return;
+      }
+      if (state === "granted" || state === "denied" || state === "prompt") {
+        setGeolocationPermission(state);
+        if (state === "denied") {
+          setLocationMessage(dictionary.manualPinHint);
+        }
+        return;
+      }
+      setGeolocationPermission("unknown");
+    };
+
+    const markAutoRequestedThisSession = () => {
+      try {
+        sessionStorage.setItem(AUTO_GEO_SESSION_KEY, "1");
+      } catch {
+        // Ignore sessionStorage write errors.
+      }
+    };
+
+    const wasAutoRequestedThisSession = () => {
+      try {
+        return sessionStorage.getItem(AUTO_GEO_SESSION_KEY) === "1";
+      } catch {
+        return false;
+      }
+    };
+
+    const tryAutoRequest = () => {
+      if (wasAutoRequestedThisSession()) {
+        return;
+      }
+      if (isLocating) {
+        return;
+      }
+      markAutoRequestedThisSession();
+      void requestBrowserLocation({ auto: true });
+    };
+
+    if (!navigator.geolocation) {
+      setGeolocationPermission("unsupported");
+      setLocationMessage(dictionary.manualPinHint);
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    const setup = async () => {
+      if (!("permissions" in navigator) || typeof navigator.permissions.query !== "function") {
+        setGeolocationPermission("unknown");
+        tryAutoRequest();
+        return;
+      }
+
+      try {
+        permissionStatus = await navigator.permissions.query({
+          name: "geolocation"
+        } as PermissionDescriptor);
+        syncPermissionState(permissionStatus.state);
+
+        permissionStatus.onchange = () => {
+          syncPermissionState(permissionStatus?.state ?? "unknown");
+        };
+
+        if (permissionStatus.state === "prompt") {
+          tryAutoRequest();
+        }
+        if (permissionStatus.state === "granted") {
+          tryAutoRequest();
+        }
+      } catch {
+        setGeolocationPermission("unknown");
+        tryAutoRequest();
+      }
+    };
+
+    void setup();
+
+    return () => {
+      cancelled = true;
+      if (permissionStatus) {
+        permissionStatus.onchange = null;
+      }
+    };
+  }, [dictionary.manualPinHint, isLocating, requestBrowserLocation]);
 
   useEffect(() => {
     const readTheme = () => {
@@ -445,6 +667,23 @@ export function SearchExperience({
       radius: formatRadiusValue(quickExpandRadiusKm)
     });
   }, [dictionary.expandSearchButtonTemplate, quickExpandRadiusKm]);
+
+  const manualCenterEnabled =
+    geolocationPermission === "denied" || geolocationPermission === "unsupported";
+
+  const estimateTravel = useCallback(
+    (distanceMeters: number) => {
+      const walkMin = estimateTravelMinutes(distanceMeters, "walk");
+      const bikeMin = estimateTravelMinutes(distanceMeters, "bike");
+      return {
+        walkMin,
+        bikeMin,
+        walkLabel: formatEtaLabel(dictionary.etaApproxLabel, walkMin),
+        bikeLabel: formatEtaLabel(dictionary.etaApproxLabel, bikeMin)
+      };
+    },
+    [dictionary.etaApproxLabel]
+  );
 
   useEffect(() => {
     return () => {
@@ -628,71 +867,6 @@ export function SearchExperience({
     void runSearch({ overrideRadiusKm: nextRadiusKm });
   }
 
-  function useBrowserLocation() {
-    pulse(8);
-    trackEvent("geolocation_request", {});
-    if (!navigator.geolocation) {
-      setErrorMessage(dictionary.geolocationError);
-      trackEvent("geolocation_unavailable", {});
-      pulse(22);
-      return;
-    }
-
-    const applyPosition = (position: GeolocationPosition) => {
-      const nextCenter = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      if (!isValidCenterPoint(nextCenter)) {
-        setErrorMessage(dictionary.geolocationError);
-        setIsLocating(false);
-        if (DEV_DEBUG) {
-          console.warn("[map-data-guard] Ignoring malformed browser geolocation coordinates", position.coords);
-        }
-        return;
-      }
-      setCenter(nextCenter);
-      setLocationMessage(dictionary.geolocationReady);
-      setErrorMessage(null);
-      setIsLocating(false);
-      trackEvent("geolocation_success", {
-        accuracy_m: Math.round(position.coords.accuracy)
-      });
-      pulse([10, 22, 10]);
-
-      try {
-        localStorage.setItem(
-          LOCATION_CACHE_KEY,
-          JSON.stringify({
-            ...nextCenter,
-            accuracy: position.coords.accuracy,
-            timestamp: Date.now()
-          })
-        );
-      } catch {
-        // Ignore localStorage write errors.
-      }
-    };
-
-    setIsLocating(true);
-    navigator.geolocation.getCurrentPosition(
-      applyPosition,
-      () => {
-        navigator.geolocation.getCurrentPosition(
-          applyPosition,
-          () => {
-            setErrorMessage(dictionary.geolocationError);
-            setIsLocating(false);
-            trackEvent("geolocation_error", {});
-            pulse(26);
-          },
-          { enableHighAccuracy: false, timeout: 20000, maximumAge: 120000 }
-        );
-      },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-    );
-  }
-
   return (
     <section className="space-y-3 md:space-y-3.5">
       <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
@@ -736,22 +910,43 @@ export function SearchExperience({
               </button>
               <button
                 type="button"
-                onClick={useBrowserLocation}
+                onClick={() => {
+                  requestBrowserLocation();
+                }}
                 disabled={isLocating}
-                className="btn-icon search-action-btn disabled:cursor-not-allowed disabled:opacity-60"
-                aria-label={dictionary.useMyLocation}
-                title={dictionary.useMyLocation}
+                className={`btn-icon search-action-btn disabled:cursor-not-allowed disabled:opacity-60 ${
+                  geolocationPermission === "granted"
+                    ? "geo-btn-active"
+                    : geolocationPermission === "denied" || geolocationPermission === "unsupported"
+                      ? "geo-btn-denied"
+                      : ""
+                }`}
+                aria-label={
+                  geolocationPermission === "denied" || geolocationPermission === "unsupported"
+                    ? dictionary.geolocationDenied
+                    : dictionary.useMyLocation
+                }
+                title={
+                  geolocationPermission === "denied" || geolocationPermission === "unsupported"
+                    ? dictionary.geolocationDenied
+                    : dictionary.useMyLocation
+                }
               >
-                <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4">
-                  <path
-                    d="M12 3v3m0 12v3M3 12h3m12 0h3m-9-5a5 5 0 100 10 5 5 0 000-10z"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <span className="geo-icon-wrap">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4">
+                    <path
+                      d="M12 3v3m0 12v3M3 12h3m12 0h3m-9-5a5 5 0 100 10 5 5 0 000-10z"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  {geolocationPermission === "denied" || geolocationPermission === "unsupported" ? (
+                    <span aria-hidden="true" className="geo-off-slash" />
+                  ) : null}
+                </span>
               </button>
             </div>
           </div>
@@ -811,9 +1006,19 @@ export function SearchExperience({
           themeMode={themeMode}
           userMarkerLabel={dictionary.mapYouAreHere}
           berlinOnlyHint={dictionary.berlinOnlyHint}
+          manualCenterEnabled={manualCenterEnabled}
+          onManualCenterChange={(nextCenter) => {
+            setCenter(nextCenter);
+            setLocationMessage(dictionary.manualPinHint);
+            setErrorMessage(null);
+          }}
           matchedProductLabel={dictionary.matchedProductLabel}
           storeCategoryLabel={dictionary.storeCategoryLabel}
           distanceLabel={dictionary.distanceLabel}
+          walkTimeLabel={dictionary.walkTimeLabel}
+          bikeTimeLabel={dictionary.bikeTimeLabel}
+          etaApproxLabel={dictionary.etaApproxLabel}
+          routeActionLabel={dictionary.routeAction}
           validationLabel={dictionary.validationLabel}
           validationLikelyLabel={dictionary.validationLikely}
           validationValidatedLabel={dictionary.validationValidated}
@@ -858,57 +1063,95 @@ export function SearchExperience({
               ) : null}
             </div>
             <div className="space-y-1">
-              {results.map((result, index) => (
-                <details
-                  key={result.offer.id}
-                  className="store-item result-enter"
-                  style={{ animationDelay: `${Math.min(index, 10) * 26}ms` }}
-                  onToggle={() => pulse(6)}
-                >
-                  <summary className="store-summary">
-                    <span className="store-summary-name">{result.store.name}</span>
-                    <span className="store-summary-meta">
-                      <span className="mono store-summary-distance">
-                        <UiIcon kind="distance" className="store-summary-icon" />
-                        {formatDistance(result.distanceMeters)}
+              {results.map((result, index) => {
+                const travel = estimateTravel(result.distanceMeters);
+                const routeHref = buildDirectionsUrl({
+                  destinationLat: result.store.lat,
+                  destinationLng: result.store.lng,
+                  originLat: safeCenter.lat,
+                  originLng: safeCenter.lng
+                });
+
+                return (
+                  <details
+                    key={result.offer.id}
+                    className="store-item result-enter"
+                    style={{ animationDelay: `${Math.min(index, 10) * 26}ms` }}
+                    onToggle={() => pulse(6)}
+                  >
+                    <summary className="store-summary">
+                      <span className="store-summary-name">{result.store.name}</span>
+                      <span className="store-summary-meta">
+                        <span className="mono store-summary-distance">
+                          <UiIcon kind="distance" className="store-summary-icon" />
+                          {formatDistance(result.distanceMeters)}
+                        </span>
+                        <span className="mono store-summary-travel" title={`${dictionary.walkTimeLabel}: ${travel.walkLabel}`}>
+                          <UiIcon kind="walk" className="store-summary-icon" />
+                          {travel.walkMin}m
+                        </span>
+                        <span className="mono store-summary-travel" title={`${dictionary.bikeTimeLabel}: ${travel.bikeLabel}`}>
+                          <UiIcon kind="bike" className="store-summary-icon" />
+                          {travel.bikeMin}m
+                        </span>
+                        <span className="store-summary-caret" aria-hidden="true">
+                          <svg viewBox="0 0 20 20">
+                            <path d="M5 7.5L10 12.5L15 7.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+                          </svg>
+                        </span>
                       </span>
-                      <span className="store-summary-caret" aria-hidden="true">
-                        <svg viewBox="0 0 20 20">
-                          <path d="M5 7.5L10 12.5L15 7.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
-                        </svg>
-                      </span>
-                    </span>
-                  </summary>
-                  <div className="store-details">
-                    <p className="store-detail-line">
-                      <UiIcon kind="product" className="store-detail-icon" />
-                      <span>
-                        {dictionary.matchedProductLabel}: {result.product.normalizedName}
-                      </span>
-                    </p>
-                    <p className="store-detail-line">
-                      <UiIcon kind="category" className="store-detail-icon" />
-                      <span>
-                        {dictionary.storeCategoryLabel}: {primaryCategory(result, dictionary.unknownCategory)}
-                      </span>
-                    </p>
-                    {result.validationStatus ? (
+                    </summary>
+                    <div className="store-details">
                       <p className="store-detail-line">
-                        <UiIcon kind="validation" className="store-detail-icon" />
+                        <UiIcon kind="product" className="store-detail-icon" />
                         <span>
-                          {dictionary.validationLabel}: {formatValidation(dictionary, result.validationStatus)}
+                          {dictionary.matchedProductLabel}: {result.product.normalizedName}
                         </span>
                       </p>
-                    ) : null}
-                    {result.whyThisProductMatches ? (
                       <p className="store-detail-line">
-                        <UiIcon kind="note" className="store-detail-icon" />
-                        <span>{result.whyThisProductMatches}</span>
+                        <UiIcon kind="category" className="store-detail-icon" />
+                        <span>
+                          {dictionary.storeCategoryLabel}: {primaryCategory(result, dictionary.unknownCategory)}
+                        </span>
                       </p>
-                    ) : null}
-                  </div>
-                </details>
-              ))}
+                      <p className="store-detail-line">
+                        <UiIcon kind="walk" className="store-detail-icon" />
+                        <span>
+                          {dictionary.walkTimeLabel}: {travel.walkLabel} · {dictionary.bikeTimeLabel}: {travel.bikeLabel}
+                        </span>
+                      </p>
+                      {result.validationStatus ? (
+                        <p className="store-detail-line">
+                          <UiIcon kind="validation" className="store-detail-icon" />
+                          <span>
+                            {dictionary.validationLabel}: {formatValidation(dictionary, result.validationStatus)}
+                          </span>
+                        </p>
+                      ) : null}
+                      {result.whyThisProductMatches ? (
+                        <p className="store-detail-line">
+                          <UiIcon kind="note" className="store-detail-icon" />
+                          <span>{result.whyThisProductMatches}</span>
+                        </p>
+                      ) : null}
+                      <a
+                        href={routeHref}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn-ghost mt-1 inline-flex text-[0.72rem] px-2.5 py-1.5"
+                        onClick={() => {
+                          trackEvent("route_open_from_results", {
+                            offer_id: result.offer.id,
+                            distance_m: Math.round(result.distanceMeters)
+                          });
+                        }}
+                      >
+                        {dictionary.routeAction}
+                      </a>
+                    </div>
+                  </details>
+                );
+              })}
             </div>
           </section>
         ) : null}
