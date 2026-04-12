@@ -26,9 +26,99 @@ const AI_GROUP_WEIGHTS = {
   bio: { groceries: 0.67, fresh_produce: 0.74, beverages: 0.55 }
 };
 
+const GENERIC_TERMS = new Set([
+  "shop",
+  "store",
+  "market",
+  "product",
+  "products",
+  "item",
+  "items",
+  "angebot",
+  "angebote",
+  "kaufen",
+  "retail",
+  "food",
+  "grocery"
+]);
+
+function normalizeTextArray(value) {
+  if (!Array.isArray(value)) return [];
+  return value.map((item) => String(item ?? "")).filter(Boolean);
+}
+
+function hasStrongWebsiteSignals(establishment) {
+  if (!establishment.websiteSignals) {
+    return false;
+  }
+
+  const s = establishment.websiteSignals;
+  const strongHttp = typeof s.http_status === "number" && s.http_status >= 200 && s.http_status < 300;
+  const hasStructure =
+    (s.headings?.length ?? 0) >= 2 ||
+    (s.visible_categories?.length ?? 0) >= 2 ||
+    (s.schema_entities?.length ?? 0) >= 1;
+
+  return strongHttp && hasStructure;
+}
+
+function pickRecommendationLimit(establishment, maxRecommendations) {
+  if (hasStrongWebsiteSignals(establishment)) {
+    return Math.min(maxRecommendations, 6);
+  }
+
+  if (!establishment.websiteSignals || !establishment.website) {
+    return Math.min(maxRecommendations, 3);
+  }
+
+  return Math.min(maxRecommendations, 4);
+}
+
+function productIsTooGeneric(product) {
+  const terms = stableNormalizeText(product.normalized_name).split(" ");
+  if (!terms.length) return true;
+  return terms.every((term) => GENERIC_TERMS.has(term));
+}
+
+function websiteTextSignals(establishment) {
+  const s = establishment.websiteSignals;
+  if (!s) {
+    return { text: "", schemaProductNames: [] };
+  }
+
+  const schemaProductNames = [];
+  for (const entity of s.schema_entities ?? []) {
+    const type = String(entity?.["@type"] ?? "");
+    if (/Product|Offer/i.test(type)) {
+      if (entity?.name) schemaProductNames.push(String(entity.name));
+      if (entity?.itemOffered?.name) schemaProductNames.push(String(entity.itemOffered.name));
+      if (entity?.category) schemaProductNames.push(String(entity.category));
+      if (entity?.brand?.name) schemaProductNames.push(String(entity.brand.name));
+    }
+  }
+
+  const text = [
+    s.page_title ?? "",
+    s.meta_description ?? "",
+    ...(s.headings ?? []),
+    ...(s.breadcrumbs ?? []),
+    ...(s.visible_categories ?? []),
+    ...(s.visible_brands ?? []),
+    ...schemaProductNames
+  ]
+    .map((item) => stableNormalizeText(item))
+    .join(" ")
+    .trim();
+
+  return {
+    text,
+    schemaProductNames: schemaProductNames.map((item) => stableNormalizeText(item)).filter(Boolean)
+  };
+}
+
 async function fetchCanonicalProducts() {
   const sql = `
-select id, normalized_name, product_group
+select id, normalized_name, product_group, synonyms
 from canonical_products
 order by id asc;
 `;
@@ -36,17 +126,40 @@ order by id asc;
   return (res.parsed.rows ?? []).map((row) => ({
     id: Number(row.id),
     normalized_name: String(row.normalized_name),
-    product_group: String(row.product_group)
+    product_group: String(row.product_group),
+    synonyms: normalizeTextArray(row.synonyms)
   }));
 }
 
 async function fetchEstablishmentBatch(lastId, batchSize) {
   const sql = `
-select id, name, district, osm_category, app_categories
-from establishments
-where external_source = 'osm-overpass'
-  and id > ${Number(lastId)}
-order by id asc
+select
+  e.id,
+  e.name,
+  e.district,
+  e.osm_category,
+  e.app_categories,
+  e.website,
+  e.freshness_score,
+  e.last_enriched_at,
+  w.source_url as website_source_url,
+  w.http_status,
+  w.page_title,
+  w.meta_description,
+  w.headings,
+  w.breadcrumbs,
+  w.visible_categories,
+  w.visible_brands,
+  w.schema_entities,
+  w.schema_opening_hours,
+  w.extracted_opening_hours,
+  w.fetched_at
+from establishments e
+left join establishment_website_enrichment w on w.establishment_id = e.id
+where e.external_source = 'osm-overpass'
+  and e.id > ${Number(lastId)}
+  and e.active_status in ('active', 'temporarily_closed')
+order by e.id asc
 limit ${Number(batchSize)};
 `;
 
@@ -56,8 +169,90 @@ limit ${Number(batchSize)};
     name: String(row.name),
     district: String(row.district ?? "Berlin"),
     osm_category: String(row.osm_category ?? ""),
-    app_categories: Array.isArray(row.app_categories) ? row.app_categories.map(String) : []
+    app_categories: normalizeTextArray(row.app_categories),
+    website: row.website ? String(row.website) : null,
+    freshness_score: row.freshness_score == null ? null : Number(row.freshness_score),
+    last_enriched_at: row.last_enriched_at ? String(row.last_enriched_at) : null,
+    websiteSignals: row.website_source_url
+      ? {
+          source_url: String(row.website_source_url),
+          http_status: row.http_status == null ? null : Number(row.http_status),
+          page_title: row.page_title ? String(row.page_title) : null,
+          meta_description: row.meta_description ? String(row.meta_description) : null,
+          headings: normalizeTextArray(row.headings),
+          breadcrumbs: normalizeTextArray(row.breadcrumbs),
+          visible_categories: normalizeTextArray(row.visible_categories),
+          visible_brands: normalizeTextArray(row.visible_brands),
+          schema_entities: Array.isArray(row.schema_entities) ? row.schema_entities : [],
+          schema_opening_hours: row.schema_opening_hours ? String(row.schema_opening_hours) : null,
+          extracted_opening_hours: row.extracted_opening_hours ? String(row.extracted_opening_hours) : null,
+          fetched_at: row.fetched_at ? String(row.fetched_at) : null
+        }
+      : null
   }));
+}
+
+function websiteSignalCandidates(establishment, canonicalProducts, limit) {
+  if (!establishment.websiteSignals) {
+    return [];
+  }
+
+  const { text, schemaProductNames } = websiteTextSignals(establishment);
+  if (!text && !schemaProductNames.length) {
+    return [];
+  }
+
+  const rows = [];
+  const appCategorySet = new Set(establishment.app_categories);
+
+  for (const product of canonicalProducts) {
+    if (productIsTooGeneric(product)) continue;
+
+    const normalizedName = stableNormalizeText(product.normalized_name);
+    const synonymTerms = (product.synonyms ?? []).map((item) => stableNormalizeText(item)).filter(Boolean);
+    let score = 0;
+    const reasonBits = [];
+
+    if (normalizedName && text.includes(normalizedName)) {
+      score += 0.38;
+      reasonBits.push("website text mentions canonical product");
+    }
+
+    if (synonymTerms.some((term) => term && text.includes(term))) {
+      score += 0.27;
+      reasonBits.push("website text matches product synonym");
+    }
+
+    if (schemaProductNames.some((term) => term && (term.includes(normalizedName) || normalizedName.includes(term)))) {
+      score += 0.34;
+      reasonBits.push("schema.org product/offer signal");
+    }
+
+    for (const category of appCategorySet) {
+      const weight = AI_GROUP_WEIGHTS[category]?.[product.product_group] ?? 0;
+      if (weight > 0) {
+        score += weight * 0.22;
+        reasonBits.push(`category ${category} supports group ${product.product_group}`);
+        break;
+      }
+    }
+
+    if (score < 0.46) continue;
+
+    const confidence = Number(clamp(score, 0.46, 0.94).toFixed(4));
+    rows.push({
+      canonical_product_id: product.id,
+      source_type: "website_extracted",
+      generation_method: "website_signal_extractor_v1",
+      extraction_method: "website_html_jsonld_extraction_v1",
+      source_url: establishment.websiteSignals.source_url ?? establishment.website ?? null,
+      confidence,
+      why: `Website signal matched: ${reasonBits.slice(0, 2).join("; ")}.`,
+      category_path: ["website", "signal-extraction", product.product_group]
+    });
+  }
+
+  return rows.sort((a, b) => b.confidence - a.confidence).slice(0, limit);
 }
 
 function heuristicCandidates(establishment, canonicalProducts, limit) {
@@ -69,6 +264,7 @@ function heuristicCandidates(establishment, canonicalProducts, limit) {
     if (!weights) continue;
 
     for (const product of canonicalProducts) {
+      if (productIsTooGeneric(product)) continue;
       const groupWeight = weights[product.product_group] ?? 0;
       if (groupWeight <= 0) continue;
 
@@ -88,13 +284,12 @@ function heuristicCandidates(establishment, canonicalProducts, limit) {
 
   if (!scores.size) {
     for (const product of canonicalProducts) {
-      if (!["groceries", "beverages", "snacks"].includes(product.product_group)) {
-        continue;
-      }
+      if (!["groceries", "beverages"].includes(product.product_group)) continue;
+      if (productIsTooGeneric(product)) continue;
       scores.set(product.id, {
         product,
-        score: 0.45,
-        reasonBits: ["fallback broad urban essentials"]
+        score: 0.43,
+        reasonBits: ["conservative fallback essentials"]
       });
     }
   }
@@ -102,14 +297,13 @@ function heuristicCandidates(establishment, canonicalProducts, limit) {
   for (const entry of scores.values()) {
     const productNorm = stableNormalizeText(entry.product.normalized_name);
     const words = productNorm.split(" ").filter((w) => w.length >= 4);
-    const overlap = words.some((w) => nameNorm.includes(w));
-    if (overlap) {
-      entry.score = clamp(entry.score + 0.08, 0, 1);
-      entry.reasonBits.push("name keyword overlap");
+    if (words.some((word) => nameNorm.includes(word))) {
+      entry.score = clamp(entry.score + 0.06, 0, 1);
+      entry.reasonBits.push("store name keyword overlap");
     }
 
     if (establishment.osm_category === "pharmacy" && entry.product.product_group === "pharmacy") {
-      entry.score = clamp(entry.score + 0.06, 0, 1);
+      entry.score = clamp(entry.score + 0.05, 0, 1);
       entry.reasonBits.push("osm pharmacy boost");
     }
   }
@@ -117,53 +311,74 @@ function heuristicCandidates(establishment, canonicalProducts, limit) {
   return [...scores.values()]
     .sort((a, b) => b.score - a.score)
     .slice(0, limit)
-    .map((entry) => {
-      const confidence = Number(clamp(entry.score + 0.03, 0.42, 0.93).toFixed(4));
-      return {
-        canonical_product_id: entry.product.id,
-        confidence,
-        why: `AI heuristic matched ${entry.reasonBits.slice(0, 2).join("; ")}.`,
-        category_path: ["ai", "heuristic", ...(establishment.app_categories.slice(0, 1) || ["uncategorized"])]
-      };
-    });
+    .map((entry) => ({
+      canonical_product_id: entry.product.id,
+      source_type: "rules_generated",
+      generation_method: "conservative_profile_heuristic_v2",
+      extraction_method: "rules_profile_heuristic_v2",
+      source_url: establishment.websiteSignals?.source_url ?? establishment.website ?? null,
+      confidence: Number(clamp(entry.score * 0.86, 0.41, 0.78).toFixed(4)),
+      why: `Conservative profile match: ${entry.reasonBits.slice(0, 2).join("; ")}.`,
+      category_path: ["rules", "conservative-heuristic", ...(establishment.app_categories.slice(0, 1) || ["uncategorized"])]
+    }));
 }
 
 function buildPrompt(establishment, productPool, maxRecommendations) {
+  const website = establishment.websiteSignals;
+  const webSnippet = website
+    ? {
+        title: website.page_title,
+        description: website.meta_description,
+        headings: (website.headings ?? []).slice(0, 6),
+        breadcrumbs: (website.breadcrumbs ?? []).slice(0, 5),
+        categories: (website.visible_categories ?? []).slice(0, 6),
+        brands: (website.visible_brands ?? []).slice(0, 10),
+        schema_entities: (website.schema_entities ?? [])
+          .slice(0, 8)
+          .map((item) => ({ "@type": item?.["@type"], name: item?.name, category: item?.category }))
+      }
+    : null;
+
   return [
-    "You are ranking probable products for a Berlin local store.",
-    "Do not claim stock certainty; output probable matches only.",
+    "You rank plausible products for a Berlin local store.",
+    "Do not claim stock certainty and do not invent exact inventory.",
+    "If evidence is weak, return fewer recommendations.",
     `Store: ${establishment.name}`,
     `District: ${establishment.district}`,
     `OSM category: ${establishment.osm_category || "unknown"}`,
     `App categories: ${establishment.app_categories.join(", ") || "none"}`,
-    `Return up to ${maxRecommendations} recommendations from this pool:`,
+    `Website signals: ${JSON.stringify(webSnippet)}`,
+    `Return up to ${maxRecommendations} items from this canonical pool:`,
     JSON.stringify(productPool, null, 2),
-    'Respond ONLY JSON with key "recommendations": [{"canonical_product_id": number, "confidence": number, "why": string}].'
+    'Respond ONLY JSON: {"recommendations":[{"canonical_product_id":number,"confidence":number,"why":string}]}.'
   ].join("\n");
 }
 
 async function llmCandidates(establishment, canonicalProducts, maxRecommendations, model) {
   const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) {
-    return null;
-  }
+  if (!apiKey) return null;
 
+  const categorySet = new Set(establishment.app_categories);
   const pool = canonicalProducts
     .filter((product) => {
-      const categorySet = new Set(establishment.app_categories);
+      if (productIsTooGeneric(product)) return false;
       if (!categorySet.size) return ["groceries", "beverages", "snacks"].includes(product.product_group);
-
       for (const category of categorySet) {
-        const weights = AI_GROUP_WEIGHTS[category] ?? {};
-        if ((weights[product.product_group] ?? 0) > 0) {
+        if ((AI_GROUP_WEIGHTS[category]?.[product.product_group] ?? 0) > 0) {
           return true;
         }
       }
-
       return false;
     })
-    .slice(0, 40)
-    .map((p) => ({ id: p.id, name: p.normalized_name, group: p.product_group }));
+    .slice(0, 60)
+    .map((product) => ({
+      id: product.id,
+      name: product.normalized_name,
+      group: product.product_group,
+      synonyms: product.synonyms.slice(0, 4)
+    }));
+
+  if (!pool.length) return [];
 
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
@@ -178,7 +393,7 @@ async function llmCandidates(establishment, canonicalProducts, maxRecommendation
         {
           role: "system",
           content:
-            "You produce compact JSON for database ingestion. Avoid markdown and keep confidence in [0,1]."
+            "You produce compact JSON for database ingestion. Avoid markdown. Confidence must be in [0,1]."
         },
         {
           role: "user",
@@ -194,7 +409,6 @@ async function llmCandidates(establishment, canonicalProducts, maxRecommendation
 
   const payload = await response.json();
   const content = payload.choices?.[0]?.message?.content;
-
   if (!content || typeof content !== "string") {
     throw new Error("OpenAI response did not include content");
   }
@@ -207,45 +421,92 @@ async function llmCandidates(establishment, canonicalProducts, maxRecommendation
 
   const parsed = JSON.parse(content.slice(start, end + 1));
   const recommendations = Array.isArray(parsed.recommendations) ? parsed.recommendations : [];
+  const validPoolIds = new Set(pool.map((item) => Number(item.id)));
 
   return recommendations
     .filter((item) => Number.isFinite(Number(item.canonical_product_id)))
+    .map((item) => ({
+      canonical_product_id: Number(item.canonical_product_id),
+      confidence: Number(clamp(Number(item.confidence ?? 0.58), 0.45, 0.9).toFixed(4)),
+      why: String(item.why ?? "LLM matched store context to canonical product.").slice(0, 220)
+    }))
+    .filter((item) => validPoolIds.has(item.canonical_product_id))
     .slice(0, maxRecommendations)
-    .map((item) => {
-      const confidence = Number(clamp(Number(item.confidence ?? 0.58), 0.35, 0.96).toFixed(4));
-      const why = String(item.why ?? "AI model matched store profile and product group.").slice(0, 220);
-      return {
-        canonical_product_id: Number(item.canonical_product_id),
-        confidence,
-        why,
-        category_path: ["ai", "llm", ...(establishment.app_categories.slice(0, 1) || ["uncategorized"])]
-      };
-    });
+    .map((item) => ({
+      canonical_product_id: item.canonical_product_id,
+      source_type: "ai_generated",
+      generation_method: "openai_llm_candidate_refiner_v2",
+      extraction_method: `openai_chat_completions_${model}`,
+      source_url: establishment.websiteSignals?.source_url ?? establishment.website ?? null,
+      confidence: item.confidence,
+      why: `LLM inference from store + website context: ${item.why}`,
+      category_path: ["ai", "llm", ...(establishment.app_categories.slice(0, 1) || ["uncategorized"])]
+    }));
 }
 
-function buildUpsertSql(rows, generationMethod, inferredMode, modelName) {
+function chooseValidationStatus(sourceType, confidence) {
+  if (sourceType === "website_extracted") {
+    return confidence >= 0.78 ? "likely" : "unvalidated";
+  }
+  if (sourceType === "ai_generated") {
+    return confidence >= 0.82 ? "likely" : "unvalidated";
+  }
+  return confidence >= 0.72 ? "likely" : "unvalidated";
+}
+
+function dedupeAndTrimCandidates(candidates, maxPerStore) {
+  const sourcePriority = {
+    website_extracted: 4,
+    ai_generated: 3,
+    rules_generated: 2,
+    imported: 1
+  };
+
+  const byProduct = new Map();
+  for (const candidate of candidates) {
+    const key = Number(candidate.canonical_product_id);
+    const previous = byProduct.get(key);
+    if (!previous) {
+      byProduct.set(key, candidate);
+      continue;
+    }
+
+    const prevScore =
+      (sourcePriority[previous.source_type] ?? 0) * 1000 + Math.round(previous.confidence * 1000);
+    const nextScore =
+      (sourcePriority[candidate.source_type] ?? 0) * 1000 + Math.round(candidate.confidence * 1000);
+    if (nextScore > prevScore) {
+      byProduct.set(key, candidate);
+    }
+  }
+
+  return [...byProduct.values()]
+    .sort((a, b) => b.confidence - a.confidence)
+    .slice(0, maxPerStore);
+}
+
+function buildUpsertSql(rows) {
   if (!rows.length) {
     return "select 0::int as affected_rows;";
   }
 
   const values = rows
     .map((row) => {
-      const status = row.confidence >= 0.8 ? "likely" : "unvalidated";
       return `(${[
         sqlLiteral(row.establishment_id),
         sqlLiteral(row.canonical_product_id),
-        `'ai_generated'::source_type_enum`,
-        sqlLiteral(generationMethod),
+        `'${row.source_type}'::source_type_enum`,
+        sqlLiteral(row.generation_method),
         sqlLiteral(row.confidence),
-        `'${status}'::validation_status_enum`,
-        sqlLiteral(null),
+        `'${row.validation_status}'::validation_status_enum`,
+        sqlLiteral(row.validation_notes ?? null),
         sqlLiteral(row.why),
         sqlArray(row.category_path),
-        sqlLiteral({
-          mode: inferredMode,
-          model: modelName,
-          generated_at: new Date().toISOString()
-        })
+        sqlLiteral(row.inferred_from),
+        sqlLiteral(row.source_url),
+        sqlLiteral(row.extraction_method),
+        `${sqlLiteral(row.last_checked_at)}::timestamptz`,
+        `${sqlLiteral(row.freshness_score)}::numeric(5,4)`
       ].join(",")})`;
     })
     .join(",\n");
@@ -261,7 +522,11 @@ with incoming (
   validation_notes,
   why_this_product_matches,
   category_path,
-  inferred_from
+  inferred_from,
+  source_url,
+  extraction_method,
+  last_checked_at,
+  freshness_score
 ) as (
   values
   ${values}
@@ -276,7 +541,11 @@ with incoming (
     validation_notes,
     why_this_product_matches,
     category_path,
-    inferred_from
+    inferred_from,
+    source_url,
+    extraction_method,
+    last_checked_at,
+    freshness_score
   )
   select * from incoming
   on conflict (establishment_id, canonical_product_id, source_type, generation_method)
@@ -287,6 +556,10 @@ with incoming (
     why_this_product_matches = excluded.why_this_product_matches,
     category_path = excluded.category_path,
     inferred_from = excluded.inferred_from,
+    source_url = excluded.source_url,
+    extraction_method = excluded.extraction_method,
+    last_checked_at = excluded.last_checked_at,
+    freshness_score = excluded.freshness_score,
     updated_at = now()
   where establishment_product_candidates.validation_status not in ('validated', 'rejected')
   returning id
@@ -298,9 +571,10 @@ select count(*)::int as affected_rows from upserted;
 async function main() {
   const args = parseArgs(process.argv);
   const batchSize = Number(args["batch-size"] ?? 120);
-  const maxRecommendations = Number(args["max-recommendations"] ?? 8);
+  const maxRecommendations = Number(args["max-recommendations"] ?? 6);
   const resume = Boolean(args.resume);
   const forceHeuristic = Boolean(args["force-heuristic"]);
+  const maxEstablishments = args["max-establishments"] ? Number(args["max-establishments"]) : null;
   const model = String(args.model ?? process.env.OPENAI_MODEL ?? "gpt-4.1-mini");
 
   const checkpoint = await loadCheckpoint();
@@ -309,14 +583,13 @@ async function main() {
 
   const hasApiKey = Boolean(process.env.OPENAI_API_KEY);
   const useLlm = hasApiKey && !forceHeuristic;
-  const generationMethod = useLlm ? "openai_llm_candidate_refiner_v1" : "ai_heuristic_candidate_refiner_v1";
 
   const canonicalProducts = await fetchCanonicalProducts();
-  logInfo("Phase 6 - generate AI candidates", {
+  logInfo("Phase 6 - generate enriched candidates", {
     batchSize,
     maxRecommendations,
+    maxEstablishments,
     useLlm,
-    generationMethod,
     model,
     canonicalProducts: canonicalProducts.length,
     startFromId: cursor,
@@ -325,6 +598,8 @@ async function main() {
 
   let totalEstablishments = 0;
   let totalGenerated = 0;
+  let llmUsedCount = 0;
+  let websiteExtractedCount = 0;
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
@@ -336,44 +611,70 @@ async function main() {
     const upsertRows = [];
 
     for (const establishment of establishments) {
-      let candidates = null;
-      let mode = "heuristic";
+      const storeLimit = pickRecommendationLimit(establishment, maxRecommendations);
+      const nowIso = new Date().toISOString();
+      const freshness = Number(clamp(establishment.freshness_score ?? 0.64, 0.05, 0.99).toFixed(4));
 
+      const websiteCandidates = websiteSignalCandidates(establishment, canonicalProducts, storeLimit);
+      websiteExtractedCount += websiteCandidates.length;
+
+      let aiRows = [];
       if (useLlm) {
         try {
-          candidates = await llmCandidates(establishment, canonicalProducts, maxRecommendations, model);
-          mode = "llm";
+          aiRows = (await llmCandidates(establishment, canonicalProducts, storeLimit, model)) ?? [];
+          if (aiRows.length) {
+            llmUsedCount += 1;
+          }
         } catch (error) {
-          logWarn(`LLM generation failed for establishment ${establishment.id}, fallback to heuristic`, String(error));
+          logWarn(`LLM generation failed for establishment ${establishment.id}, using conservative fallback`, String(error));
         }
       }
 
-      if (!candidates || !candidates.length) {
-        candidates = heuristicCandidates(establishment, canonicalProducts, maxRecommendations);
-        mode = "heuristic";
-      }
+      const fallbackNeeded = !aiRows.length;
+      const fallbackRows = fallbackNeeded
+        ? heuristicCandidates(establishment, canonicalProducts, Math.min(storeLimit, 3))
+        : [];
 
-      const uniqueByProduct = new Map();
-      for (const candidate of candidates) {
-        if (!uniqueByProduct.has(candidate.canonical_product_id)) {
-          uniqueByProduct.set(candidate.canonical_product_id, candidate);
-        }
-      }
+      const selected = dedupeAndTrimCandidates(
+        [...websiteCandidates, ...aiRows, ...fallbackRows],
+        storeLimit
+      );
 
-      for (const candidate of uniqueByProduct.values()) {
+      for (const candidate of selected) {
+        const validationStatus = chooseValidationStatus(candidate.source_type, candidate.confidence);
         upsertRows.push({
           establishment_id: establishment.id,
           canonical_product_id: candidate.canonical_product_id,
+          source_type: candidate.source_type,
+          generation_method: candidate.generation_method,
           confidence: candidate.confidence,
+          validation_status: validationStatus,
+          validation_notes:
+            validationStatus === "likely"
+              ? "Plausible match inferred from category/website signals."
+              : "Pending explicit validation.",
           why: candidate.why,
           category_path: candidate.category_path,
-          mode
+          inferred_from: {
+            mode:
+              candidate.source_type === "ai_generated"
+                ? "llm"
+                : candidate.source_type === "website_extracted"
+                  ? "website_signal"
+                  : "conservative_rules",
+            model: candidate.source_type === "ai_generated" ? model : null,
+            no_real_time_stock_claim: true,
+            generated_at: nowIso
+          },
+          source_url: candidate.source_url,
+          extraction_method: candidate.extraction_method,
+          last_checked_at: nowIso,
+          freshness_score: freshness
         });
       }
     }
 
-    const inferredMode = useLlm ? "llm_or_heuristic_fallback" : "heuristic";
-    const upsertSql = buildUpsertSql(upsertRows, generationMethod, inferredMode, useLlm ? model : "none");
+    const upsertSql = buildUpsertSql(upsertRows);
     const upsertResult = await runSupabaseQuery({ sql: upsertSql, output: "json" });
     const affectedRows = Number(upsertResult.parsed.rows?.[0]?.affected_rows ?? 0);
 
@@ -383,29 +684,41 @@ async function main() {
 
     checkpoint.generateAiCandidates = {
       lastId: cursor,
-      generationMethod,
-      mode: useLlm ? "llm" : "heuristic",
+      mode: useLlm ? "gpt_plus_website" : "rules_plus_website",
       totalEstablishments,
       totalGenerated,
+      llmUsedCount,
+      websiteExtractedCount,
       updatedAt: new Date().toISOString()
     };
     await saveCheckpoint(checkpoint);
 
-    logInfo("Generated AI candidate batch", {
+    logInfo("Generated enriched candidate batch", {
       establishments: establishments.length,
       upsertRows: upsertRows.length,
       affectedRows,
       cursor,
-      cumulativeGenerated: totalGenerated
+      cumulativeGenerated: totalGenerated,
+      llmUsedCount,
+      websiteExtractedCount
     });
+
+    if (maxEstablishments && totalEstablishments >= maxEstablishments) {
+      logInfo("Stopping enriched generation due to max-establishments cap", {
+        maxEstablishments,
+        totalEstablishments
+      });
+      break;
+    }
   }
 
   checkpoint.generateAiCandidates = {
     lastId: cursor,
-    generationMethod,
-    mode: useLlm ? "llm" : "heuristic",
+    mode: useLlm ? "gpt_plus_website" : "rules_plus_website",
     totalEstablishments,
     totalGenerated,
+    llmUsedCount,
+    websiteExtractedCount,
     completed: true,
     updatedAt: new Date().toISOString()
   };
@@ -414,12 +727,13 @@ async function main() {
   logInfo("Phase 6 completed", {
     totalEstablishments,
     totalGenerated,
-    generationMethod,
-    mode: useLlm ? "llm" : "heuristic"
+    llmUsedCount,
+    websiteExtractedCount,
+    mode: useLlm ? "gpt_plus_website" : "rules_plus_website"
   });
 }
 
 main().catch((error) => {
-  logWarn("AI candidate generation failed", String(error));
+  logWarn("Enriched candidate generation failed", String(error));
   process.exit(1);
 });

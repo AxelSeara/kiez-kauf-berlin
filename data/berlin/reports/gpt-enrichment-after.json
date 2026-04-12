@@ -1,0 +1,3486 @@
+{
+  "generated_at": "2026-04-12T01:12:59.280Z",
+  "stores_count": 25,
+  "total_products": 339,
+  "plausible_products": 339,
+  "doubtful_products": 0,
+  "plausible_ratio": 1,
+  "doubtful_ratio": 0,
+  "stores": [
+    {
+      "establishment_id": 340,
+      "establishment_name": "Apotheke im Markt",
+      "district": "Berlin",
+      "app_categories": [
+        "pharmacy",
+        "personal-care"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 88,
+          "product_normalized_name": "husten sirup",
+          "product_group": "pharmacy",
+          "source_type": "rules_generated",
+          "confidence": 0.98,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"pharmacy\" to product group \"pharmacy\"."
+        },
+        {
+          "canonical_product_id": 33,
+          "product_normalized_name": "ibuprofen 400mg",
+          "product_group": "pharmacy",
+          "source_type": "rules_generated",
+          "confidence": 0.98,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"pharmacy\" to product group \"pharmacy\"."
+        },
+        {
+          "canonical_product_id": 87,
+          "product_normalized_name": "paracetamol 500mg",
+          "product_group": "pharmacy",
+          "source_type": "rules_generated",
+          "confidence": 0.98,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"pharmacy\" to product group \"pharmacy\"."
+        },
+        {
+          "canonical_product_id": 90,
+          "product_normalized_name": "pflaster set",
+          "product_group": "pharmacy",
+          "source_type": "rules_generated",
+          "confidence": 0.98,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"pharmacy\" to product group \"pharmacy\"."
+        },
+        {
+          "canonical_product_id": 89,
+          "product_normalized_name": "vitamin c brausetabletten",
+          "product_group": "pharmacy",
+          "source_type": "rules_generated",
+          "confidence": 0.98,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"pharmacy\" to product group \"pharmacy\"."
+        },
+        {
+          "canonical_product_id": 29,
+          "product_normalized_name": "shampoo 300ml",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.92,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category pharmacy -> group personal_care; category personal-care -> group personal_care."
+        },
+        {
+          "canonical_product_id": 75,
+          "product_normalized_name": "zahnbuerste medium",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.92,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category pharmacy -> group personal_care; category personal-care -> group personal_care."
+        },
+        {
+          "canonical_product_id": 28,
+          "product_normalized_name": "zahnpasta sensitive",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.92,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category pharmacy -> group personal_care; category personal-care -> group personal_care."
+        },
+        {
+          "canonical_product_id": 78,
+          "product_normalized_name": "deodorant roll on",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.91,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"personal-care\" to product group \"personal_care\"."
+        },
+        {
+          "canonical_product_id": 77,
+          "product_normalized_name": "duschgel 250ml",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.91,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"personal-care\" to product group \"personal_care\"."
+        },
+        {
+          "canonical_product_id": 79,
+          "product_normalized_name": "tampons 32",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.91,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"personal-care\" to product group \"personal_care\"."
+        }
+      ],
+      "product_count": 11,
+      "plausible_count": 11,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 374,
+      "establishment_name": "Arrey",
+      "district": "Berlin",
+      "app_categories": [
+        "bakery",
+        "fresh-food",
+        "grocery"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 34,
+          "product_normalized_name": "baklava 250g",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 68,
+          "product_normalized_name": "brezel stueck",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 66,
+          "product_normalized_name": "brot roggen",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 21,
+          "product_normalized_name": "brot weizen",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 67,
+          "product_normalized_name": "croissant butter",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 69,
+          "product_normalized_name": "kuchen stueck",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 26,
+          "product_normalized_name": "aepfel 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.86,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category fresh-food -> group fresh_produce; category grocery -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 27,
+          "product_normalized_name": "bananen 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.86,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category fresh-food -> group fresh_produce; category grocery -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 62,
+          "product_normalized_name": "gurke stueck",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 59,
+          "product_normalized_name": "kartoffeln 2kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 63,
+          "product_normalized_name": "paprika mix 500g",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 61,
+          "product_normalized_name": "tomaten 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 64,
+          "product_normalized_name": "zitronen 500g",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 60,
+          "product_normalized_name": "zwiebeln 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 389,
+      "establishment_name": "Asia Mekong",
+      "district": "Berlin",
+      "app_categories": [
+        "convenience",
+        "grocery",
+        "drinks"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 41,
+          "product_normalized_name": "apfelsaft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 39,
+          "product_normalized_name": "cola 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 18,
+          "product_normalized_name": "hafermilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 31,
+          "product_normalized_name": "kaffee gemahlen 500g",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 40,
+          "product_normalized_name": "orangen saft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 19,
+          "product_normalized_name": "vollmilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 38,
+          "product_normalized_name": "wasser classic 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 37,
+          "product_normalized_name": "wasser still 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 43,
+          "product_normalized_name": "espresso bohnen 1kg",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 44,
+          "product_normalized_name": "tee schwarz 25 beutel",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 20,
+          "product_normalized_name": "eier 10 stueck",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 23,
+          "product_normalized_name": "pasta fusilli 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 22,
+          "product_normalized_name": "reis basmati 1kg",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 24,
+          "product_normalized_name": "tomatensauce 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 790,
+      "establishment_name": "Bio-Bäckerei Bucco",
+      "district": "Berlin",
+      "app_categories": [
+        "bakery",
+        "fresh-food",
+        "grocery",
+        "bio"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 34,
+          "product_normalized_name": "baklava 250g",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 68,
+          "product_normalized_name": "brezel stueck",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 66,
+          "product_normalized_name": "brot roggen",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 21,
+          "product_normalized_name": "brot weizen",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 67,
+          "product_normalized_name": "croissant butter",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 69,
+          "product_normalized_name": "kuchen stueck",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 26,
+          "product_normalized_name": "aepfel 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.86,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category fresh-food -> group fresh_produce; category grocery -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 27,
+          "product_normalized_name": "bananen 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.86,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category fresh-food -> group fresh_produce; category grocery -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 62,
+          "product_normalized_name": "gurke stueck",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 59,
+          "product_normalized_name": "kartoffeln 2kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 63,
+          "product_normalized_name": "paprika mix 500g",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 61,
+          "product_normalized_name": "tomaten 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 64,
+          "product_normalized_name": "zitronen 500g",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 60,
+          "product_normalized_name": "zwiebeln 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 1121,
+      "establishment_name": "dm",
+      "district": "Berlin",
+      "app_categories": [
+        "personal-care",
+        "household"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 84,
+          "product_normalized_name": "allzweckreiniger 1l",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category household -> group household."
+        },
+        {
+          "canonical_product_id": 81,
+          "product_normalized_name": "kuechenpapier 4 rollen",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category household -> group household."
+        },
+        {
+          "canonical_product_id": 85,
+          "product_normalized_name": "muellbeutel 35l 20",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category household -> group household."
+        },
+        {
+          "canonical_product_id": 83,
+          "product_normalized_name": "spuelmittel 500ml",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category household -> group household."
+        },
+        {
+          "canonical_product_id": 30,
+          "product_normalized_name": "toilettenpapier 8 rollen",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category household -> group household."
+        },
+        {
+          "canonical_product_id": 82,
+          "product_normalized_name": "waschmittel 20 wl",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category household -> group household."
+        },
+        {
+          "canonical_product_id": 29,
+          "product_normalized_name": "shampoo 300ml",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.92,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category personal-care -> group personal_care."
+        },
+        {
+          "canonical_product_id": 28,
+          "product_normalized_name": "zahnpasta sensitive",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.92,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category personal-care -> group personal_care."
+        },
+        {
+          "canonical_product_id": 78,
+          "product_normalized_name": "deodorant roll on",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.87,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"personal-care\" to product group \"personal_care\"."
+        },
+        {
+          "canonical_product_id": 77,
+          "product_normalized_name": "duschgel 250ml",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.87,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"personal-care\" to product group \"personal_care\"."
+        },
+        {
+          "canonical_product_id": 79,
+          "product_normalized_name": "tampons 32",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.87,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"personal-care\" to product group \"personal_care\"."
+        },
+        {
+          "canonical_product_id": 75,
+          "product_normalized_name": "zahnbuerste medium",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.87,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"personal-care\" to product group \"personal_care\"."
+        }
+      ],
+      "product_count": 12,
+      "plausible_count": 12,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 1289,
+      "establishment_name": "Edeka aktiv markt",
+      "district": "Berlin",
+      "app_categories": [
+        "grocery",
+        "fresh-food",
+        "household",
+        "drinks"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 41,
+          "product_normalized_name": "apfelsaft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 39,
+          "product_normalized_name": "cola 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 43,
+          "product_normalized_name": "espresso bohnen 1kg",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 18,
+          "product_normalized_name": "hafermilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 31,
+          "product_normalized_name": "kaffee gemahlen 500g",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 40,
+          "product_normalized_name": "orangen saft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 44,
+          "product_normalized_name": "tee schwarz 25 beutel",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 19,
+          "product_normalized_name": "vollmilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 38,
+          "product_normalized_name": "wasser classic 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 37,
+          "product_normalized_name": "wasser still 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 81,
+          "product_normalized_name": "kuechenpapier 4 rollen",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        },
+        {
+          "canonical_product_id": 83,
+          "product_normalized_name": "spuelmittel 500ml",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        },
+        {
+          "canonical_product_id": 30,
+          "product_normalized_name": "toilettenpapier 8 rollen",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        },
+        {
+          "canonical_product_id": 82,
+          "product_normalized_name": "waschmittel 20 wl",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 1456,
+      "establishment_name": "Fröhliche Bäckerei",
+      "district": "Berlin",
+      "app_categories": [
+        "bakery",
+        "fresh-food",
+        "grocery"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 34,
+          "product_normalized_name": "baklava 250g",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 68,
+          "product_normalized_name": "brezel stueck",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 66,
+          "product_normalized_name": "brot roggen",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 21,
+          "product_normalized_name": "brot weizen",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 67,
+          "product_normalized_name": "croissant butter",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 69,
+          "product_normalized_name": "kuchen stueck",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 26,
+          "product_normalized_name": "aepfel 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.86,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category fresh-food -> group fresh_produce; category grocery -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 27,
+          "product_normalized_name": "bananen 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.86,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category fresh-food -> group fresh_produce; category grocery -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 62,
+          "product_normalized_name": "gurke stueck",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 59,
+          "product_normalized_name": "kartoffeln 2kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 63,
+          "product_normalized_name": "paprika mix 500g",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 61,
+          "product_normalized_name": "tomaten 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 64,
+          "product_normalized_name": "zitronen 500g",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 60,
+          "product_normalized_name": "zwiebeln 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 1628,
+      "establishment_name": "Habibi",
+      "district": "Berlin",
+      "app_categories": [
+        "produce",
+        "fresh-food",
+        "grocery"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 26,
+          "product_normalized_name": "aepfel 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category produce -> group fresh_produce; category fresh-food -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 27,
+          "product_normalized_name": "bananen 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category produce -> group fresh_produce; category fresh-food -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 62,
+          "product_normalized_name": "gurke stueck",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category produce -> group fresh_produce; category fresh-food -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 59,
+          "product_normalized_name": "kartoffeln 2kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category produce -> group fresh_produce; category fresh-food -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 63,
+          "product_normalized_name": "paprika mix 500g",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category produce -> group fresh_produce; category fresh-food -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 61,
+          "product_normalized_name": "tomaten 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category produce -> group fresh_produce; category fresh-food -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 64,
+          "product_normalized_name": "zitronen 500g",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category produce -> group fresh_produce; category fresh-food -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 60,
+          "product_normalized_name": "zwiebeln 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category produce -> group fresh_produce; category fresh-food -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 20,
+          "product_normalized_name": "eier 10 stueck",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 25,
+          "product_normalized_name": "olivenoel 1l",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 23,
+          "product_normalized_name": "pasta fusilli 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 22,
+          "product_normalized_name": "reis basmati 1kg",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 47,
+          "product_normalized_name": "spaghetti 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 24,
+          "product_normalized_name": "tomatensauce 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 2239,
+      "establishment_name": "Madara Market BG",
+      "district": "Berlin",
+      "app_categories": [
+        "convenience",
+        "grocery",
+        "drinks"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 41,
+          "product_normalized_name": "apfelsaft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 39,
+          "product_normalized_name": "cola 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 18,
+          "product_normalized_name": "hafermilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 31,
+          "product_normalized_name": "kaffee gemahlen 500g",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 40,
+          "product_normalized_name": "orangen saft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 19,
+          "product_normalized_name": "vollmilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 38,
+          "product_normalized_name": "wasser classic 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 37,
+          "product_normalized_name": "wasser still 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 43,
+          "product_normalized_name": "espresso bohnen 1kg",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 44,
+          "product_normalized_name": "tee schwarz 25 beutel",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 20,
+          "product_normalized_name": "eier 10 stueck",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 23,
+          "product_normalized_name": "pasta fusilli 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 22,
+          "product_normalized_name": "reis basmati 1kg",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 24,
+          "product_normalized_name": "tomatensauce 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 2435,
+      "establishment_name": "Nahkauf",
+      "district": "Berlin",
+      "app_categories": [
+        "grocery",
+        "fresh-food",
+        "household",
+        "drinks"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 41,
+          "product_normalized_name": "apfelsaft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 39,
+          "product_normalized_name": "cola 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 43,
+          "product_normalized_name": "espresso bohnen 1kg",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 18,
+          "product_normalized_name": "hafermilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 31,
+          "product_normalized_name": "kaffee gemahlen 500g",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 40,
+          "product_normalized_name": "orangen saft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 44,
+          "product_normalized_name": "tee schwarz 25 beutel",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 19,
+          "product_normalized_name": "vollmilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 38,
+          "product_normalized_name": "wasser classic 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 37,
+          "product_normalized_name": "wasser still 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 81,
+          "product_normalized_name": "kuechenpapier 4 rollen",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        },
+        {
+          "canonical_product_id": 83,
+          "product_normalized_name": "spuelmittel 500ml",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        },
+        {
+          "canonical_product_id": 30,
+          "product_normalized_name": "toilettenpapier 8 rollen",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        },
+        {
+          "canonical_product_id": 82,
+          "product_normalized_name": "waschmittel 20 wl",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 2547,
+      "establishment_name": "Shell",
+      "district": "Berlin",
+      "app_categories": [
+        "convenience",
+        "grocery",
+        "drinks"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 41,
+          "product_normalized_name": "apfelsaft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 39,
+          "product_normalized_name": "cola 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 18,
+          "product_normalized_name": "hafermilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 31,
+          "product_normalized_name": "kaffee gemahlen 500g",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 40,
+          "product_normalized_name": "orangen saft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 19,
+          "product_normalized_name": "vollmilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 38,
+          "product_normalized_name": "wasser classic 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 37,
+          "product_normalized_name": "wasser still 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 43,
+          "product_normalized_name": "espresso bohnen 1kg",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 44,
+          "product_normalized_name": "tee schwarz 25 beutel",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 20,
+          "product_normalized_name": "eier 10 stueck",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 23,
+          "product_normalized_name": "pasta fusilli 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 22,
+          "product_normalized_name": "reis basmati 1kg",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 24,
+          "product_normalized_name": "tomatensauce 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 2668,
+      "establishment_name": "Pannier-Apotheke",
+      "district": "Berlin",
+      "app_categories": [
+        "pharmacy",
+        "personal-care"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 88,
+          "product_normalized_name": "husten sirup",
+          "product_group": "pharmacy",
+          "source_type": "rules_generated",
+          "confidence": 0.98,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"pharmacy\" to product group \"pharmacy\"."
+        },
+        {
+          "canonical_product_id": 33,
+          "product_normalized_name": "ibuprofen 400mg",
+          "product_group": "pharmacy",
+          "source_type": "rules_generated",
+          "confidence": 0.98,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"pharmacy\" to product group \"pharmacy\"."
+        },
+        {
+          "canonical_product_id": 87,
+          "product_normalized_name": "paracetamol 500mg",
+          "product_group": "pharmacy",
+          "source_type": "rules_generated",
+          "confidence": 0.98,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"pharmacy\" to product group \"pharmacy\"."
+        },
+        {
+          "canonical_product_id": 90,
+          "product_normalized_name": "pflaster set",
+          "product_group": "pharmacy",
+          "source_type": "rules_generated",
+          "confidence": 0.98,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"pharmacy\" to product group \"pharmacy\"."
+        },
+        {
+          "canonical_product_id": 89,
+          "product_normalized_name": "vitamin c brausetabletten",
+          "product_group": "pharmacy",
+          "source_type": "rules_generated",
+          "confidence": 0.98,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"pharmacy\" to product group \"pharmacy\"."
+        },
+        {
+          "canonical_product_id": 29,
+          "product_normalized_name": "shampoo 300ml",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.92,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category pharmacy -> group personal_care; category personal-care -> group personal_care."
+        },
+        {
+          "canonical_product_id": 75,
+          "product_normalized_name": "zahnbuerste medium",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.92,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category pharmacy -> group personal_care; category personal-care -> group personal_care."
+        },
+        {
+          "canonical_product_id": 28,
+          "product_normalized_name": "zahnpasta sensitive",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.92,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category pharmacy -> group personal_care; category personal-care -> group personal_care."
+        },
+        {
+          "canonical_product_id": 78,
+          "product_normalized_name": "deodorant roll on",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.91,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"personal-care\" to product group \"personal_care\"."
+        },
+        {
+          "canonical_product_id": 77,
+          "product_normalized_name": "duschgel 250ml",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.91,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"personal-care\" to product group \"personal_care\"."
+        },
+        {
+          "canonical_product_id": 79,
+          "product_normalized_name": "tampons 32",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.91,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"personal-care\" to product group \"personal_care\"."
+        }
+      ],
+      "product_count": 11,
+      "plausible_count": 11,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 2716,
+      "establishment_name": "PENNY",
+      "district": "Berlin",
+      "app_categories": [
+        "grocery",
+        "fresh-food",
+        "household",
+        "drinks"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 41,
+          "product_normalized_name": "apfelsaft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 39,
+          "product_normalized_name": "cola 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 43,
+          "product_normalized_name": "espresso bohnen 1kg",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 18,
+          "product_normalized_name": "hafermilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 31,
+          "product_normalized_name": "kaffee gemahlen 500g",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 40,
+          "product_normalized_name": "orangen saft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 44,
+          "product_normalized_name": "tee schwarz 25 beutel",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 19,
+          "product_normalized_name": "vollmilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 38,
+          "product_normalized_name": "wasser classic 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 37,
+          "product_normalized_name": "wasser still 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 81,
+          "product_normalized_name": "kuechenpapier 4 rollen",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        },
+        {
+          "canonical_product_id": 83,
+          "product_normalized_name": "spuelmittel 500ml",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        },
+        {
+          "canonical_product_id": 30,
+          "product_normalized_name": "toilettenpapier 8 rollen",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        },
+        {
+          "canonical_product_id": 82,
+          "product_normalized_name": "waschmittel 20 wl",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 2886,
+      "establishment_name": "Rewe to go",
+      "district": "Berlin",
+      "app_categories": [
+        "convenience",
+        "drinks"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 41,
+          "product_normalized_name": "apfelsaft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category drinks -> group beverages."
+        },
+        {
+          "canonical_product_id": 39,
+          "product_normalized_name": "cola 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category drinks -> group beverages."
+        },
+        {
+          "canonical_product_id": 18,
+          "product_normalized_name": "hafermilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category drinks -> group beverages."
+        },
+        {
+          "canonical_product_id": 31,
+          "product_normalized_name": "kaffee gemahlen 500g",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category drinks -> group beverages."
+        },
+        {
+          "canonical_product_id": 40,
+          "product_normalized_name": "orangen saft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category drinks -> group beverages."
+        },
+        {
+          "canonical_product_id": 19,
+          "product_normalized_name": "vollmilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category drinks -> group beverages."
+        },
+        {
+          "canonical_product_id": 38,
+          "product_normalized_name": "wasser classic 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category drinks -> group beverages."
+        },
+        {
+          "canonical_product_id": 37,
+          "product_normalized_name": "wasser still 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category drinks -> group beverages."
+        },
+        {
+          "canonical_product_id": 43,
+          "product_normalized_name": "espresso bohnen 1kg",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 44,
+          "product_normalized_name": "tee schwarz 25 beutel",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 91,
+          "product_normalized_name": "chips paprika 150g",
+          "product_group": "snacks",
+          "source_type": "rules_generated",
+          "confidence": 0.79,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"convenience\" to product group \"snacks\"."
+        },
+        {
+          "canonical_product_id": 93,
+          "product_normalized_name": "kekse butter 200g",
+          "product_group": "snacks",
+          "source_type": "rules_generated",
+          "confidence": 0.79,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"convenience\" to product group \"snacks\"."
+        },
+        {
+          "canonical_product_id": 94,
+          "product_normalized_name": "nuesse mix 200g",
+          "product_group": "snacks",
+          "source_type": "rules_generated",
+          "confidence": 0.79,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"convenience\" to product group \"snacks\"."
+        },
+        {
+          "canonical_product_id": 92,
+          "product_normalized_name": "schokolade dunkel 100g",
+          "product_group": "snacks",
+          "source_type": "rules_generated",
+          "confidence": 0.79,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"convenience\" to product group \"snacks\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 2966,
+      "establishment_name": "Samill-Sangsa",
+      "district": "Berlin",
+      "app_categories": [
+        "convenience",
+        "grocery",
+        "drinks"
+      ],
+      "website": "http://www.31sangsa.de/",
+      "freshness_score": 0.99,
+      "products": [
+        {
+          "canonical_product_id": 41,
+          "product_normalized_name": "apfelsaft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 39,
+          "product_normalized_name": "cola 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 18,
+          "product_normalized_name": "hafermilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 31,
+          "product_normalized_name": "kaffee gemahlen 500g",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 40,
+          "product_normalized_name": "orangen saft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 19,
+          "product_normalized_name": "vollmilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 38,
+          "product_normalized_name": "wasser classic 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 37,
+          "product_normalized_name": "wasser still 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 43,
+          "product_normalized_name": "espresso bohnen 1kg",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 44,
+          "product_normalized_name": "tee schwarz 25 beutel",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 20,
+          "product_normalized_name": "eier 10 stueck",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 23,
+          "product_normalized_name": "pasta fusilli 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 22,
+          "product_normalized_name": "reis basmati 1kg",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 24,
+          "product_normalized_name": "tomatensauce 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 3308,
+      "establishment_name": "Steinecke",
+      "district": "Berlin",
+      "app_categories": [
+        "bakery",
+        "fresh-food",
+        "grocery"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 34,
+          "product_normalized_name": "baklava 250g",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 68,
+          "product_normalized_name": "brezel stueck",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 66,
+          "product_normalized_name": "brot roggen",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 21,
+          "product_normalized_name": "brot weizen",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 67,
+          "product_normalized_name": "croissant butter",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 69,
+          "product_normalized_name": "kuchen stueck",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 26,
+          "product_normalized_name": "aepfel 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.86,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category fresh-food -> group fresh_produce; category grocery -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 27,
+          "product_normalized_name": "bananen 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.86,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category fresh-food -> group fresh_produce; category grocery -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 62,
+          "product_normalized_name": "gurke stueck",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 59,
+          "product_normalized_name": "kartoffeln 2kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 63,
+          "product_normalized_name": "paprika mix 500g",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 61,
+          "product_normalized_name": "tomaten 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 64,
+          "product_normalized_name": "zitronen 500g",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 60,
+          "product_normalized_name": "zwiebeln 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 3538,
+      "establishment_name": "VITALIA Reformhaus",
+      "district": "Berlin",
+      "app_categories": [
+        "bio",
+        "grocery"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 20,
+          "product_normalized_name": "eier 10 stueck",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.84,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bio -> group groceries; category grocery -> group groceries."
+        },
+        {
+          "canonical_product_id": 25,
+          "product_normalized_name": "olivenoel 1l",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.84,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bio -> group groceries; category grocery -> group groceries."
+        },
+        {
+          "canonical_product_id": 49,
+          "product_normalized_name": "passierte tomaten 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.84,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bio -> group groceries; category grocery -> group groceries."
+        },
+        {
+          "canonical_product_id": 23,
+          "product_normalized_name": "pasta fusilli 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.84,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bio -> group groceries; category grocery -> group groceries."
+        },
+        {
+          "canonical_product_id": 22,
+          "product_normalized_name": "reis basmati 1kg",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.84,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bio -> group groceries; category grocery -> group groceries."
+        },
+        {
+          "canonical_product_id": 51,
+          "product_normalized_name": "sonnenblumenoel 1l",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.84,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bio -> group groceries; category grocery -> group groceries."
+        },
+        {
+          "canonical_product_id": 47,
+          "product_normalized_name": "spaghetti 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.84,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bio -> group groceries; category grocery -> group groceries."
+        },
+        {
+          "canonical_product_id": 24,
+          "product_normalized_name": "tomatensauce 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.84,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bio -> group groceries; category grocery -> group groceries."
+        },
+        {
+          "canonical_product_id": 56,
+          "product_normalized_name": "bio haferflocken 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 53,
+          "product_normalized_name": "mehl weizen 1kg",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 55,
+          "product_normalized_name": "salz fein 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 54,
+          "product_normalized_name": "zucker 1kg",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 18,
+          "product_normalized_name": "hafermilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.8,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 19,
+          "product_normalized_name": "vollmilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.8,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"beverages\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 3922,
+      "establishment_name": "REWE",
+      "district": "Dahlwitz-Hoppegarten",
+      "app_categories": [
+        "grocery",
+        "fresh-food",
+        "household",
+        "drinks"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 41,
+          "product_normalized_name": "apfelsaft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 39,
+          "product_normalized_name": "cola 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 43,
+          "product_normalized_name": "espresso bohnen 1kg",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 18,
+          "product_normalized_name": "hafermilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 31,
+          "product_normalized_name": "kaffee gemahlen 500g",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 40,
+          "product_normalized_name": "orangen saft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 44,
+          "product_normalized_name": "tee schwarz 25 beutel",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 19,
+          "product_normalized_name": "vollmilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 38,
+          "product_normalized_name": "wasser classic 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 37,
+          "product_normalized_name": "wasser still 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 81,
+          "product_normalized_name": "kuechenpapier 4 rollen",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        },
+        {
+          "canonical_product_id": 83,
+          "product_normalized_name": "spuelmittel 500ml",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        },
+        {
+          "canonical_product_id": 30,
+          "product_normalized_name": "toilettenpapier 8 rollen",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        },
+        {
+          "canonical_product_id": 82,
+          "product_normalized_name": "waschmittel 20 wl",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 4182,
+      "establishment_name": "Steinecke",
+      "district": "Friedrichshain",
+      "app_categories": [
+        "bakery",
+        "fresh-food",
+        "grocery"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 34,
+          "product_normalized_name": "baklava 250g",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 68,
+          "product_normalized_name": "brezel stueck",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 66,
+          "product_normalized_name": "brot roggen",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 21,
+          "product_normalized_name": "brot weizen",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 67,
+          "product_normalized_name": "croissant butter",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 69,
+          "product_normalized_name": "kuchen stueck",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 26,
+          "product_normalized_name": "aepfel 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.86,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category fresh-food -> group fresh_produce; category grocery -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 27,
+          "product_normalized_name": "bananen 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.86,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category fresh-food -> group fresh_produce; category grocery -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 62,
+          "product_normalized_name": "gurke stueck",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 59,
+          "product_normalized_name": "kartoffeln 2kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 63,
+          "product_normalized_name": "paprika mix 500g",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 61,
+          "product_normalized_name": "tomaten 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 64,
+          "product_normalized_name": "zitronen 500g",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 60,
+          "product_normalized_name": "zwiebeln 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 4186,
+      "establishment_name": "Warschauer Apotheke",
+      "district": "Friedrichshain",
+      "app_categories": [
+        "pharmacy",
+        "personal-care"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 88,
+          "product_normalized_name": "husten sirup",
+          "product_group": "pharmacy",
+          "source_type": "rules_generated",
+          "confidence": 0.98,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"pharmacy\" to product group \"pharmacy\"."
+        },
+        {
+          "canonical_product_id": 33,
+          "product_normalized_name": "ibuprofen 400mg",
+          "product_group": "pharmacy",
+          "source_type": "rules_generated",
+          "confidence": 0.98,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"pharmacy\" to product group \"pharmacy\"."
+        },
+        {
+          "canonical_product_id": 87,
+          "product_normalized_name": "paracetamol 500mg",
+          "product_group": "pharmacy",
+          "source_type": "rules_generated",
+          "confidence": 0.98,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"pharmacy\" to product group \"pharmacy\"."
+        },
+        {
+          "canonical_product_id": 90,
+          "product_normalized_name": "pflaster set",
+          "product_group": "pharmacy",
+          "source_type": "rules_generated",
+          "confidence": 0.98,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"pharmacy\" to product group \"pharmacy\"."
+        },
+        {
+          "canonical_product_id": 89,
+          "product_normalized_name": "vitamin c brausetabletten",
+          "product_group": "pharmacy",
+          "source_type": "rules_generated",
+          "confidence": 0.98,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"pharmacy\" to product group \"pharmacy\"."
+        },
+        {
+          "canonical_product_id": 29,
+          "product_normalized_name": "shampoo 300ml",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.92,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category pharmacy -> group personal_care; category personal-care -> group personal_care."
+        },
+        {
+          "canonical_product_id": 75,
+          "product_normalized_name": "zahnbuerste medium",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.92,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category pharmacy -> group personal_care; category personal-care -> group personal_care."
+        },
+        {
+          "canonical_product_id": 28,
+          "product_normalized_name": "zahnpasta sensitive",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.92,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category pharmacy -> group personal_care; category personal-care -> group personal_care."
+        },
+        {
+          "canonical_product_id": 78,
+          "product_normalized_name": "deodorant roll on",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.91,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"personal-care\" to product group \"personal_care\"."
+        },
+        {
+          "canonical_product_id": 77,
+          "product_normalized_name": "duschgel 250ml",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.91,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"personal-care\" to product group \"personal_care\"."
+        },
+        {
+          "canonical_product_id": 79,
+          "product_normalized_name": "tampons 32",
+          "product_group": "personal_care",
+          "source_type": "rules_generated",
+          "confidence": 0.91,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"personal-care\" to product group \"personal_care\"."
+        }
+      ],
+      "product_count": 11,
+      "plausible_count": 11,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 4292,
+      "establishment_name": "Berlin Bottle",
+      "district": "Halensee",
+      "app_categories": [
+        "drinks",
+        "convenience"
+      ],
+      "website": "https://berlinbottle.de/",
+      "freshness_score": 0.99,
+      "products": [
+        {
+          "canonical_product_id": 41,
+          "product_normalized_name": "apfelsaft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category drinks -> group beverages; category convenience -> group beverages."
+        },
+        {
+          "canonical_product_id": 39,
+          "product_normalized_name": "cola 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category drinks -> group beverages; category convenience -> group beverages."
+        },
+        {
+          "canonical_product_id": 18,
+          "product_normalized_name": "hafermilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category drinks -> group beverages; category convenience -> group beverages."
+        },
+        {
+          "canonical_product_id": 31,
+          "product_normalized_name": "kaffee gemahlen 500g",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category drinks -> group beverages; category convenience -> group beverages."
+        },
+        {
+          "canonical_product_id": 40,
+          "product_normalized_name": "orangen saft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category drinks -> group beverages; category convenience -> group beverages."
+        },
+        {
+          "canonical_product_id": 19,
+          "product_normalized_name": "vollmilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category drinks -> group beverages; category convenience -> group beverages."
+        },
+        {
+          "canonical_product_id": 38,
+          "product_normalized_name": "wasser classic 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category drinks -> group beverages; category convenience -> group beverages."
+        },
+        {
+          "canonical_product_id": 37,
+          "product_normalized_name": "wasser still 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category drinks -> group beverages; category convenience -> group beverages."
+        },
+        {
+          "canonical_product_id": 43,
+          "product_normalized_name": "espresso bohnen 1kg",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 44,
+          "product_normalized_name": "tee schwarz 25 beutel",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 91,
+          "product_normalized_name": "chips paprika 150g",
+          "product_group": "snacks",
+          "source_type": "rules_generated",
+          "confidence": 0.79,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"convenience\" to product group \"snacks\"."
+        },
+        {
+          "canonical_product_id": 93,
+          "product_normalized_name": "kekse butter 200g",
+          "product_group": "snacks",
+          "source_type": "rules_generated",
+          "confidence": 0.79,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"convenience\" to product group \"snacks\"."
+        },
+        {
+          "canonical_product_id": 94,
+          "product_normalized_name": "nuesse mix 200g",
+          "product_group": "snacks",
+          "source_type": "rules_generated",
+          "confidence": 0.79,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"convenience\" to product group \"snacks\"."
+        },
+        {
+          "canonical_product_id": 92,
+          "product_normalized_name": "schokolade dunkel 100g",
+          "product_group": "snacks",
+          "source_type": "rules_generated",
+          "confidence": 0.79,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"convenience\" to product group \"snacks\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 4547,
+      "establishment_name": "lieber Späti als nie",
+      "district": "Kreuzberg",
+      "app_categories": [
+        "convenience",
+        "grocery",
+        "drinks"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 41,
+          "product_normalized_name": "apfelsaft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 39,
+          "product_normalized_name": "cola 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 18,
+          "product_normalized_name": "hafermilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 31,
+          "product_normalized_name": "kaffee gemahlen 500g",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 40,
+          "product_normalized_name": "orangen saft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 19,
+          "product_normalized_name": "vollmilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 38,
+          "product_normalized_name": "wasser classic 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 37,
+          "product_normalized_name": "wasser still 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 43,
+          "product_normalized_name": "espresso bohnen 1kg",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 44,
+          "product_normalized_name": "tee schwarz 25 beutel",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 20,
+          "product_normalized_name": "eier 10 stueck",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 23,
+          "product_normalized_name": "pasta fusilli 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 22,
+          "product_normalized_name": "reis basmati 1kg",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 24,
+          "product_normalized_name": "tomatensauce 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 5184,
+      "establishment_name": "Bäckerei Schäfer",
+      "district": "Niederlehme",
+      "app_categories": [
+        "bakery",
+        "fresh-food",
+        "grocery"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 34,
+          "product_normalized_name": "baklava 250g",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 68,
+          "product_normalized_name": "brezel stueck",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 66,
+          "product_normalized_name": "brot roggen",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 21,
+          "product_normalized_name": "brot weizen",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 67,
+          "product_normalized_name": "croissant butter",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 69,
+          "product_normalized_name": "kuchen stueck",
+          "product_group": "bakery",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category bakery -> group bakery; category fresh-food -> group bakery."
+        },
+        {
+          "canonical_product_id": 26,
+          "product_normalized_name": "aepfel 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.86,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category fresh-food -> group fresh_produce; category grocery -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 27,
+          "product_normalized_name": "bananen 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.86,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category fresh-food -> group fresh_produce; category grocery -> group fresh_produce."
+        },
+        {
+          "canonical_product_id": 62,
+          "product_normalized_name": "gurke stueck",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 59,
+          "product_normalized_name": "kartoffeln 2kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 63,
+          "product_normalized_name": "paprika mix 500g",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 61,
+          "product_normalized_name": "tomaten 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 64,
+          "product_normalized_name": "zitronen 500g",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        },
+        {
+          "canonical_product_id": 60,
+          "product_normalized_name": "zwiebeln 1kg",
+          "product_group": "fresh_produce",
+          "source_type": "rules_generated",
+          "confidence": 0.85,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"fresh-food\" to product group \"fresh_produce\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 5210,
+      "establishment_name": "Asia Supermarkt",
+      "district": "Oberschöneweide",
+      "app_categories": [
+        "convenience",
+        "grocery",
+        "drinks"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 41,
+          "product_normalized_name": "apfelsaft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 39,
+          "product_normalized_name": "cola 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 18,
+          "product_normalized_name": "hafermilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 31,
+          "product_normalized_name": "kaffee gemahlen 500g",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 40,
+          "product_normalized_name": "orangen saft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 19,
+          "product_normalized_name": "vollmilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 38,
+          "product_normalized_name": "wasser classic 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 37,
+          "product_normalized_name": "wasser still 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.94,
+          "validation_status": "likely",
+          "why_this_product_matches": "AI heuristic matched category convenience -> group beverages; category grocery -> group beverages."
+        },
+        {
+          "canonical_product_id": 43,
+          "product_normalized_name": "espresso bohnen 1kg",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 44,
+          "product_normalized_name": "tee schwarz 25 beutel",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 20,
+          "product_normalized_name": "eier 10 stueck",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 23,
+          "product_normalized_name": "pasta fusilli 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 22,
+          "product_normalized_name": "reis basmati 1kg",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        },
+        {
+          "canonical_product_id": 24,
+          "product_normalized_name": "tomatensauce 500g",
+          "product_group": "groceries",
+          "source_type": "rules_generated",
+          "confidence": 0.83,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"grocery\" to product group \"groceries\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    },
+    {
+      "establishment_id": 5978,
+      "establishment_name": "Edeka",
+      "district": "Wedding",
+      "app_categories": [
+        "grocery",
+        "fresh-food",
+        "household",
+        "drinks"
+      ],
+      "website": null,
+      "freshness_score": 0.75,
+      "products": [
+        {
+          "canonical_product_id": 41,
+          "product_normalized_name": "apfelsaft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 39,
+          "product_normalized_name": "cola 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 43,
+          "product_normalized_name": "espresso bohnen 1kg",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 18,
+          "product_normalized_name": "hafermilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 31,
+          "product_normalized_name": "kaffee gemahlen 500g",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 40,
+          "product_normalized_name": "orangen saft 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 44,
+          "product_normalized_name": "tee schwarz 25 beutel",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 19,
+          "product_normalized_name": "vollmilch 1l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 38,
+          "product_normalized_name": "wasser classic 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 37,
+          "product_normalized_name": "wasser still 1.5l",
+          "product_group": "beverages",
+          "source_type": "rules_generated",
+          "confidence": 0.97,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"drinks\" to product group \"beverages\"."
+        },
+        {
+          "canonical_product_id": 81,
+          "product_normalized_name": "kuechenpapier 4 rollen",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        },
+        {
+          "canonical_product_id": 83,
+          "product_normalized_name": "spuelmittel 500ml",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        },
+        {
+          "canonical_product_id": 30,
+          "product_normalized_name": "toilettenpapier 8 rollen",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        },
+        {
+          "canonical_product_id": 82,
+          "product_normalized_name": "waschmittel 20 wl",
+          "product_group": "household",
+          "source_type": "rules_generated",
+          "confidence": 0.93,
+          "validation_status": "likely",
+          "why_this_product_matches": "Rule mapped app category \"household\" to product group \"household\"."
+        }
+      ],
+      "product_count": 14,
+      "plausible_count": 14,
+      "doubtful_count": 0
+    }
+  ]
+}

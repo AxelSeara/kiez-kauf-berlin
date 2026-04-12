@@ -1,0 +1,26 @@
+establishment_id,establishment_name,district,product_count_before,product_count_after,avg_confidence_before,avg_confidence_after
+340,"Apotheke im Markt","Berlin",11,11,0.9445,0.9445
+374,"Arrey","Berlin",42,14,0.8243,0.8857
+389,"Asia Mekong","Berlin",40,14,0.823,0.9071
+790,"Bio-Bäckerei Bucco","Berlin",42,14,0.8243,0.8857
+1121,"dm","Berlin",12,12,0.9133,0.9133
+1289,"Edeka aktiv markt","Berlin",36,14,0.9122,0.9586
+1456,"Fröhliche Bäckerei","Berlin",42,14,0.8243,0.8857
+1628,"Habibi","Berlin",36,14,0.8261,0.8929
+2239,"Madara Market BG","Berlin",40,14,0.823,0.9071
+2435,"Nahkauf","Berlin",36,14,0.9122,0.9586
+2547,"Shell","Berlin",40,14,0.823,0.9071
+2668,"Pannier-Apotheke","Berlin",11,11,0.9445,0.9445
+2716,"PENNY","Berlin",36,14,0.9122,0.9586
+2886,"Rewe to go","Berlin",26,14,0.7823,0.8957
+2966,"Samill-Sangsa","Berlin",40,14,0.823,0.9071
+3308,"Steinecke","Berlin",42,14,0.8243,0.8857
+3538,"VITALIA Reformhaus","Berlin",36,14,0.7928,0.8314
+3922,"REWE","Dahlwitz-Hoppegarten",36,14,0.9122,0.9586
+4182,"Steinecke","Friedrichshain",42,14,0.8243,0.8857
+4186,"Warschauer Apotheke","Friedrichshain",11,11,0.9445,0.9445
+4292,"Berlin Bottle","Halensee",26,14,0.7823,0.8957
+4547,"lieber Späti als nie","Kreuzberg",40,14,0.823,0.9071
+5184,"Bäckerei Schäfer","Niederlehme",42,14,0.8243,0.8857
+5210,"Asia Supermarkt","Oberschöneweide",40,14,0.823,0.9071
+5978,"Edeka","Wedding",36,14,0.9122,0.9586

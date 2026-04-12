@@ -46,6 +46,14 @@ NEXT_PUBLIC_MAP_STYLE_URL=https://demotiles.maplibre.org/style.json
 
 Si no hay credenciales de Supabase, la app usa dataset mock para desarrollo.
 
+Para capa GPT (opcional pero recomendada para enriquecimiento):
+
+```bash
+OPENAI_API_KEY=
+OPENAI_MODEL=gpt-4.1-mini
+SUPABASE_ACCESS_TOKEN=
+```
+
 ## Observabilidad en Vercel
 
 La app incluye:
@@ -100,22 +108,34 @@ Fases:
 
 1. Importar y normalizar establecimientos reales (`berlin_establishment_stage` + `establishments`)
 2. Clasificar establecimientos en categorias internas (`app_categories` + `app_category_taxonomy`)
-3. Sembrar catalogo canonico (`canonical_products`)
-4. Generar candidatos por reglas (`source_type = rules_generated`)
-5. Generar candidatos por IA (`source_type = ai_generated`, con fallback heuristico si no hay `OPENAI_API_KEY`)
-6. Fusionar candidatos sin duplicados (`establishment_product_merged`)
-7. Materializar dataset de busqueda (`search_product_establishment_mv`)
+3. Enriquecer websites oficiales (`establishment_website_enrichment`)
+4. Sembrar catalogo canonico (`canonical_products`)
+5. Generar candidatos por reglas (`source_type = rules_generated`)
+6. Generar candidatos enriquecidos:
+   - `website_extracted` para señales directas de web/schema
+   - `ai_generated` solo si se usa modelo real
+   - fallback conservador como `rules_generated` (sin etiqueta engañosa)
+7. Fusionar candidatos sin duplicados (`establishment_product_merged`)
+8. Materializar dataset de busqueda (`search_product_establishment_mv`)
 
 Comandos:
 
 ```bash
 npm run import:berlin
 npm run classify:establishments
+npm run enrich:websites
 npm run seed:canonical-products
 npm run generate:rule-candidates
 npm run generate:ai-candidates
+npm run cleanup:legacy-ai
 npm run merge:candidates
 npm run build:search-dataset
+```
+
+Orquestacion completa:
+
+```bash
+npm run refresh:berlin
 ```
 
 Ejecucion por lotes y reanudacion:
@@ -123,9 +143,19 @@ Ejecucion por lotes y reanudacion:
 ```bash
 npm run import:berlin -- --batch-size=250 --resume
 npm run classify:establishments -- --batch-size=300 --resume
+npm run enrich:websites -- --batch-size=25 --stale-days=10 --resume
 npm run generate:rule-candidates -- --batch-size=350 --resume
 npm run generate:ai-candidates -- --batch-size=120 --resume
 npm run merge:candidates -- --batch-size=500 --resume
+```
+
+Reporte before/after de calidad (20-30 tiendas):
+
+```bash
+npm run audit:enrichment -- --mode=baseline --sample-size=25
+# correr refresh/enrichment
+npm run audit:enrichment -- --mode=after
+npm run audit:enrichment -- --mode=compare
 ```
 
 Checkpoint de estado:

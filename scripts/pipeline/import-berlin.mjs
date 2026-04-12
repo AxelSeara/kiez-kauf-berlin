@@ -309,8 +309,19 @@ with promoted as (
     website,
     phone,
     opening_hours,
+    opening_hours_osm,
+    opening_hours_source,
+    opening_hours_source_url,
+    opening_hours_last_checked_at,
+    opening_hours_confidence,
     description,
-    active_status
+    active_status,
+    source_url,
+    last_imported_at,
+    last_seen_at,
+    freshness_score,
+    is_closed_candidate,
+    closed_candidate_since
   )
   select
     s.external_source,
@@ -325,8 +336,28 @@ with promoted as (
     s.website,
     s.phone,
     s.opening_hours,
+    s.opening_hours,
+    case
+      when s.opening_hours is not null and btrim(s.opening_hours) <> '' then 'osm'
+      else null
+    end as opening_hours_source,
+    ('https://www.openstreetmap.org/' || s.external_id) as opening_hours_source_url,
+    case
+      when s.opening_hours is not null and btrim(s.opening_hours) <> '' then now()
+      else null
+    end as opening_hours_last_checked_at,
+    case
+      when s.opening_hours is not null and btrim(s.opening_hours) <> '' then 0.88
+      else null
+    end::numeric(5,4) as opening_hours_confidence,
     s.description,
-    s.active_status
+    s.active_status,
+    coalesce(s.website, ('https://www.openstreetmap.org/' || s.external_id)) as source_url,
+    now() as last_imported_at,
+    now() as last_seen_at,
+    0.9::numeric(5,4) as freshness_score,
+    false as is_closed_candidate,
+    null::timestamptz as closed_candidate_since
   from berlin_establishment_stage s
   where s.import_batch_id = ${sqlLiteral(batchId)}
     and s.is_useful = true
@@ -344,9 +375,32 @@ with promoted as (
     end,
     website = coalesce(excluded.website, establishments.website),
     phone = coalesce(excluded.phone, establishments.phone),
-    opening_hours = coalesce(excluded.opening_hours, establishments.opening_hours),
+    opening_hours = coalesce(establishments.opening_hours, excluded.opening_hours),
+    opening_hours_osm = coalesce(excluded.opening_hours_osm, establishments.opening_hours_osm),
+    opening_hours_source = case
+      when excluded.opening_hours_osm is not null and btrim(excluded.opening_hours_osm) <> '' then 'osm'
+      else establishments.opening_hours_source
+    end,
+    opening_hours_source_url = case
+      when excluded.opening_hours_osm is not null and btrim(excluded.opening_hours_osm) <> '' then excluded.opening_hours_source_url
+      else establishments.opening_hours_source_url
+    end,
+    opening_hours_last_checked_at = case
+      when excluded.opening_hours_osm is not null and btrim(excluded.opening_hours_osm) <> '' then now()
+      else establishments.opening_hours_last_checked_at
+    end,
+    opening_hours_confidence = case
+      when excluded.opening_hours_osm is not null and btrim(excluded.opening_hours_osm) <> '' then 0.88
+      else establishments.opening_hours_confidence
+    end,
     description = coalesce(establishments.description, excluded.description),
     active_status = excluded.active_status,
+    source_url = coalesce(establishments.source_url, excluded.source_url),
+    last_imported_at = now(),
+    last_seen_at = now(),
+    freshness_score = coalesce(establishments.freshness_score, excluded.freshness_score, 0.9),
+    is_closed_candidate = false,
+    closed_candidate_since = null,
     updated_at = now()
   returning id
 )
@@ -354,12 +408,46 @@ select count(*)::int as promoted_count from promoted;
 `;
 }
 
+function buildMarkMissingAsClosedCandidatesSql(batchId, graceDays) {
+  return `
+with seen as (
+  select external_source, external_id
+  from berlin_establishment_stage
+  where import_batch_id = ${sqlLiteral(batchId)}
+    and is_useful = true
+),
+updated as (
+  update establishments e
+  set
+    is_closed_candidate = true,
+    closed_candidate_since = coalesce(e.closed_candidate_since, now()),
+    active_status = case when e.active_status = 'active' then 'unknown'::active_status_enum else e.active_status end,
+    freshness_score = greatest(0.05, coalesce(e.freshness_score, 0.75) - 0.12),
+    updated_at = now()
+  where e.external_source = 'osm-overpass'
+    and not exists (
+      select 1
+      from seen s
+      where s.external_source = e.external_source
+        and s.external_id = e.external_id
+    )
+    and coalesce(e.last_seen_at, now() - interval '365 day') < now() - interval '${Number(graceDays)} day'
+  returning e.id
+)
+select count(*)::int as flagged_rows from updated;
+`;
+}
+
+const REFRESH_FRESHNESS_SQL = "select refresh_establishment_freshness_scores()::int as refreshed_rows;";
+
 async function main() {
   const args = parseArgs(process.argv);
   const batchSize = Number(args["batch-size"] ?? 250);
   const limit = args.limit ? Number(args.limit) : null;
   const offset = args.offset ? Number(args.offset) : 0;
   const resume = Boolean(args.resume);
+  const closeCandidateGraceDays = Number(args["close-candidate-grace-days"] ?? 21);
+  const markMissingArg = args["mark-missing"];
 
   await ensureDataDir();
 
@@ -436,11 +524,36 @@ async function main() {
   const promotedCount = Number(promoteResult.parsed.rows?.[0]?.promoted_count ?? 0);
   logInfo("Promoted stage rows into establishments", { promotedCount, batchId });
 
+  const canMarkMissing =
+    markMissingArg === true ||
+    markMissingArg === "true" ||
+    (markMissingArg !== "false" && !limit && startIndex === 0 && !resume);
+
+  let flaggedClosedCandidateCount = 0;
+  if (canMarkMissing) {
+    const closeResult = await runSupabaseQuery({
+      sql: buildMarkMissingAsClosedCandidatesSql(batchId, closeCandidateGraceDays),
+      output: "json"
+    });
+    flaggedClosedCandidateCount = Number(closeResult.parsed.rows?.[0]?.flagged_rows ?? 0);
+  } else {
+    logInfo("Skipped closed-candidate reconciliation (partial run or explicitly disabled)");
+  }
+
+  const freshnessResult = await runSupabaseQuery({
+    sql: REFRESH_FRESHNESS_SQL,
+    output: "json"
+  });
+  const refreshedRows = Number(freshnessResult.parsed.rows?.[0]?.refreshed_rows ?? 0);
+  logInfo("Refreshed establishment freshness scores", { refreshedRows });
+
   checkpoint.importBerlin = {
     batchId,
     nextIndex: startIndex + processed,
     totalSelected: sliced.length,
     promotedCount,
+    flaggedClosedCandidateCount,
+    refreshedRows,
     completed: true,
     updatedAt: new Date().toISOString()
   };
@@ -449,6 +562,8 @@ async function main() {
   logInfo("Phase 2 completed", {
     importedRows: processed,
     promotedCount,
+    flaggedClosedCandidateCount,
+    refreshedRows,
     batchId
   });
 }

@@ -42,7 +42,7 @@ function buildRulesSql(establishmentIds, generationMethod) {
 
   return `
 with target_establishments as (
-  select id, osm_category, app_categories
+  select id, osm_category, app_categories, source_url, freshness_score
   from establishments
   where id = any(${idsLiteral})
     and active_status = 'active'
@@ -96,7 +96,11 @@ upserted as (
     validation_notes,
     why_this_product_matches,
     category_path,
-    inferred_from
+    inferred_from,
+    source_url,
+    extraction_method,
+    last_checked_at,
+    freshness_score
   )
   select
     d.establishment_id,
@@ -113,8 +117,13 @@ upserted as (
       'rule_reason', d.reason,
       'app_category', d.app_category,
       'product_group', d.product_group
-    )
+    ),
+    e.source_url,
+    'rule_engine_mapping_v2',
+    now(),
+    coalesce(e.freshness_score, 0.7)
   from dedup d
+  join target_establishments e on e.id = d.establishment_id
   on conflict (establishment_id, canonical_product_id, source_type, generation_method)
   do update set
     confidence = excluded.confidence,
@@ -123,6 +132,10 @@ upserted as (
     why_this_product_matches = excluded.why_this_product_matches,
     category_path = excluded.category_path,
     inferred_from = excluded.inferred_from,
+    source_url = excluded.source_url,
+    extraction_method = excluded.extraction_method,
+    last_checked_at = excluded.last_checked_at,
+    freshness_score = excluded.freshness_score,
     updated_at = now()
   where establishment_product_candidates.validation_status not in ('validated', 'rejected')
   returning id

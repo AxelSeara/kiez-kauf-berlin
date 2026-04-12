@@ -12,10 +12,14 @@
     "import:berlin": "node scripts/pipeline/import-berlin.mjs",
     "classify:establishments": "node scripts/pipeline/classify-establishments.mjs",
     "seed:canonical-products": "node scripts/pipeline/seed-canonical-products.mjs",
+    "enrich:websites": "node scripts/pipeline/enrich-websites.mjs",
+    "cleanup:legacy-ai": "node scripts/pipeline/cleanup-legacy-ai-labels.mjs",
     "generate:rule-candidates": "node scripts/pipeline/generate-rule-candidates.mjs",
     "generate:ai-candidates": "node scripts/pipeline/generate-ai-candidates.mjs",
     "merge:candidates": "node scripts/pipeline/merge-candidates.mjs",
-    "build:search-dataset": "node scripts/pipeline/build-search-dataset.mjs"
+    "build:search-dataset": "node scripts/pipeline/build-search-dataset.mjs",
+    "refresh:berlin": "node scripts/pipeline/refresh-berlin.mjs",
+    "audit:enrichment": "node scripts/pipeline/audit-enrichment.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.103.0",

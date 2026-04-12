@@ -197,11 +197,14 @@ export function sqlLiteral(value) {
 
 export function sqlArray(values) {
   const safeValues = values.map((item) => {
-    const itemText = String(item ?? "").replace(/"/g, '\\"');
+    const itemText = String(item ?? "")
+      .replace(/\\/g, "\\\\")
+      .replace(/"/g, '\\"');
     return `"${itemText}"`;
   });
 
-  return `'${`{${safeValues.join(",")}}`}'::text[]`;
+  const literal = `{${safeValues.join(",")}}`.replace(/'/g, "''");
+  return `'${literal}'::text[]`;
 }
 
 export async function writeJsonFile(filePath, data) {
