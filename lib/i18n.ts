@@ -16,6 +16,9 @@ export type Dictionary = {
   goToResults: string;
   goToMap: string;
   noResults: string;
+  noResultsNearbyTemplate: string;
+  noResultsCatalogHint: string;
+  expandSearchButtonTemplate: string;
   openStore: string;
   routeAction: string;
   matchedProductLabel: string;
@@ -81,6 +84,10 @@ const dictionaries: Record<Locale, Dictionary> = {
     goToResults: "Zu Treffern",
     goToMap: "Zur Karte",
     noResults: "Nichts gefunden. Versuch ein anderes Wort oder mehr Radius.",
+    noResultsNearbyTemplate: "Nichts im aktuellen Radius. Nächster Treffer liegt bei etwa {distance}.",
+    noResultsCatalogHint:
+      "Scheint noch nicht in unserer Produktliste zu sein. Wir erweitern sie laufend, Stück für Stück.",
+    expandSearchButtonTemplate: "Auf {radius} km erweitern",
     openStore: "Filiale ansehen",
     routeAction: "Route",
     matchedProductLabel: "Produkt",
@@ -144,6 +151,10 @@ const dictionaries: Record<Locale, Dictionary> = {
     goToResults: "Jump to stores",
     goToMap: "Jump to map",
     noResults: "No matches nearby. Try another term or increase radius.",
+    noResultsNearbyTemplate: "Nothing in this radius. Closest match is around {distance}.",
+    noResultsCatalogHint:
+      "This one might not be in our product list yet. We are still adding items bit by bit.",
+    expandSearchButtonTemplate: "Expand to {radius} km",
     openStore: "Store details",
     routeAction: "Route",
     matchedProductLabel: "Product",
@@ -207,6 +218,10 @@ const dictionaries: Record<Locale, Dictionary> = {
     goToResults: "Ir a tiendas",
     goToMap: "Ir al mapa",
     noResults: "No hay resultados cerca. Prueba otro termino o mas radio.",
+    noResultsNearbyTemplate: "Nada en este radio. La tienda mas cercana esta a {distance}.",
+    noResultsCatalogHint:
+      "Puede que este producto aun no este en nuestra lista. La seguimos ampliando poco a poco.",
+    expandSearchButtonTemplate: "Ampliar a {radius} km",
     openStore: "Ver tienda",
     routeAction: "Ruta",
     matchedProductLabel: "Producto",
