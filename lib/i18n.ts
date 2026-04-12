@@ -31,6 +31,7 @@ export type Dictionary = {
   matchedProductLabel: string;
   storeCategoryLabel: string;
   confidenceLabel: string;
+  sourceLabel: string;
   validationLabel: string;
   whyMatchLabel: string;
   validationLikely: string;
@@ -49,6 +50,11 @@ export type Dictionary = {
   availabilityLowStock: string;
   availabilityUnknown: string;
   updatedLabel: string;
+  checkedLabel: string;
+  checkedToday: string;
+  checkedYesterday: string;
+  checkedDaysAgoTemplate: string;
+  checkedUnknown: string;
   centerLabel: string;
   languageLabel: string;
   themeLabel: string;
@@ -82,6 +88,7 @@ export type Dictionary = {
   clearRouteAction: string;
   routeLoadingLabel: string;
   routeError: string;
+  activeRouteLabel: string;
 };
 
 const dictionaries: Record<Locale, Dictionary> = {
@@ -117,6 +124,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     matchedProductLabel: "Produkt",
     storeCategoryLabel: "Kategorie",
     confidenceLabel: "Treffer-Sicherheit",
+    sourceLabel: "Quelle",
     validationLabel: "Datenstatus",
     whyMatchLabel: "Warum dieser Treffer",
     validationLikely: "Wahrscheinlich",
@@ -135,6 +143,11 @@ const dictionaries: Record<Locale, Dictionary> = {
     availabilityLowStock: "Wenig Bestand",
     availabilityUnknown: "Verfuegbarkeit unbekannt",
     updatedLabel: "Aktualisiert",
+    checkedLabel: "Geprueft",
+    checkedToday: "heute",
+    checkedYesterday: "gestern",
+    checkedDaysAgoTemplate: "vor {days} Tagen",
+    checkedUnknown: "ohne Datum",
     centerLabel: "Mitte",
     languageLabel: "Sprache",
     themeLabel: "Ansicht",
@@ -167,7 +180,8 @@ const dictionaries: Record<Locale, Dictionary> = {
     routeOnMapAction: "Route auf Karte",
     clearRouteAction: "Route entfernen",
     routeLoadingLabel: "Route wird geladen...",
-    routeError: "Route konnte gerade nicht geladen werden."
+    routeError: "Route konnte gerade nicht geladen werden.",
+    activeRouteLabel: "Aktive Route"
   },
   en: {
     appTitle: "KiezKauf Berlin",
@@ -201,6 +215,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     matchedProductLabel: "Product",
     storeCategoryLabel: "Category",
     confidenceLabel: "Confidence",
+    sourceLabel: "Source",
     validationLabel: "Data status",
     whyMatchLabel: "Why it matched",
     validationLikely: "Likely",
@@ -219,6 +234,11 @@ const dictionaries: Record<Locale, Dictionary> = {
     availabilityLowStock: "Low stock",
     availabilityUnknown: "Availability unknown",
     updatedLabel: "Updated",
+    checkedLabel: "Checked",
+    checkedToday: "today",
+    checkedYesterday: "yesterday",
+    checkedDaysAgoTemplate: "{days}d ago",
+    checkedUnknown: "no date",
     centerLabel: "Center",
     languageLabel: "Language",
     themeLabel: "Theme",
@@ -251,7 +271,8 @@ const dictionaries: Record<Locale, Dictionary> = {
     routeOnMapAction: "Route on map",
     clearRouteAction: "Clear route",
     routeLoadingLabel: "Loading route...",
-    routeError: "Could not load route right now."
+    routeError: "Could not load route right now.",
+    activeRouteLabel: "Active route"
   },
   es: {
     appTitle: "KiezKauf Berlin",
@@ -285,6 +306,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     matchedProductLabel: "Producto",
     storeCategoryLabel: "Categoria",
     confidenceLabel: "Confianza",
+    sourceLabel: "Fuente",
     validationLabel: "Estado",
     whyMatchLabel: "Por que sale",
     validationLikely: "Probable",
@@ -303,6 +325,11 @@ const dictionaries: Record<Locale, Dictionary> = {
     availabilityLowStock: "Queda poco",
     availabilityUnknown: "Disponibilidad desconocida",
     updatedLabel: "Actualizado",
+    checkedLabel: "Revisado",
+    checkedToday: "hoy",
+    checkedYesterday: "ayer",
+    checkedDaysAgoTemplate: "hace {days}d",
+    checkedUnknown: "sin fecha",
     centerLabel: "Centro",
     languageLabel: "Idioma",
     themeLabel: "Tema",
@@ -335,7 +362,8 @@ const dictionaries: Record<Locale, Dictionary> = {
     routeOnMapAction: "Ruta en mapa",
     clearRouteAction: "Quitar ruta",
     routeLoadingLabel: "Cargando ruta...",
-    routeError: "No se pudo cargar la ruta ahora."
+    routeError: "No se pudo cargar la ruta ahora.",
+    activeRouteLabel: "Ruta activa"
   }
 };
 

@@ -169,6 +169,64 @@ function formatValidation(dictionary: Dictionary, status: SearchResult["validati
   return dictionary.validationUnvalidated;
 }
 
+function formatConfidencePercent(confidence: number | null | undefined, unknownLabel: string) {
+  if (typeof confidence !== "number" || !Number.isFinite(confidence)) {
+    return unknownLabel;
+  }
+  return `${Math.round(confidence * 100)}%`;
+}
+
+function compactWhyText(value: string | null | undefined, maxLength = 130) {
+  if (!value) {
+    return "";
+  }
+  const normalized = value.replace(/\s+/g, " ").trim();
+  if (normalized.length <= maxLength) {
+    return normalized;
+  }
+  return `${normalized.slice(0, maxLength - 1)}...`;
+}
+
+function formatRelativeCheckedAt(
+  value: string | null | undefined,
+  dictionary: Pick<
+    Dictionary,
+    "checkedUnknown" | "checkedToday" | "checkedYesterday" | "checkedDaysAgoTemplate"
+  >
+) {
+  if (!value) {
+    return dictionary.checkedUnknown;
+  }
+  const timestamp = Date.parse(value);
+  if (!Number.isFinite(timestamp)) {
+    return dictionary.checkedUnknown;
+  }
+
+  const deltaDays = Math.floor((Date.now() - timestamp) / (1000 * 60 * 60 * 24));
+  if (deltaDays <= 0) {
+    return dictionary.checkedToday;
+  }
+  if (deltaDays === 1) {
+    return dictionary.checkedYesterday;
+  }
+  return applyTemplate(dictionary.checkedDaysAgoTemplate, { days: String(deltaDays) });
+}
+
+function formatSourceType(sourceType: SearchResult["sourceType"]) {
+  if (!sourceType) {
+    return "n/a";
+  }
+  const humanized = sourceType.replace(/_/g, " ");
+  return `${humanized.charAt(0).toUpperCase()}${humanized.slice(1)}`;
+}
+
+function validationToneClass(status: SearchResult["validationStatus"]) {
+  if (status === "validated") return "is-validated";
+  if (status === "likely") return "is-likely";
+  if (status === "rejected") return "is-rejected";
+  return "is-unvalidated";
+}
+
 function trackEvent(name: string, payload: Record<string, string | number | boolean | null>) {
   try {
     track(name, payload);
@@ -292,6 +350,7 @@ export function SearchExperience({
   const [geolocationPermission, setGeolocationPermission] = useState<GeolocationPermissionState>("unknown");
   const [locationMessage, setLocationMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [routeErrorMessage, setRouteErrorMessage] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
   const [noResultsGuidance, setNoResultsGuidance] = useState<NoResultsGuidance | null>(null);
   const [activeRoute, setActiveRoute] = useState<ActiveRoute | null>(null);
@@ -620,6 +679,9 @@ export function SearchExperience({
     if (errorMessage) {
       return errorMessage;
     }
+    if (routeErrorMessage) {
+      return routeErrorMessage;
+    }
     if (locationMessage) {
       return locationMessage;
     }
@@ -645,6 +707,7 @@ export function SearchExperience({
     hasSearched,
     isLoading,
     locationMessage,
+    routeErrorMessage,
     noResultsGuidance,
     results.length
   ]);
@@ -703,13 +766,31 @@ export function SearchExperience({
   const manualCenterEnabled =
     geolocationPermission === "denied" || geolocationPermission === "unsupported";
 
-  const activeRouteSummary = useMemo(() => {
+  const activeRouteStoreName = useMemo(() => {
+    if (!activeRoute) {
+      return null;
+    }
+    return results.find((result) => result.offer.id === activeRoute.offerId)?.store.name ?? null;
+  }, [activeRoute, results]);
+
+  const activeRouteLabel = useMemo(() => {
     if (!activeRoute) {
       return null;
     }
     const modeLabel = activeRoute.mode === "walk" ? dictionary.walkTimeLabel : dictionary.bikeTimeLabel;
-    return `${modeLabel} ${formatEtaLabel(dictionary.etaApproxLabel, activeRoute.durationMinutes)}`;
-  }, [activeRoute, dictionary.bikeTimeLabel, dictionary.etaApproxLabel, dictionary.walkTimeLabel]);
+    const etaLabel = formatEtaLabel(dictionary.etaApproxLabel, activeRoute.durationMinutes);
+    if (activeRouteStoreName) {
+      return `${dictionary.activeRouteLabel}: ${activeRouteStoreName} · ${modeLabel} ${etaLabel}`;
+    }
+    return `${dictionary.activeRouteLabel}: ${modeLabel} ${etaLabel}`;
+  }, [
+    activeRoute,
+    activeRouteStoreName,
+    dictionary.activeRouteLabel,
+    dictionary.bikeTimeLabel,
+    dictionary.etaApproxLabel,
+    dictionary.walkTimeLabel
+  ]);
 
   const estimateTravel = useCallback(
     (distanceMeters: number) => {
@@ -753,6 +834,7 @@ export function SearchExperience({
     }
     setQuery(trimmed);
     setErrorMessage(null);
+    setRouteErrorMessage(null);
     pulse(8);
     trackEvent("search_quick_term", {
       source,
@@ -788,6 +870,7 @@ export function SearchExperience({
     pulse(8);
     setIsLoading(true);
     setErrorMessage(null);
+    setRouteErrorMessage(null);
     setActiveRoute(null);
     setRouteLoadingKey(null);
     setNoResultsGuidance(null);
@@ -959,6 +1042,7 @@ export function SearchExperience({
 
     if (isActiveSameRoute) {
       setActiveRoute(null);
+      setRouteErrorMessage(null);
       trackEvent("route_clear_on_map", {
         offer_id: result.offer.id,
         mode
@@ -970,6 +1054,7 @@ export function SearchExperience({
     const requestId = routeRequestIdRef.current;
     setRouteLoadingKey(routeKey);
     setErrorMessage(null);
+    setRouteErrorMessage(null);
 
     try {
       const params = new URLSearchParams({
@@ -1005,6 +1090,7 @@ export function SearchExperience({
       setLocationMessage(
         `${dictionary.routeOnMapAction}: ${mode === "walk" ? dictionary.walkTimeLabel : dictionary.bikeTimeLabel} ${formatEtaLabel(dictionary.etaApproxLabel, durationMinutes)}`
       );
+      setRouteErrorMessage(null);
       trackEvent("route_on_map_success", {
         offer_id: result.offer.id,
         mode,
@@ -1019,7 +1105,7 @@ export function SearchExperience({
       if (DEV_DEBUG) {
         console.error("[route-on-map] failed to draw route", error);
       }
-      setErrorMessage(dictionary.routeError);
+      setRouteErrorMessage(dictionary.routeError);
       trackEvent("route_on_map_error", {
         offer_id: result.offer.id,
         mode
@@ -1189,8 +1275,32 @@ export function SearchExperience({
       <section id="map" className="space-y-1.5 md:space-y-2">
         <div className="hand-divider flex items-end justify-between pb-2">
           <h2 className="note-title">{dictionary.mapTitle}</h2>
-          <p className="status-text">{activeRouteSummary ?? resultSummary}</p>
+          <p className="status-text">{resultSummary}</p>
         </div>
+        {(routeLoadingKey || activeRouteLabel || routeErrorMessage) && (
+          <div className="route-status-row" role="status" aria-live="polite" aria-atomic="true">
+            {routeLoadingKey ? <span className="route-status-chip is-loading">{dictionary.routeLoadingLabel}</span> : null}
+            {!routeLoadingKey && activeRouteLabel ? (
+              <span className="route-status-chip is-active">{activeRouteLabel}</span>
+            ) : null}
+            {!routeLoadingKey && routeErrorMessage ? (
+              <span className="route-status-chip is-error">{routeErrorMessage}</span>
+            ) : null}
+            {activeRoute ? (
+              <button
+                type="button"
+                className="btn-ghost route-status-clear-btn px-2.5 py-1.5 text-[0.72rem]"
+                onClick={() => {
+                  setActiveRoute(null);
+                  setRouteErrorMessage(null);
+                  pulse(8);
+                }}
+              >
+                {dictionary.clearRouteAction}
+              </button>
+            ) : null}
+          </div>
+        )}
         <LocalMap
           center={safeCenter}
           results={results}
@@ -1304,6 +1414,11 @@ export function SearchExperience({
                           <UiIcon kind="bike" className="store-summary-icon" />
                           {travel.bikeMin}m
                         </span>
+                        {result.validationStatus ? (
+                          <span className={`store-summary-badge ${validationToneClass(result.validationStatus)}`}>
+                            {formatValidation(dictionary, result.validationStatus)}
+                          </span>
+                        ) : null}
                         <span className="store-summary-caret" aria-hidden="true">
                           <svg viewBox="0 0 20 20">
                             <path d="M5 7.5L10 12.5L15 7.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
@@ -1330,18 +1445,34 @@ export function SearchExperience({
                           {dictionary.walkTimeLabel}: {travel.walkLabel} · {dictionary.bikeTimeLabel}: {travel.bikeLabel}
                         </span>
                       </p>
-                      {result.validationStatus ? (
-                        <p className="store-detail-line">
-                          <UiIcon kind="validation" className="store-detail-icon" />
-                          <span>
+                      <div className="store-meta-wrap">
+                        <span className="store-meta-chip">
+                          {dictionary.confidenceLabel}: {formatConfidencePercent(result.confidence, dictionary.unknownConfidence)}
+                        </span>
+                        <span className="store-meta-chip">
+                          {dictionary.sourceLabel}: {formatSourceType(result.sourceType)}
+                        </span>
+                        <span className="store-meta-chip">
+                          {dictionary.checkedLabel}:{" "}
+                          {formatRelativeCheckedAt(result.lastCheckedAt, {
+                            checkedUnknown: dictionary.checkedUnknown,
+                            checkedToday: dictionary.checkedToday,
+                            checkedYesterday: dictionary.checkedYesterday,
+                            checkedDaysAgoTemplate: dictionary.checkedDaysAgoTemplate
+                          })}
+                        </span>
+                        {result.validationStatus ? (
+                          <span className={`store-meta-chip ${validationToneClass(result.validationStatus)}`}>
                             {dictionary.validationLabel}: {formatValidation(dictionary, result.validationStatus)}
                           </span>
-                        </p>
-                      ) : null}
+                        ) : null}
+                      </div>
                       {result.whyThisProductMatches ? (
                         <p className="store-detail-line">
                           <UiIcon kind="note" className="store-detail-icon" />
-                          <span>{result.whyThisProductMatches}</span>
+                          <span>
+                            {dictionary.whyMatchLabel}: {compactWhyText(result.whyThisProductMatches)}
+                          </span>
                         </p>
                       ) : null}
                       <div className="mt-1.5 flex flex-wrap gap-1.5">

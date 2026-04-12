@@ -80,6 +80,7 @@ type JoinedRow = {
   confidence?: number | null;
   validationStatus?: SearchResult["validationStatus"];
   whyThisProductMatches?: string | null;
+  lastCheckedAt?: string | null;
   sourceType?: SearchResult["sourceType"];
 };
 
@@ -133,6 +134,7 @@ type SupabaseSearchDatasetRow = {
   confidence: number;
   validation_status: SearchResult["validationStatus"];
   why_this_product_matches: string | null;
+  candidate_last_checked_at?: string | null;
   updated_at: string;
   establishment_name: string;
   address: string;
@@ -472,6 +474,7 @@ function rankResults(rows: JoinedRow[], args: { query: string; lat: number; lng:
         confidence: row.confidence ?? null,
         validationStatus: row.validationStatus ?? null,
         whyThisProductMatches: row.whyThisProductMatches ?? null,
+        lastCheckedAt: row.lastCheckedAt ?? row.offer.updatedAt,
         sourceType: row.sourceType ?? null
       };
     })
@@ -627,7 +630,7 @@ async function searchSupabaseRowsFromDataset(args: {
     db
       .from("search_product_establishment_dataset")
       .select(
-        "establishment_id, canonical_product_id, source_type, confidence, validation_status, why_this_product_matches, updated_at, establishment_name, address, district, lat, lon, osm_category, app_categories, product_normalized_name, product_group"
+        "establishment_id, canonical_product_id, source_type, confidence, validation_status, why_this_product_matches, updated_at, establishment_name, address, district, lat, lon, osm_category, app_categories, product_normalized_name, product_group, candidate_last_checked_at"
       )
       .gte("lat", bounds.minLat)
       .lte("lat", bounds.maxLat)
@@ -752,6 +755,7 @@ async function searchSupabaseRowsFromDataset(args: {
       confidence: row.confidence,
       validationStatus: row.validation_status,
       whyThisProductMatches: row.why_this_product_matches,
+      lastCheckedAt: row.candidate_last_checked_at ?? row.updated_at ?? null,
       sourceType: row.source_type
     } satisfies JoinedRow);
   }

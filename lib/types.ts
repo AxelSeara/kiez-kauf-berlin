@@ -38,6 +38,7 @@ export type SearchResult = {
   confidence?: number | null;
   validationStatus?: "unvalidated" | "likely" | "validated" | "rejected" | null;
   whyThisProductMatches?: string | null;
+  lastCheckedAt?: string | null;
   sourceType?:
     | "imported"
     | "rules_generated"

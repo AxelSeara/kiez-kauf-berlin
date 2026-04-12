@@ -327,6 +327,11 @@ button {
   border-color: var(--line);
 }
 
+.btn-ghost.is-active {
+  border-color: var(--ink);
+  background: color-mix(in srgb, var(--surface-soft) 86%, var(--ink) 14%);
+}
+
 .btn-icon {
   display: inline-flex;
   align-items: center;
@@ -491,6 +496,47 @@ button {
 .no-results-box {
   border: 1px solid var(--line);
   color: var(--ink-soft);
+}
+
+.route-status-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.38rem;
+}
+
+.route-status-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.18rem 0.56rem;
+  font-size: 0.66rem;
+  color: var(--ink-soft);
+  font-family: var(--font-mono), "Courier New", monospace;
+  line-height: 1.22;
+}
+
+.route-status-chip.is-loading {
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.route-status-chip.is-active {
+  border-color: var(--line-strong);
+  color: var(--ink);
+  background: color-mix(in srgb, var(--surface-soft) 88%, var(--ink) 12%);
+}
+
+.route-status-chip.is-error {
+  border-color: color-mix(in srgb, var(--danger-ink) 52%, var(--line) 48%);
+  color: var(--danger-ink);
+  background: color-mix(in srgb, var(--danger-ink) 12%, var(--surface) 88%);
+}
+
+.route-status-clear-btn {
+  min-height: 30px;
+  border-color: var(--line-strong);
 }
 
 .ink-rule {
@@ -840,6 +886,43 @@ button {
   gap: 0.34rem;
 }
 
+.store-summary-badge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.12rem 0.42rem;
+  font-size: 0.61rem;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  line-height: 1.1;
+}
+
+.store-summary-badge.is-validated,
+.store-meta-chip.is-validated {
+  border-color: color-mix(in srgb, var(--ink) 52%, var(--line) 48%);
+  color: var(--ink);
+}
+
+.store-summary-badge.is-likely,
+.store-meta-chip.is-likely {
+  border-color: var(--line-strong);
+  color: var(--ink-soft);
+}
+
+.store-summary-badge.is-rejected,
+.store-meta-chip.is-rejected {
+  border-color: color-mix(in srgb, var(--danger-ink) 52%, var(--line) 48%);
+  color: var(--danger-ink);
+}
+
+.store-summary-badge.is-unvalidated,
+.store-meta-chip.is-unvalidated {
+  border-color: var(--line);
+  color: var(--ink-muted);
+}
+
 .store-summary-icon {
   width: 0.78rem;
   height: 0.78rem;
@@ -887,6 +970,25 @@ button {
   margin-top: 0.14rem;
   color: var(--ink-muted);
   flex: 0 0 auto;
+}
+
+.store-meta-wrap {
+  margin-top: 0.34rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.store-meta-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.14rem 0.46rem;
+  font-size: 0.65rem;
+  color: var(--ink-soft);
+  font-family: var(--font-mono), "Courier New", monospace;
+  line-height: 1.2;
 }
 
 .result-enter {
@@ -1237,6 +1339,11 @@ button {
     gap: 0.22rem;
   }
 
+  .store-summary-badge {
+    font-size: 0.56rem;
+    padding: 0.1rem 0.34rem;
+  }
+
   .store-summary-icon {
     width: 0.72rem;
     height: 0.72rem;
@@ -1261,6 +1368,16 @@ button {
     width: 0.7rem;
     height: 0.7rem;
     margin-top: 0.12rem;
+  }
+
+  .store-meta-wrap {
+    gap: 0.24rem;
+    margin-top: 0.3rem;
+  }
+
+  .store-meta-chip {
+    font-size: 0.61rem;
+    padding: 0.12rem 0.4rem;
   }
 
   .map-popup {
