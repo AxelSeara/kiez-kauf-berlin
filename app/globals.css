@@ -393,6 +393,23 @@ button {
   height: 42px;
 }
 
+.quick-intents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.36rem;
+}
+
+.quick-intent-chip {
+  min-height: 30px;
+  border-color: var(--line-strong);
+  color: var(--ink-soft);
+  background: var(--surface);
+}
+
+.quick-intent-chip:hover {
+  color: var(--ink);
+}
+
 @media (min-width: 768px) {
   .search-action-row {
     display: contents;
@@ -1161,6 +1178,10 @@ button {
   .search-action-row .btn-icon.search-action-btn {
     width: 44px;
     height: 44px;
+  }
+
+  .quick-intent-chip {
+    min-height: 36px;
   }
 
   .range-input::-webkit-slider-runnable-track {

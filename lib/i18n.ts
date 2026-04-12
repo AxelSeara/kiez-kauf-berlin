@@ -4,8 +4,13 @@ export type Dictionary = {
   appTitle: string;
   appSubtitle: string;
   searchPlaceholder: string;
+  searchHint: string;
   radiusLabel: string;
   searchButton: string;
+  quickIntentLabel: string;
+  quickIntentPharmacy: string;
+  quickIntentHardware: string;
+  quickIntentSpati: string;
   useMyLocation: string;
   addressSectionTitle: string;
   locationFallbackLabel: string;
@@ -18,6 +23,8 @@ export type Dictionary = {
   noResults: string;
   noResultsNearbyTemplate: string;
   noResultsCatalogHint: string;
+  noResultsRefineHint: string;
+  noResultsSuggestionLabel: string;
   expandSearchButtonTemplate: string;
   openStore: string;
   routeAction: string;
@@ -82,8 +89,13 @@ const dictionaries: Record<Locale, Dictionary> = {
     appTitle: "KiezKauf Berlin",
     appSubtitle: "Produkte schnell im Kiez finden.",
     searchPlaceholder: "Produkt suchen (z. B. Hafermilch 1L)",
+    searchHint: "Kurz und konkret suchen. Wir finden passende Laeden in der Naehe.",
     radiusLabel: "Radius",
     searchButton: "Suchen",
+    quickIntentLabel: "Schnellzugriff",
+    quickIntentPharmacy: "Apotheke",
+    quickIntentHardware: "Baumarkt",
+    quickIntentSpati: "Spaeti Basics",
     useMyLocation: "Standort",
     addressSectionTitle: "Adresse",
     locationFallbackLabel: "Ohne GPS",
@@ -97,6 +109,8 @@ const dictionaries: Record<Locale, Dictionary> = {
     noResultsNearbyTemplate: "Nichts im aktuellen Radius. Nächster Treffer liegt bei etwa {distance}.",
     noResultsCatalogHint:
       "Scheint noch nicht in unserer Produktliste zu sein. Wir erweitern sie laufend, Stück für Stück.",
+    noResultsRefineHint: "Kein Treffer? Probier eine einfache Alternative:",
+    noResultsSuggestionLabel: "Zum Testen:",
     expandSearchButtonTemplate: "Auf {radius} km erweitern",
     openStore: "Filiale ansehen",
     routeAction: "Route",
@@ -159,8 +173,13 @@ const dictionaries: Record<Locale, Dictionary> = {
     appTitle: "KiezKauf Berlin",
     appSubtitle: "Find products in nearby local shops.",
     searchPlaceholder: "Search a product (e.g. oat milk 1L)",
+    searchHint: "Keep it short and direct. We will map nearby shops fast.",
     radiusLabel: "Radius",
     searchButton: "Search",
+    quickIntentLabel: "Quick intents",
+    quickIntentPharmacy: "pharmacy",
+    quickIntentHardware: "hardware",
+    quickIntentSpati: "spaeti essentials",
     useMyLocation: "Use my location",
     addressSectionTitle: "Address",
     locationFallbackLabel: "Without GPS",
@@ -174,6 +193,8 @@ const dictionaries: Record<Locale, Dictionary> = {
     noResultsNearbyTemplate: "Nothing in this radius. Closest match is around {distance}.",
     noResultsCatalogHint:
       "This one might not be in our product list yet. We are still adding items bit by bit.",
+    noResultsRefineHint: "No match yet? Try a simpler term:",
+    noResultsSuggestionLabel: "Try:",
     expandSearchButtonTemplate: "Expand to {radius} km",
     openStore: "Store details",
     routeAction: "Route",
@@ -236,8 +257,13 @@ const dictionaries: Record<Locale, Dictionary> = {
     appTitle: "KiezKauf Berlin",
     appSubtitle: "Encuentra productos en tiendas cercanas.",
     searchPlaceholder: "Busca un producto (ej. leche de avena 1L)",
+    searchHint: "Busca en corto y directo. Te mostramos tiendas cercanas rapido.",
     radiusLabel: "Radio",
     searchButton: "Buscar",
+    quickIntentLabel: "Atajos",
+    quickIntentPharmacy: "farmacia",
+    quickIntentHardware: "ferreteria",
+    quickIntentSpati: "basicos spaeti",
     useMyLocation: "Mi ubicacion",
     addressSectionTitle: "Direccion",
     locationFallbackLabel: "Sin GPS",
@@ -251,6 +277,8 @@ const dictionaries: Record<Locale, Dictionary> = {
     noResultsNearbyTemplate: "Nada en este radio. La tienda mas cercana esta a {distance}.",
     noResultsCatalogHint:
       "Puede que este producto aun no este en nuestra lista. La seguimos ampliando poco a poco.",
+    noResultsRefineHint: "Sin resultados? Prueba una forma mas simple:",
+    noResultsSuggestionLabel: "Prueba:",
     expandSearchButtonTemplate: "Ampliar a {radius} km",
     openStore: "Ver tienda",
     routeAction: "Ruta",

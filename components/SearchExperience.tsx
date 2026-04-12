@@ -299,6 +299,7 @@ export function SearchExperience({
   const [themeMode, setThemeMode] = useState<"light" | "dark">("light");
   const lastHapticAtRef = useRef(0);
   const searchAbortRef = useRef<AbortController | null>(null);
+  const radiusAutoSearchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const searchRequestIdRef = useRef(0);
   const routeRequestIdRef = useRef(0);
   const loggedMalformedResultKeysRef = useRef<Set<string>>(new Set());
@@ -690,6 +691,15 @@ export function SearchExperience({
     });
   }, [dictionary.expandSearchButtonTemplate, quickExpandRadiusKm]);
 
+  const quickIntentTerms = useMemo(
+    () => [
+      dictionary.quickIntentPharmacy,
+      dictionary.quickIntentHardware,
+      dictionary.quickIntentSpati
+    ],
+    [dictionary.quickIntentHardware, dictionary.quickIntentPharmacy, dictionary.quickIntentSpati]
+  );
+
   const manualCenterEnabled =
     geolocationPermission === "denied" || geolocationPermission === "unsupported";
 
@@ -719,6 +729,10 @@ export function SearchExperience({
     return () => {
       searchRequestIdRef.current += 1;
       searchAbortRef.current?.abort();
+      if (radiusAutoSearchTimeoutRef.current) {
+        clearTimeout(radiusAutoSearchTimeoutRef.current);
+        radiusAutoSearchTimeoutRef.current = null;
+      }
     };
   }, []);
 
@@ -732,11 +746,36 @@ export function SearchExperience({
     }
   }, [activeRoute, results]);
 
-  async function runSearch(options?: { overrideRadiusKm?: number }) {
-    if (!query.trim()) {
+  function triggerQuickIntentSearch(term: string, source: "quick_intent" | "no_results") {
+    const trimmed = term.trim();
+    if (!trimmed) {
+      return;
+    }
+    setQuery(trimmed);
+    setErrorMessage(null);
+    pulse(8);
+    trackEvent("search_quick_term", {
+      source,
+      term: normalizeQueryForAnalytics(trimmed)
+    });
+    void runSearch({ overrideQuery: trimmed });
+  }
+
+  async function runSearch(options?: { overrideRadiusKm?: number; overrideQuery?: string }) {
+    const effectiveQuery = (options?.overrideQuery ?? query).trim();
+    if (!effectiveQuery) {
       setErrorMessage(dictionary.queryRequiredError);
       pulse(18);
       return;
+    }
+
+    if (options?.overrideQuery && options.overrideQuery !== query) {
+      setQuery(options.overrideQuery);
+    }
+
+    if (radiusAutoSearchTimeoutRef.current) {
+      clearTimeout(radiusAutoSearchTimeoutRef.current);
+      radiusAutoSearchTimeoutRef.current = null;
     }
 
     const effectiveRadiusKm = clampRadiusKm(options?.overrideRadiusKm ?? radiusKm);
@@ -753,16 +792,16 @@ export function SearchExperience({
     setRouteLoadingKey(null);
     setNoResultsGuidance(null);
     const startedAt = typeof performance !== "undefined" ? performance.now() : Date.now();
-    const queryForAnalytics = normalizeQueryForAnalytics(query);
+    const queryForAnalytics = normalizeQueryForAnalytics(effectiveQuery);
     trackEvent("search_submit", {
-      query_length: query.trim().length,
+      query_length: effectiveQuery.length,
       radius_km: Number(effectiveRadiusKm.toFixed(1)),
       query_normalized: queryForAnalytics || null
     });
 
     const fetchSearchPayload = async (radiusKm: number) => {
       const params = new URLSearchParams({
-        q: query,
+        q: effectiveQuery,
         lat: String(safeCenter.lat),
         lng: String(safeCenter.lng),
         radius: String(Math.round(radiusKm * 1000))
@@ -900,6 +939,10 @@ export function SearchExperience({
   function expandSearchTo(radiusToUse: number, source: "no_results" | "results_list") {
     const nextRadiusKm = clampRadiusKm(radiusToUse);
     setRadiusKm(nextRadiusKm);
+    if (radiusAutoSearchTimeoutRef.current) {
+      clearTimeout(radiusAutoSearchTimeoutRef.current);
+      radiusAutoSearchTimeoutRef.current = null;
+    }
     pulse(8);
     trackEvent("search_expand_radius_click", {
       from_km: Number(radiusKm.toFixed(1)),
@@ -1004,6 +1047,7 @@ export function SearchExperience({
               <UiIcon kind="search" className="search-input-icon" />
               <input
                 id="search-query-input"
+                autoFocus
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 onKeyDown={(event) => {
@@ -1071,6 +1115,22 @@ export function SearchExperience({
                 </span>
               </button>
             </div>
+            <p className="status-text md:col-span-3">{dictionary.searchHint}</p>
+            <div className="quick-intents md:col-span-3" aria-label={dictionary.quickIntentLabel}>
+              {quickIntentTerms.map((term) => (
+                <button
+                  key={term}
+                  type="button"
+                  className="btn-ghost quick-intent-chip px-2.5 py-1.5 text-[0.72rem]"
+                  onClick={() => {
+                    triggerQuickIntentSearch(term, "quick_intent");
+                  }}
+                  disabled={isLoading}
+                >
+                  {term}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -1092,6 +1152,15 @@ export function SearchExperience({
               const next = Number(event.target.value);
               if (!Number.isNaN(next)) {
                 setRadiusKm(next);
+                if (radiusAutoSearchTimeoutRef.current) {
+                  clearTimeout(radiusAutoSearchTimeoutRef.current);
+                  radiusAutoSearchTimeoutRef.current = null;
+                }
+                if (hasSearched && query.trim()) {
+                  radiusAutoSearchTimeoutRef.current = setTimeout(() => {
+                    void runSearch({ overrideRadiusKm: next });
+                  }, 420);
+                }
               }
             }}
             onPointerUp={() => pulse(7)}
@@ -1164,6 +1233,23 @@ export function SearchExperience({
                 {expandSearchButtonLabel}
               </button>
             ) : null}
+            <p className="status-text mt-2">{dictionary.noResultsRefineHint}</p>
+            <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+              <span className="status-text">{dictionary.noResultsSuggestionLabel}</span>
+              {quickIntentTerms.map((term) => (
+                <button
+                  key={`no-results-${term}`}
+                  type="button"
+                  className="btn-ghost quick-intent-chip px-2.5 py-1.5 text-[0.72rem]"
+                  onClick={() => {
+                    triggerQuickIntentSearch(term, "no_results");
+                  }}
+                  disabled={isLoading}
+                >
+                  {term}
+                </button>
+              ))}
+            </div>
           </div>
         ) : null}
 
