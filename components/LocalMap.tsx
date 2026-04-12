@@ -346,17 +346,35 @@ export function LocalMap({
     if (!map || !maplibregl || !mapReady) {
       return;
     }
+    const safeCenterLat = safeCenter.lat;
+    const safeCenterLng = safeCenter.lng;
 
-    if (!userMarkerRef.current) {
-      const userMarkerElement = createPinElement("user", 0);
-      userMarkerElement.addEventListener("click", () => triggerHaptic(7));
+    try {
+      if (!userMarkerRef.current) {
+        const userMarkerElement = createPinElement("user", 0);
+        userMarkerElement.addEventListener("click", () => triggerHaptic(7));
 
-      userMarkerRef.current = new maplibregl.Marker({ element: userMarkerElement, anchor: "bottom" }).addTo(map);
+        const marker = new maplibregl.Marker({ element: userMarkerElement, anchor: "bottom" });
+        marker
+          .setLngLat([safeCenterLng, safeCenterLat])
+          .setPopup(new maplibregl.Popup({ closeButton: false }).setText(userMarkerLabel))
+          .addTo(map);
+        userMarkerRef.current = marker;
+        return;
+      }
+
+      userMarkerRef.current
+        .setLngLat([safeCenterLng, safeCenterLat])
+        .setPopup(new maplibregl.Popup({ closeButton: false }).setText(userMarkerLabel));
+    } catch (userMarkerError) {
+      if (DEV_DEBUG) {
+        console.error("[map-data-guard] User marker update failed", {
+          userMarkerError,
+          safeCenterLat,
+          safeCenterLng
+        });
+      }
     }
-
-    userMarkerRef.current
-      .setLngLat([safeCenter.lng, safeCenter.lat])
-      .setPopup(new maplibregl.Popup({ closeButton: false }).setText(userMarkerLabel));
   }, [safeCenter.lat, safeCenter.lng, userMarkerLabel, mapReady]);
 
   useEffect(() => {
