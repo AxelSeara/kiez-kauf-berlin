@@ -24,6 +24,16 @@ type RouteApiPayload = {
   fallback?: boolean;
 };
 
+type SearchCacheEntry = {
+  payload: SearchPayload;
+  savedAt: number;
+};
+
+type RouteCacheEntry = {
+  payload: RouteApiPayload;
+  savedAt: number;
+};
+
 type ActiveRoute = {
   offerId: string;
   mode: RouteMode;
@@ -52,6 +62,8 @@ const BERLIN_FALLBACK_CENTER = { lat: 52.5208, lng: 13.4094 };
 const MIN_RADIUS_KM = 0.5;
 const MAX_RADIUS_KM = 15;
 const RADIUS_STEP_KM = 0.5;
+const SEARCH_CACHE_TTL_MS = 1000 * 60;
+const ROUTE_CACHE_TTL_MS = 1000 * 60 * 5;
 const DEV_DEBUG = process.env.NODE_ENV !== "production";
 
 function isFiniteCoordinate(value: unknown): value is number {
@@ -227,6 +239,36 @@ function validationToneClass(status: SearchResult["validationStatus"]) {
   return "is-unvalidated";
 }
 
+function buildSearchCacheKey(args: {
+  query: string;
+  lat: number;
+  lng: number;
+  radiusKm: number;
+}) {
+  return [
+    normalizeQueryForAnalytics(args.query),
+    args.lat.toFixed(5),
+    args.lng.toFixed(5),
+    args.radiusKm.toFixed(2)
+  ].join("|");
+}
+
+function buildRouteCacheKey(args: {
+  mode: RouteMode;
+  originLat: number;
+  originLng: number;
+  destinationLat: number;
+  destinationLng: number;
+}) {
+  return [
+    args.mode,
+    args.originLat.toFixed(5),
+    args.originLng.toFixed(5),
+    args.destinationLat.toFixed(5),
+    args.destinationLng.toFixed(5)
+  ].join("|");
+}
+
 function trackEvent(name: string, payload: Record<string, string | number | boolean | null>) {
   try {
     track(name, payload);
@@ -250,7 +292,7 @@ function UiIcon({
   kind,
   className
 }: {
-  kind: "search" | "distance" | "product" | "category" | "validation" | "note" | "walk" | "bike";
+  kind: "search" | "distance" | "product" | "category" | "validation" | "note" | "walk" | "bike" | "hours";
   className?: string;
 }) {
   const commonProps = {
@@ -303,6 +345,15 @@ function UiIcon({
     return (
       <svg aria-hidden="true" viewBox="0 0 24 24" className={className ?? "h-4 w-4"}>
         <path d="M20 7L9.5 17.5 4 12" {...commonProps} />
+      </svg>
+    );
+  }
+
+  if (kind === "hours") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 24 24" className={className ?? "h-4 w-4"}>
+        <circle cx="12" cy="12" r="8" {...commonProps} />
+        <path d="M12 7.5v5l3 2" {...commonProps} />
       </svg>
     );
   }
@@ -363,6 +414,8 @@ export function SearchExperience({
   const routeRequestIdRef = useRef(0);
   const loggedMalformedResultKeysRef = useRef<Set<string>>(new Set());
   const loggedInvalidCenterRef = useRef(false);
+  const searchCacheRef = useRef<Map<string, SearchCacheEntry>>(new Map());
+  const routeCacheRef = useRef<Map<string, RouteCacheEntry>>(new Map());
 
   const safeCenter = useMemo(
     () => (isValidCenterPoint(center) ? center : safeInitialCenter),
@@ -409,7 +462,10 @@ export function SearchExperience({
     setRouteErrorMessage(null);
     setErrorMessage(null);
     setLocationMessage(nextLocationMessage);
-  }, []);
+    trackEvent("search_reset_for_location_change", {
+      had_results: results.length > 0
+    });
+  }, [results.length]);
 
   const requestBrowserLocation = useCallback((options?: { auto?: boolean }) => {
     const isAutoRequest = options?.auto === true;
@@ -813,6 +869,9 @@ export function SearchExperience({
   );
 
   useEffect(() => {
+    const searchCache = searchCacheRef.current;
+    const routeCache = routeCacheRef.current;
+
     return () => {
       searchRequestIdRef.current += 1;
       searchAbortRef.current?.abort();
@@ -820,6 +879,8 @@ export function SearchExperience({
         clearTimeout(radiusAutoSearchTimeoutRef.current);
         radiusAutoSearchTimeoutRef.current = null;
       }
+      searchCache.clear();
+      routeCache.clear();
     };
   }, []);
 
@@ -889,6 +950,21 @@ export function SearchExperience({
     });
 
     const fetchSearchPayload = async (radiusKm: number) => {
+      const cacheKey = buildSearchCacheKey({
+        query: effectiveQuery,
+        lat: safeCenter.lat,
+        lng: safeCenter.lng,
+        radiusKm
+      });
+      const cached = searchCacheRef.current.get(cacheKey);
+      if (cached && Date.now() - cached.savedAt < SEARCH_CACHE_TTL_MS) {
+        trackEvent("search_cache_hit", {
+          radius_km: Number(radiusKm.toFixed(1)),
+          query_normalized: queryForAnalytics || null
+        });
+        return cached.payload;
+      }
+
       const params = new URLSearchParams({
         q: effectiveQuery,
         lat: String(safeCenter.lat),
@@ -903,7 +979,18 @@ export function SearchExperience({
         throw new Error(`Search failed with status ${response.status}`);
       }
 
-      return (await response.json()) as SearchPayload;
+      const payload = (await response.json()) as SearchPayload;
+      searchCacheRef.current.set(cacheKey, {
+        payload,
+        savedAt: Date.now()
+      });
+      if (searchCacheRef.current.size > 80) {
+        const oldestKey = searchCacheRef.current.keys().next().value;
+        if (oldestKey) {
+          searchCacheRef.current.delete(oldestKey);
+        }
+      }
+      return payload;
     };
 
     const sanitizeResults = (rawResults: unknown[], radiusKm: number) => {
@@ -985,6 +1072,22 @@ export function SearchExperience({
       setResults(primaryResults);
       setHasSearched(true);
       setNoResultsGuidance(guidance);
+      const withOpeningHours = primaryResults.filter(
+        (result) => typeof result.store.openingHours === "string" && result.store.openingHours.trim().length > 0
+      ).length;
+      const validatedCount = primaryResults.filter((result) => result.validationStatus === "validated").length;
+      const likelyCount = primaryResults.filter((result) => result.validationStatus === "likely").length;
+      const avgConfidence =
+        primaryResults.length > 0
+          ? Number(
+              (
+                primaryResults.reduce(
+                  (sum, result) => sum + (typeof result.confidence === "number" ? result.confidence : 0),
+                  0
+                ) / primaryResults.length
+              ).toFixed(3)
+            )
+          : 0;
       const finishedAt = typeof performance !== "undefined" ? performance.now() : Date.now();
       trackEvent("search_success", {
         results_count: primaryResults.length,
@@ -992,6 +1095,13 @@ export function SearchExperience({
         duration_ms: Math.round(finishedAt - startedAt),
         no_results_guidance: guidance?.type ?? null,
         suggested_radius_km: guidance?.type === "nearby" ? Number(guidance.suggestedRadiusKm.toFixed(1)) : null
+      });
+      trackEvent("search_quality_snapshot", {
+        results_count: primaryResults.length,
+        with_opening_hours: withOpeningHours,
+        validated_count: validatedCount,
+        likely_count: likelyCount,
+        avg_confidence: avgConfidence
       });
       if (primaryResults.length === 0) {
         trackEvent("search_zero_results", {
@@ -1063,6 +1173,35 @@ export function SearchExperience({
     setRouteErrorMessage(null);
 
     try {
+      const routeCacheKey = buildRouteCacheKey({
+        mode,
+        originLat: safeCenter.lat,
+        originLng: safeCenter.lng,
+        destinationLat: result.store.lat,
+        destinationLng: result.store.lng
+      });
+      const cachedRoute = routeCacheRef.current.get(routeCacheKey);
+      if (cachedRoute && Date.now() - cachedRoute.savedAt < ROUTE_CACHE_TTL_MS) {
+        const cachedDurationMinutes = Math.max(1, Math.round((cachedRoute.payload.durationSeconds ?? 0) / 60));
+        setActiveRoute({
+          offerId: result.offer.id,
+          mode,
+          durationMinutes: cachedDurationMinutes,
+          distanceMeters: cachedRoute.payload.distanceMeters,
+          geometry: cachedRoute.payload.geometry,
+          fallback: Boolean(cachedRoute.payload.fallback)
+        });
+        setLocationMessage(
+          `${dictionary.routeOnMapAction}: ${mode === "walk" ? dictionary.walkTimeLabel : dictionary.bikeTimeLabel} ${formatEtaLabel(dictionary.etaApproxLabel, cachedDurationMinutes)}`
+        );
+        trackEvent("route_cache_hit", {
+          offer_id: result.offer.id,
+          mode
+        });
+        setRouteLoadingKey((current) => (current === routeKey ? null : current));
+        return;
+      }
+
       const params = new URLSearchParams({
         mode,
         originLat: String(safeCenter.lat),
@@ -1082,6 +1221,16 @@ export function SearchExperience({
 
       if (!Array.isArray(data.geometry) || data.geometry.length < 2) {
         throw new Error("Invalid route geometry");
+      }
+      routeCacheRef.current.set(routeCacheKey, {
+        payload: data,
+        savedAt: Date.now()
+      });
+      if (routeCacheRef.current.size > 60) {
+        const oldestKey = routeCacheRef.current.keys().next().value;
+        if (oldestKey) {
+          routeCacheRef.current.delete(oldestKey);
+        }
       }
 
       const durationMinutes = Math.max(1, Math.round((data.durationSeconds ?? 0) / 60));
@@ -1317,6 +1466,7 @@ export function SearchExperience({
             resetSearchForLocationChange(dictionary.manualPinHint);
           }}
           matchedProductLabel={dictionary.matchedProductLabel}
+          openingHoursLabel={dictionary.openingHoursLabel}
           storeCategoryLabel={dictionary.storeCategoryLabel}
           distanceLabel={dictionary.distanceLabel}
           walkTimeLabel={dictionary.walkTimeLabel}
@@ -1446,6 +1596,14 @@ export function SearchExperience({
                           {dictionary.storeCategoryLabel}: {primaryCategory(result, dictionary.unknownCategory)}
                         </span>
                       </p>
+                      {result.store.openingHours ? (
+                        <p className="store-detail-line">
+                          <UiIcon kind="hours" className="store-detail-icon" />
+                          <span>
+                            {dictionary.openingHoursLabel}: {result.store.openingHours}
+                          </span>
+                        </p>
+                      ) : null}
                       <p className="store-detail-line">
                         <UiIcon kind="walk" className="store-detail-icon" />
                         <span>

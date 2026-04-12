@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { __private } from "@/lib/data";
+import { normalizeQuery } from "@/lib/maps";
 
 describe("keyword intent helpers", () => {
   it("maps english intent terms and common typos to expected product groups", () => {
@@ -10,6 +11,8 @@ describe("keyword intent helpers", () => {
     expect(__private.inferProductGroupsFromKeyword("pliers")).toContain("household");
     expect(__private.inferProductGroupsFromKeyword("hammr")).toContain("household");
     expect(__private.inferProductGroupsFromKeyword("glu")).toContain("household");
+    expect(__private.inferProductGroupsFromKeyword("lightbulb")).toContain("household");
+    expect(__private.inferProductGroupsFromKeyword("cassette")).toContain("household");
     expect(__private.inferProductGroupsFromKeyword("condoms")).toContain("pharmacy");
     expect(__private.inferProductGroupsFromKeyword("painkiller")).toContain("pharmacy");
     expect(__private.inferProductGroupsFromKeyword("diapers")).toContain("personal_care");
@@ -54,5 +57,10 @@ describe("keyword intent helpers", () => {
     expect(__private.findCanonicalProductIdsByQuery("hafer", catalog)).toEqual([18]);
     expect(__private.findCanonicalProductIdsByQuery("jalapeño", catalog)).toEqual([20]);
     expect(__private.findCanonicalProductIdsByQuery("jalapneo", catalog)).toEqual([20]);
+  });
+
+  it("normalizes punctuation and accents in user queries", () => {
+    expect(normalizeQuery("jalapeño!!")).toBe("jalapeno");
+    expect(normalizeQuery("milk-1L")).toBe("milk 1l");
   });
 });

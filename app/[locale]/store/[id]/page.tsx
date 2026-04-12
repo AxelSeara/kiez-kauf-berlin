@@ -32,7 +32,11 @@ export default async function StoreDetailPage({
         <div className="tool-row p-4">
           <h2 className="text-xl font-medium tracking-tight">{detail.store.name}</h2>
           <p className="detail-address mt-1 text-sm">{detail.store.address}</p>
-          {detail.store.openingHours ? <p className="status-text mt-1">{detail.store.openingHours}</p> : null}
+          {detail.store.openingHours ? (
+            <p className="status-text mt-1">
+              {dictionary.openingHoursLabel}: {detail.store.openingHours}
+            </p>
+          ) : null}
         </div>
         <div className="p-4">
           <a

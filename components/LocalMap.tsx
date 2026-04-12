@@ -272,6 +272,7 @@ export function LocalMap({
   manualCenterEnabled,
   onManualCenterChange,
   matchedProductLabel,
+  openingHoursLabel,
   storeCategoryLabel,
   distanceLabel,
   walkTimeLabel,
@@ -295,6 +296,7 @@ export function LocalMap({
   manualCenterEnabled?: boolean;
   onManualCenterChange?: (center: { lat: number; lng: number }) => void;
   matchedProductLabel: string;
+  openingHoursLabel: string;
   storeCategoryLabel: string;
   distanceLabel: string;
   walkTimeLabel: string;
@@ -675,7 +677,7 @@ export function LocalMap({
     try {
       const appendPopupLine = (
         container: HTMLDivElement,
-        kind: "product" | "distance" | "category" | "validation" | "walk" | "bike",
+        kind: "product" | "distance" | "category" | "validation" | "walk" | "bike" | "hours",
         label: string,
         value: string
       ) => {
@@ -747,6 +749,9 @@ export function LocalMap({
             storeCategoryLabel,
             primaryCategory(item, unknownCategoryLabel)
           );
+          if (item.store.openingHours) {
+            appendPopupLine(popupContainer, "hours", openingHoursLabel, item.store.openingHours);
+          }
 
           const validation = validationLabelFor(
             item.validationStatus,
@@ -767,6 +772,10 @@ export function LocalMap({
             walkButton.textContent = routeOnMapActionLabel
               ? `${routeOnMapActionLabel} · ${walkTimeLabel}`
               : walkTimeLabel;
+            walkButton.setAttribute(
+              "aria-label",
+              `${routeOnMapActionLabel ?? "Route"} ${walkTimeLabel} ${item.store.name}`
+            );
             walkButton.addEventListener("click", (event) => {
               event.preventDefault();
               event.stopPropagation();
@@ -781,6 +790,10 @@ export function LocalMap({
             bikeButton.textContent = routeOnMapActionLabel
               ? `${routeOnMapActionLabel} · ${bikeTimeLabel}`
               : bikeTimeLabel;
+            bikeButton.setAttribute(
+              "aria-label",
+              `${routeOnMapActionLabel ?? "Route"} ${bikeTimeLabel} ${item.store.name}`
+            );
             bikeButton.addEventListener("click", (event) => {
               event.preventDefault();
               event.stopPropagation();
@@ -882,6 +895,7 @@ export function LocalMap({
     distanceLabel,
     etaApproxLabel,
     matchedProductLabel,
+    openingHoursLabel,
     radiusMeters,
     results,
     safeRouteGeometry,

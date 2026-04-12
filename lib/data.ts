@@ -143,6 +143,7 @@ type SupabaseSearchDatasetRow = {
   lon: number;
   osm_category: string | null;
   app_categories: string[] | null;
+  opening_hours?: string | null;
   product_normalized_name: string;
   product_group: string;
 };
@@ -170,15 +171,23 @@ const KEYWORD_GROUP_MAP: Array<{ group: string; terms: string[] }> = [
     terms: [
       "beer",
       "beers",
+      "beeer",
       "lager",
       "ale",
       "drink",
       "drinks",
       "beverage",
       "beverages",
+      "juice",
+      "soda",
+      "water",
+      "wine",
       "milk",
       "mjlk",
-      "milkk"
+      "milkk",
+      "oat milk",
+      "soy milk",
+      "almond milk"
     ]
   },
   {
@@ -199,7 +208,11 @@ const KEYWORD_GROUP_MAP: Array<{ group: string; terms: string[] }> = [
       "nori",
       "norita",
       "masa harina",
-      "harina de maiz"
+      "harina de maiz",
+      "jalapeno can",
+      "chipotle can",
+      "corn tortilla",
+      "flour tortilla"
     ]
   },
   {
@@ -217,7 +230,10 @@ const KEYWORD_GROUP_MAP: Array<{ group: string; terms: string[] }> = [
       "chili",
       "jalapeno",
       "jalapenos",
-      "habanero"
+      "habanero",
+      "lime",
+      "limes",
+      "avocado"
     ]
   },
   {
@@ -232,7 +248,28 @@ const KEYWORD_GROUP_MAP: Array<{ group: string; terms: string[] }> = [
       "glue",
       "glu",
       "adhesive",
-      "hardware"
+      "hardware",
+      "screwdriver",
+      "screwdrivers",
+      "screw",
+      "screws",
+      "nail",
+      "nails",
+      "drill",
+      "tape",
+      "duct tape",
+      "zip tie",
+      "zip ties",
+      "battery",
+      "batteries",
+      "light bulb",
+      "lightbulb",
+      "bulb",
+      "bombilla",
+      "cd",
+      "cds",
+      "cassette",
+      "cassettes"
     ]
   },
   {
@@ -248,7 +285,10 @@ const KEYWORD_GROUP_MAP: Array<{ group: string; terms: string[] }> = [
       "condom",
       "condoms",
       "contraceptive",
-      "pharmacy"
+      "pharmacy",
+      "first aid",
+      "bandage",
+      "bandages"
     ]
   },
   {
@@ -261,10 +301,26 @@ const KEYWORD_GROUP_MAP: Array<{ group: string; terms: string[] }> = [
       "baby wipes",
       "toothpaste",
       "tooth brush",
-      "deodorant"
+      "deodorant",
+      "shampoo",
+      "soap"
     ]
   }
 ];
+
+const MAX_SEARCH_RESULTS = 80;
+const MIN_CONFIDENCE_FOR_WEAK_MATCH = 0.28;
+const GENERIC_QUERY_TERMS = new Set([
+  "shop",
+  "store",
+  "thing",
+  "things",
+  "stuff",
+  "item",
+  "items",
+  "product",
+  "products"
+]);
 
 let canonicalCatalogCache:
   | {
@@ -630,7 +686,7 @@ async function searchSupabaseRowsFromDataset(args: {
     db
       .from("search_product_establishment_dataset")
       .select(
-        "establishment_id, canonical_product_id, source_type, confidence, validation_status, why_this_product_matches, updated_at, establishment_name, address, district, lat, lon, osm_category, app_categories, product_normalized_name, product_group, candidate_last_checked_at"
+        "establishment_id, canonical_product_id, source_type, confidence, validation_status, why_this_product_matches, updated_at, establishment_name, address, district, lat, lon, osm_category, app_categories, opening_hours, product_normalized_name, product_group, candidate_last_checked_at"
       )
       .gte("lat", bounds.minLat)
       .lte("lat", bounds.maxLat)
@@ -740,7 +796,7 @@ async function searchSupabaseRowsFromDataset(args: {
         name: String(row.establishment_name ?? "Unknown store"),
         address: String(row.address ?? ""),
         district: String(row.district ?? "Berlin"),
-        openingHours: "",
+        openingHours: String(row.opening_hours ?? ""),
         lat: row.lat,
         lng: row.lon,
         appCategories: row.app_categories ?? [],
@@ -783,7 +839,7 @@ async function getStoreDetailFromDataset(id: string): Promise<StoreDetail | null
   const { data, error } = await supabase
     .from("search_product_establishment_dataset")
     .select(
-      "establishment_id, canonical_product_id, source_type, confidence, validation_status, why_this_product_matches, updated_at, establishment_name, address, district, lat, lon, osm_category, app_categories, product_normalized_name, product_group"
+      "establishment_id, canonical_product_id, source_type, confidence, validation_status, why_this_product_matches, updated_at, establishment_name, address, district, lat, lon, osm_category, app_categories, opening_hours, product_normalized_name, product_group"
     )
     .eq("establishment_id", establishmentId)
     .limit(500);
@@ -820,7 +876,7 @@ async function getStoreDetailFromDataset(id: string): Promise<StoreDetail | null
     name: first.establishment_name,
     address: first.address,
     district: first.district,
-    openingHours: "",
+    openingHours: String(first.opening_hours ?? ""),
     lat: first.lat,
     lng: first.lon,
     appCategories: first.app_categories ?? [],
@@ -882,6 +938,10 @@ export async function searchOffers(args: {
   }
 
   const normalized = normalizeQuery(args.query);
+  if (GENERIC_QUERY_TERMS.has(normalized)) {
+    return [];
+  }
+
   const filtered =
     datasetStrategy === "canonical_multilingual" || datasetStrategy === "group_keyword"
       ? rows
@@ -889,8 +949,20 @@ export async function searchOffers(args: {
           const productName = normalizeQuery(row.product.normalizedName);
           return productName === normalized || productName.includes(normalized);
         });
+  const plausibilityFiltered = filtered.filter((row) => {
+    const productName = normalizeQuery(row.product.normalizedName);
+    const hasStrongTextMatch = productName === normalized || productName.includes(normalized);
+    if (hasStrongTextMatch) {
+      return true;
+    }
+    const confidence = typeof row.confidence === "number" ? row.confidence : 0;
+    return confidence >= MIN_CONFIDENCE_FOR_WEAK_MATCH;
+  });
 
-  return dedupeRankedResults(rankResults(filtered, { query: args.query, lat, lng, radius }));
+  return dedupeRankedResults(rankResults(plausibilityFiltered, { query: args.query, lat, lng, radius })).slice(
+    0,
+    MAX_SEARCH_RESULTS
+  );
 }
 
 export async function getStoreDetail(id: string): Promise<StoreDetail | null> {
