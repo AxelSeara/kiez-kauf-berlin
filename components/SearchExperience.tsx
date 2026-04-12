@@ -393,6 +393,24 @@ export function SearchExperience({
     triggerHaptic(pattern);
   }, []);
 
+  const resetSearchForLocationChange = useCallback((nextLocationMessage: string) => {
+    searchRequestIdRef.current += 1;
+    searchAbortRef.current?.abort();
+    if (radiusAutoSearchTimeoutRef.current) {
+      clearTimeout(radiusAutoSearchTimeoutRef.current);
+      radiusAutoSearchTimeoutRef.current = null;
+    }
+    setIsLoading(false);
+    setResults([]);
+    setHasSearched(false);
+    setNoResultsGuidance(null);
+    setActiveRoute(null);
+    setRouteLoadingKey(null);
+    setRouteErrorMessage(null);
+    setErrorMessage(null);
+    setLocationMessage(nextLocationMessage);
+  }, []);
+
   const requestBrowserLocation = useCallback((options?: { auto?: boolean }) => {
     const isAutoRequest = options?.auto === true;
     if (!isAutoRequest) {
@@ -432,8 +450,7 @@ export function SearchExperience({
       }
       setGeolocationPermission("granted");
       setCenter(nextCenter);
-      setLocationMessage(dictionary.geolocationReady);
-      setErrorMessage(null);
+      resetSearchForLocationChange(dictionary.geolocationReady);
       setIsLocating(false);
       trackEvent("geolocation_success", {
         accuracy_m: Math.round(position.coords.accuracy)
@@ -489,7 +506,8 @@ export function SearchExperience({
     dictionary.geolocationReady,
     dictionary.manualPinHint,
     isLocating,
-    pulse
+    pulse,
+    resetSearchForLocationChange
   ]);
 
   useEffect(() => {
@@ -763,15 +781,7 @@ export function SearchExperience({
     [dictionary.quickIntentHardware, dictionary.quickIntentPharmacy, dictionary.quickIntentSpati]
   );
 
-  const manualCenterEnabled =
-    geolocationPermission === "denied" || geolocationPermission === "unsupported";
-
-  const activeRouteStoreName = useMemo(() => {
-    if (!activeRoute) {
-      return null;
-    }
-    return results.find((result) => result.offer.id === activeRoute.offerId)?.store.name ?? null;
-  }, [activeRoute, results]);
+  const manualCenterEnabled = geolocationPermission !== "granted";
 
   const activeRouteLabel = useMemo(() => {
     if (!activeRoute) {
@@ -779,13 +789,9 @@ export function SearchExperience({
     }
     const modeLabel = activeRoute.mode === "walk" ? dictionary.walkTimeLabel : dictionary.bikeTimeLabel;
     const etaLabel = formatEtaLabel(dictionary.etaApproxLabel, activeRoute.durationMinutes);
-    if (activeRouteStoreName) {
-      return `${dictionary.activeRouteLabel}: ${activeRouteStoreName} · ${modeLabel} ${etaLabel}`;
-    }
     return `${dictionary.activeRouteLabel}: ${modeLabel} ${etaLabel}`;
   }, [
     activeRoute,
-    activeRouteStoreName,
     dictionary.activeRouteLabel,
     dictionary.bikeTimeLabel,
     dictionary.etaApproxLabel,
@@ -1133,7 +1139,6 @@ export function SearchExperience({
               <UiIcon kind="search" className="search-input-icon" />
               <input
                 id="search-query-input"
-                autoFocus
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 onKeyDown={(event) => {
@@ -1201,7 +1206,7 @@ export function SearchExperience({
                 </span>
               </button>
             </div>
-            <p className="status-text md:col-span-3">{dictionary.searchHint}</p>
+            <p className="status-text hidden md:col-span-3 sm:block">{dictionary.searchHint}</p>
             <div className="quick-intents md:col-span-3" aria-label={dictionary.quickIntentLabel}>
               {quickIntentTerms.map((term) => (
                 <button
@@ -1273,8 +1278,7 @@ export function SearchExperience({
       </section>
 
       <section id="map" className="space-y-1.5 md:space-y-2">
-        <div className="hand-divider flex items-end justify-between pb-2">
-          <h2 className="note-title">{dictionary.mapTitle}</h2>
+        <div className="hand-divider flex items-end justify-end pb-2">
           <p className="status-text">{resultSummary}</p>
         </div>
         {(routeLoadingKey || activeRouteLabel || routeErrorMessage) && (
@@ -1310,8 +1314,7 @@ export function SearchExperience({
           manualCenterEnabled={manualCenterEnabled}
           onManualCenterChange={(nextCenter) => {
             setCenter(nextCenter);
-            setLocationMessage(dictionary.manualPinHint);
-            setErrorMessage(null);
+            resetSearchForLocationChange(dictionary.manualPinHint);
           }}
           matchedProductLabel={dictionary.matchedProductLabel}
           storeCategoryLabel={dictionary.storeCategoryLabel}
@@ -1325,6 +1328,10 @@ export function SearchExperience({
           unknownCategoryLabel={dictionary.unknownCategory}
           radiusMeters={Math.round(radiusKm * 1000)}
           activeRouteGeometry={activeRoute?.geometry ?? null}
+          onPopupRouteRequest={(result, mode) => {
+            void drawRouteOnMap(result, mode);
+          }}
+          routeOnMapActionLabel={dictionary.routeOnMapAction}
           className="h-[55vh] min-h-[280px] md:h-[66vh] md:min-h-[360px]"
         />
 

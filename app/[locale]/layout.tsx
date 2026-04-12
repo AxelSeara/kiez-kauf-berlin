@@ -3,6 +3,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeSwitch } from "@/components/ThemeSwitch";
 import { getDictionary } from "@/lib/i18n";
 import { isSupportedLocale } from "@/lib/locale";
+import packageJson from "../../package.json";
 
 export default async function LocaleLayout({
   children,
@@ -17,13 +18,16 @@ export default async function LocaleLayout({
   }
 
   const dictionary = getDictionary(locale);
+  const appReleaseLabel = `v${packageJson.version} alpha`;
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[1080px] flex-col px-4 pb-7 pt-5 md:px-6 md:pb-8 md:pt-6">
       <main className="flex-1">{children}</main>
       <footer className="footer-shell mt-9 pt-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="mono footer-brand">{dictionary.appTitle}</p>
+          <p className="mono footer-brand">
+            {dictionary.appTitle} <span className="footer-version">· {appReleaseLabel}</span>
+          </p>
           <div className="flex flex-wrap items-center gap-3">
             <ThemeSwitch
               label={dictionary.themeLabel}

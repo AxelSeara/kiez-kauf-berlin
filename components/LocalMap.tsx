@@ -36,6 +36,7 @@ const BERLIN_MAX_BOUNDS: [[number, number], [number, number]] = [
   [13.7612, 52.6755]
 ];
 const BERLIN_MIN_ZOOM = 10.5;
+const USER_MAP_INTERACTION_AUTO_FIT_COOLDOWN_MS = 5000;
 const DEV_DEBUG = process.env.NODE_ENV !== "production";
 const RADIUS_STYLE = {
   dark: { lineWidth: 1.78, lineOpacity: 0.9, fillOpacity: 0.14, lineColor: "#ffffff", fillColor: "#ffffff" },
@@ -93,6 +94,8 @@ type RenderableMapResult = {
   lat: number;
   lng: number;
 };
+
+type PopupRouteMode = "walk" | "bike";
 
 function toRenderableMapResult(value: unknown): RenderableMapResult | null {
   if (!isValidMapResult(value)) {
@@ -215,8 +218,34 @@ function validationLabelFor(
 
 function createPinElement(kind: "user" | "result", rank: number) {
   const marker = document.createElement("div");
-  marker.className = kind === "user" ? "map-pin map-pin-user" : "map-pin";
-  if (kind === "result" && rank === 0) {
+
+  if (kind === "user") {
+    marker.className = "map-pin-user";
+
+    const svgNs = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNs, "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("aria-hidden", "true");
+    svg.classList.add("map-pin-user-svg");
+
+    const path = document.createElementNS(svgNs, "path");
+    path.setAttribute("d", "M12 21.2s7-6.3 7-11.1a7 7 0 10-14 0c0 4.8 7 11.1 7 11.1z");
+    path.classList.add("map-pin-user-shape");
+
+    const dot = document.createElementNS(svgNs, "circle");
+    dot.setAttribute("cx", "12");
+    dot.setAttribute("cy", "10.1");
+    dot.setAttribute("r", "2.1");
+    dot.classList.add("map-pin-user-dot");
+
+    svg.appendChild(path);
+    svg.appendChild(dot);
+    marker.appendChild(svg);
+    return marker;
+  }
+
+  marker.className = "map-pin";
+  if (rank === 0) {
     marker.classList.add("map-pin-top");
   }
   return marker;
@@ -254,6 +283,8 @@ export function LocalMap({
   unknownCategoryLabel,
   radiusMeters,
   activeRouteGeometry,
+  onPopupRouteRequest,
+  routeOnMapActionLabel,
   className
 }: {
   center: { lat: number; lng: number };
@@ -275,6 +306,8 @@ export function LocalMap({
   unknownCategoryLabel: string;
   radiusMeters: number;
   activeRouteGeometry?: [number, number][] | null;
+  onPopupRouteRequest?: (result: SearchResult, mode: PopupRouteMode) => void;
+  routeOnMapActionLabel?: string;
   className?: string;
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -724,6 +757,41 @@ export function LocalMap({
             appendPopupLine(popupContainer, "validation", validationLabel, validation);
           }
 
+          if (onPopupRouteRequest) {
+            const actions = document.createElement("div");
+            actions.className = "map-popup-actions";
+
+            const walkButton = document.createElement("button");
+            walkButton.type = "button";
+            walkButton.className = "map-popup-route";
+            walkButton.textContent = routeOnMapActionLabel
+              ? `${routeOnMapActionLabel} · ${walkTimeLabel}`
+              : walkTimeLabel;
+            walkButton.addEventListener("click", (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              triggerHaptic(8);
+              onPopupRouteRequest(item, "walk");
+            });
+            actions.appendChild(walkButton);
+
+            const bikeButton = document.createElement("button");
+            bikeButton.type = "button";
+            bikeButton.className = "map-popup-route";
+            bikeButton.textContent = routeOnMapActionLabel
+              ? `${routeOnMapActionLabel} · ${bikeTimeLabel}`
+              : bikeTimeLabel;
+            bikeButton.addEventListener("click", (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              triggerHaptic(8);
+              onPopupRouteRequest(item, "bike");
+            });
+            actions.appendChild(bikeButton);
+
+            popupContainer.appendChild(actions);
+          }
+
           const markerId = String(item.offer.id);
           const existingMarker = resultMarkersRef.current.get(markerId);
           if (existingMarker) {
@@ -787,7 +855,11 @@ export function LocalMap({
         )
       ].join("|");
 
-      if (boundsKey !== lastBoundsKeyRef.current) {
+      const interactedRecently =
+        Date.now() - lastUserInteractionAtRef.current < USER_MAP_INTERACTION_AUTO_FIT_COOLDOWN_MS;
+      const shouldSkipAutoFit = interactedRecently && safeRouteGeometry.length === 0;
+
+      if (boundsKey !== lastBoundsKeyRef.current && !shouldSkipAutoFit) {
         map.fitBounds(bounds, {
           padding: 56,
           maxZoom: 14.5,
@@ -819,7 +891,9 @@ export function LocalMap({
     validationLikelyLabel,
     validationValidatedLabel,
     walkTimeLabel,
-    mapReady
+    mapReady,
+    onPopupRouteRequest,
+    routeOnMapActionLabel
   ]);
 
   return (
