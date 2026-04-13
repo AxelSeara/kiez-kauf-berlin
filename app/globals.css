@@ -511,10 +511,11 @@ button {
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 0.18rem 0.56rem;
-  font-size: 0.66rem;
+  font-size: 0.68rem;
   color: var(--ink-soft);
   font-family: var(--font-mono), "Courier New", monospace;
   line-height: 1.22;
+  white-space: nowrap;
 }
 
 .route-status-chip.is-loading {
@@ -526,6 +527,9 @@ button {
   border-color: var(--line-strong);
   color: var(--ink);
   background: color-mix(in srgb, var(--surface-soft) 88%, var(--ink) 12%);
+  max-width: min(100%, 24rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .route-status-chip.is-error {
@@ -841,6 +845,10 @@ button {
   border-width: 1.8px;
 }
 
+.map-pin-selected {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--surface) 15%, transparent 85%), 0 0 0 4px var(--ink);
+}
+
 .map-pin-user {
   width: 22px;
   height: 22px;
@@ -915,6 +923,10 @@ button {
   border-color: var(--line);
 }
 
+.store-item.is-selected {
+  border-color: var(--ink);
+}
+
 .store-summary {
   display: flex;
   align-items: center;
@@ -965,13 +977,36 @@ button {
   gap: 0.34rem;
 }
 
+.store-summary-desktop-meta {
+  display: inline-flex;
+}
+
+.results-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.results-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.38rem;
+}
+
+.results-toolbar-summary {
+  max-width: 64ch;
+}
+
 .store-summary-badge {
   display: inline-flex;
   align-items: center;
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 0.12rem 0.42rem;
-  font-size: 0.61rem;
+  padding: 0.14rem 0.44rem;
+  font-size: 0.63rem;
   letter-spacing: 0.01em;
   text-transform: uppercase;
   color: var(--ink-muted);
@@ -1459,8 +1494,8 @@ button {
   }
 
   .store-summary-badge {
-    font-size: 0.56rem;
-    padding: 0.1rem 0.34rem;
+    font-size: 0.62rem;
+    padding: 0.14rem 0.42rem;
   }
 
   .store-summary-icon {
@@ -1516,13 +1551,8 @@ button {
 
   .route-status-chip {
     max-width: 100%;
-    font-size: 0.68rem;
-  }
-
-  .route-status-chip.is-active {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.58rem;
   }
 
   .map-popup-line::before {
@@ -1531,15 +1561,30 @@ button {
   }
 
   .route-status-row {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: 0.08rem;
+    flex-wrap: wrap;
+    overflow: visible;
+    padding-bottom: 0;
   }
 
-  .route-status-row::-webkit-scrollbar {
+  .store-summary-desktop-meta {
     display: none;
+  }
+
+  .results-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.38rem;
+  }
+
+  .results-toolbar-actions {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 0.34rem;
+  }
+
+  .results-toolbar-actions .btn-ghost {
+    min-height: 38px;
+    font-size: 0.73rem;
   }
 
   .language-switch {

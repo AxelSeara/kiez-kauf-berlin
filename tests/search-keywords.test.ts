@@ -5,6 +5,8 @@ import { normalizeQuery } from "@/lib/maps";
 describe("keyword intent helpers", () => {
   it("maps english intent terms and common typos to expected product groups", () => {
     expect(__private.inferProductGroupsFromKeyword("beer")).toContain("beverages");
+    expect(__private.inferProductGroupsFromKeyword("guinness")).toContain("beverages");
+    expect(__private.inferProductGroupsFromKeyword("guiness")).toContain("beverages");
     expect(__private.inferProductGroupsFromKeyword("mjlk")).toContain("beverages");
     expect(__private.inferProductGroupsFromKeyword("garlic")).toContain("fresh_produce");
     expect(__private.inferProductGroupsFromKeyword("apricot")).toContain("fresh_produce");
@@ -18,6 +20,23 @@ describe("keyword intent helpers", () => {
     expect(__private.inferProductGroupsFromKeyword("condons")).toContain("pharmacy");
     expect(__private.inferProductGroupsFromKeyword("painkiller")).toContain("pharmacy");
     expect(__private.inferProductGroupsFromKeyword("diapers")).toContain("personal_care");
+    expect(__private.inferProductGroupsFromKeyword("baby formula")).toContain("groceries");
+    expect(__private.inferProductGroupsFromKeyword("pacifer")).toContain("personal_care");
+    expect(__private.inferProductGroupsFromKeyword("cat food")).toContain("groceries");
+    expect(__private.inferProductGroupsFromKeyword("detergant")).toContain("household");
+    expect(__private.inferProductGroupsFromKeyword("frying pan")).toContain("household");
+    expect(__private.inferProductGroupsFromKeyword("potting soil")).toContain("household");
+    expect(__private.inferProductGroupsFromKeyword("wrenchh")).toContain("household");
+    expect(__private.inferProductGroupsFromKeyword("cerveza")).toContain("beverages");
+    expect(__private.inferProductGroupsFromKeyword("bier")).toContain("beverages");
+    expect(__private.inferProductGroupsFromKeyword("panales")).toContain("personal_care");
+    expect(__private.inferProductGroupsFromKeyword("hundefutter")).toContain("groceries");
+    expect(__private.inferProductGroupsFromKeyword("detergente")).toContain("household");
+    expect(__private.inferProductGroupsFromKeyword("sarten")).toContain("household");
+    expect(__private.inferProductGroupsFromKeyword("pflanzerde")).toContain("household");
+    expect(__private.inferProductGroupsFromKeyword("llave inglesa")).toContain("household");
+    expect(__private.inferProductGroupsFromKeyword("apotheke")).toContain("pharmacy");
+    expect(__private.inferProductGroupsFromKeyword("katzenstreu")).toContain("pet_care");
     expect(__private.inferProductGroupsFromKeyword("tortilla")).toContain("groceries");
     expect(__private.inferProductGroupsFromKeyword("nori")).toContain("groceries");
     expect(__private.inferProductGroupsFromKeyword("jalapeno")).toContain("fresh_produce");

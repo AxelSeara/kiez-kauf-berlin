@@ -63,6 +63,7 @@ const BERLIN_FALLBACK_CENTER = { lat: 52.5208, lng: 13.4094 };
 const MIN_RADIUS_KM = 0.5;
 const MAX_RADIUS_KM = 15;
 const RADIUS_STEP_KM = 0.5;
+const COLLAPSED_RESULTS_LIMIT = 3;
 const SEARCH_CACHE_TTL_MS = 1000 * 60;
 const ROUTE_CACHE_TTL_MS = 1000 * 60 * 5;
 const DEV_DEBUG = process.env.NODE_ENV !== "production";
@@ -297,6 +298,12 @@ function openingStatusToneClass(status: OpeningStatus) {
   return "is-hours-unknown";
 }
 
+function openingStatusSortRank(status: OpeningStatus) {
+  if (status === "open") return 0;
+  if (status === "unknown") return 1;
+  return 2;
+}
+
 function buildSearchCacheKey(args: {
   query: string;
   lat: number;
@@ -465,7 +472,9 @@ export function SearchExperience({
   const [routeErrorMessage, setRouteErrorMessage] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
   const [noResultsGuidance, setNoResultsGuidance] = useState<NoResultsGuidance | null>(null);
+  const [isResultsExpanded, setIsResultsExpanded] = useState(false);
   const [activeRoute, setActiveRoute] = useState<ActiveRoute | null>(null);
+  const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
   const [routeLoadingKey, setRouteLoadingKey] = useState<string | null>(null);
   const [themeMode, setThemeMode] = useState<"light" | "dark">("light");
   const lastHapticAtRef = useRef(0);
@@ -517,6 +526,8 @@ export function SearchExperience({
     setIsLoading(false);
     setResults([]);
     setHasSearched(false);
+    setIsResultsExpanded(false);
+    setSelectedOfferId(null);
     setNoResultsGuidance(null);
     setActiveRoute(null);
     setRouteLoadingKey(null);
@@ -878,6 +889,52 @@ export function SearchExperience({
     dictionary.walkTimeLabel
   ]);
 
+  const prioritizedListResults = useMemo(() => {
+    return results
+      .map((result) => ({
+        result,
+        openingStatus: evaluateOpeningStatus(result.store.openingHours)
+      }))
+      .sort((a, b) => {
+        const statusDelta = openingStatusSortRank(a.openingStatus) - openingStatusSortRank(b.openingStatus);
+        if (statusDelta !== 0) {
+          return statusDelta;
+        }
+
+        const distanceDelta = a.result.distanceMeters - b.result.distanceMeters;
+        if (distanceDelta !== 0) {
+          return distanceDelta;
+        }
+
+        return b.result.rank - a.result.rank;
+      });
+  }, [results]);
+
+  const visibleListResults = useMemo(() => {
+    if (isResultsExpanded) {
+      return prioritizedListResults;
+    }
+    return prioritizedListResults.slice(0, COLLAPSED_RESULTS_LIMIT);
+  }, [isResultsExpanded, prioritizedListResults]);
+
+  const hasHiddenListResults = prioritizedListResults.length > COLLAPSED_RESULTS_LIMIT;
+
+  const compactListSummary = useMemo(() => {
+    if (isResultsExpanded || !hasHiddenListResults) {
+      return "";
+    }
+    return applyTemplate(dictionary.compactResultsSummaryTemplate, {
+      shown: String(visibleListResults.length),
+      total: String(prioritizedListResults.length)
+    });
+  }, [
+    dictionary.compactResultsSummaryTemplate,
+    hasHiddenListResults,
+    isResultsExpanded,
+    prioritizedListResults.length,
+    visibleListResults.length
+  ]);
+
   const estimateTravel = useCallback(
     (distanceMeters: number) => {
       const walkMin = estimateTravelMinutes(distanceMeters, "walk");
@@ -917,6 +974,22 @@ export function SearchExperience({
       setActiveRoute(null);
     }
   }, [activeRoute, results]);
+
+  useEffect(() => {
+    if (!selectedOfferId) {
+      return;
+    }
+
+    const element = document.getElementById(`result-row-${selectedOfferId}`);
+    if (!element) {
+      return;
+    }
+
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
+  }, [selectedOfferId]);
 
   function triggerQuickIntentSearch(term: string, source: "quick_intent" | "no_results") {
     const trimmed = term.trim();
@@ -963,8 +1036,10 @@ export function SearchExperience({
     setErrorMessage(null);
     setRouteErrorMessage(null);
     setActiveRoute(null);
+    setSelectedOfferId(null);
     setRouteLoadingKey(null);
     setNoResultsGuidance(null);
+    setIsResultsExpanded(false);
     const startedAt = typeof performance !== "undefined" ? performance.now() : Date.now();
     const queryForAnalytics = normalizeQueryForAnalytics(effectiveQuery);
     trackEvent("search_submit", {
@@ -1094,6 +1169,7 @@ export function SearchExperience({
       }
 
       setResults(primaryResults);
+      setSelectedOfferId(primaryResults[0]?.offer.id ?? null);
       setHasSearched(true);
       setNoResultsGuidance(guidance);
       const withOpeningHours = primaryResults.filter(
@@ -1179,6 +1255,7 @@ export function SearchExperience({
     const routeKey = `${result.offer.id}:${mode}`;
     const isActiveSameRoute =
       activeRoute?.offerId === result.offer.id && activeRoute.mode === mode;
+    setSelectedOfferId(result.offer.id);
 
     if (isActiveSameRoute) {
       setActiveRoute(null);
@@ -1482,35 +1559,20 @@ export function SearchExperience({
           center={safeCenter}
           results={results}
           themeMode={themeMode}
-          userMarkerLabel={dictionary.mapYouAreHere}
           berlinOnlyHint={dictionary.berlinOnlyHint}
           manualCenterEnabled={manualCenterEnabled}
           onManualCenterChange={(nextCenter) => {
             setCenter(nextCenter);
             resetSearchForLocationChange(dictionary.manualPinHint);
           }}
-          matchedProductLabel={dictionary.matchedProductLabel}
-          openingHoursLabel={dictionary.openingHoursLabel}
-          openingStatusLabel={dictionary.openingStatusLabel}
-          openNowLabel={dictionary.openNowLabel}
-          closedNowLabel={dictionary.closedNowLabel}
-          hoursUnknownLabel={dictionary.hoursUnknownLabel}
-          storeCategoryLabel={dictionary.storeCategoryLabel}
-          distanceLabel={dictionary.distanceLabel}
-          walkTimeLabel={dictionary.walkTimeLabel}
-          bikeTimeLabel={dictionary.bikeTimeLabel}
-          etaApproxLabel={dictionary.etaApproxLabel}
-          validationLabel={dictionary.validationLabel}
-          validationLikelyLabel={dictionary.validationLikely}
-          validationValidatedLabel={dictionary.validationValidated}
-          unknownCategoryLabel={dictionary.unknownCategory}
           radiusMeters={Math.round(radiusKm * 1000)}
           activeRouteGeometry={activeRoute?.geometry ?? null}
-          onPopupRouteRequest={(result, mode) => {
-            void drawRouteOnMap(result, mode);
+          selectedOfferId={selectedOfferId}
+          onMarkerSelect={(result) => {
+            setSelectedOfferId(result.offer.id);
+            setIsResultsExpanded(true);
           }}
-          routeOnMapActionLabel={dictionary.routeOnMapAction}
-          className="h-[55vh] min-h-[280px] md:h-[66vh] md:min-h-[360px]"
+          className="h-[clamp(300px,52svh,520px)] md:h-[66vh] md:min-h-[360px]"
         />
 
         {!isLoading && hasSearched && results.length === 0 ? (
@@ -1550,25 +1612,42 @@ export function SearchExperience({
 
         {results.length > 0 ? (
           <section className="note-divider pt-2">
-            <div className="mb-1.5 flex items-center justify-between gap-2 md:mb-2">
+            <div className="results-toolbar mb-1.5 md:mb-2">
               <h3 className="note-subtitle note-mark">{dictionary.resultsTitle}</h3>
-              {quickExpandRadiusKm !== null ? (
-                <button
-                  type="button"
-                  className="btn-ghost text-[0.72rem] px-2.5 py-1.5"
-                  onClick={() => {
-                    expandSearchTo(quickExpandRadiusKm, "results_list");
-                  }}
-                  disabled={isLoading}
-                >
-                  {quickExpandButtonLabel}
-                </button>
-              ) : null}
+              <div className="results-toolbar-actions">
+                {quickExpandRadiusKm !== null ? (
+                  <button
+                    type="button"
+                    className="btn-ghost text-[0.72rem] px-2.5 py-1.5"
+                    onClick={() => {
+                      expandSearchTo(quickExpandRadiusKm, "results_list");
+                    }}
+                    disabled={isLoading}
+                  >
+                    {quickExpandButtonLabel}
+                  </button>
+                ) : null}
+                {hasHiddenListResults ? (
+                  <button
+                    type="button"
+                    className="btn-ghost text-[0.72rem] px-2.5 py-1.5"
+                    onClick={() => {
+                      setIsResultsExpanded((current) => !current);
+                      pulse(7);
+                    }}
+                    disabled={isLoading}
+                  >
+                    {isResultsExpanded ? dictionary.viewLessResultsLabel : dictionary.viewMoreResultsLabel}
+                  </button>
+                ) : null}
+              </div>
             </div>
+            {compactListSummary ? (
+              <p className="status-text results-toolbar-summary mb-1.5">{compactListSummary}</p>
+            ) : null}
             <div className="space-y-1">
-              {results.map((result, index) => {
+              {visibleListResults.map(({ result, openingStatus }, index) => {
                 const travel = estimateTravel(result.distanceMeters);
-                const openingStatus = evaluateOpeningStatus(result.store.openingHours);
                 const walkRouteKey = `${result.offer.id}:walk`;
                 const bikeRouteKey = `${result.offer.id}:bike`;
                 const walkRouteActive =
@@ -1581,11 +1660,22 @@ export function SearchExperience({
                 return (
                   <details
                     key={result.offer.id}
-                    className={`store-item result-enter ${openingStatusToneClass(openingStatus)}`}
+                    id={`result-row-${result.offer.id}`}
+                    className={`store-item result-enter ${openingStatusToneClass(openingStatus)} ${
+                      selectedOfferId === result.offer.id ? "is-selected" : ""
+                    }`}
                     style={{ animationDelay: `${Math.min(index, 10) * 26}ms` }}
-                    onToggle={() => pulse(6)}
+                    onToggle={() => {
+                      pulse(6);
+                      setSelectedOfferId(result.offer.id);
+                    }}
                   >
-                    <summary className="store-summary">
+                    <summary
+                      className="store-summary"
+                      onClick={() => {
+                        setSelectedOfferId(result.offer.id);
+                      }}
+                    >
                       <span className="store-summary-name">{result.store.name}</span>
                       <span className="store-summary-meta">
                         <span className="mono store-summary-distance">
@@ -1595,16 +1685,24 @@ export function SearchExperience({
                         <span className={`store-summary-badge ${openingStatusToneClass(openingStatus)}`}>
                           {formatOpeningStatusLabel(dictionary, openingStatus)}
                         </span>
-                        <span className="mono store-summary-travel" title={`${dictionary.walkTimeLabel}: ${travel.walkLabel}`}>
+                        <span
+                          className="mono store-summary-travel store-summary-desktop-meta"
+                          title={`${dictionary.walkTimeLabel}: ${travel.walkLabel}`}
+                        >
                           <UiIcon kind="walk" className="store-summary-icon" />
                           {travel.walkMin}m
                         </span>
-                        <span className="mono store-summary-travel" title={`${dictionary.bikeTimeLabel}: ${travel.bikeLabel}`}>
+                        <span
+                          className="mono store-summary-travel store-summary-desktop-meta"
+                          title={`${dictionary.bikeTimeLabel}: ${travel.bikeLabel}`}
+                        >
                           <UiIcon kind="bike" className="store-summary-icon" />
                           {travel.bikeMin}m
                         </span>
                         {result.validationStatus ? (
-                          <span className={`store-summary-badge ${validationToneClass(result.validationStatus)}`}>
+                          <span
+                            className={`store-summary-badge store-summary-desktop-meta ${validationToneClass(result.validationStatus)}`}
+                          >
                             {formatValidation(dictionary, result.validationStatus)}
                           </span>
                         ) : null}

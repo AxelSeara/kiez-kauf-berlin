@@ -7,7 +7,6 @@ import type {
   Marker as MapLibreMarker,
   StyleSpecification
 } from "maplibre-gl";
-import { estimateTravelMinutes } from "@/lib/maps";
 import { evaluateOpeningStatus, type OpeningStatus } from "@/lib/opening-hours";
 import type { SearchResult } from "@/lib/types";
 
@@ -47,6 +46,10 @@ const ROUTE_STYLE = {
   dark: { lineWidth: 2.75, lineOpacity: 0.96, lineColor: "#ffffff" },
   light: { lineWidth: 2.55, lineOpacity: 0.86, lineColor: "#111111" }
 } as const;
+const ROUTE_ANIMATION_MIN_DURATION_MS = 520;
+const ROUTE_ANIMATION_MAX_DURATION_MS = 1780;
+const ROUTE_ANIMATION_BASE_SPEED_METERS_PER_MS = 1.18;
+const ROUTE_ANIMATION_FRAME_BUDGET_MS = 34;
 
 function isFiniteCoordinate(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value);
@@ -96,8 +99,6 @@ type RenderableMapResult = {
   lng: number;
 };
 
-type PopupRouteMode = "walk" | "bike";
-
 function toRenderableMapResult(value: unknown): RenderableMapResult | null {
   if (!isValidMapResult(value)) {
     return null;
@@ -122,19 +123,98 @@ function triggerHaptic(pattern: number | number[] = 8) {
   }
 }
 
-function formatDistance(distanceMeters: number) {
-  if (distanceMeters < 1000) {
-    return `${Math.round(distanceMeters)} m`;
-  }
-  return `${(distanceMeters / 1000).toFixed(1)} km`;
+function toRadians(value: number) {
+  return (value * Math.PI) / 180;
 }
 
-function formatEtaLabel(prefix: string, minutes: number) {
-  if (!Number.isFinite(minutes) || minutes <= 0) {
-    return `${prefix} 1 min`;
-  }
-  return `${prefix} ${minutes} min`;
+function haversineMeters(from: [number, number], to: [number, number]) {
+  const earthRadius = 6371000;
+  const [fromLng, fromLat] = from;
+  const [toLng, toLat] = to;
+  const deltaLat = toRadians(toLat - fromLat);
+  const deltaLng = toRadians(toLng - fromLng);
+  const sinLat = Math.sin(deltaLat / 2);
+  const sinLng = Math.sin(deltaLng / 2);
+  const a =
+    sinLat * sinLat +
+    Math.cos(toRadians(fromLat)) * Math.cos(toRadians(toLat)) * sinLng * sinLng;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return earthRadius * c;
 }
+
+function buildRouteGeoJSON(coordinates: [number, number][]) {
+  return {
+    type: "FeatureCollection" as const,
+    features: [
+      {
+        type: "Feature" as const,
+        properties: {},
+        geometry: {
+          type: "LineString" as const,
+          coordinates
+        }
+      }
+    ]
+  };
+}
+
+function polylineDistanceMeters(coordinates: [number, number][]) {
+  if (coordinates.length < 2) {
+    return 0;
+  }
+
+  let total = 0;
+  for (let index = 1; index < coordinates.length; index += 1) {
+    total += haversineMeters(coordinates[index - 1], coordinates[index]);
+  }
+  return total;
+}
+
+function sliceRouteToDistance(coordinates: [number, number][], targetMeters: number) {
+  if (coordinates.length < 2) {
+    return coordinates;
+  }
+  if (targetMeters <= 0) {
+    return [coordinates[0]];
+  }
+
+  const sliced: [number, number][] = [coordinates[0]];
+  let traveledMeters = 0;
+
+  for (let index = 1; index < coordinates.length; index += 1) {
+    const from = coordinates[index - 1];
+    const to = coordinates[index];
+    const segmentMeters = haversineMeters(from, to);
+
+    if (segmentMeters <= 0.0001) {
+      continue;
+    }
+
+    if (traveledMeters + segmentMeters <= targetMeters) {
+      sliced.push(to);
+      traveledMeters += segmentMeters;
+      continue;
+    }
+
+    const remainingMeters = targetMeters - traveledMeters;
+    const ratio = Math.max(0, Math.min(1, remainingMeters / segmentMeters));
+    sliced.push([
+      from[0] + (to[0] - from[0]) * ratio,
+      from[1] + (to[1] - from[1]) * ratio
+    ]);
+    return sliced;
+  }
+
+  return coordinates;
+}
+
+function shouldReduceMotion() {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return false;
+  }
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
 
 function buildRadiusPolygon(center: { lat: number; lng: number }, radiusMeters: number, points = 72) {
   const coordinates: [number, number][] = [];
@@ -190,46 +270,6 @@ function sanitizeRouteGeometry(
       lng <= 180
     );
   });
-}
-
-function primaryCategory(result: SearchResult, unknownCategoryLabel: string) {
-  const firstCategory = result.store.appCategories?.[0];
-  if (firstCategory) {
-    return firstCategory;
-  }
-  if (result.store.osmCategory) {
-    return result.store.osmCategory;
-  }
-  return unknownCategoryLabel;
-}
-
-function validationLabelFor(
-  status: SearchResult["validationStatus"],
-  validationLikelyLabel: string,
-  validationValidatedLabel: string
-) {
-  if (status === "likely") {
-    return validationLikelyLabel;
-  }
-  if (status === "validated") {
-    return validationValidatedLabel;
-  }
-  return null;
-}
-
-function openingStatusLabelFor(
-  status: OpeningStatus,
-  openNowLabel: string,
-  closedNowLabel: string,
-  hoursUnknownLabel: string
-) {
-  if (status === "open") {
-    return openNowLabel;
-  }
-  if (status === "closed") {
-    return closedNowLabel;
-  }
-  return hoursUnknownLabel;
 }
 
 function createPinElement(
@@ -288,57 +328,25 @@ export function LocalMap({
   center,
   results,
   themeMode,
-  userMarkerLabel,
   berlinOnlyHint,
   manualCenterEnabled,
   onManualCenterChange,
-  matchedProductLabel,
-  openingHoursLabel,
-  openingStatusLabel,
-  openNowLabel,
-  closedNowLabel,
-  hoursUnknownLabel,
-  storeCategoryLabel,
-  distanceLabel,
-  walkTimeLabel,
-  bikeTimeLabel,
-  etaApproxLabel,
-  validationLabel,
-  validationLikelyLabel,
-  validationValidatedLabel,
-  unknownCategoryLabel,
   radiusMeters,
   activeRouteGeometry,
-  onPopupRouteRequest,
-  routeOnMapActionLabel,
+  selectedOfferId,
+  onMarkerSelect,
   className
 }: {
   center: { lat: number; lng: number };
   results: SearchResult[];
   themeMode: "light" | "dark";
-  userMarkerLabel: string;
   berlinOnlyHint: string;
   manualCenterEnabled?: boolean;
   onManualCenterChange?: (center: { lat: number; lng: number }) => void;
-  matchedProductLabel: string;
-  openingHoursLabel: string;
-  openingStatusLabel: string;
-  openNowLabel: string;
-  closedNowLabel: string;
-  hoursUnknownLabel: string;
-  storeCategoryLabel: string;
-  distanceLabel: string;
-  walkTimeLabel: string;
-  bikeTimeLabel: string;
-  etaApproxLabel: string;
-  validationLabel: string;
-  validationLikelyLabel: string;
-  validationValidatedLabel: string;
-  unknownCategoryLabel: string;
   radiusMeters: number;
   activeRouteGeometry?: [number, number][] | null;
-  onPopupRouteRequest?: (result: SearchResult, mode: PopupRouteMode) => void;
-  routeOnMapActionLabel?: string;
+  selectedOfferId?: string | null;
+  onMarkerSelect?: (result: SearchResult) => void;
   className?: string;
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -350,6 +358,8 @@ export function LocalMap({
   const userMarkerRef = useRef<MapLibreMarker | null>(null);
   const resultMarkersRef = useRef<Map<string, MapLibreMarker>>(new Map());
   const lastBoundsKeyRef = useRef<string>("");
+  const activeRouteAnimationFrameRef = useRef<number | null>(null);
+  const lastAnimatedRouteKeyRef = useRef<string>("");
   const loggedMalformedResultKeysRef = useRef<Set<string>>(new Set());
   const loggedInvalidCenterRef = useRef(false);
   const lastUserInteractionAtRef = useRef(0);
@@ -367,6 +377,13 @@ export function LocalMap({
 
   function markUserMapInteraction() {
     lastUserInteractionAtRef.current = Date.now();
+  }
+
+  function cancelRouteAnimationFrame() {
+    if (activeRouteAnimationFrameRef.current !== null) {
+      cancelAnimationFrame(activeRouteAnimationFrameRef.current);
+      activeRouteAnimationFrameRef.current = null;
+    }
   }
 
   function triggerBerlinOnlyHint() {
@@ -445,10 +462,12 @@ export function LocalMap({
       }
       userMarkerRef.current = null;
       resultMarkers.clear();
+      cancelRouteAnimationFrame();
       mapRef.current?.remove();
       mapRef.current = null;
       maplibreRef.current = null;
       lastBoundsKeyRef.current = "";
+      lastAnimatedRouteKeyRef.current = "";
       setMapReady(false);
     };
   }, []);
@@ -459,6 +478,12 @@ export function LocalMap({
         clearTimeout(hintTimeoutRef.current);
         hintTimeoutRef.current = null;
       }
+    };
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      cancelRouteAnimationFrame();
     };
   }, []);
 
@@ -582,11 +607,14 @@ export function LocalMap({
       return;
     }
 
+    cancelRouteAnimationFrame();
+
     const style = themeMode === "dark" ? ROUTE_STYLE.dark : ROUTE_STYLE.light;
     const hasRoute = safeRouteGeometry.length >= 2;
-    const routeSource = map.getSource("active-route") as
-      | { setData: (data: unknown) => void }
-      | undefined;
+    const getRouteSource = () =>
+      map.getSource("active-route") as
+        | { setData: (data: unknown) => void }
+        | undefined;
 
     if (!hasRoute) {
       if (map.getLayer("active-route-line")) {
@@ -595,29 +623,23 @@ export function LocalMap({
       if (map.getSource("active-route")) {
         map.removeSource("active-route");
       }
+      lastAnimatedRouteKeyRef.current = "";
       return;
     }
 
-    const routeGeoJSON = {
-      type: "FeatureCollection" as const,
-      features: [
-        {
-          type: "Feature" as const,
-          properties: {},
-          geometry: {
-            type: "LineString" as const,
-            coordinates: safeRouteGeometry
-          }
-        }
-      ]
-    };
+    const routeGeoJSON = buildRouteGeoJSON(safeRouteGeometry);
+    const firstPoint = safeRouteGeometry[0];
+    const lastPoint = safeRouteGeometry[safeRouteGeometry.length - 1];
+    const routeKey = `${safeRouteGeometry.length}:${firstPoint[0].toFixed(5)}:${firstPoint[1].toFixed(5)}:${lastPoint[0].toFixed(5)}:${lastPoint[1].toFixed(5)}`;
+    const isSameRouteAsBefore = routeKey === lastAnimatedRouteKeyRef.current;
 
+    const routeSource = getRouteSource();
     if (routeSource) {
       routeSource.setData(routeGeoJSON);
     } else {
       map.addSource("active-route", {
         type: "geojson",
-        data: routeGeoJSON
+        data: buildRouteGeoJSON([safeRouteGeometry[0]])
       });
     }
 
@@ -641,6 +663,64 @@ export function LocalMap({
       map.setPaintProperty("active-route-line", "line-width", style.lineWidth);
       map.setPaintProperty("active-route-line", "line-opacity", style.lineOpacity);
     }
+
+    if (isSameRouteAsBefore || shouldReduceMotion()) {
+      getRouteSource()?.setData(routeGeoJSON);
+      lastAnimatedRouteKeyRef.current = routeKey;
+      return;
+    }
+
+    const totalDistanceMeters = polylineDistanceMeters(safeRouteGeometry);
+    const durationMs = Math.max(
+      ROUTE_ANIMATION_MIN_DURATION_MS,
+      Math.min(
+        ROUTE_ANIMATION_MAX_DURATION_MS,
+        totalDistanceMeters / ROUTE_ANIMATION_BASE_SPEED_METERS_PER_MS
+      )
+    );
+
+    let animationStart: number | null = null;
+    let lastFrameAt = 0;
+    const animate = (timestamp: number) => {
+      const source = getRouteSource();
+      if (!source) {
+        activeRouteAnimationFrameRef.current = null;
+        return;
+      }
+      if (animationStart === null) {
+        animationStart = timestamp;
+      }
+      if (timestamp - lastFrameAt < ROUTE_ANIMATION_FRAME_BUDGET_MS) {
+        activeRouteAnimationFrameRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      lastFrameAt = timestamp;
+
+      const elapsed = timestamp - animationStart;
+      const linearProgress = Math.max(0, Math.min(1, elapsed / durationMs));
+      const easedProgress = 1 - Math.pow(1 - linearProgress, 1.22);
+      const pulse = Math.sin(elapsed / 52) * 0.01 * (1 - linearProgress);
+      const progress = linearProgress >= 1 ? 1 : Math.max(0, Math.min(1, easedProgress + pulse));
+
+      const partialDistance = totalDistanceMeters * progress;
+      const partialGeometry = sliceRouteToDistance(safeRouteGeometry, partialDistance);
+      source.setData(buildRouteGeoJSON(partialGeometry));
+
+      if (linearProgress >= 1) {
+        source.setData(routeGeoJSON);
+        activeRouteAnimationFrameRef.current = null;
+        return;
+      }
+
+      activeRouteAnimationFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    activeRouteAnimationFrameRef.current = requestAnimationFrame(animate);
+    lastAnimatedRouteKeyRef.current = routeKey;
+
+    return () => {
+      cancelRouteAnimationFrame();
+    };
   }, [mapReady, safeRouteGeometry, themeMode]);
 
   useEffect(() => {
@@ -662,10 +742,7 @@ export function LocalMap({
           anchor: "bottom",
           draggable: manualCenterEnabled
         });
-        marker
-          .setLngLat([safeCenterLng, safeCenterLat])
-          .setPopup(new maplibregl.Popup({ closeButton: false }).setText(userMarkerLabel))
-          .addTo(map);
+        marker.setLngLat([safeCenterLng, safeCenterLat]).addTo(map);
 
         marker.on("dragstart", () => triggerHaptic(8));
         marker.on("dragend", () => {
@@ -681,9 +758,7 @@ export function LocalMap({
         return;
       }
 
-      userMarkerRef.current
-        .setLngLat([safeCenterLng, safeCenterLat])
-        .setPopup(new maplibregl.Popup({ closeButton: false }).setText(userMarkerLabel));
+      userMarkerRef.current.setLngLat([safeCenterLng, safeCenterLat]);
       userMarkerRef.current.setDraggable(Boolean(manualCenterEnabled));
     } catch (userMarkerError) {
       if (DEV_DEBUG) {
@@ -694,7 +769,7 @@ export function LocalMap({
         });
       }
     }
-  }, [manualCenterEnabled, onManualCenterChange, safeCenter.lat, safeCenter.lng, userMarkerLabel, mapReady]);
+  }, [manualCenterEnabled, onManualCenterChange, safeCenter.lat, safeCenter.lng, mapReady]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -727,18 +802,6 @@ export function LocalMap({
     }
 
     try {
-      const appendPopupLine = (
-        container: HTMLDivElement,
-        kind: "product" | "distance" | "category" | "validation" | "walk" | "bike" | "hours" | "status",
-        label: string,
-        value: string
-      ) => {
-        const line = document.createElement("p");
-        line.className = `map-popup-line map-popup-line-${kind}`;
-        line.textContent = `${label}: ${value}`;
-        container.appendChild(line);
-      };
-
       const validResults: RenderableMapResult[] = [];
       for (let index = 0; index < results.length; index += 1) {
         const item = results[index];
@@ -774,113 +837,30 @@ export function LocalMap({
         const { item, lat, lng } = entry;
         try {
           const openingStatus = evaluateOpeningStatus(item.store.openingHours);
-          const popupContainer = document.createElement("div");
-          popupContainer.className = "map-popup";
-
-          const title = document.createElement("h3");
-          title.className = "map-popup-title";
-          title.textContent = item.store.name;
-          popupContainer.appendChild(title);
-
-          appendPopupLine(popupContainer, "product", matchedProductLabel, item.product.normalizedName);
-          appendPopupLine(popupContainer, "distance", distanceLabel, formatDistance(item.distanceMeters));
-          appendPopupLine(
-            popupContainer,
-            "walk",
-            walkTimeLabel,
-            formatEtaLabel(etaApproxLabel, estimateTravelMinutes(item.distanceMeters, "walk"))
-          );
-          appendPopupLine(
-            popupContainer,
-            "bike",
-            bikeTimeLabel,
-            formatEtaLabel(etaApproxLabel, estimateTravelMinutes(item.distanceMeters, "bike"))
-          );
-          appendPopupLine(
-            popupContainer,
-            "category",
-            storeCategoryLabel,
-            primaryCategory(item, unknownCategoryLabel)
-          );
-          appendPopupLine(
-            popupContainer,
-            "status",
-            openingStatusLabel,
-            openingStatusLabelFor(openingStatus, openNowLabel, closedNowLabel, hoursUnknownLabel)
-          );
-          if (item.store.openingHours) {
-            appendPopupLine(popupContainer, "hours", openingHoursLabel, item.store.openingHours);
-          }
-
-          const validation = validationLabelFor(
-            item.validationStatus,
-            validationLikelyLabel,
-            validationValidatedLabel
-          );
-          if (validation) {
-            appendPopupLine(popupContainer, "validation", validationLabel, validation);
-          }
-
-          if (onPopupRouteRequest) {
-            const actions = document.createElement("div");
-            actions.className = "map-popup-actions";
-
-            const walkButton = document.createElement("button");
-            walkButton.type = "button";
-            walkButton.className = "map-popup-route";
-            walkButton.textContent = routeOnMapActionLabel
-              ? `${routeOnMapActionLabel} · ${walkTimeLabel}`
-              : walkTimeLabel;
-            walkButton.setAttribute(
-              "aria-label",
-              `${routeOnMapActionLabel ?? "Route"} ${walkTimeLabel} ${item.store.name}`
-            );
-            walkButton.addEventListener("click", (event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              triggerHaptic(8);
-              onPopupRouteRequest(item, "walk");
-            });
-            actions.appendChild(walkButton);
-
-            const bikeButton = document.createElement("button");
-            bikeButton.type = "button";
-            bikeButton.className = "map-popup-route";
-            bikeButton.textContent = routeOnMapActionLabel
-              ? `${routeOnMapActionLabel} · ${bikeTimeLabel}`
-              : bikeTimeLabel;
-            bikeButton.setAttribute(
-              "aria-label",
-              `${routeOnMapActionLabel ?? "Route"} ${bikeTimeLabel} ${item.store.name}`
-            );
-            bikeButton.addEventListener("click", (event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              triggerHaptic(8);
-              onPopupRouteRequest(item, "bike");
-            });
-            actions.appendChild(bikeButton);
-
-            popupContainer.appendChild(actions);
-          }
-
           const markerId = String(item.offer.id);
           const existingMarker = resultMarkersRef.current.get(markerId);
           if (existingMarker) {
-            existingMarker
-              .setLngLat([lng, lat])
-              .setPopup(new maplibregl.Popup({ closeButton: false, offset: 14 }).setDOMContent(popupContainer));
+            existingMarker.setLngLat([lng, lat]);
             const markerElement = existingMarker.getElement();
             markerElement.classList.toggle("map-pin-top", index === 0);
             markerElement.classList.remove("map-pin-open", "map-pin-closed", "map-pin-unknown");
             markerElement.classList.add(`map-pin-${openingStatus}`);
+            markerElement.classList.toggle("map-pin-selected", selectedOfferId === markerId);
           } else {
             const markerElement = createPinElement("result", index, openingStatus);
-            markerElement.addEventListener("click", () => triggerHaptic(7));
+            markerElement.classList.toggle("map-pin-selected", selectedOfferId === markerId);
+            markerElement.addEventListener("click", () => {
+              triggerHaptic(7);
+              markUserMapInteraction();
+              onMarkerSelect?.(item);
+              map.easeTo({
+                center: [lng, lat],
+                duration: 220
+              });
+            });
 
             const marker = new maplibregl.Marker({ element: markerElement, anchor: "bottom" })
               .setLngLat([lng, lat])
-              .setPopup(new maplibregl.Popup({ closeButton: false, offset: 14 }).setDOMContent(popupContainer))
               .addTo(map);
 
             resultMarkersRef.current.set(markerId, marker);
@@ -953,27 +933,12 @@ export function LocalMap({
   }, [
     safeCenter.lat,
     safeCenter.lng,
-    bikeTimeLabel,
-    distanceLabel,
-    etaApproxLabel,
-    matchedProductLabel,
-    openingHoursLabel,
-    openingStatusLabel,
-    openNowLabel,
-    closedNowLabel,
-    hoursUnknownLabel,
     radiusMeters,
     results,
     safeRouteGeometry,
-    storeCategoryLabel,
-    unknownCategoryLabel,
-    validationLabel,
-    validationLikelyLabel,
-    validationValidatedLabel,
-    walkTimeLabel,
+    selectedOfferId,
     mapReady,
-    onPopupRouteRequest,
-    routeOnMapActionLabel
+    onMarkerSelect
   ]);
 
   return (

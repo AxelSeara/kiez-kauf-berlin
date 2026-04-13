@@ -26,6 +26,9 @@ export type Dictionary = {
   noResultsRefineHint: string;
   noResultsSuggestionLabel: string;
   expandSearchButtonTemplate: string;
+  compactResultsSummaryTemplate: string;
+  viewMoreResultsLabel: string;
+  viewLessResultsLabel: string;
   openStore: string;
   routeAction: string;
   matchedProductLabel: string;
@@ -124,6 +127,9 @@ const dictionaries: Record<Locale, Dictionary> = {
     noResultsRefineHint: "Kein Treffer? Probier eine einfache Alternative:",
     noResultsSuggestionLabel: "Zum Testen:",
     expandSearchButtonTemplate: "Auf {radius} km erweitern",
+    compactResultsSummaryTemplate: "{shown} von {total} Treffern (offen + nah zuerst).",
+    viewMoreResultsLabel: "Mehr sehen",
+    viewLessResultsLabel: "Weniger sehen",
     openStore: "Filiale ansehen",
     routeAction: "Route",
     matchedProductLabel: "Produkt",
@@ -220,6 +226,9 @@ const dictionaries: Record<Locale, Dictionary> = {
     noResultsRefineHint: "No match yet? Try a simpler term:",
     noResultsSuggestionLabel: "Try:",
     expandSearchButtonTemplate: "Expand to {radius} km",
+    compactResultsSummaryTemplate: "Showing {shown} of {total} stores (open + nearest first).",
+    viewMoreResultsLabel: "View more",
+    viewLessResultsLabel: "View less",
     openStore: "Store details",
     routeAction: "Route",
     matchedProductLabel: "Product",
@@ -316,6 +325,9 @@ const dictionaries: Record<Locale, Dictionary> = {
     noResultsRefineHint: "Sin resultados? Prueba una forma mas simple:",
     noResultsSuggestionLabel: "Prueba:",
     expandSearchButtonTemplate: "Ampliar a {radius} km",
+    compactResultsSummaryTemplate: "Mostrando {shown} de {total} tiendas (abiertas + cercanas primero).",
+    viewMoreResultsLabel: "Ver mas",
+    viewLessResultsLabel: "Ver menos",
     openStore: "Ver tienda",
     routeAction: "Ruta",
     matchedProductLabel: "Producto",
