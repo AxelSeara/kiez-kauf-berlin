@@ -17,7 +17,7 @@ const MOABIT_BBOX = {
 };
 
 const SHOP_REGEX =
-  "supermarket|convenience|greengrocer|bakery|butcher|deli|organic|chemist|beverages|kiosk|health_food";
+  "supermarket|convenience|greengrocer|bakery|butcher|deli|organic|chemist|beverages|kiosk|health_food|department_store|mall|antiques|art|craft|stationery|beauty|cosmetics|perfumery|drugstore|medical_supply|orthopaedic|orthopedics|hardware|doityourself|household";
 
 const PRODUCT_CATALOG = [
   { id: "pr_anchor_001", normalized_name: "hafermilch 1l", brand: "Oatly", category: "getraenke" },

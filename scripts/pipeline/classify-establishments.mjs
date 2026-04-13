@@ -26,9 +26,25 @@ const OSM_TO_CATEGORY_MAP = {
   organic: ["bio", "grocery", "fresh-food"],
   health_food: ["bio", "grocery"],
   chemist: ["personal-care", "household"],
+  drugstore: ["beauty", "personal-care", "household"],
+  beauty: ["beauty", "personal-care"],
+  cosmetics: ["beauty", "personal-care"],
+  perfumery: ["beauty", "personal-care"],
   beverages: ["drinks", "convenience"],
   kiosk: ["convenience", "drinks"],
-  pharmacy: ["pharmacy", "personal-care"]
+  pharmacy: ["pharmacy", "personal-care"],
+  medical_supply: ["medical-supplies", "pharmacy", "personal-care"],
+  orthopaedic: ["medical-supplies", "pharmacy", "personal-care"],
+  orthopedics: ["medical-supplies", "pharmacy", "personal-care"],
+  antiques: ["antiques", "household"],
+  art: ["art", "household"],
+  craft: ["art", "household"],
+  stationery: ["art", "household"],
+  hardware: ["hardware", "household"],
+  doityourself: ["hardware", "household"],
+  household: ["household", "hardware"],
+  department_store: ["grocery", "household", "personal-care", "drinks"],
+  mall: ["household", "personal-care", "grocery"]
 };
 
 function keywordCategories(nameNormalized) {
@@ -36,10 +52,15 @@ function keywordCategories(nameNormalized) {
 
   if (/(bio|natur|organic)/.test(nameNormalized)) out.add("bio");
   if (/(apotheke|pharma)/.test(nameNormalized)) out.add("pharmacy");
+  if (/(ortho|orthop|sanitatshaus|medical supply)/.test(nameNormalized)) out.add("medical-supplies");
   if (/(spati|spaeti|spatkauf|kiosk)/.test(nameNormalized)) out.add("convenience");
   if (/(back|bakery|brot|baeck)/.test(nameNormalized)) out.add("bakery");
   if (/(fleisch|metzger|butcher)/.test(nameNormalized)) out.add("butcher");
   if (/(getrank|drink|beverage)/.test(nameNormalized)) out.add("drinks");
+  if (/(beauty|kosmetik|cosmetic|parfum|perfum)/.test(nameNormalized)) out.add("beauty");
+  if (/(kunst|art|atelier|craft|bastel|papier)/.test(nameNormalized)) out.add("art");
+  if (/(antiq|vintage)/.test(nameNormalized)) out.add("antiques");
+  if (/(hardware|werkzeug|baumarkt|diy)/.test(nameNormalized)) out.add("hardware");
 
   return [...out];
 }
@@ -48,7 +69,7 @@ function classify(row) {
   const osm = String(row.osm_category ?? "").trim();
   const normalizedName = stableNormalizeText(row.name);
 
-  const categories = new Set(OSM_TO_CATEGORY_MAP[osm] ?? ["grocery"]);
+  const categories = new Set(OSM_TO_CATEGORY_MAP[osm] ?? []);
   for (const extra of keywordCategories(normalizedName)) {
     categories.add(extra);
   }
@@ -57,8 +78,12 @@ function classify(row) {
     categories.add("personal-care");
   }
 
+  if (!categories.size) {
+    categories.add("household");
+  }
+
   const list = [...categories].slice(0, 5);
-  const confidenceBase = OSM_TO_CATEGORY_MAP[osm] ? 0.8 : 0.62;
+  const confidenceBase = OSM_TO_CATEGORY_MAP[osm] ? 0.8 : 0.56;
   const confidenceBoost = Math.min(0.15, keywordCategories(normalizedName).length * 0.04);
   const confidence = Math.min(0.97, Number((confidenceBase + confidenceBoost).toFixed(4)));
 

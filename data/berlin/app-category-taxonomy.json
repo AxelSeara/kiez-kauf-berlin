@@ -80,6 +80,46 @@
     "parent_slug": null
   },
   {
+    "slug": "hardware",
+    "display_name_es": "Ferreteria",
+    "display_name_en": "Hardware",
+    "display_name_de": "Baumarkt",
+    "description": "Tools, repair and DIY supplies",
+    "parent_slug": "household"
+  },
+  {
+    "slug": "art",
+    "display_name_es": "Arte y papeleria",
+    "display_name_en": "Art and stationery",
+    "display_name_de": "Kunst und Schreibwaren",
+    "description": "Art, craft and stationery stores",
+    "parent_slug": "household"
+  },
+  {
+    "slug": "antiques",
+    "display_name_es": "Antiguedades",
+    "display_name_en": "Antiques",
+    "display_name_de": "Antiquitaeten",
+    "description": "Vintage and antique stores",
+    "parent_slug": "household"
+  },
+  {
+    "slug": "beauty",
+    "display_name_es": "Belleza",
+    "display_name_en": "Beauty",
+    "display_name_de": "Beauty",
+    "description": "Beauty and cosmetics focused stores",
+    "parent_slug": "personal-care"
+  },
+  {
+    "slug": "medical-supplies",
+    "display_name_es": "Ortopedia y salud",
+    "display_name_en": "Medical supplies",
+    "display_name_de": "Sanitaetshaus",
+    "description": "Orthopedic and medical supply stores",
+    "parent_slug": "pharmacy"
+  },
+  {
     "slug": "bio",
     "display_name_es": "Bio",
     "display_name_en": "Organic",

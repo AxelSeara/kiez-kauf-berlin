@@ -22,7 +22,14 @@ const AI_GROUP_WEIGHTS = {
   drinks: { beverages: 0.93, snacks: 0.48 },
   pharmacy: { pharmacy: 0.92, personal_care: 0.79 },
   "personal-care": { personal_care: 0.88, pharmacy: 0.44 },
+  beauty: { personal_care: 0.93, pharmacy: 0.52 },
+  "medical-supplies": { pharmacy: 0.93, personal_care: 0.68, household: 0.34 },
   household: { household: 0.9, groceries: 0.35 },
+  hardware: { household: 0.94, groceries: 0.2 },
+  art: { household: 0.74, groceries: 0.22 },
+  antiques: { household: 0.58 },
+  department_store: { household: 0.78, personal_care: 0.74, groceries: 0.6, beverages: 0.48, pharmacy: 0.42 },
+  mall: { household: 0.62, personal_care: 0.58, groceries: 0.44, beverages: 0.35 },
   bio: { groceries: 0.67, fresh_produce: 0.74, beverages: 0.55 }
 };
 

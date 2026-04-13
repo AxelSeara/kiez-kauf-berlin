@@ -23,17 +23,21 @@ const OVERPASS_ENDPOINTS = [
   "https://overpass.private.coffee/api/interpreter"
 ];
 
-const BERLIN_BBOX = {
+const DEFAULT_BERLIN_BBOX = {
   south: 52.3383,
   west: 13.0884,
   north: 52.6755,
   east: 13.7612
 };
 
-const SHOP_REGEX =
-  "supermarket|convenience|greengrocer|bakery|butcher|deli|organic|chemist|beverages|kiosk|health_food|department_store|mall";
+const MOABIT_BBOX = {
+  south: 52.5171,
+  west: 13.3196,
+  north: 52.5485,
+  east: 13.3798
+};
 
-const USEFUL_CATEGORIES = new Set([
+const SHOP_TYPES = [
   "supermarket",
   "convenience",
   "greengrocer",
@@ -45,11 +49,83 @@ const USEFUL_CATEGORIES = new Set([
   "beverages",
   "kiosk",
   "health_food",
+  "department_store",
+  "mall",
+  "antiques",
+  "art",
+  "craft",
+  "stationery",
+  "beauty",
+  "cosmetics",
+  "perfumery",
+  "drugstore",
+  "medical_supply",
+  "orthopaedic",
+  "orthopedics",
+  "hardware",
+  "doityourself",
+  "household"
+];
+
+const SHOP_REGEX = SHOP_TYPES.join("|");
+
+const USEFUL_CATEGORIES = new Set([
+  ...SHOP_TYPES,
   "pharmacy"
 ]);
 
-function buildOverpassQuery() {
-  const { south, west, north, east } = BERLIN_BBOX;
+function parseBboxArg(value) {
+  if (!value || typeof value !== "string") {
+    return null;
+  }
+
+  const [southRaw, westRaw, northRaw, eastRaw] = value.split(",").map((item) => Number(item.trim()));
+  if (![southRaw, westRaw, northRaw, eastRaw].every((item) => Number.isFinite(item))) {
+    return null;
+  }
+
+  if (!(southRaw < northRaw && westRaw < eastRaw)) {
+    return null;
+  }
+
+  return {
+    south: southRaw,
+    west: westRaw,
+    north: northRaw,
+    east: eastRaw
+  };
+}
+
+function resolveImportScope(args) {
+  const neighborhood = String(args.neighborhood ?? "").trim().toLowerCase();
+  const districtFilter = String(args["district-filter"] ?? neighborhood ?? "").trim().toLowerCase();
+
+  if (neighborhood === "moabit") {
+    return {
+      label: "moabit",
+      bbox: MOABIT_BBOX,
+      districtFilter: districtFilter || "moabit"
+    };
+  }
+
+  const bboxFromArg = parseBboxArg(args.bbox);
+  if (bboxFromArg) {
+    return {
+      label: "custom",
+      bbox: bboxFromArg,
+      districtFilter
+    };
+  }
+
+  return {
+    label: "berlin",
+    bbox: DEFAULT_BERLIN_BBOX,
+    districtFilter
+  };
+}
+
+function buildOverpassQuery(scope) {
+  const { south, west, north, east } = scope.bbox;
 
   return `
 [out:json][timeout:300];
@@ -113,8 +189,9 @@ function toAddress(tags, districtFallback) {
   return districtPart ? `${districtPart}, Berlin` : "Berlin";
 }
 
-function normalizeElements(elements) {
+function normalizeElements(elements, scope) {
   const byExternalId = new Map();
+  const districtFilterNormalized = stableNormalizeText(scope.districtFilter ?? "");
 
   for (const row of elements) {
     const tags = row.tags ?? {};
@@ -134,6 +211,10 @@ function normalizeElements(elements) {
     const district =
       (tags["addr:suburb"] ?? tags["addr:district"] ?? tags["addr:city_district"] ?? "Berlin").trim() ||
       "Berlin";
+    const districtNormalized = stableNormalizeText(district);
+    if (districtFilterNormalized && !districtNormalized.includes(districtFilterNormalized)) {
+      continue;
+    }
 
     const externalId = `${row.type}/${row.id}`;
     const normalizedName = stableNormalizeText(name);
@@ -470,23 +551,33 @@ async function main() {
     startIndex,
     limit,
     batchId,
+    scope: {
+      neighborhood: String(args.neighborhood ?? ""),
+      districtFilter: String(args["district-filter"] ?? ""),
+      bbox: String(args.bbox ?? "")
+    },
     checkpointFile: CHECKPOINT_FILE
   });
 
-  const query = buildOverpassQuery();
+  const scope = resolveImportScope(args);
+
+  const query = buildOverpassQuery(scope);
   const payload = await fetchOverpassPayload(query);
   const elements = Array.isArray(payload.elements) ? payload.elements : [];
-  const normalized = normalizeElements(elements);
+  const normalized = normalizeElements(elements, scope);
 
   const sliced = normalized.slice(startIndex, limit ? startIndex + limit : undefined);
 
   logInfo("Normalized establishments", {
     rawElements: elements.length,
     uniqueUsefulEstablishments: normalized.length,
-    selectedForThisRun: sliced.length
+    selectedForThisRun: sliced.length,
+    scopeLabel: scope.label,
+    districtFilter: scope.districtFilter || null,
+    bbox: scope.bbox
   });
 
-  const outFile = path.join(DATA_DIR, "osm_berlin_establishments.normalized.json");
+  const outFile = path.join(DATA_DIR, `osm_${scope.label}_establishments.normalized.json`);
   await writeJsonFile(outFile, sliced);
   logInfo(`Wrote normalized snapshot to ${outFile}`);
 

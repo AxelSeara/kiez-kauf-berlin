@@ -42,6 +42,33 @@ describe("keyword intent helpers", () => {
     expect(__private.inferProductGroupsFromKeyword("jalapeno")).toContain("fresh_produce");
     expect(__private.inferProductGroupsFromKeyword("jalapneo")).toContain("fresh_produce");
     expect(__private.inferProductGroupsFromKeyword("scrwedriver")).toContain("household");
+    expect(__private.inferProductGroupsFromKeyword("tampons")).toContain("personal_care");
+    expect(__private.inferProductGroupsFromKeyword("tampones")).toContain("personal_care");
+    expect(__private.inferProductGroupsFromKeyword("menstrual cup")).toContain("personal_care");
+    expect(__private.inferProductGroupsFromKeyword("pantyliner")).toContain("personal_care");
+    expect(__private.inferProductGroupsFromKeyword("sunscrean")).toContain("personal_care");
+    expect(__private.inferProductGroupsFromKeyword("pregnancy test")).toContain("pharmacy");
+    expect(__private.inferProductGroupsFromKeyword("morning after pill")).toContain("pharmacy");
+    expect(__private.inferProductGroupsFromKeyword("lubrifiant")).toContain("pharmacy");
+    expect(__private.inferProductGroupsFromKeyword("anticeptic")).toContain("pharmacy");
+    expect(__private.inferProductGroupsFromKeyword("compresas")).toContain("personal_care");
+    expect(__private.inferProductGroupsFromKeyword("flashlight")).toContain("household");
+    expect(__private.inferProductGroupsFromKeyword("candels")).toContain("household");
+    expect(__private.inferProductGroupsFromKeyword("powerbank")).toContain("household");
+    expect(__private.inferProductGroupsFromKeyword("drain cleaner")).toContain("household");
+    expect(__private.inferProductGroupsFromKeyword("cold medicine")).toContain("pharmacy");
+    expect(__private.inferProductGroupsFromKeyword("orss")).toContain("pharmacy");
+    expect(__private.inferProductGroupsFromKeyword("ffp2 mask")).toContain("pharmacy");
+    expect(__private.inferProductGroupsFromKeyword("contact lens solution")).toContain("pharmacy");
+    expect(__private.inferProductGroupsFromKeyword("diarhea medicine")).toContain("pharmacy");
+    expect(__private.inferProductGroupsFromKeyword("omeprazol")).toContain("pharmacy");
+    expect(__private.inferProductGroupsFromKeyword("loperamide")).toContain("pharmacy");
+    expect(__private.inferProductGroupsFromKeyword("melatonina")).toContain("pharmacy");
+    expect(__private.inferProductGroupsFromKeyword("compression socks")).toContain("pharmacy");
+    expect(__private.inferProductGroupsFromKeyword("blutdruckmessgeraet")).toContain("pharmacy");
+    expect(__private.inferProductGroupsFromKeyword("wet wipes")).toContain("personal_care");
+    expect(__private.inferProductGroupsFromKeyword("puppypad")).toContain("pet_care");
+    expect(__private.inferProductGroupsFromKeyword("poop bags")).toContain("pet_care");
   });
 
   it("matches canonical products through english names, synonyms and typo-tolerant matching", () => {
