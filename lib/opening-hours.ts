@@ -102,14 +102,22 @@ function parseScheduleRules(openingHours: string): ParsedScheduleRule[] {
   const parsed: ParsedScheduleRule[] = [];
 
   for (const rule of rules) {
-    const timeMatches = Array.from(rule.matchAll(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/g));
+    const timeRangeRegex = /(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/g;
+    const timeMatches = Array.from(rule.matchAll(timeRangeRegex));
     if (timeMatches.length === 0) {
       continue;
     }
 
-    const daySpecRaw = rule.replace(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/g, "").replace(/,+/g, ",");
-    const dayCodeMatches = daySpecRaw.match(/\b(?:Mo|Tu|We|Th|Fr|Sa|Su)\b/g) ?? [];
-    const daySpec = dayCodeMatches.join(",");
+    const firstTimeMatch = timeMatches[0];
+    const daySpecRaw =
+      typeof firstTimeMatch?.index === "number"
+        ? rule.slice(0, firstTimeMatch.index).trim()
+        : "";
+    const dayTokenMatches =
+      daySpecRaw.match(/(?:Mo|Tu|We|Th|Fr|Sa|Su)(?:\s*-\s*(?:Mo|Tu|We|Th|Fr|Sa|Su))?/g) ?? [];
+    const daySpec = dayTokenMatches
+      .map((token) => token.replace(/\s+/g, ""))
+      .join(",");
     const parsedDays = parseDaySpec(daySpec);
     if (!parsedDays) {
       continue;
@@ -210,7 +218,7 @@ export function evaluateOpeningStatus(
 
   const hasAnyDayCode = DAY_CODES.some((code) => openingHours.includes(code));
   if (hasAnyDayCode) {
-    return "closed";
+    return "unknown";
   }
 
   return "unknown";

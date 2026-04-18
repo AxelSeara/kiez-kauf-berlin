@@ -993,8 +993,10 @@ export function LocalMap({
       ) : null}
       {isLoading ? (
         <div className="map-loading-overlay" role="status" aria-live="polite" aria-atomic="true">
-          <span className="map-loading-stroke" aria-hidden="true" />
-          <span className="map-loading-label">{loadingLabel ?? "Searching..."}</span>
+          <span className="map-loading-badge">
+            <span className="map-loading-stroke" aria-hidden="true" />
+            <span className="map-loading-label">{loadingLabel ?? "Searching..."}</span>
+          </span>
         </div>
       ) : null}
     </div>

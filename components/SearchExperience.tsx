@@ -495,6 +495,7 @@ export function SearchExperience({
   const loggedInvalidCenterRef = useRef(false);
   const searchCacheRef = useRef<Map<string, SearchCacheEntry>>(new Map());
   const routeCacheRef = useRef<Map<string, RouteCacheEntry>>(new Map());
+  const mapSectionRef = useRef<HTMLElement | null>(null);
 
   const safeCenter = useMemo(
     () => (isValidCenterPoint(center) ? center : safeInitialCenter),
@@ -1056,16 +1057,6 @@ export function SearchExperience({
       setFlashedOfferId((current) => (current === selectedOfferId ? null : current));
     }, 760);
 
-    const element = document.getElementById(`result-row-${selectedOfferId}`);
-    if (!element) {
-      return () => clearTimeout(flashTimeout);
-    }
-
-    element.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest"
-    });
-
     return () => {
       clearTimeout(flashTimeout);
     };
@@ -1075,6 +1066,17 @@ export function SearchExperience({
     activeRoute && hasSearched
       ? "h-[clamp(248px,42svh,430px)] md:h-[66vh] md:min-h-[360px]"
       : "h-[clamp(320px,56svh,560px)] md:h-[66vh] md:min-h-[360px]";
+
+  function scrollToMapSection() {
+    const mapSection = mapSectionRef.current;
+    if (!mapSection) {
+      return;
+    }
+    mapSection.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
 
   function inferSearchCategoryFromQuery(searchQuery: string) {
     const normalized = normalizeQueryForAnalytics(searchQuery);
@@ -1489,6 +1491,7 @@ export function SearchExperience({
     const isActiveSameRoute =
       activeRoute?.offerId === result.offer.id && activeRoute.mode === mode;
     setSelectedOfferId(result.offer.id);
+    scrollToMapSection();
 
     if (isActiveSameRoute) {
       setActiveRoute(null);
@@ -1764,7 +1767,7 @@ export function SearchExperience({
         )}
       </section>
 
-      <section id="map" className="space-y-1.5 md:space-y-2">
+      <section id="map" ref={mapSectionRef} className="space-y-1.5 md:space-y-2">
         <div className="hand-divider flex items-end justify-end pb-2">
           <div className="flex items-center gap-2">
             {showCachedResultBadge && !isLoading ? (
