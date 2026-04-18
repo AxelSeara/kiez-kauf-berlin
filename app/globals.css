@@ -377,9 +377,7 @@ input[type="checkbox"] {
 }
 
 .search-action-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.42rem;
+  display: block;
 }
 
 .search-action-btn {
@@ -389,6 +387,50 @@ input[type="checkbox"] {
 .search-action-row .btn-icon.search-action-btn {
   width: 42px;
   height: 42px;
+}
+
+.search-recent-dropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 0.24rem);
+  z-index: 6;
+  display: grid;
+  gap: 0.16rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  padding: 0.34rem;
+}
+
+.search-recent-label {
+  margin: 0 0 0.08rem;
+  padding: 0 0.24rem;
+  font-size: 0.63rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  font-family: var(--font-mono), "Courier New", monospace;
+}
+
+.search-recent-item {
+  border: 1px solid transparent;
+  border-radius: 0.38rem;
+  background: transparent;
+  color: var(--ink-soft);
+  text-align: left;
+  font-size: 0.78rem;
+  line-height: 1.25;
+  padding: 0.34rem 0.44rem;
+  cursor: pointer;
+}
+
+.search-recent-item:hover,
+.search-recent-item:focus-visible {
+  border-color: var(--line);
+  background: var(--surface-soft);
+  color: var(--ink);
+  outline: none;
 }
 
 .quick-intents {
@@ -441,12 +483,6 @@ input[type="checkbox"] {
 
 .quick-intent-chip:hover {
   color: var(--ink);
-}
-
-@media (min-width: 768px) {
-  .search-action-row {
-    display: contents;
-  }
 }
 
 .range-input {
@@ -667,6 +703,13 @@ input[type="checkbox"] {
   margin: 0.5rem 0.5rem 0 0;
 }
 
+.map-geolocate-btn {
+  position: absolute;
+  right: 0.5rem;
+  top: calc(0.5rem + 76px);
+  z-index: 4;
+}
+
 .bw-map .maplibregl-ctrl-group .maplibregl-ctrl-icon {
   background-image: none !important;
   width: 100%;
@@ -851,6 +894,7 @@ input[type="checkbox"] {
   border-radius: 999px;
   border: 1.5px solid var(--ink);
   background: var(--surface);
+  cursor: pointer;
 }
 
 .map-pin-open {
@@ -897,6 +941,20 @@ input[type="checkbox"] {
   display: inline-flex;
   align-items: flex-end;
   justify-content: center;
+  cursor: pointer;
+}
+
+.map-pin-user.is-draggable {
+  cursor: grab;
+}
+
+.map-pin-user.is-draggable.is-dragging {
+  cursor: grabbing;
+}
+
+.map-pin:hover:not(.map-pin-selected),
+.map-pin-user:hover .map-pin-user-svg {
+  animation: map-pin-bounce 280ms ease;
 }
 
 .map-pin-user-svg {
@@ -987,17 +1045,31 @@ input[type="checkbox"] {
   color: var(--ink-soft);
 }
 
-.map-loading-stroke {
-  width: 0.86rem;
-  height: 0.5rem;
-  border: 1.6px solid currentColor;
-  border-top-color: transparent;
-  border-right-color: transparent;
-  border-radius: 999px;
-  display: inline-block;
+.map-loading-scribble {
+  width: 1rem;
+  height: 0.55rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-loading-scribble svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.map-loading-scribble-path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.55;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 22 16;
+  stroke-dashoffset: 0;
   transform-origin: center;
-  animation: map-stroke-spin 760ms linear infinite;
-  opacity: 0.88;
+  animation: map-scribble-draw 940ms linear infinite;
+  opacity: 0.9;
 }
 
 @keyframes map-hint-in {
@@ -1011,12 +1083,29 @@ input[type="checkbox"] {
   }
 }
 
-@keyframes map-stroke-spin {
+@keyframes map-scribble-draw {
   0% {
-    transform: rotate(0deg) scale(0.96);
+    stroke-dashoffset: 0;
+    transform: rotate(-1.2deg) translateY(0);
+  }
+  48% {
+    transform: rotate(0.9deg) translateY(-0.35px);
   }
   100% {
-    transform: rotate(360deg) scale(0.96);
+    stroke-dashoffset: -38;
+    transform: rotate(-1.2deg) translateY(0);
+  }
+}
+
+@keyframes map-pin-bounce {
+  0% {
+    transform: translateY(0);
+  }
+  35% {
+    transform: translateY(-3px);
+  }
+  100% {
+    transform: translateY(0);
   }
 }
 
@@ -1625,6 +1714,16 @@ input[type="checkbox"] {
     height: 44px;
   }
 
+  .search-recent-dropdown {
+    top: calc(100% + 0.18rem);
+    padding: 0.28rem;
+  }
+
+  .search-recent-item {
+    font-size: 0.74rem;
+    padding: 0.34rem 0.38rem;
+  }
+
   .quick-intent-chip {
     min-height: 36px;
   }
@@ -1706,6 +1805,10 @@ input[type="checkbox"] {
   .map-pin-user {
     width: 20px;
     height: 20px;
+  }
+
+  .map-geolocate-btn {
+    top: calc(0.5rem + 72px);
   }
 
   .store-summary {

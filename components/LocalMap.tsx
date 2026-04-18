@@ -329,6 +329,11 @@ export function LocalMap({
   results,
   themeMode,
   berlinOnlyHint,
+  geolocationPermission,
+  isLocating,
+  geolocationLabel,
+  geolocationDeniedLabel,
+  onRequestGeolocation,
   manualCenterEnabled,
   onManualCenterChange,
   radiusMeters,
@@ -345,6 +350,11 @@ export function LocalMap({
   results: SearchResult[];
   themeMode: "light" | "dark";
   berlinOnlyHint: string;
+  geolocationPermission?: "granted" | "denied" | "prompt" | "unknown" | "unsupported";
+  isLocating?: boolean;
+  geolocationLabel?: string;
+  geolocationDeniedLabel?: string;
+  onRequestGeolocation?: () => void;
   manualCenterEnabled?: boolean;
   onManualCenterChange?: (center: { lat: number; lng: number }) => void;
   radiusMeters: number;
@@ -744,6 +754,7 @@ export function LocalMap({
       if (!userMarkerRef.current) {
         const userMarkerElement = createPinElement("user", 0);
         userMarkerElement.addEventListener("click", () => triggerHaptic(7));
+        userMarkerElement.classList.toggle("is-draggable", Boolean(manualCenterEnabled));
 
         const marker = new maplibregl.Marker({
           element: userMarkerElement,
@@ -752,8 +763,12 @@ export function LocalMap({
         });
         marker.setLngLat([safeCenterLng, safeCenterLat]).addTo(map);
 
-        marker.on("dragstart", () => triggerHaptic(8));
+        marker.on("dragstart", () => {
+          triggerHaptic(8);
+          userMarkerElement.classList.add("is-dragging");
+        });
         marker.on("dragend", () => {
+          userMarkerElement.classList.remove("is-dragging");
           const point = marker.getLngLat();
           const nextCenter = { lat: point.lat, lng: point.lng };
           if (isValidCenterPoint(nextCenter)) {
@@ -768,6 +783,9 @@ export function LocalMap({
 
       userMarkerRef.current.setLngLat([safeCenterLng, safeCenterLat]);
       userMarkerRef.current.setDraggable(Boolean(manualCenterEnabled));
+      userMarkerRef.current
+        .getElement()
+        .classList.toggle("is-draggable", Boolean(manualCenterEnabled));
     } catch (userMarkerError) {
       if (DEV_DEBUG) {
         console.error("[map-data-guard] User marker update failed", {
@@ -981,6 +999,48 @@ export function LocalMap({
       }`}
     >
       <div ref={containerRef} className="h-full w-full" />
+      {onRequestGeolocation ? (
+        <button
+          type="button"
+          onClick={() => {
+            onRequestGeolocation();
+          }}
+          disabled={Boolean(isLocating)}
+          className={`btn-icon map-geolocate-btn disabled:cursor-not-allowed disabled:opacity-60 ${
+            geolocationPermission === "granted"
+              ? "geo-btn-active"
+              : geolocationPermission === "denied" || geolocationPermission === "unsupported"
+                ? "geo-btn-denied"
+                : ""
+          }`}
+          aria-label={
+            geolocationPermission === "denied" || geolocationPermission === "unsupported"
+              ? geolocationDeniedLabel ?? geolocationLabel ?? "Location disabled"
+              : geolocationLabel ?? "Use my location"
+          }
+          title={
+            geolocationPermission === "denied" || geolocationPermission === "unsupported"
+              ? geolocationDeniedLabel ?? geolocationLabel ?? "Location disabled"
+              : geolocationLabel ?? "Use my location"
+          }
+        >
+          <span className="geo-icon-wrap">
+            <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4">
+              <path
+                d="M12 3v3m0 12v3M3 12h3m12 0h3m-9-5a5 5 0 100 10 5 5 0 000-10z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            {geolocationPermission === "denied" || geolocationPermission === "unsupported" ? (
+              <span aria-hidden="true" className="geo-off-slash" />
+            ) : null}
+          </span>
+        </button>
+      ) : null}
       {showBerlinHint ? (
         <div className="map-inline-hint" role="status" aria-live="polite">
           {berlinOnlyHint}
@@ -994,7 +1054,14 @@ export function LocalMap({
       {isLoading ? (
         <div className="map-loading-overlay" role="status" aria-live="polite" aria-atomic="true">
           <span className="map-loading-badge">
-            <span className="map-loading-stroke" aria-hidden="true" />
+            <span className="map-loading-scribble" aria-hidden="true">
+              <svg viewBox="0 0 28 14" focusable="false">
+                <path
+                  className="map-loading-scribble-path"
+                  d="M1.5 10.6c1.6-2.4 3.4 1.4 5-1.1 1.4-2.2 2.8 1.2 4.2-0.8 1.5-2 2.9 1.5 4.4-0.9 1.6-2.4 3.2 1.4 4.9-0.9 1.5-2 2.7 1.3 4.2-0.8 0.8-1.1 1.6-1.2 2.4-0.1"
+                />
+              </svg>
+            </span>
             <span className="map-loading-label">{loadingLabel ?? "Searching..."}</span>
           </span>
         </div>

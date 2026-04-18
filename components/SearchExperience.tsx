@@ -245,13 +245,6 @@ function formatValidation(dictionary: Dictionary, status: SearchResult["validati
   return dictionary.validationUnvalidated;
 }
 
-function formatConfidencePercent(confidence: number | null | undefined, unknownLabel: string) {
-  if (typeof confidence !== "number" || !Number.isFinite(confidence)) {
-    return unknownLabel;
-  }
-  return `${Math.round(confidence * 100)}%`;
-}
-
 function compactWhyText(value: string | null | undefined, maxLength = 130) {
   if (!value) {
     return "";
@@ -293,6 +286,19 @@ function validationToneClass(status: SearchResult["validationStatus"]) {
   if (status === "likely") return "is-likely";
   if (status === "rejected") return "is-rejected";
   return "is-unvalidated";
+}
+
+function resolveDisplayValidationStatus(
+  result: Pick<SearchResult, "validationStatus" | "confidence">
+): NonNullable<SearchResult["validationStatus"]> {
+  if (result.validationStatus) {
+    return result.validationStatus;
+  }
+  const confidence = result.confidence;
+  if (typeof confidence === "number" && Number.isFinite(confidence) && confidence >= 0.66) {
+    return "likely";
+  }
+  return "unvalidated";
 }
 
 function formatOpeningStatusLabel(dictionary: Dictionary, status: OpeningStatus) {
@@ -553,6 +559,7 @@ export function SearchExperience({
   const [activeQuickIntent, setActiveQuickIntent] = useState<string | null>(null);
   const [showCachedResultBadge, setShowCachedResultBadge] = useState(false);
   const [lastSearchEndpoint, setLastSearchEndpoint] = useState<string | null>(null);
+  const [isSearchInputFocused, setIsSearchInputFocused] = useState(false);
   const lastHapticAtRef = useRef(0);
   const searchAbortRef = useRef<AbortController | null>(null);
   const searchRequestIdRef = useRef(0);
@@ -562,6 +569,7 @@ export function SearchExperience({
   const searchCacheRef = useRef<Map<string, SearchCacheEntry>>(new Map());
   const routeCacheRef = useRef<Map<string, RouteCacheEntry>>(new Map());
   const mapSectionRef = useRef<HTMLElement | null>(null);
+  const searchInputBlurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const safeCenter = useMemo(
     () => (isValidCenterPoint(center) ? center : safeInitialCenter),
@@ -853,6 +861,15 @@ export function SearchExperience({
     }
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (searchInputBlurTimeoutRef.current) {
+        clearTimeout(searchInputBlurTimeoutRef.current);
+        searchInputBlurTimeoutRef.current = null;
+      }
+    };
+  }, []);
+
   const savedStoreIdSet = useMemo(() => new Set(savedStoreIds), [savedStoreIds]);
   const statusFilteredCount = useMemo(() => {
     return results.reduce((count, result) => {
@@ -1107,6 +1124,12 @@ export function SearchExperience({
     dictionary.unknownCategory,
     selectedResultEntry
   ]);
+  const selectedDisplayValidationStatus = useMemo(() => {
+    if (!selectedResultEntry) {
+      return "unvalidated" as const;
+    }
+    return resolveDisplayValidationStatus(selectedResultEntry.result);
+  }, [selectedResultEntry]);
 
   const hasHiddenListResults = filteredListResults.length > COLLAPSED_RESULTS_LIMIT;
 
@@ -1135,6 +1158,17 @@ export function SearchExperience({
     () => suggestRelatedTerms(query, quickIntents.map((intent) => intent.label)),
     [query, quickIntents]
   );
+  const visibleRecentSearches = useMemo(() => {
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) {
+      return recentSearches.slice(0, 7);
+    }
+    const normalized = normalizeQueryForAnalytics(trimmedQuery);
+    return recentSearches
+      .filter((term) => normalizeQueryForAnalytics(term).includes(normalized))
+      .slice(0, 7);
+  }, [query, recentSearches]);
+  const showRecentSearchesDropdown = isSearchInputFocused && visibleRecentSearches.length > 0;
 
   const filtersHideAllResults = hasSearched && results.length > 0 && filteredListResults.length === 0;
   const districtContext = useMemo(() => {
@@ -1820,7 +1854,7 @@ export function SearchExperience({
       </p>
       <section className="tool-block">
         <div className="tool-row hand-divider p-2.5 md:p-3">
-          <div className="space-y-1.5 md:grid md:grid-cols-[minmax(0,1fr)_auto_auto] md:gap-1.5 md:space-y-0">
+          <div className="space-y-1.5 md:grid md:grid-cols-[minmax(0,1fr)_auto] md:gap-1.5 md:space-y-0">
             <label className="sr-only" htmlFor="search-query-input">
               {dictionary.searchPlaceholder}
             </label>
@@ -1846,9 +1880,47 @@ export function SearchExperience({
                     void runSearch();
                   }
                 }}
+                onFocus={() => {
+                  if (searchInputBlurTimeoutRef.current) {
+                    clearTimeout(searchInputBlurTimeoutRef.current);
+                    searchInputBlurTimeoutRef.current = null;
+                  }
+                  setIsSearchInputFocused(true);
+                }}
+                onBlur={() => {
+                  if (searchInputBlurTimeoutRef.current) {
+                    clearTimeout(searchInputBlurTimeoutRef.current);
+                  }
+                  searchInputBlurTimeoutRef.current = setTimeout(() => {
+                    setIsSearchInputFocused(false);
+                    searchInputBlurTimeoutRef.current = null;
+                  }, 120);
+                }}
                 placeholder={dictionary.searchPlaceholder}
                 className="field-input search-input"
               />
+              {showRecentSearchesDropdown ? (
+                <div className="search-recent-dropdown" role="listbox" aria-label={dictionary.recentSearchesLabel}>
+                  <p className="search-recent-label">{dictionary.recentSearchesLabel}</p>
+                  {visibleRecentSearches.map((term) => (
+                    <button
+                      key={`recent-dropdown-${term}`}
+                      type="button"
+                      className="search-recent-item"
+                      onMouseDown={(event) => {
+                        event.preventDefault();
+                        setQuery(term);
+                        setActiveQuickIntent(null);
+                        setIsSearchInputFocused(false);
+                        void runSearch({ overrideQuery: term, category: null });
+                      }}
+                      disabled={isLoading}
+                    >
+                      {term}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
             </div>
             <div className="search-action-row">
               <button
@@ -1862,49 +1934,8 @@ export function SearchExperience({
               >
                 <span className="btn-label">{isLoading ? dictionary.searchingLabel : dictionary.searchButton}</span>
               </button>
-              <button
-                type="button"
-                onClick={() => {
-                  requestBrowserLocation();
-                }}
-                disabled={isLocating}
-                className={`btn-icon search-action-btn disabled:cursor-not-allowed disabled:opacity-60 ${
-                  geolocationPermission === "granted"
-                    ? "geo-btn-active"
-                    : geolocationPermission === "denied" || geolocationPermission === "unsupported"
-                      ? "geo-btn-denied"
-                      : ""
-                }`}
-                aria-label={
-                  geolocationPermission === "denied" || geolocationPermission === "unsupported"
-                    ? dictionary.geolocationDenied
-                    : dictionary.useMyLocation
-                }
-                title={
-                  geolocationPermission === "denied" || geolocationPermission === "unsupported"
-                    ? dictionary.geolocationDenied
-                    : dictionary.useMyLocation
-                }
-              >
-                <span className="geo-icon-wrap">
-                  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4">
-                    <path
-                      d="M12 3v3m0 12v3M3 12h3m12 0h3m-9-5a5 5 0 100 10 5 5 0 000-10z"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.6"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  {geolocationPermission === "denied" || geolocationPermission === "unsupported" ? (
-                    <span aria-hidden="true" className="geo-off-slash" />
-                  ) : null}
-                </span>
-              </button>
             </div>
-            <p className="status-text hidden md:col-span-3 sm:block">{dictionary.searchHint}</p>
-            <div className="quick-intents md:col-span-3" aria-label={dictionary.quickIntentLabel}>
+            <div className="quick-intents md:col-span-2" aria-label={dictionary.quickIntentLabel}>
               {quickIntents.map((intent) => (
                 <button
                   key={intent.id}
@@ -1921,27 +1952,7 @@ export function SearchExperience({
                 </button>
               ))}
             </div>
-            {recentSearches.length > 0 ? (
-              <div className="quick-intents quick-intents-recent md:col-span-3" aria-label={dictionary.recentSearchesLabel}>
-                <span className="status-text">{dictionary.recentSearchesLabel}</span>
-                {recentSearches.map((term) => (
-                  <button
-                    key={`recent-${term}`}
-                    type="button"
-                    className="btn-ghost quick-intent-chip px-2.5 py-1.5 text-[0.72rem]"
-                    onClick={() => {
-                      setQuery(term);
-                      setActiveQuickIntent(null);
-                      void runSearch({ overrideQuery: term, category: null });
-                    }}
-                    disabled={isLoading}
-                  >
-                    {term}
-                  </button>
-                ))}
-              </div>
-            ) : null}
-            <div className="search-compact-controls md:col-span-3">
+            <div className="search-compact-controls md:col-span-2">
               <label htmlFor="radius-km-picker" className="note-label">
                 {dictionary.radiusLabel}
               </label>
@@ -2045,6 +2056,13 @@ export function SearchExperience({
           results={mapResults}
           themeMode={themeMode}
           berlinOnlyHint={dictionary.berlinOnlyHint}
+          geolocationPermission={geolocationPermission}
+          isLocating={isLocating}
+          geolocationLabel={dictionary.useMyLocation}
+          geolocationDeniedLabel={dictionary.geolocationDenied}
+          onRequestGeolocation={() => {
+            requestBrowserLocation();
+          }}
           manualCenterEnabled={manualCenterEnabled}
           onManualCenterChange={(nextCenter) => {
             setCenter(nextCenter);
@@ -2163,15 +2181,13 @@ export function SearchExperience({
                     >
                       {formatOpeningStatusWithDetails(dictionary, selectedResultEntry.openingInfo)}
                     </span>
-                    {selectedResultEntry.result.validationStatus ? (
-                      <span
-                        className={`store-summary-badge ${validationToneClass(
-                          selectedResultEntry.result.validationStatus
-                        )}`}
-                      >
-                        {formatValidation(dictionary, selectedResultEntry.result.validationStatus)}
-                      </span>
-                    ) : null}
+                    <span
+                      className={`store-summary-badge ${validationToneClass(
+                        selectedDisplayValidationStatus
+                      )}`}
+                    >
+                      {formatValidation(dictionary, selectedDisplayValidationStatus)}
+                    </span>
                   </span>
                 </div>
                 <p className="selected-store-match">
@@ -2210,13 +2226,6 @@ export function SearchExperience({
                     </p>
                   ) : null}
                   <div className="store-meta-wrap">
-                    <span className="store-meta-chip">
-                      {dictionary.confidenceLabel}:{" "}
-                      {formatConfidencePercent(
-                        selectedResultEntry.result.confidence,
-                        dictionary.unknownConfidence
-                      )}
-                    </span>
                     <span className="store-meta-chip">
                       {dictionary.checkedLabel}:{" "}
                       {formatRelativeCheckedAt(selectedResultEntry.result.lastCheckedAt, {
@@ -2363,9 +2372,7 @@ export function SearchExperience({
               aria-activedescendant={selectedOfferId ? `result-row-${selectedOfferId}` : undefined}
             >
               {visibleListResults.map(({ result, openingStatus, openingInfo }, index) => {
-                const travel = estimateTravel(result.distanceMeters);
                 const isSelected = selectedOfferId === result.offer.id;
-                const phoneHref = sanitizePhoneHref(result.store.phone);
                 const rowWalkRouteKey = `${result.offer.id}:walk`;
                 const rowWalkRouteActive =
                   activeRoute?.offerId === result.offer.id && activeRoute.mode === "walk";
@@ -2402,28 +2409,6 @@ export function SearchExperience({
                           <span className={`store-summary-badge ${openingStatusToneClass(openingStatus)}`}>
                             {formatOpeningStatusWithDetails(dictionary, openingInfo)}
                           </span>
-                          <span className="store-summary-inline-meta">
-                            {formatStoreOwnership(dictionary, result.store.ownershipType)}
-                          </span>
-                          <span
-                            className="mono store-summary-travel store-summary-desktop-meta"
-                            title={`${dictionary.walkTimeLabel}: ${travel.walkLabel}`}
-                          >
-                            <UiIcon kind="walk" className="store-summary-icon" />
-                            {travel.walkMin}m
-                          </span>
-                          <span
-                            className="mono store-summary-travel store-summary-desktop-meta"
-                            title={`${dictionary.bikeTimeLabel}: ${travel.bikeLabel}`}
-                          >
-                            <UiIcon kind="bike" className="store-summary-icon" />
-                            {travel.bikeMin}m
-                          </span>
-                          {result.validationStatus === "validated" ? (
-                            <span className={`store-summary-badge store-summary-desktop-meta ${validationToneClass(result.validationStatus)}`}>
-                              {formatValidation(dictionary, result.validationStatus)}
-                            </span>
-                          ) : null}
                         </span>
                       </button>
                       <div className="store-row-actions">
@@ -2441,19 +2426,6 @@ export function SearchExperience({
                               ? dictionary.clearRouteAction
                               : dictionary.routeAction}
                         </button>
-                        {phoneHref ? (
-                          <a
-                            href={phoneHref}
-                            className="btn-ghost px-2 py-1 text-[0.66rem]"
-                            onClick={() => {
-                              trackEvent("store_call_click", {
-                                store_id: result.store.id
-                              });
-                            }}
-                          >
-                            {dictionary.callStoreAction}
-                          </a>
-                        ) : null}
                       </div>
                     </div>
                   </div>
