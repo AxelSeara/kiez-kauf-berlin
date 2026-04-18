@@ -25,6 +25,13 @@ MVP web responsive para buscar productos concretos y encontrar tiendas de barrio
 - `GET /api/stores/:id`
 - `POST /api/analytics/route-click`
 - `POST /api/analytics/search`
+- `GET /api/admin/insights`
+- `GET /api/admin/catalog`
+- `GET /api/admin/establishments`
+- `GET/PATCH /api/admin/establishments/:id`
+- `POST /api/admin/establishments/:id/products`
+- `GET /api/admin/canonical-products`
+- `POST /api/admin/rebuild-search-dataset`
 
 ## Setup local
 
@@ -43,6 +50,8 @@ NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 NEXT_PUBLIC_DEFAULT_LOCALE=de
 NEXT_PUBLIC_MAP_STYLE_URL=https://demotiles.maplibre.org/style.json
+SUPABASE_SERVICE_ROLE_KEY=
+ADMIN_PANEL_KEY=
 ```
 
 Si no hay credenciales de Supabase, la app usa dataset mock para desarrollo.
@@ -186,3 +195,29 @@ Salida para buscador:
 
 - Materialized view: `search_product_establishment_mv`
 - View conveniente: `search_product_establishment_dataset`
+
+## Admin panel
+
+Ruta:
+
+- `/admin` (redirecciona a `/{locale}/admin`)
+
+Objetivo:
+
+- Insights de uso (terminos mas buscados, no resueltos, tasa de no resultado)
+- Catalogo interno (categorias actuales, productos por grupo)
+- Edicion manual de negocios (categorias, estado, horarios, website, telefono)
+- Alta manual de productos por negocio (trazable como `merchant_added`)
+- Boton para refrescar dataset de busqueda (`refresh_search_product_establishment_mv`)
+
+Requisitos:
+
+1. Configurar `ADMIN_PANEL_KEY` en servidor.
+2. Configurar `SUPABASE_SERVICE_ROLE_KEY` en servidor.
+3. Entrar en `/admin` e introducir la clave de admin.
+
+Notas:
+
+- Sin `ADMIN_PANEL_KEY`, la API de admin responde `503`.
+- Sin `SUPABASE_SERVICE_ROLE_KEY`, la API de admin no puede editar datos.
+- El panel no usa login de usuarios final todavia; usa clave administrativa por header.
