@@ -221,3 +221,7 @@ Notas:
 - Sin `ADMIN_PANEL_KEY`, la API de admin responde `503`.
 - Sin `SUPABASE_SERVICE_ROLE_KEY`, la API de admin no puede editar datos.
 - El panel no usa login de usuarios final todavia; usa clave administrativa por header.
+
+## Product UX docs
+
+- Personas + JTBD (living doc): `docs/ux/personas-mvp.md`
