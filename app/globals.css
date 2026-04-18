@@ -392,6 +392,15 @@ button {
   gap: 0.36rem;
 }
 
+.quick-intents .status-text {
+  flex: 0 0 100%;
+  margin: 0;
+}
+
+.quick-intents-recent {
+  row-gap: 0.28rem;
+}
+
 .quick-intent-chip {
   min-height: 30px;
   border-color: var(--line-strong);
@@ -1020,6 +1029,21 @@ button {
   transition: background-color var(--motion-fast) ease;
 }
 
+.store-summary-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.35rem;
+}
+
+.store-row-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  padding: 0.36rem 0.45rem 0.36rem 0;
+  flex: 0 0 auto;
+}
+
 .store-summary-button {
   border: 0;
   background: transparent;
@@ -1573,6 +1597,12 @@ button {
     padding-bottom: 0.06rem;
   }
 
+  .quick-intents-recent {
+    flex-wrap: wrap;
+    overflow: visible;
+    padding-bottom: 0;
+  }
+
   .quick-intents::-webkit-scrollbar {
     display: none;
   }
@@ -1618,6 +1648,20 @@ button {
   .store-summary {
     min-height: 40px;
     padding: 0.46rem 0.56rem;
+  }
+
+  .store-summary-row {
+    align-items: flex-start;
+    gap: 0.22rem;
+  }
+
+  .store-row-actions {
+    padding: 0.34rem 0.34rem 0.34rem 0;
+    justify-content: flex-end;
+  }
+
+  .store-row-actions .btn-ghost {
+    min-height: 30px;
   }
 
   .store-summary-name {

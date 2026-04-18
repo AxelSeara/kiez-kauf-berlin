@@ -1,4 +1,8 @@
 export type OpeningStatus = "open" | "closed" | "unknown";
+export type OpeningInfo = {
+  status: OpeningStatus;
+  closesAt: string | null;
+};
 
 const OSM_DAY_INDEX: Record<string, number> = {
   Mo: 0,
@@ -189,37 +193,110 @@ function isOpenAtMinute(
   return false;
 }
 
+function formatMinuteAsTime(minuteOfDay: number) {
+  const bounded = Math.max(0, Math.min(1439, minuteOfDay));
+  const hour = Math.floor(bounded / 60);
+  const minute = bounded % 60;
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+}
+
+function getCurrentOpenCloseMinute(
+  currentDayIndex: number,
+  minuteOfDay: number,
+  rules: ParsedScheduleRule[]
+): number | null {
+  const previousDay = (currentDayIndex + 6) % 7;
+
+  for (const rule of rules) {
+    for (const interval of rule.intervals) {
+      if (interval.endMinute > interval.startMinute) {
+        if (
+          rule.days.has(currentDayIndex) &&
+          minuteOfDay >= interval.startMinute &&
+          minuteOfDay < interval.endMinute
+        ) {
+          return interval.endMinute;
+        }
+        continue;
+      }
+
+      if (rule.days.has(currentDayIndex) && minuteOfDay >= interval.startMinute) {
+        return interval.endMinute;
+      }
+      if (rule.days.has(previousDay) && minuteOfDay < interval.endMinute) {
+        return interval.endMinute;
+      }
+    }
+  }
+
+  return null;
+}
+
 export function evaluateOpeningStatus(
   openingHoursRaw: string | null | undefined,
   now: Date = new Date()
 ): OpeningStatus {
+  return evaluateOpeningInfo(openingHoursRaw, now).status;
+}
+
+export function evaluateOpeningInfo(
+  openingHoursRaw: string | null | undefined,
+  now: Date = new Date()
+): OpeningInfo {
   const openingHours = (openingHoursRaw ?? "").trim();
   if (!openingHours) {
-    return "unknown";
+    return {
+      status: "unknown",
+      closesAt: null
+    };
   }
 
   const normalized = openingHours.toLowerCase();
   if (normalized.includes("24/7")) {
-    return "open";
+    return {
+      status: "open",
+      closesAt: null
+    };
   }
 
   const rules = parseScheduleRules(openingHours);
   if (rules.length > 0) {
     const { dayIndex, minuteOfDay } = getBerlinDayAndMinute(now);
-    return isOpenAtMinute(dayIndex, minuteOfDay, rules) ? "open" : "closed";
+    const isOpen = isOpenAtMinute(dayIndex, minuteOfDay, rules);
+    if (!isOpen) {
+      return {
+        status: "closed",
+        closesAt: null
+      };
+    }
+
+    const closeMinute = getCurrentOpenCloseMinute(dayIndex, minuteOfDay, rules);
+    return {
+      status: "open",
+      closesAt: closeMinute === null ? null : formatMinuteAsTime(closeMinute)
+    };
   }
 
   if (
     /\boff\b/.test(normalized) ||
     /\bclosed\b/.test(normalized)
   ) {
-    return "closed";
+    return {
+      status: "closed",
+      closesAt: null
+    };
   }
 
   const hasAnyDayCode = DAY_CODES.some((code) => openingHours.includes(code));
   if (hasAnyDayCode) {
-    return "unknown";
+    return {
+      status: "unknown",
+      closesAt: null
+    };
   }
 
-  return "unknown";
+  return {
+    status: "unknown",
+    closesAt: null
+  };
 }

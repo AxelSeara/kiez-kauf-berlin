@@ -5,7 +5,7 @@ import { LocalMap } from "@/components/LocalMap";
 import { track } from "@vercel/analytics";
 import type { Dictionary } from "@/lib/i18n";
 import { estimateTravelMinutes } from "@/lib/maps";
-import { evaluateOpeningStatus, type OpeningStatus } from "@/lib/opening-hours";
+import { evaluateOpeningInfo, type OpeningInfo, type OpeningStatus } from "@/lib/opening-hours";
 import type { SearchResult } from "@/lib/types";
 
 type SearchPayload = {
@@ -71,7 +71,18 @@ const ROUTE_CACHE_TTL_MS = 1000 * 60 * 5;
 const SEARCH_TIMEOUT_MS = 10000;
 const SEARCH_PRIMARY_ENDPOINT = "/api/search";
 const SEARCH_FALLBACK_ENDPOINT = "/api/search?fallback=1";
+const RECENT_SEARCHES_STORAGE_KEY = "kiezkauf:recent-searches";
+const SAVED_STORES_STORAGE_KEY = "kiezkauf:saved-stores";
+const MAX_RECENT_SEARCHES = 8;
 const DEV_DEBUG = process.env.NODE_ENV !== "production";
+const RELATED_TERM_HINTS: Array<{ trigger: string; terms: string[] }> = [
+  { trigger: "pencil", terms: ["mechanical pencil", "2mm lead", "stationery"] },
+  { trigger: "hammer", terms: ["tool", "hardware", "nails"] },
+  { trigger: "baby", terms: ["diapers", "baby wipes", "pharmacy"] },
+  { trigger: "pet", terms: ["pet food", "cat litter", "animal store"] },
+  { trigger: "clean", terms: ["detergent", "bleach", "droguerie"] },
+  { trigger: "cable", terms: ["adapter", "charger", "electronics"] }
+];
 
 function readCachedLocation(): { lat: number; lng: number } | null {
   if (typeof window === "undefined") {
@@ -297,6 +308,37 @@ function formatOpeningStatusLabel(dictionary: Dictionary, status: OpeningStatus)
   return dictionary.hoursUnknownLabel;
 }
 
+function formatOpeningStatusWithDetails(dictionary: Dictionary, openingInfo: OpeningInfo) {
+  if (openingInfo.status === "open" && openingInfo.closesAt) {
+    return applyTemplate(dictionary.openUntilTemplate, { time: openingInfo.closesAt });
+  }
+  return formatOpeningStatusLabel(dictionary, openingInfo.status);
+}
+
+function sanitizePhoneHref(phone: string | null | undefined) {
+  if (!phone) {
+    return null;
+  }
+  const cleaned = phone.replace(/[^\d+]/g, "");
+  if (!cleaned || cleaned.length < 6) {
+    return null;
+  }
+  return `tel:${cleaned}`;
+}
+
+function formatStoreOwnership(
+  dictionary: Dictionary,
+  ownership: SearchResult["store"]["ownershipType"] | undefined
+) {
+  if (ownership === "independent") {
+    return dictionary.ownershipIndependent;
+  }
+  if (ownership === "chain") {
+    return dictionary.ownershipChain;
+  }
+  return dictionary.ownershipUnknown;
+}
+
 function openingStatusToneClass(status: OpeningStatus) {
   if (status === "open") return "is-open-now";
   if (status === "closed") return "is-closed-now";
@@ -307,6 +349,33 @@ function openingStatusSortRank(status: OpeningStatus) {
   if (status === "open") return 0;
   if (status === "unknown") return 1;
   return 2;
+}
+
+function suggestRelatedTerms(query: string, quickIntentTerms: string[]) {
+  const normalized = normalizeQueryForAnalytics(query);
+  if (!normalized) {
+    return quickIntentTerms.slice(0, 3);
+  }
+
+  const suggestions = new Set<string>();
+  for (const hint of RELATED_TERM_HINTS) {
+    if (normalized.includes(hint.trigger)) {
+      for (const term of hint.terms) {
+        suggestions.add(term);
+      }
+    }
+  }
+
+  for (const term of quickIntentTerms) {
+    if (suggestions.size >= 4) {
+      break;
+    }
+    if (normalizeQueryForAnalytics(term) !== normalized) {
+      suggestions.add(term);
+    }
+  }
+
+  return [...suggestions].slice(0, 4);
 }
 
 function buildSearchCacheKey(args: {
@@ -478,6 +547,10 @@ export function SearchExperience({
   const [hasSearched, setHasSearched] = useState(false);
   const [noResultsGuidance, setNoResultsGuidance] = useState<NoResultsGuidance | null>(null);
   const [isResultsExpanded, setIsResultsExpanded] = useState(false);
+  const [openNowOnly, setOpenNowOnly] = useState(false);
+  const [savedOnly, setSavedOnly] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [savedStoreIds, setSavedStoreIds] = useState<string[]>([]);
   const [activeRoute, setActiveRoute] = useState<ActiveRoute | null>(null);
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
   const [flashedOfferId, setFlashedOfferId] = useState<string | null>(null);
@@ -763,12 +836,57 @@ export function SearchExperience({
     return () => window.removeEventListener("kiezkauf-theme-change", handleThemeChange as EventListener);
   }, []);
 
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    try {
+      const cachedRecent = JSON.parse(localStorage.getItem(RECENT_SEARCHES_STORAGE_KEY) ?? "[]") as unknown;
+      if (Array.isArray(cachedRecent)) {
+        setRecentSearches(
+          cachedRecent
+            .filter((item): item is string => typeof item === "string" && item.trim().length > 0)
+            .slice(0, MAX_RECENT_SEARCHES)
+        );
+      }
+    } catch {
+      // ignore invalid cache payload
+    }
+
+    try {
+      const cachedSaved = JSON.parse(localStorage.getItem(SAVED_STORES_STORAGE_KEY) ?? "[]") as unknown;
+      if (Array.isArray(cachedSaved)) {
+        setSavedStoreIds(cachedSaved.filter((item): item is string => typeof item === "string").slice(0, 300));
+      }
+    } catch {
+      // ignore invalid cache payload
+    }
+  }, []);
+
+  const savedStoreIdSet = useMemo(() => new Set(savedStoreIds), [savedStoreIds]);
+  const statusFilteredCount = useMemo(() => {
+    return results.reduce((count, result) => {
+      if (openNowOnly && evaluateOpeningInfo(result.store.openingHours).status !== "open") {
+        return count;
+      }
+      if (savedOnly && !savedStoreIdSet.has(result.store.id)) {
+        return count;
+      }
+      return count + 1;
+    }, 0);
+  }, [openNowOnly, results, savedOnly, savedStoreIdSet]);
+  const statusFiltersHideAllResults = hasSearched && results.length > 0 && statusFilteredCount === 0;
+
   const resultSummary = useMemo(() => {
     if (isLoading) {
       return dictionary.searchingLabel;
     }
     if (!hasSearched) {
       return dictionary.mapEmptyState;
+    }
+    if (statusFiltersHideAllResults) {
+      return dictionary.noOpenResultsLabel;
     }
     if (results.length === 0 && noResultsGuidance?.type === "nearby") {
       return applyTemplate(dictionary.noResultsNearbyTemplate, {
@@ -778,13 +896,16 @@ export function SearchExperience({
     if (results.length === 0 && noResultsGuidance?.type === "catalog_gap") {
       return dictionary.noResultsCatalogHint;
     }
-    return `${results.length} ${dictionary.resultsCountLabel}`;
+    return `${statusFilteredCount} ${dictionary.resultsCountLabel}`;
   }, [
+    dictionary.noOpenResultsLabel,
     dictionary.mapEmptyState,
     dictionary.noResultsCatalogHint,
     dictionary.noResultsNearbyTemplate,
     dictionary.resultsCountLabel,
     dictionary.searchingLabel,
+    statusFilteredCount,
+    statusFiltersHideAllResults,
     hasSearched,
     isLoading,
     noResultsGuidance,
@@ -807,6 +928,9 @@ export function SearchExperience({
     if (!hasSearched) {
       return dictionary.mapEmptyState;
     }
+    if (statusFiltersHideAllResults) {
+      return dictionary.noOpenResultsLabel;
+    }
     if (results.length === 0 && noResultsGuidance?.type === "nearby") {
       return applyTemplate(dictionary.noResultsNearbyTemplate, {
         distance: formatDistance(noResultsGuidance.nearestDistanceMeters)
@@ -815,14 +939,17 @@ export function SearchExperience({
     if (results.length === 0 && noResultsGuidance?.type === "catalog_gap") {
       return dictionary.noResultsCatalogHint;
     }
-    return `${results.length} ${dictionary.resultsCountLabel}`;
+    return `${statusFilteredCount} ${dictionary.resultsCountLabel}`;
   }, [
     dictionary.mapEmptyState,
+    dictionary.noOpenResultsLabel,
     dictionary.noResultsCatalogHint,
     dictionary.noResultsNearbyTemplate,
     dictionary.resultsCountLabel,
     dictionary.searchingLabel,
     errorMessage,
+    statusFilteredCount,
+    statusFiltersHideAllResults,
     hasSearched,
     isLoading,
     locationMessage,
@@ -832,6 +959,9 @@ export function SearchExperience({
   ]);
 
   const noResultsMessage = useMemo(() => {
+    if (statusFiltersHideAllResults) {
+      return dictionary.noOpenResultsLabel;
+    }
     if (noResultsGuidance?.type === "nearby") {
       return applyTemplate(dictionary.noResultsNearbyTemplate, {
         distance: formatDistance(noResultsGuidance.nearestDistanceMeters)
@@ -842,9 +972,11 @@ export function SearchExperience({
     }
     return dictionary.noResults;
   }, [
+    dictionary.noOpenResultsLabel,
     dictionary.noResults,
     dictionary.noResultsCatalogHint,
     dictionary.noResultsNearbyTemplate,
+    statusFiltersHideAllResults,
     noResultsGuidance
   ]);
 
@@ -909,7 +1041,12 @@ export function SearchExperience({
     return results
       .map((result) => ({
         result,
-        openingStatus: evaluateOpeningStatus(result.store.openingHours)
+        openingInfo: evaluateOpeningInfo(result.store.openingHours)
+      }))
+      .map((entry) => ({
+        ...entry,
+        openingStatus: entry.openingInfo.status,
+        ownershipType: entry.result.store.ownershipType ?? "unknown"
       }))
       .sort((a, b) => {
         const statusDelta = openingStatusSortRank(a.openingStatus) - openingStatusSortRank(b.openingStatus);
@@ -926,25 +1063,37 @@ export function SearchExperience({
       });
   }, [results]);
 
+  const filteredListResults = useMemo(() => {
+    return prioritizedListResults.filter((entry) => {
+      if (openNowOnly && entry.openingStatus !== "open") {
+        return false;
+      }
+      if (savedOnly && !savedStoreIdSet.has(entry.result.store.id)) {
+        return false;
+      }
+      return true;
+    });
+  }, [openNowOnly, prioritizedListResults, savedOnly, savedStoreIdSet]);
+
   const visibleListResults = useMemo(() => {
     if (isResultsExpanded) {
-      return prioritizedListResults;
+      return filteredListResults;
     }
-    return prioritizedListResults.slice(0, COLLAPSED_RESULTS_LIMIT);
-  }, [isResultsExpanded, prioritizedListResults]);
+    return filteredListResults.slice(0, COLLAPSED_RESULTS_LIMIT);
+  }, [filteredListResults, isResultsExpanded]);
 
   const selectedResultEntry = useMemo(() => {
-    if (prioritizedListResults.length === 0) {
+    if (filteredListResults.length === 0) {
       return null;
     }
     if (!selectedOfferId) {
-      return prioritizedListResults[0];
+      return filteredListResults[0];
     }
     return (
-      prioritizedListResults.find((entry) => entry.result.offer.id === selectedOfferId) ??
-      prioritizedListResults[0]
+      filteredListResults.find((entry) => entry.result.offer.id === selectedOfferId) ??
+      filteredListResults[0]
     );
-  }, [prioritizedListResults, selectedOfferId]);
+  }, [filteredListResults, selectedOfferId]);
 
   const selectedMatchSummary = useMemo(() => {
     if (!selectedResultEntry) {
@@ -957,15 +1106,14 @@ export function SearchExperience({
     }
 
     const categoryLabel = primaryCategory(selectedResultEntry.result, dictionary.unknownCategory);
-    return `${dictionary.storeCategoryLabel}: ${categoryLabel} · ${dictionary.sourceLabel}: ${formatSourceType(selectedResultEntry.result.sourceType)}`;
+    return `${dictionary.storeCategoryLabel}: ${categoryLabel}`;
   }, [
-    dictionary.sourceLabel,
     dictionary.storeCategoryLabel,
     dictionary.unknownCategory,
     selectedResultEntry
   ]);
 
-  const hasHiddenListResults = prioritizedListResults.length > COLLAPSED_RESULTS_LIMIT;
+  const hasHiddenListResults = filteredListResults.length > COLLAPSED_RESULTS_LIMIT;
 
   const compactListSummary = useMemo(() => {
     if (isResultsExpanded || !hasHiddenListResults) {
@@ -973,15 +1121,38 @@ export function SearchExperience({
     }
     return applyTemplate(dictionary.compactResultsSummaryTemplate, {
       shown: String(visibleListResults.length),
-      total: String(prioritizedListResults.length)
+      total: String(filteredListResults.length)
     });
   }, [
     dictionary.compactResultsSummaryTemplate,
+    filteredListResults.length,
     hasHiddenListResults,
     isResultsExpanded,
-    prioritizedListResults.length,
     visibleListResults.length
   ]);
+
+  const mapResults = useMemo(
+    () => filteredListResults.map((entry) => entry.result),
+    [filteredListResults]
+  );
+
+  const relatedTerms = useMemo(
+    () => suggestRelatedTerms(query, quickIntents.map((intent) => intent.label)),
+    [query, quickIntents]
+  );
+
+  const filtersHideAllResults = hasSearched && results.length > 0 && filteredListResults.length === 0;
+  const districtContext = useMemo(() => {
+    const firstResult = filteredListResults[0]?.result;
+    if (!firstResult) {
+      return null;
+    }
+    const district = firstResult.store.district?.trim();
+    if (!district) {
+      return null;
+    }
+    return applyTemplate(dictionary.districtContextTemplate, { district });
+  }, [dictionary.districtContextTemplate, filteredListResults]);
 
   const estimateTravel = useCallback(
     (distanceMeters: number) => {
@@ -1024,14 +1195,14 @@ export function SearchExperience({
     if (!activeRoute) {
       return;
     }
-    const stillVisible = results.some((result) => result.offer.id === activeRoute.offerId);
+    const stillVisible = mapResults.some((result) => result.offer.id === activeRoute.offerId);
     if (!stillVisible) {
       setActiveRoute(null);
     }
-  }, [activeRoute, results]);
+  }, [activeRoute, mapResults]);
 
   useEffect(() => {
-    if (prioritizedListResults.length === 0) {
+    if (filteredListResults.length === 0) {
       if (selectedOfferId !== null) {
         setSelectedOfferId(null);
       }
@@ -1039,13 +1210,13 @@ export function SearchExperience({
     }
 
     const selectedStillExists = selectedOfferId
-      ? prioritizedListResults.some((entry) => entry.result.offer.id === selectedOfferId)
+      ? filteredListResults.some((entry) => entry.result.offer.id === selectedOfferId)
       : false;
 
     if (!selectedStillExists) {
-      setSelectedOfferId(prioritizedListResults[0]?.result.offer.id ?? null);
+      setSelectedOfferId(filteredListResults[0]?.result.offer.id ?? null);
     }
-  }, [prioritizedListResults, selectedOfferId]);
+  }, [filteredListResults, selectedOfferId]);
 
   useEffect(() => {
     if (!selectedOfferId) {
@@ -1167,6 +1338,48 @@ export function SearchExperience({
       category: intentId
     });
     void runSearch({ overrideQuery: trimmed, category: intentId });
+  }
+
+  function persistRecentSearches(nextRecentSearches: string[]) {
+    setRecentSearches(nextRecentSearches);
+    if (typeof window === "undefined") {
+      return;
+    }
+    try {
+      localStorage.setItem(RECENT_SEARCHES_STORAGE_KEY, JSON.stringify(nextRecentSearches));
+    } catch {
+      // ignore storage errors
+    }
+  }
+
+  function addRecentSearch(term: string) {
+    const normalizedTerm = term.trim();
+    if (!normalizedTerm) {
+      return;
+    }
+    const next = [
+      normalizedTerm,
+      ...recentSearches.filter(
+        (item) => normalizeQueryForAnalytics(item) !== normalizeQueryForAnalytics(normalizedTerm)
+      )
+    ].slice(0, MAX_RECENT_SEARCHES);
+    persistRecentSearches(next);
+  }
+
+  function toggleSavedStore(storeId: string) {
+    const next = savedStoreIdSet.has(storeId)
+      ? savedStoreIds.filter((id) => id !== storeId)
+      : [...savedStoreIds, storeId];
+
+    setSavedStoreIds(next);
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem(SAVED_STORES_STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        // ignore storage errors
+      }
+    }
+    pulse(7);
   }
 
   async function runSearch(options?: { overrideRadiusKm?: number; overrideQuery?: string; category?: string | null }) {
@@ -1387,6 +1600,7 @@ export function SearchExperience({
       setSelectedOfferId(primaryResults[0]?.offer.id ?? null);
       setHasSearched(true);
       setNoResultsGuidance(guidance);
+      addRecentSearch(effectiveQuery);
       const withOpeningHours = primaryResults.filter(
         (result) => typeof result.store.openingHours === "string" && result.store.openingHours.trim().length > 0
       ).length;
@@ -1712,6 +1926,26 @@ export function SearchExperience({
                 </button>
               ))}
             </div>
+            {recentSearches.length > 0 ? (
+              <div className="quick-intents quick-intents-recent md:col-span-3" aria-label={dictionary.recentSearchesLabel}>
+                <span className="status-text">{dictionary.recentSearchesLabel}</span>
+                {recentSearches.map((term) => (
+                  <button
+                    key={`recent-${term}`}
+                    type="button"
+                    className="btn-ghost quick-intent-chip px-2.5 py-1.5 text-[0.72rem]"
+                    onClick={() => {
+                      setQuery(term);
+                      setActiveQuickIntent(null);
+                      void runSearch({ overrideQuery: term, category: null });
+                    }}
+                    disabled={isLoading}
+                  >
+                    {term}
+                  </button>
+                ))}
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -1720,7 +1954,31 @@ export function SearchExperience({
             <label htmlFor="radius-km-slider" className="note-label note-mark">
               {dictionary.radiusLabel}
             </label>
-            <span className="mono status-inline">{formatRadiusKm(radiusKm)}</span>
+            <div className="flex items-center gap-1.5">
+              <label className="inline-flex items-center gap-1.5 text-[0.68rem] text-[var(--ink-soft)]">
+                <input
+                  type="checkbox"
+                  checked={openNowOnly}
+                  onChange={(event) => {
+                    setOpenNowOnly(event.target.checked);
+                    pulse(6);
+                  }}
+                />
+                {dictionary.openNowOnlyLabel}
+              </label>
+              <label className="inline-flex items-center gap-1.5 text-[0.68rem] text-[var(--ink-soft)]">
+                <input
+                  type="checkbox"
+                  checked={savedOnly}
+                  onChange={(event) => {
+                    setSavedOnly(event.target.checked);
+                    pulse(6);
+                  }}
+                />
+                {dictionary.savedOnlyLabel}
+              </label>
+              <span className="mono status-inline">{formatRadiusKm(radiusKm)}</span>
+            </div>
           </div>
           <input
             id="radius-km-slider"
@@ -1778,6 +2036,7 @@ export function SearchExperience({
             <p className="status-text">{resultSummary}</p>
           </div>
         </div>
+        {districtContext ? <p className="status-text -mt-1">{districtContext}</p> : null}
         {(routeLoadingKey || activeRouteLabel || routeErrorMessage) && (
           <div className="route-status-row" role="status" aria-live="polite" aria-atomic="true">
             {routeLoadingKey ? <span className="route-status-chip is-loading">{dictionary.routeLoadingLabel}</span> : null}
@@ -1804,7 +2063,7 @@ export function SearchExperience({
         )}
         <LocalMap
           center={safeCenter}
-          results={results}
+          results={mapResults}
           themeMode={themeMode}
           berlinOnlyHint={dictionary.berlinOnlyHint}
           manualCenterEnabled={manualCenterEnabled}
@@ -1829,10 +2088,10 @@ export function SearchExperience({
           className={mapPanelClassName}
         />
 
-        {!isLoading && hasSearched && results.length === 0 ? (
+        {!isLoading && hasSearched && (results.length === 0 || filtersHideAllResults) ? (
           <div className="note-empty no-results-box p-3">
             <p>{noResultsMessage}</p>
-            {noResultsGuidance?.type === "nearby" ? (
+            {noResultsGuidance?.type === "nearby" && !filtersHideAllResults ? (
               <button
                 type="button"
                 className="btn-secondary mt-2 w-full text-[0.76rem] md:w-auto"
@@ -1842,6 +2101,19 @@ export function SearchExperience({
                 disabled={isLoading}
               >
                 {expandSearchButtonLabel}
+              </button>
+            ) : null}
+            {filtersHideAllResults ? (
+              <button
+                type="button"
+                className="btn-secondary mt-2 w-full text-[0.76rem] md:w-auto"
+                onClick={() => {
+                  setOpenNowOnly(false);
+                  setSavedOnly(false);
+                  pulse(7);
+                }}
+              >
+                {dictionary.clearFiltersAction}
               </button>
             ) : null}
             <p className="status-text mt-2">{dictionary.noResultsRefineHint}</p>
@@ -1863,10 +2135,32 @@ export function SearchExperience({
                 </button>
               ))}
             </div>
+            {relatedTerms.length > 0 ? (
+              <>
+                <p className="status-text mt-2">{dictionary.relatedTermsLabel}</p>
+                <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                  {relatedTerms.map((term) => (
+                    <button
+                      key={`related-${term}`}
+                      type="button"
+                      className="btn-ghost quick-intent-chip px-2.5 py-1.5 text-[0.72rem]"
+                      onClick={() => {
+                        setQuery(term);
+                        setActiveQuickIntent(null);
+                        void runSearch({ overrideQuery: term, category: null });
+                      }}
+                      disabled={isLoading}
+                    >
+                      {term}
+                    </button>
+                  ))}
+                </div>
+              </>
+            ) : null}
           </div>
         ) : null}
 
-        {results.length > 0 ? (
+        {filteredListResults.length > 0 ? (
           <section className="note-divider pt-2">
             {selectedResultEntry ? (
               <article
@@ -1888,7 +2182,10 @@ export function SearchExperience({
                         selectedResultEntry.openingStatus
                       )}`}
                     >
-                      {formatOpeningStatusLabel(dictionary, selectedResultEntry.openingStatus)}
+                      {formatOpeningStatusWithDetails(dictionary, selectedResultEntry.openingInfo)}
+                    </span>
+                    <span className="store-summary-badge">
+                      {formatStoreOwnership(dictionary, selectedResultEntry.result.store.ownershipType)}
                     </span>
                     {selectedResultEntry.result.validationStatus ? (
                       <span
@@ -1925,7 +2222,14 @@ export function SearchExperience({
                     <UiIcon kind="validation" className="store-detail-icon" />
                     <span>
                       {dictionary.openingStatusLabel}:{" "}
-                      {formatOpeningStatusLabel(dictionary, selectedResultEntry.openingStatus)}
+                      {formatOpeningStatusWithDetails(dictionary, selectedResultEntry.openingInfo)}
+                    </span>
+                  </p>
+                  <p className="store-detail-line">
+                    <UiIcon kind="category" className="store-detail-icon" />
+                    <span>
+                      {dictionary.ownershipLabel}:{" "}
+                      {formatStoreOwnership(dictionary, selectedResultEntry.result.store.ownershipType)}
                     </span>
                   </p>
                   {selectedResultEntry.result.store.openingHours ? (
@@ -1969,6 +2273,9 @@ export function SearchExperience({
                         {dictionary.validationLabel}: {formatValidation(dictionary, selectedResultEntry.result.validationStatus)}
                       </span>
                     ) : null}
+                    {savedStoreIdSet.has(selectedResultEntry.result.store.id) ? (
+                      <span className="store-meta-chip">{dictionary.savedStoreLabel}</span>
+                    ) : null}
                   </div>
                   <div className="mt-1.5 flex flex-wrap gap-1.5">
                     {(() => {
@@ -1981,6 +2288,8 @@ export function SearchExperience({
                         activeRoute?.offerId === selectedResultEntry.result.offer.id && activeRoute.mode === "bike";
                       const walkRouteLoading = routeLoadingKey === walkRouteKey;
                       const bikeRouteLoading = routeLoadingKey === bikeRouteKey;
+                      const phoneHref = sanitizePhoneHref(selectedResultEntry.result.store.phone);
+                      const isSavedStore = savedStoreIdSet.has(selectedResultEntry.result.store.id);
 
                       return (
                         <>
@@ -2014,7 +2323,29 @@ export function SearchExperience({
                               ? dictionary.routeLoadingLabel
                               : bikeRouteActive
                                 ? dictionary.clearRouteAction
-                                : `${dictionary.routeOnMapAction} · ${dictionary.bikeTimeLabel} ${travel.bikeMin}m`}
+                              : `${dictionary.routeOnMapAction} · ${dictionary.bikeTimeLabel} ${travel.bikeMin}m`}
+                          </button>
+                          {phoneHref ? (
+                            <a
+                              href={phoneHref}
+                              className="btn-ghost inline-flex text-[0.72rem] px-2.5 py-1.5"
+                              onClick={() => {
+                                trackEvent("store_call_click", {
+                                  store_id: selectedResultEntry.result.store.id
+                                });
+                              }}
+                            >
+                              {dictionary.callStoreAction}
+                            </a>
+                          ) : null}
+                          <button
+                            type="button"
+                            className={`btn-ghost inline-flex text-[0.72rem] px-2.5 py-1.5 ${isSavedStore ? "is-active" : ""}`}
+                            onClick={() => {
+                              toggleSavedStore(selectedResultEntry.result.store.id);
+                            }}
+                          >
+                            {isSavedStore ? dictionary.unsaveStoreAction : dictionary.saveStoreAction}
                           </button>
                         </>
                       );
@@ -2027,6 +2358,20 @@ export function SearchExperience({
             <div className="results-toolbar mb-1.5 md:mb-2">
               <h3 className="note-subtitle note-mark">{dictionary.resultsTitle}</h3>
               <div className="results-toolbar-actions">
+                {openNowOnly || savedOnly ? (
+                  <button
+                    type="button"
+                    className="btn-ghost text-[0.72rem] px-2.5 py-1.5"
+                    onClick={() => {
+                      setOpenNowOnly(false);
+                      setSavedOnly(false);
+                      pulse(7);
+                    }}
+                    disabled={isLoading}
+                  >
+                    {dictionary.clearFiltersAction}
+                  </button>
+                ) : null}
                 {quickExpandRadiusKm !== null ? (
                   <button
                     type="button"
@@ -2063,9 +2408,11 @@ export function SearchExperience({
               aria-label={dictionary.resultsTitle}
               aria-activedescendant={selectedOfferId ? `result-row-${selectedOfferId}` : undefined}
             >
-              {visibleListResults.map(({ result, openingStatus }, index) => {
+              {visibleListResults.map(({ result, openingStatus, openingInfo }, index) => {
                 const travel = estimateTravel(result.distanceMeters);
                 const isSelected = selectedOfferId === result.offer.id;
+                const phoneHref = sanitizePhoneHref(result.store.phone);
+                const isSavedStore = savedStoreIdSet.has(result.store.id);
 
                 return (
                   <div
@@ -2075,49 +2422,79 @@ export function SearchExperience({
                     } ${flashedOfferId === result.offer.id ? "is-flashing" : ""}`}
                     style={{ animationDelay: `${Math.min(index, 10) * 26}ms` }}
                   >
-                    <button
-                      id={`result-row-${result.offer.id}`}
-                      type="button"
-                      className="store-summary store-summary-button w-full text-left"
-                      role="option"
-                      aria-selected={isSelected}
-                      aria-current={isSelected ? "true" : undefined}
-                      aria-describedby={isSelected ? "selected-store-card" : undefined}
-                      onClick={() => {
-                        pulse(6);
-                        setSelectedOfferId(result.offer.id);
-                      }}
-                    >
-                      <span className="store-summary-name">{result.store.name}</span>
-                      <span className="store-summary-meta">
-                        <span className="mono store-summary-distance">
-                          <UiIcon kind="distance" className="store-summary-icon" />
-                          {formatDistance(result.distanceMeters)}
-                        </span>
-                        <span className={`store-summary-badge ${openingStatusToneClass(openingStatus)}`}>
-                          {formatOpeningStatusLabel(dictionary, openingStatus)}
-                        </span>
-                        <span
-                          className="mono store-summary-travel store-summary-desktop-meta"
-                          title={`${dictionary.walkTimeLabel}: ${travel.walkLabel}`}
-                        >
-                          <UiIcon kind="walk" className="store-summary-icon" />
-                          {travel.walkMin}m
-                        </span>
-                        <span
-                          className="mono store-summary-travel store-summary-desktop-meta"
-                          title={`${dictionary.bikeTimeLabel}: ${travel.bikeLabel}`}
-                        >
-                          <UiIcon kind="bike" className="store-summary-icon" />
-                          {travel.bikeMin}m
-                        </span>
-                        {result.validationStatus ? (
-                          <span className={`store-summary-badge store-summary-desktop-meta ${validationToneClass(result.validationStatus)}`}>
-                            {formatValidation(dictionary, result.validationStatus)}
+                    <div className="store-summary-row">
+                      <button
+                        id={`result-row-${result.offer.id}`}
+                        type="button"
+                        className="store-summary store-summary-button w-full text-left"
+                        role="option"
+                        aria-selected={isSelected}
+                        aria-current={isSelected ? "true" : undefined}
+                        aria-describedby={isSelected ? "selected-store-card" : undefined}
+                        onClick={() => {
+                          pulse(6);
+                          setSelectedOfferId(result.offer.id);
+                        }}
+                      >
+                        <span className="store-summary-name">{result.store.name}</span>
+                        <span className="store-summary-meta">
+                          <span className="mono store-summary-distance">
+                            <UiIcon kind="distance" className="store-summary-icon" />
+                            {formatDistance(result.distanceMeters)}
                           </span>
+                          <span className={`store-summary-badge ${openingStatusToneClass(openingStatus)}`}>
+                            {formatOpeningStatusWithDetails(dictionary, openingInfo)}
+                          </span>
+                          <span className="store-summary-badge">
+                            {formatStoreOwnership(dictionary, result.store.ownershipType)}
+                          </span>
+                          <span
+                            className="mono store-summary-travel store-summary-desktop-meta"
+                            title={`${dictionary.walkTimeLabel}: ${travel.walkLabel}`}
+                          >
+                            <UiIcon kind="walk" className="store-summary-icon" />
+                            {travel.walkMin}m
+                          </span>
+                          <span
+                            className="mono store-summary-travel store-summary-desktop-meta"
+                            title={`${dictionary.bikeTimeLabel}: ${travel.bikeLabel}`}
+                          >
+                            <UiIcon kind="bike" className="store-summary-icon" />
+                            {travel.bikeMin}m
+                          </span>
+                          {result.validationStatus ? (
+                            <span className={`store-summary-badge store-summary-desktop-meta ${validationToneClass(result.validationStatus)}`}>
+                              {formatValidation(dictionary, result.validationStatus)}
+                            </span>
+                          ) : null}
+                          {isSavedStore ? <span className="store-summary-badge">{dictionary.savedStoreLabel}</span> : null}
+                        </span>
+                      </button>
+                      <div className="store-row-actions">
+                        {phoneHref ? (
+                          <a
+                            href={phoneHref}
+                            className="btn-ghost px-2 py-1 text-[0.66rem]"
+                            onClick={() => {
+                              trackEvent("store_call_click", {
+                                store_id: result.store.id
+                              });
+                            }}
+                          >
+                            {dictionary.callStoreAction}
+                          </a>
                         ) : null}
-                      </span>
-                    </button>
+                        <button
+                          type="button"
+                          className={`btn-ghost px-2 py-1 text-[0.66rem] ${isSavedStore ? "is-active" : ""}`}
+                          onClick={() => {
+                            toggleSavedStore(result.store.id);
+                          }}
+                        >
+                          {isSavedStore ? dictionary.unsaveStoreAction : dictionary.saveStoreAction}
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 );
               })}

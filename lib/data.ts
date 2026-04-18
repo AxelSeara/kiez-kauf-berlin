@@ -16,6 +16,41 @@ const BERLIN_CENTER = { lat: 52.5208, lng: 13.4094 };
 const DEV_DEBUG = process.env.NODE_ENV !== "production";
 const MAX_INFERRED_GROUPS = 4;
 const MIN_GROUP_SCORE = 2;
+const CHAIN_NAME_HINTS = [
+  "dm",
+  "rossmann",
+  "aldi",
+  "lidl",
+  "rewe",
+  "edeka",
+  "kaufland",
+  "obi",
+  "bauhaus",
+  "hornbach",
+  "mediamarkt",
+  "saturn",
+  "ikea",
+  "douglas",
+  "fressnapf",
+  "muller"
+];
+
+function inferOwnershipTypeFromStoreName(name: string | null | undefined): Store["ownershipType"] {
+  const normalized = normalizeQuery(name ?? "");
+  if (!normalized) {
+    return "unknown";
+  }
+
+  if (CHAIN_NAME_HINTS.some((hint) => normalized.includes(hint))) {
+    return "chain";
+  }
+
+  if (normalized.split(" ").length >= 2) {
+    return "independent";
+  }
+
+  return "unknown";
+}
 
 function toRadians(value: number): number {
   return (value * Math.PI) / 180;
@@ -110,6 +145,8 @@ type SupabaseOfferRow = {
         opening_hours: string;
         lat: number;
         lng: number;
+        website?: string | null;
+        phone?: string | null;
       }
     | null
     | Array<{
@@ -120,6 +157,8 @@ type SupabaseOfferRow = {
         opening_hours: string;
         lat: number;
         lng: number;
+        website?: string | null;
+        phone?: string | null;
       }>;
   products:
     | {
@@ -154,8 +193,16 @@ type SupabaseSearchDatasetRow = {
   osm_category: string | null;
   app_categories: string[] | null;
   opening_hours?: string | null;
+  source_url?: string | null;
   product_normalized_name: string;
   product_group: string;
+};
+
+type SupabaseEstablishmentMetadataRow = {
+  id: number;
+  phone: string | null;
+  website: string | null;
+  name: string | null;
 };
 
 type SupabaseCanonicalProductRow = {
@@ -607,50 +654,54 @@ async function getSupabaseRowsLegacy(): Promise<JoinedRow[]> {
   }
 
   const rows = (data ?? []) as SupabaseOfferRow[];
+  const legacyRows: JoinedRow[] = [];
 
-  return rows
-    .map((row) => {
-      const store = Array.isArray(row.stores) ? row.stores[0] : row.stores;
-      const product = Array.isArray(row.products) ? row.products[0] : row.products;
+  for (const row of rows) {
+    const store = Array.isArray(row.stores) ? row.stores[0] : row.stores;
+    const product = Array.isArray(row.products) ? row.products[0] : row.products;
 
-      if (!store || !product || !hasValidStoreCoordinates(store)) {
-        if (DEV_DEBUG) {
-          debugMalformedRecord("Skipping malformed legacy row from Supabase", {
-            offerId: row.id,
-            store,
-            product
-          });
-        }
-        return null;
+    if (!store || !product || !hasValidStoreCoordinates(store)) {
+      if (DEV_DEBUG) {
+        debugMalformedRecord("Skipping malformed legacy row from Supabase", {
+          offerId: row.id,
+          store,
+          product
+        });
       }
+      continue;
+    }
 
-      return {
-        offer: {
-          id: row.id,
-          storeId: row.store_id,
-          productId: row.product_id,
-          priceOptional: row.price_optional,
-          availability: row.availability as Offer["availability"],
-          updatedAt: row.updated_at
-        } satisfies Offer,
-        store: {
-          id: store.id,
-          name: store.name,
-          address: store.address,
-          district: store.district,
-          openingHours: store.opening_hours,
-          lat: store.lat,
-          lng: store.lng
-        } satisfies Store,
-        product: {
-          id: product.id,
-          normalizedName: product.normalized_name,
-          brand: product.brand,
-          category: product.category
-        } satisfies Product
-      };
-    })
-    .filter((row): row is JoinedRow => row !== null);
+    legacyRows.push({
+      offer: {
+        id: row.id,
+        storeId: row.store_id,
+        productId: row.product_id,
+        priceOptional: row.price_optional,
+        availability: row.availability as Offer["availability"],
+        updatedAt: row.updated_at
+      } satisfies Offer,
+      store: {
+        id: store.id,
+        name: store.name,
+        address: store.address,
+        district: store.district,
+        openingHours: store.opening_hours,
+        lat: store.lat,
+        lng: store.lng,
+        website: (store as { website?: string | null }).website ?? null,
+        phone: (store as { phone?: string | null }).phone ?? null,
+        ownershipType: inferOwnershipTypeFromStoreName(store.name)
+      } satisfies Store,
+      product: {
+        id: product.id,
+        normalizedName: product.normalized_name,
+        brand: product.brand,
+        category: product.category
+      } satisfies Product
+    });
+  }
+
+  return legacyRows;
 }
 
 async function searchSupabaseRowsFromDataset(args: {
@@ -680,7 +731,7 @@ async function searchSupabaseRowsFromDataset(args: {
     db
       .from("search_product_establishment_dataset")
       .select(
-        "establishment_id, canonical_product_id, source_type, confidence, validation_status, why_this_product_matches, updated_at, establishment_name, address, district, lat, lon, osm_category, app_categories, opening_hours, product_normalized_name, product_group, candidate_last_checked_at"
+        "establishment_id, canonical_product_id, source_type, confidence, validation_status, why_this_product_matches, updated_at, establishment_name, address, district, lat, lon, osm_category, app_categories, opening_hours, source_url, product_normalized_name, product_group, candidate_last_checked_at"
       )
       .gte("lat", bounds.minLat)
       .lte("lat", bounds.maxLat)
@@ -756,6 +807,30 @@ async function searchSupabaseRowsFromDataset(args: {
 
   const joinedRows: JoinedRow[] = [];
   let malformedRows = 0;
+  const establishmentIds = [...new Set(rows.map((row) => row.establishment_id))];
+  const metadataById = new Map<number, SupabaseEstablishmentMetadataRow>();
+
+  if (establishmentIds.length > 0) {
+    const { data: establishmentRows, error: establishmentError } = await db
+      .from("establishments")
+      .select("id, phone, website, name")
+      .in("id", establishmentIds);
+
+    if (establishmentError) {
+      const message = (establishmentError.message || "").toLowerCase();
+      const rlsBlocked =
+        message.includes("permission denied") ||
+        message.includes("row-level security") ||
+        message.includes("rls");
+      if (!rlsBlocked) {
+        throw new Error(`Supabase establishment metadata query failed: ${establishmentError.message}`);
+      }
+    } else {
+      for (const metadataRow of (establishmentRows ?? []) as SupabaseEstablishmentMetadataRow[]) {
+        metadataById.set(metadataRow.id, metadataRow);
+      }
+    }
+  }
 
   for (const row of rows) {
     if (!hasValidStoreCoordinates({ lat: row.lat, lng: row.lon })) {
@@ -775,6 +850,9 @@ async function searchSupabaseRowsFromDataset(args: {
     const productId = String(row.canonical_product_id);
     const offerId = `candidate_${storeId}_${productId}_${row.source_type ?? "unknown"}`;
     const updatedAt = row.updated_at ?? new Date().toISOString();
+    const establishmentMetadata = metadataById.get(row.establishment_id);
+    const website = establishmentMetadata?.website ?? row.source_url ?? null;
+    const storeName = String(row.establishment_name ?? establishmentMetadata?.name ?? "Unknown store");
 
     joinedRows.push({
       offer: {
@@ -787,12 +865,15 @@ async function searchSupabaseRowsFromDataset(args: {
       },
       store: {
         id: storeId,
-        name: String(row.establishment_name ?? "Unknown store"),
+        name: storeName,
         address: String(row.address ?? ""),
         district: String(row.district ?? "Berlin"),
         openingHours: String(row.opening_hours ?? ""),
         lat: row.lat,
         lng: row.lon,
+        website,
+        phone: establishmentMetadata?.phone ?? null,
+        ownershipType: inferOwnershipTypeFromStoreName(storeName),
         appCategories: row.app_categories ?? [],
         osmCategory: row.osm_category
       },
@@ -833,7 +914,7 @@ async function getStoreDetailFromDataset(id: string): Promise<StoreDetail | null
   const { data, error } = await supabase
     .from("search_product_establishment_dataset")
     .select(
-      "establishment_id, canonical_product_id, source_type, confidence, validation_status, why_this_product_matches, updated_at, establishment_name, address, district, lat, lon, osm_category, app_categories, opening_hours, product_normalized_name, product_group"
+      "establishment_id, canonical_product_id, source_type, confidence, validation_status, why_this_product_matches, updated_at, establishment_name, address, district, lat, lon, osm_category, app_categories, opening_hours, source_url, product_normalized_name, product_group"
     )
     .eq("establishment_id", establishmentId)
     .limit(500);
@@ -865,14 +946,35 @@ async function getStoreDetailFromDataset(id: string): Promise<StoreDetail | null
     });
     return null;
   }
+  const { data: establishmentData, error: establishmentError } = await supabase
+    .from("establishments")
+    .select("id, phone, website, name")
+    .eq("id", establishmentId)
+    .maybeSingle();
+
+  const metadataErrorMessage = (establishmentError?.message || "").toLowerCase();
+  const metadataRlsBlocked =
+    metadataErrorMessage.includes("permission denied") ||
+    metadataErrorMessage.includes("row-level security") ||
+    metadataErrorMessage.includes("rls");
+  if (establishmentError && !metadataRlsBlocked) {
+    throw new Error(`Supabase establishment detail metadata query failed: ${establishmentError.message}`);
+  }
+
+  const metadata = metadataRlsBlocked ? null : (establishmentData as SupabaseEstablishmentMetadataRow | null);
+  const storeName = first.establishment_name ?? metadata?.name ?? "Unknown store";
+
   const store: Store = {
     id: String(first.establishment_id),
-    name: first.establishment_name,
+    name: storeName,
     address: first.address,
     district: first.district,
     openingHours: String(first.opening_hours ?? ""),
     lat: first.lat,
     lng: first.lon,
+    website: metadata?.website ?? first.source_url ?? null,
+    phone: metadata?.phone ?? null,
+    ownershipType: inferOwnershipTypeFromStoreName(storeName),
     appCategories: first.app_categories ?? [],
     osmCategory: first.osm_category
   };

@@ -8,6 +8,9 @@ export type Store = {
   openingHours: string;
   lat: number;
   lng: number;
+  website?: string | null;
+  phone?: string | null;
+  ownershipType?: "independent" | "chain" | "unknown";
   appCategories?: string[];
   osmCategory?: string | null;
 };

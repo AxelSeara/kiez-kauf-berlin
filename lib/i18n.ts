@@ -12,6 +12,7 @@ export type Dictionary = {
   quickIntentHardware: string;
   quickIntentSpati: string;
   quickIntentEssentials: string;
+  recentSearchesLabel: string;
   useMyLocation: string;
   addressSectionTitle: string;
   locationFallbackLabel: string;
@@ -35,6 +36,11 @@ export type Dictionary = {
   matchedProductLabel: string;
   openingHoursLabel: string;
   openingStatusLabel: string;
+  openUntilTemplate: string;
+  ownershipLabel: string;
+  ownershipIndependent: string;
+  ownershipChain: string;
+  ownershipUnknown: string;
   openNowLabel: string;
   closedNowLabel: string;
   hoursUnknownLabel: string;
@@ -94,6 +100,16 @@ export type Dictionary = {
   retryAction: string;
   backHome: string;
   routeOnMapAction: string;
+  callStoreAction: string;
+  saveStoreAction: string;
+  unsaveStoreAction: string;
+  savedStoreLabel: string;
+  savedOnlyLabel: string;
+  openNowOnlyLabel: string;
+  noOpenResultsLabel: string;
+  clearFiltersAction: string;
+  relatedTermsLabel: string;
+  districtContextTemplate: string;
   clearRouteAction: string;
   routeLoadingLabel: string;
   routeError: string;
@@ -114,6 +130,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     quickIntentHardware: "Baumarkt",
     quickIntentSpati: "Spaeti Basics",
     quickIntentEssentials: "Essentials",
+    recentSearchesLabel: "Zuletzt gesucht",
     useMyLocation: "Standort",
     addressSectionTitle: "Adresse",
     locationFallbackLabel: "Ohne GPS",
@@ -138,6 +155,11 @@ const dictionaries: Record<Locale, Dictionary> = {
     matchedProductLabel: "Produkt",
     openingHoursLabel: "Oeffnungszeiten",
     openingStatusLabel: "Status",
+    openUntilTemplate: "Offen bis {time}",
+    ownershipLabel: "Ladentyp",
+    ownershipIndependent: "Unabhaengig",
+    ownershipChain: "Kette",
+    ownershipUnknown: "Unbekannt",
     openNowLabel: "Jetzt offen",
     closedNowLabel: "Jetzt zu",
     hoursUnknownLabel: "Unbekannt",
@@ -197,6 +219,16 @@ const dictionaries: Record<Locale, Dictionary> = {
     retryAction: "Nochmal versuchen",
     backHome: "Zur Startseite",
     routeOnMapAction: "Route auf Karte",
+    callStoreAction: "Anrufen",
+    saveStoreAction: "Merken",
+    unsaveStoreAction: "Gespeichert",
+    savedStoreLabel: "Gemerkt",
+    savedOnlyLabel: "Nur gemerkte",
+    openNowOnlyLabel: "Nur offen",
+    noOpenResultsLabel: "Keine offenen Treffer im aktuellen Ergebnis.",
+    clearFiltersAction: "Filter zuruecksetzen",
+    relatedTermsLabel: "Aehnliche Begriffe",
+    districtContextTemplate: "Naechster guter Treffer in {district}",
     clearRouteAction: "Route entfernen",
     routeLoadingLabel: "Route wird geladen...",
     routeError: "Route konnte gerade nicht geladen werden.",
@@ -215,6 +247,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     quickIntentHardware: "hardware",
     quickIntentSpati: "spaeti essentials",
     quickIntentEssentials: "essentials",
+    recentSearchesLabel: "Recent searches",
     useMyLocation: "Use my location",
     addressSectionTitle: "Address",
     locationFallbackLabel: "Without GPS",
@@ -239,13 +272,18 @@ const dictionaries: Record<Locale, Dictionary> = {
     matchedProductLabel: "Product",
     openingHoursLabel: "Opening hours",
     openingStatusLabel: "Status",
+    openUntilTemplate: "Open until {time}",
+    ownershipLabel: "Store type",
+    ownershipIndependent: "Independent",
+    ownershipChain: "Chain",
+    ownershipUnknown: "Unknown",
     openNowLabel: "Open now",
     closedNowLabel: "Closed now",
     hoursUnknownLabel: "Unknown",
     storeCategoryLabel: "Category",
-    confidenceLabel: "Confidence",
-    sourceLabel: "Source",
-    validationLabel: "Data status",
+    confidenceLabel: "How sure",
+    sourceLabel: "Match source",
+    validationLabel: "Reliability",
     whyMatchLabel: "Why it matched",
     validationLikely: "Likely",
     validationValidated: "Validated",
@@ -263,7 +301,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     availabilityLowStock: "Low stock",
     availabilityUnknown: "Availability unknown",
     updatedLabel: "Updated",
-    checkedLabel: "Checked",
+    checkedLabel: "Last confirmed",
     checkedToday: "today",
     checkedYesterday: "yesterday",
     checkedDaysAgoTemplate: "{days}d ago",
@@ -298,6 +336,16 @@ const dictionaries: Record<Locale, Dictionary> = {
     retryAction: "Try again",
     backHome: "Back home",
     routeOnMapAction: "Route on map",
+    callStoreAction: "Call store",
+    saveStoreAction: "Save store",
+    unsaveStoreAction: "Saved",
+    savedStoreLabel: "Saved",
+    savedOnlyLabel: "Saved only",
+    openNowOnlyLabel: "Open now only",
+    noOpenResultsLabel: "No open stores in the current results.",
+    clearFiltersAction: "Clear filters",
+    relatedTermsLabel: "Try related terms",
+    districtContextTemplate: "Best nearby in {district}",
     clearRouteAction: "Clear route",
     routeLoadingLabel: "Loading route...",
     routeError: "Could not load route right now.",
@@ -316,6 +364,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     quickIntentHardware: "ferreteria",
     quickIntentSpati: "basicos spaeti",
     quickIntentEssentials: "esenciales",
+    recentSearchesLabel: "Busquedas recientes",
     useMyLocation: "Mi ubicacion",
     addressSectionTitle: "Direccion",
     locationFallbackLabel: "Sin GPS",
@@ -340,13 +389,18 @@ const dictionaries: Record<Locale, Dictionary> = {
     matchedProductLabel: "Producto",
     openingHoursLabel: "Horario",
     openingStatusLabel: "Estado",
+    openUntilTemplate: "Abierto hasta {time}",
+    ownershipLabel: "Tipo de tienda",
+    ownershipIndependent: "Independiente",
+    ownershipChain: "Cadena",
+    ownershipUnknown: "Sin dato",
     openNowLabel: "Abierto ahora",
     closedNowLabel: "Cerrado ahora",
     hoursUnknownLabel: "Sin dato",
     storeCategoryLabel: "Categoria",
-    confidenceLabel: "Confianza",
-    sourceLabel: "Fuente",
-    validationLabel: "Estado",
+    confidenceLabel: "Que tan probable",
+    sourceLabel: "Origen del match",
+    validationLabel: "Fiabilidad",
     whyMatchLabel: "Por que sale",
     validationLikely: "Probable",
     validationValidated: "Validado",
@@ -364,7 +418,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     availabilityLowStock: "Queda poco",
     availabilityUnknown: "Disponibilidad desconocida",
     updatedLabel: "Actualizado",
-    checkedLabel: "Revisado",
+    checkedLabel: "Ultima confirmacion",
     checkedToday: "hoy",
     checkedYesterday: "ayer",
     checkedDaysAgoTemplate: "hace {days}d",
@@ -399,6 +453,16 @@ const dictionaries: Record<Locale, Dictionary> = {
     retryAction: "Reintentar",
     backHome: "Volver al inicio",
     routeOnMapAction: "Ruta en mapa",
+    callStoreAction: "Llamar tienda",
+    saveStoreAction: "Guardar tienda",
+    unsaveStoreAction: "Guardada",
+    savedStoreLabel: "Guardada",
+    savedOnlyLabel: "Solo guardadas",
+    openNowOnlyLabel: "Solo abiertas ahora",
+    noOpenResultsLabel: "No hay tiendas abiertas en estos resultados.",
+    clearFiltersAction: "Quitar filtros",
+    relatedTermsLabel: "Prueba terminos relacionados",
+    districtContextTemplate: "Mejor opcion cercana en {district}",
     clearRouteAction: "Quitar ruta",
     routeLoadingLabel: "Cargando ruta...",
     routeError: "No se pudo cargar la ruta ahora.",
