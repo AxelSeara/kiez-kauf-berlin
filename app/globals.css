@@ -895,6 +895,7 @@ input[type="checkbox"] {
   border: 1.5px solid var(--ink);
   background: var(--surface);
   cursor: pointer;
+  transition: transform var(--motion-fast) ease;
 }
 
 .map-pin-open {
@@ -952,9 +953,16 @@ input[type="checkbox"] {
   cursor: grabbing;
 }
 
-.map-pin:hover:not(.map-pin-selected),
+.map-pin:hover:not(.map-pin-selected) {
+  transform: translateY(-1.25px);
+}
+
+.map-pin-user-svg {
+  transition: transform var(--motion-fast) ease;
+}
+
 .map-pin-user:hover .map-pin-user-svg {
-  animation: map-pin-bounce 280ms ease;
+  transform: translateY(-1.1px);
 }
 
 .map-pin-user-svg {
@@ -1097,18 +1105,6 @@ input[type="checkbox"] {
   }
 }
 
-@keyframes map-pin-bounce {
-  0% {
-    transform: translateY(0);
-  }
-  35% {
-    transform: translateY(-3px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
 .store-item {
   border: 1px solid var(--line);
   border-radius: 0.5rem;
@@ -1183,6 +1179,23 @@ input[type="checkbox"] {
   font-weight: 510;
   letter-spacing: 0.007em;
   line-height: 1.24;
+}
+
+.store-summary-name-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.store-summary-leading-pin {
+  width: 9px;
+  height: 9px;
+  border-width: 1.2px;
+  flex: 0 0 auto;
+  cursor: default;
+  pointer-events: none;
+  transform: none !important;
 }
 
 .store-summary-distance {

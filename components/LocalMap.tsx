@@ -512,6 +512,7 @@ export function LocalMap({
     }
 
     const canvasContainer = map.getCanvasContainer();
+    map.scrollZoom.disable();
 
     const handleDragStart = () => {
       markUserMapInteraction();
@@ -539,20 +540,46 @@ export function LocalMap({
       }
     };
 
+    const unlockWheelZoom = () => {
+      markUserMapInteraction();
+      if (!map.scrollZoom.isEnabled()) {
+        map.scrollZoom.enable();
+      }
+    };
+
+    const lockWheelZoom = () => {
+      if (map.scrollZoom.isEnabled()) {
+        map.scrollZoom.disable();
+      }
+    };
+
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        lockWheelZoom();
+      }
+    };
+
     map.on("dragstart", handleDragStart);
     map.on("dragend", handleDragEnd);
     map.on("zoomstart", handleZoomStart);
     map.on("zoomend", handleZoomEnd);
+    map.on("click", unlockWheelZoom);
     canvasContainer.addEventListener("wheel", markUserMapInteraction, { passive: true });
     canvasContainer.addEventListener("touchstart", markUserMapInteraction, { passive: true });
+    canvasContainer.addEventListener("mouseleave", lockWheelZoom);
+    window.addEventListener("keydown", handleEscapeKey);
 
     return () => {
       map.off("dragstart", handleDragStart);
       map.off("dragend", handleDragEnd);
       map.off("zoomstart", handleZoomStart);
       map.off("zoomend", handleZoomEnd);
+      map.off("click", unlockWheelZoom);
       canvasContainer.removeEventListener("wheel", markUserMapInteraction);
       canvasContainer.removeEventListener("touchstart", markUserMapInteraction);
+      canvasContainer.removeEventListener("mouseleave", lockWheelZoom);
+      window.removeEventListener("keydown", handleEscapeKey);
+      lockWheelZoom();
     };
   }, [mapReady]);
 

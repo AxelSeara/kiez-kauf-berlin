@@ -1347,24 +1347,6 @@ export function SearchExperience({
     }
   }
 
-  function triggerQuickIntentSearch(intentId: string, term: string, source: "quick_intent" | "no_results") {
-    const trimmed = term.trim();
-    if (!trimmed) {
-      return;
-    }
-    setQuery(trimmed);
-    setActiveQuickIntent(intentId);
-    setErrorMessage(null);
-    setRouteErrorMessage(null);
-    pulse(8);
-    trackEvent("search_quick_term", {
-      source,
-      term: normalizeQueryForAnalytics(trimmed),
-      category: intentId
-    });
-    void runSearch({ overrideQuery: trimmed, category: intentId });
-  }
-
   function persistRecentSearches(nextRecentSearches: string[]) {
     setRecentSearches(nextRecentSearches);
     if (typeof window === "undefined") {
@@ -1935,23 +1917,6 @@ export function SearchExperience({
                 <span className="btn-label">{isLoading ? dictionary.searchingLabel : dictionary.searchButton}</span>
               </button>
             </div>
-            <div className="quick-intents md:col-span-2" aria-label={dictionary.quickIntentLabel}>
-              {quickIntents.map((intent) => (
-                <button
-                  key={intent.id}
-                  type="button"
-                  className={`btn-ghost quick-intent-chip px-2.5 py-1.5 text-[0.72rem] ${
-                    activeQuickIntent === intent.id ? "is-active" : ""
-                  }`}
-                  onClick={() => {
-                    triggerQuickIntentSearch(intent.id, intent.label, "quick_intent");
-                  }}
-                  disabled={isLoading}
-                >
-                  {intent.label}
-                </button>
-              ))}
-            </div>
             <div className="search-compact-controls md:col-span-2">
               <label htmlFor="radius-km-picker" className="note-label">
                 {dictionary.radiusLabel}
@@ -2107,6 +2072,7 @@ export function SearchExperience({
                 onClick={() => {
                   setOpenNowOnly(false);
                   setSavedOnly(false);
+                  setIndependentOnly(false);
                   pulse(7);
                 }}
               >
@@ -2114,24 +2080,6 @@ export function SearchExperience({
               </button>
             ) : null}
             <p className="status-text mt-2">{dictionary.noResultsRefineHint}</p>
-            <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-              <span className="status-text">{dictionary.noResultsSuggestionLabel}</span>
-              {quickIntents.map((intent) => (
-                <button
-                  key={`no-results-${intent.id}`}
-                  type="button"
-                  className={`btn-ghost quick-intent-chip px-2.5 py-1.5 text-[0.72rem] ${
-                    activeQuickIntent === intent.id ? "is-active" : ""
-                  }`}
-                  onClick={() => {
-                    triggerQuickIntentSearch(intent.id, intent.label, "no_results");
-                  }}
-                  disabled={isLoading}
-                >
-                  {intent.label}
-                </button>
-              ))}
-            </div>
             {relatedTerms.length > 0 ? (
               <>
                 <p className="status-text mt-2">{dictionary.relatedTermsLabel}</p>
@@ -2400,7 +2348,13 @@ export function SearchExperience({
                           setSelectedOfferId(result.offer.id);
                         }}
                       >
-                        <span className="store-summary-name">{result.store.name}</span>
+                        <span className="store-summary-name-wrap">
+                          <span
+                            aria-hidden="true"
+                            className={`map-pin store-summary-leading-pin map-pin-${openingStatus}`}
+                          />
+                          <span className="store-summary-name">{result.store.name}</span>
+                        </span>
                         <span className="store-summary-meta">
                           <span className="mono store-summary-distance">
                             <UiIcon kind="distance" className="store-summary-icon" />
