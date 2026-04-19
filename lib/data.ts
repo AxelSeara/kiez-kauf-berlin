@@ -292,6 +292,10 @@ const APP_CATEGORY_INTENT_OSM_ALLOWLIST: Record<string, string[]> = {
   art: ["art", "stationery", "craft", "antiques", "books", "second_hand"],
   antiques: ["antiques", "art", "second_hand", "books", "stationery", "craft"]
 };
+const APP_CATEGORY_INTENT_GROUP_ALLOWLIST: Record<string, string[]> = {
+  art: [],
+  antiques: []
+};
 
 function inferAppCategoryIntents(query: string): string[] {
   const normalized = normalizeSearchQuery(query);
@@ -628,7 +632,8 @@ function mergeRowsByPriority(
 }
 
 async function getCanonicalCatalog(): Promise<SupabaseCanonicalProductRow[]> {
-  if (!supabase) {
+  const db = supabase;
+  if (!db) {
     return [];
   }
 
@@ -637,7 +642,7 @@ async function getCanonicalCatalog(): Promise<SupabaseCanonicalProductRow[]> {
   }
 
   const loadCoreRows = async (): Promise<SupabaseCanonicalProductRow[]> => {
-    const primary = await supabase
+    const primary = await db
       .from("canonical_products")
       .select(
         "id, normalized_name, display_name_en, display_name_es, display_name_de, group_key, is_active"
@@ -653,7 +658,7 @@ async function getCanonicalCatalog(): Promise<SupabaseCanonicalProductRow[]> {
       throw new Error(`Supabase canonical products query failed: ${primary.error.message}`);
     }
 
-    const legacy = await supabase
+    const legacy = await db
       .from("canonical_products")
       .select("id, normalized_name, display_name_en, display_name_es, display_name_de, synonyms, product_group")
       .limit(2000);
@@ -672,7 +677,7 @@ async function getCanonicalCatalog(): Promise<SupabaseCanonicalProductRow[]> {
   const coreRows = await loadCoreRows();
 
   const aliasesByProductId = new Map<number, Set<string>>();
-  const aliasResponse = await supabase
+  const aliasResponse = await db
     .from("canonical_product_aliases")
     .select("canonical_product_id, alias, is_active")
     .eq("is_active", true)
@@ -1133,11 +1138,22 @@ async function searchSupabaseRowsFromDataset(args: {
   if (categoryIntents.length > 0) {
     for (const category of categoryIntents) {
       const allowedOsmCategories = APP_CATEGORY_INTENT_OSM_ALLOWLIST[category] ?? [];
+      const allowedGroups = APP_CATEGORY_INTENT_GROUP_ALLOWLIST[category] ?? null;
       // eslint-disable-next-line no-await-in-loop
       const categoryRows = await executeQuery("category_intent", (queryBuilder) =>
-        allowedOsmCategories.length > 0
-          ? queryBuilder.contains("app_categories", [category]).in("osm_category", allowedOsmCategories)
-          : queryBuilder.contains("app_categories", [category])
+        (() => {
+          let scoped = queryBuilder.contains("app_categories", [category]);
+          if (allowedOsmCategories.length > 0) {
+            scoped = scoped.in("osm_category", allowedOsmCategories);
+          }
+          if (Array.isArray(allowedGroups)) {
+            if (allowedGroups.length === 0) {
+              return scoped.eq("canonical_product_id", -1);
+            }
+            return scoped.in("product_group", allowedGroups);
+          }
+          return scoped;
+        })()
       );
       if (categoryRows === null) {
         return null;

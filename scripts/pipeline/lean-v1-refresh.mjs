@@ -46,6 +46,7 @@ async function main() {
     ["node", ["scripts/pipeline/generate-rule-candidates.mjs", ...commonResumeArgs]],
     ["node", aiArgs],
     ["node", ["scripts/pipeline/cleanup-legacy-ai-labels.mjs"]],
+    ["node", ["scripts/pipeline/cleanup-category-mismatch-candidates.mjs"]],
     ["node", mergeArgs],
     ["node", ["scripts/pipeline/build-search-dataset.mjs"]],
     [

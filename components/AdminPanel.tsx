@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Locale } from "@/lib/types";
+import { AdminCoverageMap } from "@/components/AdminCoverageMap";
 
-type AdminTab = "insights" | "review" | "catalog" | "businesses";
+type AdminTab = "insights" | "review" | "catalog" | "businesses" | "districts";
 type ActiveStatus = "active" | "inactive" | "temporarily_closed" | "unknown";
 type BulkActiveStatus = "keep" | ActiveStatus;
 
@@ -37,6 +38,9 @@ type CatalogPayload = {
     taxonomy_categories: number;
     canonical_products: number;
     establishments_with_categories: number;
+    aliases: number;
+    facets: number;
+    use_cases: number;
   };
   categories: Array<{
     slug: string;
@@ -50,6 +54,25 @@ type CatalogPayload = {
     group: string;
     count: number;
     sample: string[];
+  }>;
+  product_families: Array<{
+    id: number;
+    family_slug: string;
+    display_name_en: string;
+    display_name_de: string;
+    display_name_es: string;
+    normalized_name: string;
+    group: string;
+    coverage_tier: string;
+    priority: number;
+    is_active: boolean;
+    store_count: number;
+    alias_count: number;
+    aliases_sample: string[];
+    facet_count: number;
+    facets_sample: string[];
+    use_case_count: number;
+    use_cases_sample: string[];
   }>;
 };
 
@@ -137,6 +160,9 @@ type EstablishmentDetailResponse = {
       display_name_de: string;
       display_name_es: string;
       product_group: string;
+      aliases: string[];
+      facets: string[];
+      use_cases: string[];
     } | null;
   }>;
 };
@@ -150,6 +176,51 @@ type CanonicalProductSearch = {
     display_name_es: string;
     product_group: string;
     synonyms: string[] | null;
+    facets?: string[] | null;
+  }>;
+};
+
+type DistrictOverviewPayload = {
+  totals: {
+    districts: number;
+    establishments: number;
+    active: number;
+    with_products: number;
+    with_geo: number;
+  };
+  districts: Array<{
+    district: string;
+    establishments_total: number;
+    active_total: number;
+    temporarily_closed_total: number;
+    inactive_total: number;
+    unknown_total: number;
+    with_products_total: number;
+    with_opening_hours_total: number;
+    with_geo_total: number;
+    recently_updated_7d_total: number;
+    top_categories: Array<{ slug: string; count: number }>;
+  }>;
+};
+
+type DistrictMapPointsPayload = {
+  filters: {
+    district: string | null;
+    category: string | null;
+    active_only: boolean;
+    limit: number;
+  };
+  total: number;
+  points: Array<{
+    id: number;
+    name: string;
+    district: string;
+    lat: number;
+    lon: number;
+    active_status: "active" | "inactive" | "temporarily_closed" | "unknown";
+    app_categories: string[];
+    product_count: number;
+    updated_at: string;
   }>;
 };
 
@@ -207,6 +278,15 @@ type AdminCopy = {
   applyBulk: string;
   bulkStatusLabel: string;
   keepStatus: string;
+  districtsTitle: string;
+  districtsHint: string;
+  mapPointsTitle: string;
+  districtFilterLabel: string;
+  categoryFilterLabel: string;
+  activeOnlyLabel: string;
+  runDistrictRefresh: string;
+  runningDistrictRefresh: string;
+  copyDistrictImportCommand: string;
 };
 
 const ADMIN_KEY_STORAGE = "kiezkauf:admin-panel-key";
@@ -224,7 +304,8 @@ const COPY: Record<"en" | "de", AdminCopy> = {
       insights: "Insights",
       review: "Review queue",
       catalog: "Catalog",
-      businesses: "Businesses"
+      businesses: "Businesses",
+      districts: "Districts"
     },
     loading: "Loading...",
     refresh: "Refresh",
@@ -270,7 +351,16 @@ const COPY: Record<"en" | "de", AdminCopy> = {
     appendCategories: "Append categories",
     applyBulk: "Apply bulk update",
     bulkStatusLabel: "Bulk status",
-    keepStatus: "keep current"
+    keepStatus: "keep current",
+    districtsTitle: "District coverage",
+    districtsHint: "Operational view by district + quick refresh actions.",
+    mapPointsTitle: "Active map points",
+    districtFilterLabel: "District filter",
+    categoryFilterLabel: "Category filter",
+    activeOnlyLabel: "Active only",
+    runDistrictRefresh: "Refresh district data",
+    runningDistrictRefresh: "Refreshing district...",
+    copyDistrictImportCommand: "Copy import command"
   },
   de: {
     title: "Admin-Panel",
@@ -284,7 +374,8 @@ const COPY: Record<"en" | "de", AdminCopy> = {
       insights: "Insights",
       review: "Prüfwarteschlange",
       catalog: "Katalog",
-      businesses: "Läden"
+      businesses: "Läden",
+      districts: "Bezirke"
     },
     loading: "Lädt...",
     refresh: "Aktualisieren",
@@ -330,7 +421,16 @@ const COPY: Record<"en" | "de", AdminCopy> = {
     appendCategories: "Kategorien ergänzen",
     applyBulk: "Massenupdate anwenden",
     bulkStatusLabel: "Status in Masse",
-    keepStatus: "unverändert lassen"
+    keepStatus: "unverändert lassen",
+    districtsTitle: "Bezirksabdeckung",
+    districtsHint: "Operative Sicht nach Bezirk + schnelle Refresh-Aktionen.",
+    mapPointsTitle: "Aktive Kartenpunkte",
+    districtFilterLabel: "Bezirksfilter",
+    categoryFilterLabel: "Kategoriefilter",
+    activeOnlyLabel: "Nur aktiv",
+    runDistrictRefresh: "Bezirk-Daten refreshen",
+    runningDistrictRefresh: "Bezirk wird refreshed...",
+    copyDistrictImportCommand: "Import-Befehl kopieren"
   }
 };
 
@@ -398,6 +498,14 @@ export function AdminPanel({ locale }: { locale: Locale }) {
   const [catalog, setCatalog] = useState<CatalogPayload | null>(null);
   const [reviewQueue, setReviewQueue] = useState<ReviewQueuePayload | null>(null);
   const [isLoadingReviewQueue, setIsLoadingReviewQueue] = useState(false);
+  const [districtOverview, setDistrictOverview] = useState<DistrictOverviewPayload | null>(null);
+  const [districtMapPoints, setDistrictMapPoints] = useState<DistrictMapPointsPayload | null>(null);
+  const [isLoadingDistrictOverview, setIsLoadingDistrictOverview] = useState(false);
+  const [isLoadingDistrictMap, setIsLoadingDistrictMap] = useState(false);
+  const [districtFilter, setDistrictFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [activeOnlyFilter, setActiveOnlyFilter] = useState(true);
+  const [districtActionLoading, setDistrictActionLoading] = useState<string | null>(null);
 
   const [businessQuery, setBusinessQuery] = useState("");
   const [businessOffset, setBusinessOffset] = useState(0);
@@ -540,6 +648,47 @@ export function AdminPanel({ locale }: { locale: Locale }) {
     }
   }, [adminKey, apiFetch, copy.unauthorized]);
 
+  const fetchDistrictOverview = useCallback(async () => {
+    if (!adminKey) return;
+    setIsLoadingDistrictOverview(true);
+    try {
+      const payload = (await apiFetch("/api/admin/districts/overview")) as DistrictOverviewPayload;
+      setDistrictOverview(payload);
+      setAuthError(null);
+    } catch (error) {
+      setAuthError(error instanceof Error ? error.message : copy.unauthorized);
+    } finally {
+      setIsLoadingDistrictOverview(false);
+    }
+  }, [adminKey, apiFetch, copy.unauthorized]);
+
+  const fetchDistrictMapPoints = useCallback(
+    async (filters?: { district?: string; category?: string; activeOnly?: boolean }) => {
+      if (!adminKey) return;
+      const district = filters?.district ?? districtFilter;
+      const category = filters?.category ?? categoryFilter;
+      const activeOnly = typeof filters?.activeOnly === "boolean" ? filters.activeOnly : activeOnlyFilter;
+
+      setIsLoadingDistrictMap(true);
+      try {
+        const params = new URLSearchParams();
+        if (district.trim()) params.set("district", district.trim());
+        if (category.trim()) params.set("category", category.trim().toLowerCase());
+        params.set("activeOnly", String(activeOnly));
+        params.set("limit", "4500");
+
+        const payload = (await apiFetch(`/api/admin/districts/map-points?${params.toString()}`)) as DistrictMapPointsPayload;
+        setDistrictMapPoints(payload);
+        setAuthError(null);
+      } catch (error) {
+        setAuthError(error instanceof Error ? error.message : copy.unauthorized);
+      } finally {
+        setIsLoadingDistrictMap(false);
+      }
+    },
+    [activeOnlyFilter, adminKey, apiFetch, categoryFilter, copy.unauthorized, districtFilter]
+  );
+
   useEffect(() => {
     try {
       const remembered = localStorage.getItem(ADMIN_KEY_STORAGE) ?? "";
@@ -561,7 +710,13 @@ export function AdminPanel({ locale }: { locale: Locale }) {
     (async () => {
       setIsBootstrapping(true);
       try {
-        await Promise.all([fetchInsightsAndCatalog(), fetchReviewQueue(), fetchBusinesses({ offset: 0 })]);
+        await Promise.all([
+          fetchInsightsAndCatalog(),
+          fetchReviewQueue(),
+          fetchBusinesses({ offset: 0 }),
+          fetchDistrictOverview(),
+          fetchDistrictMapPoints()
+        ]);
       } catch (error) {
         if (active) {
           setAuthError(error instanceof Error ? error.message : copy.unauthorized);
@@ -576,7 +731,15 @@ export function AdminPanel({ locale }: { locale: Locale }) {
     return () => {
       active = false;
     };
-  }, [adminKey, copy.unauthorized, fetchBusinesses, fetchInsightsAndCatalog, fetchReviewQueue]);
+  }, [
+    adminKey,
+    copy.unauthorized,
+    fetchBusinesses,
+    fetchDistrictMapPoints,
+    fetchDistrictOverview,
+    fetchInsightsAndCatalog,
+    fetchReviewQueue
+  ]);
 
   useEffect(() => {
     if (!selectedBusinessId || !adminKey) return;
@@ -586,6 +749,26 @@ export function AdminPanel({ locale }: { locale: Locale }) {
   }, [adminKey, fetchDetail, selectedBusinessId]);
 
   const topNoResultTerms = useMemo(() => insights?.unresolved_terms ?? [], [insights]);
+  const districtRows = useMemo(() => districtOverview?.districts ?? [], [districtOverview]);
+  const districtOptions = useMemo(() => {
+    return districtRows.map((row) => row.district).filter(Boolean).sort((a, b) => a.localeCompare(b));
+  }, [districtRows]);
+  const categoryOptions = useMemo(() => {
+    const unique = new Set<string>();
+    for (const row of districtRows) {
+      for (const item of row.top_categories) {
+        const clean = String(item.slug ?? "").trim().toLowerCase();
+        if (clean) unique.add(clean);
+      }
+    }
+    for (const point of districtMapPoints?.points ?? []) {
+      for (const item of point.app_categories ?? []) {
+        const clean = String(item ?? "").trim().toLowerCase();
+        if (clean) unique.add(clean);
+      }
+    }
+    return [...unique].sort((a, b) => a.localeCompare(b));
+  }, [districtMapPoints, districtRows]);
 
   const businesses = businessListResponse?.rows ?? [];
   const totalBusinesses = businessListResponse?.pagination.total ?? 0;
@@ -710,7 +893,9 @@ export function AdminPanel({ locale }: { locale: Locale }) {
     await Promise.all([
       fetchInsightsAndCatalog(),
       fetchReviewQueue(),
-      fetchBusinesses({ preserveSelection: true })
+      fetchBusinesses({ preserveSelection: true }),
+      fetchDistrictOverview(),
+      fetchDistrictMapPoints()
     ]);
   };
 
@@ -722,6 +907,34 @@ export function AdminPanel({ locale }: { locale: Locale }) {
       setSaveMessage(error instanceof Error ? error.message : "Unable to load review queue.");
     });
   }, [adminKey, fetchReviewQueue, isLoadingReviewQueue, reviewQueue, tab]);
+
+  useEffect(() => {
+    if (!adminKey || tab !== "districts") {
+      return;
+    }
+
+    const needsOverview = !districtOverview && !isLoadingDistrictOverview;
+    const needsMap = !districtMapPoints && !isLoadingDistrictMap;
+    if (!needsOverview && !needsMap) {
+      return;
+    }
+
+    const tasks: Array<Promise<void>> = [];
+    if (needsOverview) tasks.push(fetchDistrictOverview());
+    if (needsMap) tasks.push(fetchDistrictMapPoints());
+    Promise.all(tasks).catch((error) => {
+      setSaveMessage(error instanceof Error ? error.message : "Unable to load district data.");
+    });
+  }, [
+    adminKey,
+    districtMapPoints,
+    districtOverview,
+    fetchDistrictMapPoints,
+    fetchDistrictOverview,
+    isLoadingDistrictMap,
+    isLoadingDistrictOverview,
+    tab
+  ]);
 
   const selectedIdSet = useMemo(() => new Set<number>(bulkSelectedIds), [bulkSelectedIds]);
 
@@ -816,6 +1029,65 @@ export function AdminPanel({ locale }: { locale: Locale }) {
     setBusinessQuery(term);
     setTab("businesses");
     await fetchBusinesses({ query: term, offset: 0 });
+  };
+
+  const onRunDistrictRefresh = async (district: string) => {
+    const cleanDistrict = district.trim();
+    if (!cleanDistrict) return;
+    setDistrictActionLoading(cleanDistrict);
+    setSaveMessage(null);
+    try {
+      const payload = (await apiFetch("/api/admin/districts/refresh", {
+        method: "POST",
+        body: JSON.stringify({
+          district: cleanDistrict,
+          maxProductsPerEstablishment: 8
+        })
+      })) as {
+        stats?: {
+          establishments: number;
+          candidates_upserted: number;
+          merged_upserted: number;
+          merged_deleted: number;
+        };
+      };
+
+      const stats = payload.stats;
+      if (stats) {
+        setSaveMessage(
+          `District refreshed (${cleanDistrict}) · establishments ${stats.establishments} · candidates ${stats.candidates_upserted} · merged ${stats.merged_upserted}/${stats.merged_deleted}`
+        );
+      } else {
+        setSaveMessage(`District refreshed (${cleanDistrict}).`);
+      }
+
+      await Promise.all([fetchDistrictOverview(), fetchDistrictMapPoints({ district: cleanDistrict })]);
+      setDistrictFilter(cleanDistrict);
+    } catch (error) {
+      setSaveMessage(error instanceof Error ? error.message : "District refresh failed.");
+    } finally {
+      setDistrictActionLoading((current) => (current === cleanDistrict ? null : current));
+    }
+  };
+
+  const onCopyDistrictImportCommand = async (district: string) => {
+    const cleanDistrict = district.trim();
+    if (!cleanDistrict) return;
+    const command = `npm run import:berlin -- --district-filter="${cleanDistrict}" && npm run classify:establishments && npm run generate:rule-candidates && npm run merge:candidates && npm run build:search-dataset`;
+    try {
+      await navigator.clipboard.writeText(command);
+      setSaveMessage(`Import command copied for ${cleanDistrict}.`);
+    } catch {
+      setSaveMessage(command);
+    }
+  };
+
+  const onApplyDistrictMapFilters = async () => {
+    await fetchDistrictMapPoints({
+      district: districtFilter,
+      category: categoryFilter,
+      activeOnly: activeOnlyFilter
+    });
   };
 
   return (
@@ -1088,15 +1360,101 @@ export function AdminPanel({ locale }: { locale: Locale }) {
           )}
 
           {!isBootstrapping && tab === "catalog" && (
-            <div className="grid gap-4 xl:grid-cols-2">
+            <div className="space-y-4">
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+                <div className="surface-card p-3">
+                  <p className="note-label">Canonical products</p>
+                  <p className="text-xl font-semibold">{catalog?.totals.canonical_products ?? 0}</p>
+                </div>
+                <div className="surface-card p-3">
+                  <p className="note-label">Aliases</p>
+                  <p className="text-xl font-semibold">{catalog?.totals.aliases ?? 0}</p>
+                </div>
+                <div className="surface-card p-3">
+                  <p className="note-label">Facets</p>
+                  <p className="text-xl font-semibold">{catalog?.totals.facets ?? 0}</p>
+                </div>
+                <div className="surface-card p-3">
+                  <p className="note-label">Use cases</p>
+                  <p className="text-xl font-semibold">{catalog?.totals.use_cases ?? 0}</p>
+                </div>
+                <div className="surface-card p-3">
+                  <p className="note-label">Taxonomy categories</p>
+                  <p className="text-xl font-semibold">{catalog?.totals.taxonomy_categories ?? 0}</p>
+                </div>
+              </div>
+
+              <div className="grid gap-4 xl:grid-cols-2">
+                <div className="surface-card p-3">
+                  <p className="note-subtitle mb-2">{copy.categories}</p>
+                  {catalog?.categories?.length ? (
+                    <ul className="space-y-1 text-sm">
+                      {catalog.categories.slice(0, 80).map((item) => (
+                        <li key={item.slug} className="flex items-center justify-between gap-2">
+                          <span className="truncate">{item.slug}</span>
+                          <span className="mono text-[var(--ink-soft)]">{item.establishment_count}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-[var(--ink-soft)]">{copy.noData}</p>
+                  )}
+                </div>
+
+                <div className="surface-card p-3">
+                  <p className="note-subtitle mb-2">{copy.productGroups}</p>
+                  {catalog?.products_by_group?.length ? (
+                    <ul className="space-y-2 text-sm">
+                      {catalog.products_by_group.slice(0, 60).map((group) => (
+                        <li key={group.group} className="rounded-md border border-[var(--line)] p-2">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="font-medium">{group.group}</span>
+                            <span className="mono text-[var(--ink-soft)]">{group.count}</span>
+                          </div>
+                          {group.sample.length > 0 && (
+                            <p className="mt-1 text-xs text-[var(--ink-soft)]">{group.sample.join(", ")}</p>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-[var(--ink-soft)]">{copy.noData}</p>
+                  )}
+                </div>
+              </div>
+
               <div className="surface-card p-3">
-                <p className="note-subtitle mb-2">{copy.categories}</p>
-                {catalog?.categories?.length ? (
-                  <ul className="space-y-1 text-sm">
-                    {catalog.categories.slice(0, 80).map((item) => (
-                      <li key={item.slug} className="flex items-center justify-between gap-2">
-                        <span className="truncate">{item.slug}</span>
-                        <span className="mono text-[var(--ink-soft)]">{item.establishment_count}</span>
+                <p className="note-subtitle mb-2">Family connections (core → aliases/facets/use cases)</p>
+                {catalog?.product_families?.length ? (
+                  <ul className="space-y-2 text-sm">
+                    {catalog.product_families.slice(0, 120).map((family) => (
+                      <li key={family.id} className="rounded-md border border-[var(--line)] p-2">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-semibold">{family.display_name_en}</span>
+                          <span className="rounded-full border border-[var(--line)] px-2 py-0.5 text-[11px]">{family.group}</span>
+                          <span className="rounded-full border border-[var(--line)] px-2 py-0.5 text-[11px]">{family.coverage_tier}</span>
+                          <span className="mono text-xs text-[var(--ink-soft)]">
+                            p{family.priority} · stores {family.store_count}
+                          </span>
+                        </div>
+                        <p className="mt-1 text-xs text-[var(--ink-soft)]">
+                          family_slug: {family.family_slug} · id: {family.id}
+                        </p>
+                        {family.aliases_sample.length > 0 && (
+                          <p className="mt-1 text-xs text-[var(--ink-soft)]">
+                            aliases ({family.alias_count}): {family.aliases_sample.join(", ")}
+                          </p>
+                        )}
+                        {family.facets_sample.length > 0 && (
+                          <p className="mt-1 text-xs text-[var(--ink-soft)]">
+                            facets ({family.facet_count}): {family.facets_sample.join(", ")}
+                          </p>
+                        )}
+                        {family.use_cases_sample.length > 0 && (
+                          <p className="mt-1 text-xs text-[var(--ink-soft)]">
+                            use cases ({family.use_case_count}): {family.use_cases_sample.join(", ")}
+                          </p>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -1104,25 +1462,146 @@ export function AdminPanel({ locale }: { locale: Locale }) {
                   <p className="text-sm text-[var(--ink-soft)]">{copy.noData}</p>
                 )}
               </div>
+            </div>
+          )}
+
+          {!isBootstrapping && tab === "districts" && (
+            <div className="space-y-4">
+              <div className="surface-card p-3">
+                <p className="note-subtitle">{copy.districtsTitle}</p>
+                <p className="text-sm text-[var(--ink-soft)]">{copy.districtsHint}</p>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+                <div className="surface-card p-3">
+                  <p className="note-label">Districts</p>
+                  <p className="text-xl font-semibold">{districtOverview?.totals.districts ?? 0}</p>
+                </div>
+                <div className="surface-card p-3">
+                  <p className="note-label">Businesses</p>
+                  <p className="text-xl font-semibold">{districtOverview?.totals.establishments ?? 0}</p>
+                </div>
+                <div className="surface-card p-3">
+                  <p className="note-label">Active</p>
+                  <p className="text-xl font-semibold">{districtOverview?.totals.active ?? 0}</p>
+                </div>
+                <div className="surface-card p-3">
+                  <p className="note-label">With products</p>
+                  <p className="text-xl font-semibold">{districtOverview?.totals.with_products ?? 0}</p>
+                </div>
+                <div className="surface-card p-3">
+                  <p className="note-label">With geo</p>
+                  <p className="text-xl font-semibold">{districtOverview?.totals.with_geo ?? 0}</p>
+                </div>
+              </div>
+
+              <div className="surface-card p-3 space-y-3">
+                <p className="note-subtitle">{copy.mapPointsTitle}</p>
+                <div className="grid gap-3 md:grid-cols-[1fr_1fr_auto] xl:grid-cols-[1fr_1fr_auto_auto]">
+                  <label className="text-sm">
+                    <span className="note-label">{copy.districtFilterLabel}</span>
+                    <select
+                      className="field-input mt-1"
+                      value={districtFilter}
+                      onChange={(event) => setDistrictFilter(event.target.value)}
+                    >
+                      <option value="">All districts</option>
+                      {districtOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="text-sm">
+                    <span className="note-label">{copy.categoryFilterLabel}</span>
+                    <select
+                      className="field-input mt-1"
+                      value={categoryFilter}
+                      onChange={(event) => setCategoryFilter(event.target.value)}
+                    >
+                      <option value="">All categories</option>
+                      {categoryOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="inline-flex items-center gap-2 self-end pb-2 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={activeOnlyFilter}
+                      onChange={(event) => setActiveOnlyFilter(event.target.checked)}
+                    />
+                    {copy.activeOnlyLabel}
+                  </label>
+                  <button
+                    type="button"
+                    className="btn-secondary self-end"
+                    onClick={onApplyDistrictMapFilters}
+                    disabled={isLoadingDistrictMap}
+                  >
+                    {isLoadingDistrictMap ? copy.loading : copy.refresh}
+                  </button>
+                </div>
+                <p className="text-xs text-[var(--ink-soft)]">
+                  {districtMapPoints?.total ?? 0} points on map · filter by district/category to inspect data quality.
+                </p>
+                <AdminCoverageMap points={districtMapPoints?.points ?? []} selectedDistrict={districtFilter} />
+              </div>
 
               <div className="surface-card p-3">
-                <p className="note-subtitle mb-2">{copy.productGroups}</p>
-                {catalog?.products_by_group?.length ? (
-                  <ul className="space-y-2 text-sm">
-                    {catalog.products_by_group.slice(0, 60).map((group) => (
-                      <li key={group.group} className="rounded-md border border-[var(--line)] p-2">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="font-medium">{group.group}</span>
-                          <span className="mono text-[var(--ink-soft)]">{group.count}</span>
+                <p className="note-subtitle mb-2">District operational table</p>
+                {isLoadingDistrictOverview && <p className="mb-2 text-sm text-[var(--ink-soft)]">{copy.loading}</p>}
+                {districtRows.length ? (
+                  <div className="space-y-2">
+                    {districtRows.map((item) => {
+                      const isRunning = districtActionLoading === item.district;
+                      return (
+                        <div key={item.district} className="rounded-md border border-[var(--line)] p-3">
+                          <div className="flex flex-wrap items-start justify-between gap-2">
+                            <div>
+                              <p className="text-sm font-semibold">{item.district}</p>
+                              <p className="text-xs text-[var(--ink-soft)]">
+                                total {item.establishments_total} · active {item.active_total} · temp closed{" "}
+                                {item.temporarily_closed_total} · inactive {item.inactive_total}
+                              </p>
+                              <p className="mt-1 text-xs text-[var(--ink-soft)]">
+                                with products {item.with_products_total} · opening hours {item.with_opening_hours_total} · geo{" "}
+                                {item.with_geo_total} · updated 7d {item.recently_updated_7d_total}
+                              </p>
+                              {item.top_categories.length > 0 && (
+                                <p className="mt-1 text-xs text-[var(--ink-soft)]">
+                                  top categories:{" "}
+                                  {item.top_categories.map((top) => `${top.slug} (${top.count})`).join(", ")}
+                                </p>
+                              )}
+                            </div>
+                            <div className="flex flex-wrap gap-2">
+                              <button
+                                type="button"
+                                className="btn-secondary text-xs"
+                                onClick={() => onRunDistrictRefresh(item.district)}
+                                disabled={Boolean(districtActionLoading)}
+                              >
+                                {isRunning ? copy.runningDistrictRefresh : copy.runDistrictRefresh}
+                              </button>
+                              <button
+                                type="button"
+                                className="btn-ghost text-xs"
+                                onClick={() => onCopyDistrictImportCommand(item.district)}
+                              >
+                                {copy.copyDistrictImportCommand}
+                              </button>
+                            </div>
+                          </div>
                         </div>
-                        {group.sample.length > 0 && (
-                          <p className="mt-1 text-xs text-[var(--ink-soft)]">{group.sample.join(", ")}</p>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
+                      );
+                    })}
+                  </div>
                 ) : (
-                  <p className="text-sm text-[var(--ink-soft)]">{copy.noData}</p>
+                  !isLoadingDistrictOverview && <p className="text-sm text-[var(--ink-soft)]">{copy.noData}</p>
                 )}
               </div>
             </div>
@@ -1330,13 +1809,40 @@ export function AdminPanel({ locale }: { locale: Locale }) {
                       {businessDetail.products.length === 0 ? (
                         <p className="text-sm text-[var(--ink-soft)]">{copy.noData}</p>
                       ) : (
-                        <ul className="mt-2 space-y-1 text-sm">
+                        <ul className="mt-2 space-y-2 text-sm">
                           {businessDetail.products.slice(0, 50).map((item) => (
-                            <li key={item.canonical_product_id} className="flex flex-wrap items-center justify-between gap-2">
-                              <span>{item.product?.display_name_en ?? item.product?.normalized_name ?? item.canonical_product_id}</span>
-                              <span className="mono text-[var(--ink-soft)]">
-                                {item.validation_status} · {Math.round(item.confidence * 100)}%
-                              </span>
+                            <li key={item.canonical_product_id} className="rounded-md border border-[var(--line)] p-2">
+                              <div className="flex flex-wrap items-center justify-between gap-2">
+                                <span>
+                                  {item.product?.display_name_en ?? item.product?.normalized_name ?? item.canonical_product_id}
+                                </span>
+                                <span className="mono text-[var(--ink-soft)]">
+                                  {item.validation_status} · {Math.round(item.confidence * 100)}%
+                                </span>
+                              </div>
+                              {item.product && (
+                                <p className="mt-1 text-xs text-[var(--ink-soft)]">
+                                  group: {item.product.product_group}
+                                </p>
+                              )}
+                              {item.product?.aliases?.length ? (
+                                <p className="mt-1 text-xs text-[var(--ink-soft)]">
+                                  aliases: {item.product.aliases.slice(0, 6).join(", ")}
+                                </p>
+                              ) : null}
+                              {item.product?.facets?.length ? (
+                                <p className="mt-1 text-xs text-[var(--ink-soft)]">
+                                  facets: {item.product.facets.join(", ")}
+                                </p>
+                              ) : null}
+                              {item.product?.use_cases?.length ? (
+                                <p className="mt-1 text-xs text-[var(--ink-soft)]">
+                                  use cases: {item.product.use_cases.join(", ")}
+                                </p>
+                              ) : null}
+                              {item.why_this_product_matches ? (
+                                <p className="mt-1 text-xs text-[var(--ink-soft)]">why: {item.why_this_product_matches}</p>
+                              ) : null}
                             </li>
                           ))}
                         </ul>
@@ -1370,6 +1876,13 @@ export function AdminPanel({ locale }: { locale: Locale }) {
                             >
                               <p>{item.display_name_en || item.normalized_name}</p>
                               <p className="text-xs text-[var(--ink-soft)]">{item.product_group}</p>
+                              {(item.facets?.length || item.synonyms?.length) && (
+                                <p className="mt-1 text-xs text-[var(--ink-soft)]">
+                                  {item.facets?.length ? `facets: ${item.facets.join(", ")}` : ""}
+                                  {item.facets?.length && item.synonyms?.length ? " · " : ""}
+                                  {item.synonyms?.length ? `aliases: ${item.synonyms.slice(0, 4).join(", ")}` : ""}
+                                </p>
+                              )}
                             </button>
                           ))}
                         </div>

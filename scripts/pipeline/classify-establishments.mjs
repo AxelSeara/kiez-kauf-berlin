@@ -36,10 +36,10 @@ const OSM_TO_CATEGORY_MAP = {
   medical_supply: ["medical-supplies", "pharmacy", "personal-care"],
   orthopaedic: ["medical-supplies", "pharmacy", "personal-care"],
   orthopedics: ["medical-supplies", "pharmacy", "personal-care"],
-  antiques: ["antiques", "household"],
-  art: ["art", "household"],
-  craft: ["art", "household"],
-  stationery: ["art", "household"],
+  antiques: ["antiques"],
+  art: ["art"],
+  craft: ["art"],
+  stationery: ["art"],
   hardware: ["hardware", "household"],
   doityourself: ["hardware", "household"],
   household: ["household", "hardware"],
@@ -58,7 +58,7 @@ function keywordCategories(nameNormalized) {
   if (/(fleisch|metzger|butcher)/.test(nameNormalized)) out.add("butcher");
   if (/(getrank|drink|beverage)/.test(nameNormalized)) out.add("drinks");
   if (/(beauty|kosmetik|cosmetic|parfum|perfum)/.test(nameNormalized)) out.add("beauty");
-  if (/(kunst|art|atelier|craft|bastel|papier)/.test(nameNormalized)) out.add("art");
+  if (/(kunst|atelier|craft|bastel|papier|\bart\b)/.test(nameNormalized)) out.add("art");
   if (/(antiq|vintage)/.test(nameNormalized)) out.add("antiques");
   if (/(hardware|werkzeug|baumarkt|diy)/.test(nameNormalized)) out.add("hardware");
 
@@ -76,6 +76,10 @@ function classify(row) {
 
   if (categories.has("pharmacy")) {
     categories.add("personal-care");
+  }
+
+  if ((categories.has("beauty") || categories.has("personal-care")) && categories.has("art")) {
+    categories.delete("art");
   }
 
   if (!categories.size) {

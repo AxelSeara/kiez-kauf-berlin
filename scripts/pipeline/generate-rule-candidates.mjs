@@ -34,8 +34,6 @@ const CATEGORY_GROUP_RULES = [
   ["medical-supplies", "personal_care", 0.72, "medical supply stores may include care products"],
   ["household", "household", 0.88, "household category maps directly"],
   ["hardware", "household", 0.93, "hardware stores map to repair and household products"],
-  ["art", "household", 0.66, "art and stationery stores map to household/supplies"],
-  ["antiques", "household", 0.52, "antiques stores map conservatively to household items"],
   ["bio", "groceries", 0.74, "organic stores stock core groceries"],
   ["bio", "fresh_produce", 0.77, "organic stores stock produce"],
   ["bio", "beverages", 0.7, "organic stores stock beverages"]

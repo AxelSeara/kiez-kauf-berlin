@@ -1192,6 +1192,71 @@ input[type="checkbox"] {
   display: none;
 }
 
+.admin-coverage-map-wrapper {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.admin-coverage-map {
+  width: 100%;
+  height: min(56vh, 640px);
+  min-height: 320px;
+}
+
+.admin-map-point {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: 1.6px solid var(--ink);
+  background: var(--surface);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  transition: transform 0.14s ease;
+}
+
+.admin-map-point:hover {
+  transform: scale(1.14);
+}
+
+.admin-map-point.is-active {
+  background: var(--ink);
+}
+
+.admin-map-point.is-temp-closed {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--surface-soft) 0 2px,
+    var(--ink-soft) 2px 4px
+  );
+}
+
+.admin-map-point.is-inactive {
+  opacity: 0.5;
+}
+
+.admin-map-point.is-unknown {
+  background: var(--surface-soft);
+}
+
+.admin-map-popup {
+  font-size: 0.78rem;
+  line-height: 1.25;
+  min-width: 180px;
+}
+
+.admin-map-popup p {
+  margin: 0;
+}
+
+.admin-map-popup p + p {
+  margin-top: 4px;
+}
+
+.admin-map-popup-title {
+  font-weight: 650;
+}
+
 .store-summary-name {
   font-size: 0.89rem;
   font-weight: 510;

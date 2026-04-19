@@ -47,6 +47,25 @@ type ProductDetailRow = {
     | null;
 };
 
+type ProductAliasRow = {
+  canonical_product_id: number;
+  alias: string;
+  priority: number | null;
+  is_active: boolean | null;
+};
+
+type ProductFacetRow = {
+  canonical_product_id: number;
+  facet_normalized: string;
+};
+
+type ProductUseCaseRow = {
+  canonical_product_id: number;
+  use_case_term: string;
+  priority: number | null;
+  is_active: boolean | null;
+};
+
 function parseEstablishmentId(value: string) {
   const parsed = Number(value);
   if (!Number.isFinite(parsed) || parsed <= 0) {
@@ -149,9 +168,89 @@ export async function GET(
       };
     });
 
+    const productIds = [...new Set(mappedProducts.map((item) => Number(item.canonical_product_id)).filter(Number.isFinite))];
+    const aliasMap = new Map<number, string[]>();
+    const facetMap = new Map<number, string[]>();
+    const useCaseMap = new Map<number, string[]>();
+
+    if (productIds.length > 0) {
+      const [{ data: aliases, error: aliasesError }, { data: facets, error: facetsError }, { data: useCases, error: useCasesError }] =
+        await Promise.all([
+          supabase
+            .from("canonical_product_aliases")
+            .select("canonical_product_id, alias, priority, is_active")
+            .in("canonical_product_id", productIds)
+            .eq("is_active", true)
+            .order("priority", { ascending: false })
+            .limit(6000),
+          supabase
+            .from("canonical_product_facets")
+            .select("canonical_product_id, facet_normalized")
+            .in("canonical_product_id", productIds)
+            .limit(4000),
+          supabase
+            .from("canonical_product_use_cases")
+            .select("canonical_product_id, use_case_term, priority, is_active")
+            .in("canonical_product_id", productIds)
+            .eq("is_active", true)
+            .order("priority", { ascending: false })
+            .limit(4000)
+        ]);
+
+      if (aliasesError) throw new Error(aliasesError.message);
+      if (facetsError) throw new Error(facetsError.message);
+      if (useCasesError) throw new Error(useCasesError.message);
+
+      for (const row of (aliases ?? []) as ProductAliasRow[]) {
+        const id = Number(row.canonical_product_id);
+        if (!Number.isFinite(id)) continue;
+        const alias = String(row.alias ?? "").trim();
+        if (!alias) continue;
+        const current = aliasMap.get(id) ?? [];
+        if (!current.includes(alias) && current.length < 8) {
+          current.push(alias);
+          aliasMap.set(id, current);
+        }
+      }
+
+      for (const row of (facets ?? []) as ProductFacetRow[]) {
+        const id = Number(row.canonical_product_id);
+        if (!Number.isFinite(id)) continue;
+        const facet = String(row.facet_normalized ?? "").trim().toLowerCase();
+        if (!facet) continue;
+        const current = facetMap.get(id) ?? [];
+        if (!current.includes(facet) && current.length < 6) {
+          current.push(facet);
+          facetMap.set(id, current);
+        }
+      }
+
+      for (const row of (useCases ?? []) as ProductUseCaseRow[]) {
+        const id = Number(row.canonical_product_id);
+        if (!Number.isFinite(id)) continue;
+        const useCase = String(row.use_case_term ?? "").trim();
+        if (!useCase) continue;
+        const current = useCaseMap.get(id) ?? [];
+        if (!current.includes(useCase) && current.length < 5) {
+          current.push(useCase);
+          useCaseMap.set(id, current);
+        }
+      }
+    }
+
     return NextResponse.json({
       establishment: establishmentRow,
-      products: mappedProducts
+      products: mappedProducts.map((item) => ({
+        ...item,
+        product: item.product
+          ? {
+              ...item.product,
+              aliases: aliasMap.get(item.canonical_product_id) ?? [],
+              facets: facetMap.get(item.canonical_product_id) ?? [],
+              use_cases: useCaseMap.get(item.canonical_product_id) ?? []
+            }
+          : null
+      }))
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unexpected admin establishment detail error.";

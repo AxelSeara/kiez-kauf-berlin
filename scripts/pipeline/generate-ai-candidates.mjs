@@ -26,12 +26,31 @@ const AI_GROUP_WEIGHTS = {
   "medical-supplies": { pharmacy: 0.93, personal_care: 0.68, household: 0.34 },
   household: { household: 0.9, groceries: 0.35 },
   hardware: { household: 0.94, groceries: 0.2 },
-  art: { household: 0.74, groceries: 0.22 },
-  antiques: { household: 0.58 },
   department_store: { household: 0.78, personal_care: 0.74, groceries: 0.6, beverages: 0.48, pharmacy: 0.42 },
   mall: { household: 0.62, personal_care: 0.58, groceries: 0.44, beverages: 0.35 },
   bio: { groceries: 0.67, fresh_produce: 0.74, beverages: 0.55 }
 };
+
+const ESSENTIALS_FALLBACK_APP_CATEGORIES = new Set([
+  "grocery",
+  "convenience",
+  "fresh-food",
+  "produce",
+  "drinks",
+  "bio"
+]);
+
+const ESSENTIALS_FALLBACK_OSM_CATEGORIES = new Set([
+  "supermarket",
+  "convenience",
+  "kiosk",
+  "beverages",
+  "organic",
+  "health_food",
+  "deli",
+  "department_store",
+  "mall"
+]);
 
 const GENERIC_TERMS = new Set([
   "shop",
@@ -324,7 +343,11 @@ function heuristicCandidates(establishment, canonicalProducts, limit) {
     }
   }
 
-  if (!scores.size) {
+  const canUseEssentialsFallback =
+    establishment.app_categories.some((category) => ESSENTIALS_FALLBACK_APP_CATEGORIES.has(category)) ||
+    ESSENTIALS_FALLBACK_OSM_CATEGORIES.has(establishment.osm_category);
+
+  if (!scores.size && canUseEssentialsFallback) {
     for (const product of canonicalProducts) {
       if (!["groceries", "beverages"].includes(product.product_group)) continue;
       if (productIsTooGeneric(product)) continue;
@@ -334,6 +357,10 @@ function heuristicCandidates(establishment, canonicalProducts, limit) {
         reasonBits: ["conservative fallback essentials"]
       });
     }
+  }
+
+  if (!scores.size) {
+    return [];
   }
 
   for (const entry of scores.values()) {

@@ -16,6 +16,7 @@
     "seed:lean-catalog-v1": "node scripts/pipeline/seed-lean-catalog-v1.mjs",
     "enrich:websites": "node scripts/pipeline/enrich-websites.mjs",
     "cleanup:legacy-ai": "node scripts/pipeline/cleanup-legacy-ai-labels.mjs",
+    "cleanup:category-mismatch": "node scripts/pipeline/cleanup-category-mismatch-candidates.mjs",
     "generate:rule-candidates": "node scripts/pipeline/generate-rule-candidates.mjs",
     "generate:ai-candidates": "node scripts/pipeline/generate-ai-candidates.mjs",
     "merge:candidates": "node scripts/pipeline/merge-candidates.mjs",
