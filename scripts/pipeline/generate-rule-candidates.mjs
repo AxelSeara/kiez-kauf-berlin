@@ -79,7 +79,9 @@ scored as (
     cm.reason
   from expanded ex
   join category_map cm on cm.app_category = ex.app_category
-  join canonical_products p on p.product_group = cm.product_group
+  join canonical_products p
+    on coalesce(p.group_key, p.product_group) = cm.product_group
+   and coalesce(p.is_active, true) = true
 ),
 dedup as (
   select distinct on (establishment_id, canonical_product_id)

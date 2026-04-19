@@ -124,18 +124,53 @@ function websiteTextSignals(establishment) {
 }
 
 async function fetchCanonicalProducts() {
-  const sql = `
+  const sqlWithAliases = `
+select
+  p.id,
+  p.normalized_name,
+  coalesce(p.group_key, p.product_group) as product_group,
+  coalesce(array_remove(array_agg(distinct a.alias), null), '{}'::text[]) as synonyms
+from canonical_products p
+left join canonical_product_aliases a
+  on a.canonical_product_id = p.id
+  and a.is_active = true
+where coalesce(p.is_active, true) = true
+group by p.id, p.normalized_name, coalesce(p.group_key, p.product_group)
+order by p.id asc;
+`;
+
+  try {
+    const res = await runSupabaseQuery({ sql: sqlWithAliases, output: "json" });
+    return (res.parsed.rows ?? []).map((row) => ({
+      id: Number(row.id),
+      normalized_name: String(row.normalized_name),
+      product_group: String(row.product_group ?? "uncategorized"),
+      synonyms: normalizeTextArray(row.synonyms)
+    }));
+  } catch (error) {
+    const message = String(error ?? "").toLowerCase();
+    const fallbackEligible =
+      message.includes("does not exist") ||
+      message.includes("relation") ||
+      message.includes("column");
+    if (!fallbackEligible) {
+      throw error;
+    }
+
+    logWarn("Phase C compatibility fallback: canonical aliases/group_key not available, using legacy fields");
+    const legacySql = `
 select id, normalized_name, product_group, synonyms
 from canonical_products
 order by id asc;
 `;
-  const res = await runSupabaseQuery({ sql, output: "json" });
-  return (res.parsed.rows ?? []).map((row) => ({
-    id: Number(row.id),
-    normalized_name: String(row.normalized_name),
-    product_group: String(row.product_group),
-    synonyms: normalizeTextArray(row.synonyms)
-  }));
+    const res = await runSupabaseQuery({ sql: legacySql, output: "json" });
+    return (res.parsed.rows ?? []).map((row) => ({
+      id: Number(row.id),
+      normalized_name: String(row.normalized_name),
+      product_group: String(row.product_group ?? "uncategorized"),
+      synonyms: normalizeTextArray(row.synonyms)
+    }));
+  }
 }
 
 async function fetchEstablishmentBatch(lastId, batchSize) {

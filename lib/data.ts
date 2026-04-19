@@ -36,6 +36,16 @@ const CHAIN_NAME_HINTS = [
 ];
 const STRATEGY_AUGMENT_THRESHOLD = 110;
 
+function isSchemaCompatibilityError(message: string | undefined): boolean {
+  const lower = String(message ?? "").toLowerCase();
+  return (
+    lower.includes("does not exist") ||
+    lower.includes("relation") ||
+    lower.includes("column") ||
+    lower.includes("schema")
+  );
+}
+
 function inferOwnershipTypeFromStoreName(name: string | null | undefined): Store["ownershipType"] {
   const normalized = normalizeQuery(name ?? "");
   if (!normalized) {
@@ -216,8 +226,16 @@ type SupabaseCanonicalProductRow = {
   display_name_en: string | null;
   display_name_es: string | null;
   display_name_de: string | null;
+  group_key?: string | null;
+  is_active?: boolean | null;
   synonyms: string[] | null;
   product_group: string;
+};
+
+type SupabaseCanonicalProductAliasRow = {
+  canonical_product_id: number;
+  alias: string;
+  is_active: boolean | null;
 };
 
 type DatasetSearchStrategy =
@@ -612,16 +630,93 @@ async function getCanonicalCatalog(): Promise<SupabaseCanonicalProductRow[]> {
     return canonicalCatalogCache.rows;
   }
 
-  const { data, error } = await supabase
-    .from("canonical_products")
-    .select("id, normalized_name, display_name_en, display_name_es, display_name_de, synonyms, product_group")
-    .limit(1000);
+  const loadCoreRows = async (): Promise<SupabaseCanonicalProductRow[]> => {
+    const primary = await supabase
+      .from("canonical_products")
+      .select(
+        "id, normalized_name, display_name_en, display_name_es, display_name_de, synonyms, product_group, group_key, is_active"
+      )
+      .eq("is_active", true)
+      .limit(2000);
 
-  if (error) {
-    throw new Error(`Supabase canonical products query failed: ${error.message}`);
+    if (!primary.error) {
+      return (primary.data ?? []) as SupabaseCanonicalProductRow[];
+    }
+
+    if (!isSchemaCompatibilityError(primary.error.message)) {
+      throw new Error(`Supabase canonical products query failed: ${primary.error.message}`);
+    }
+
+    const legacy = await supabase
+      .from("canonical_products")
+      .select("id, normalized_name, display_name_en, display_name_es, display_name_de, synonyms, product_group")
+      .limit(2000);
+
+    if (legacy.error) {
+      throw new Error(`Supabase canonical products legacy query failed: ${legacy.error.message}`);
+    }
+
+    if (DEV_DEBUG) {
+      console.warn("[catalog-compat] Falling back to legacy canonical_products schema");
+    }
+
+    return (legacy.data ?? []) as SupabaseCanonicalProductRow[];
+  };
+
+  const coreRows = await loadCoreRows();
+
+  const aliasesByProductId = new Map<number, Set<string>>();
+  const aliasResponse = await supabase
+    .from("canonical_product_aliases")
+    .select("canonical_product_id, alias, is_active")
+    .eq("is_active", true)
+    .limit(20000);
+
+  if (aliasResponse.error) {
+    if (!isSchemaCompatibilityError(aliasResponse.error.message)) {
+      throw new Error(`Supabase canonical aliases query failed: ${aliasResponse.error.message}`);
+    }
+
+    if (DEV_DEBUG) {
+      console.warn("[catalog-compat] canonical_product_aliases not available yet, using legacy synonyms only");
+    }
+  } else {
+    const aliasRows = (aliasResponse.data ?? []) as SupabaseCanonicalProductAliasRow[];
+    for (const row of aliasRows) {
+      const productId = Number(row.canonical_product_id);
+      if (!Number.isFinite(productId)) {
+        continue;
+      }
+
+      const alias = String(row.alias ?? "").trim();
+      if (!alias) {
+        continue;
+      }
+
+      if (!aliasesByProductId.has(productId)) {
+        aliasesByProductId.set(productId, new Set());
+      }
+      aliasesByProductId.get(productId)?.add(alias);
+    }
   }
 
-  const rows = (data ?? []) as SupabaseCanonicalProductRow[];
+  const rows = coreRows
+    .filter((row) => row.is_active !== false)
+    .map((row) => {
+      const mergedSynonyms = Array.from(
+        new Set([
+          ...(row.synonyms ?? []),
+          ...(aliasesByProductId.has(row.id) ? Array.from(aliasesByProductId.get(row.id) ?? []) : [])
+        ])
+      );
+
+      return {
+        ...row,
+        product_group: String(row.group_key ?? row.product_group ?? "uncategorized"),
+        synonyms: mergedSynonyms
+      } satisfies SupabaseCanonicalProductRow;
+    });
+
   canonicalCatalogCache = {
     loadedAt: Date.now(),
     rows
