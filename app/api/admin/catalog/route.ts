@@ -5,6 +5,7 @@ import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 type CanonicalProductRow = {
   id: number;
   normalized_name: string;
+  group_key?: string | null;
   product_group: string;
 };
 
@@ -33,8 +34,8 @@ export async function GET(request: Request) {
       await Promise.all([
         supabase
           .from("canonical_products")
-          .select("id, normalized_name, product_group")
-          .order("product_group", { ascending: true })
+          .select("id, normalized_name, group_key, product_group")
+          .order("group_key", { ascending: true })
           .limit(5000),
         supabase
           .from("app_category_taxonomy")
@@ -54,7 +55,7 @@ export async function GET(request: Request) {
 
     const productsByGroup = new Map<string, { group: string; count: number; sample: string[] }>();
     for (const row of productRows) {
-      const key = row.product_group?.trim() || "uncategorized";
+      const key = row.group_key?.trim() || row.product_group?.trim() || "uncategorized";
       const entry = productsByGroup.get(key) ?? { group: key, count: 0, sample: [] };
       entry.count += 1;
       if (entry.sample.length < 6) {
@@ -92,4 +93,3 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-

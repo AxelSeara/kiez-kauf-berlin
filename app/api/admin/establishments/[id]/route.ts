@@ -33,6 +33,7 @@ type ProductDetailRow = {
         display_name_en: string;
         display_name_de: string;
         display_name_es: string;
+        group_key?: string | null;
         product_group: string;
       }
     | {
@@ -40,6 +41,7 @@ type ProductDetailRow = {
         display_name_en: string;
         display_name_de: string;
         display_name_es: string;
+        group_key?: string | null;
         product_group: string;
       }[]
     | null;
@@ -108,7 +110,7 @@ export async function GET(
         supabase
           .from("establishment_product_merged")
           .select(
-            "canonical_product_id, confidence, validation_status, why_this_product_matches, primary_source_type, canonical_products(normalized_name, display_name_en, display_name_de, display_name_es, product_group)"
+            "canonical_product_id, confidence, validation_status, why_this_product_matches, primary_source_type, canonical_products(normalized_name, display_name_en, display_name_de, display_name_es, group_key, product_group)"
           )
           .eq("establishment_id", establishmentId)
           .neq("validation_status", "rejected")
@@ -141,7 +143,7 @@ export async function GET(
               display_name_en: product.display_name_en,
               display_name_de: product.display_name_de,
               display_name_es: product.display_name_es,
-              product_group: product.product_group
+              product_group: product.group_key ?? product.product_group ?? "uncategorized"
             }
           : null
       };
@@ -238,4 +240,3 @@ export async function PATCH(
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-

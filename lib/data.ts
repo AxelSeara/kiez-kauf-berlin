@@ -40,6 +40,7 @@ function isSchemaCompatibilityError(message: string | undefined): boolean {
   const lower = String(message ?? "").toLowerCase();
   return (
     lower.includes("does not exist") ||
+    lower.includes("permission denied") ||
     lower.includes("relation") ||
     lower.includes("column") ||
     lower.includes("schema")
@@ -639,7 +640,7 @@ async function getCanonicalCatalog(): Promise<SupabaseCanonicalProductRow[]> {
     const primary = await supabase
       .from("canonical_products")
       .select(
-        "id, normalized_name, display_name_en, display_name_es, display_name_de, synonyms, product_group, group_key, is_active"
+        "id, normalized_name, display_name_en, display_name_es, display_name_de, group_key, is_active"
       )
       .eq("is_active", true)
       .limit(2000);
@@ -710,14 +711,13 @@ async function getCanonicalCatalog(): Promise<SupabaseCanonicalProductRow[]> {
     .map((row) => {
       const mergedSynonyms = Array.from(
         new Set([
-          ...(row.synonyms ?? []),
           ...(aliasesByProductId.has(row.id) ? Array.from(aliasesByProductId.get(row.id) ?? []) : [])
         ])
       );
 
       return {
         ...row,
-        product_group: String(row.group_key ?? row.product_group ?? "uncategorized"),
+        product_group: String(row.group_key ?? "uncategorized"),
         synonyms: mergedSynonyms
       } satisfies SupabaseCanonicalProductRow;
     });

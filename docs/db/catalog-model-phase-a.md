@@ -175,3 +175,21 @@ Avance ya aplicado:
     - match por `canonical_product_facets.facet_normalized`
 
 Resultado: el catalogo queda listo para familias multi-contexto (una familia puede vivir en varias facets) sin romper compatibilidad.
+
+## Phase E (estado actual)
+
+Avance aplicado:
+
+- Search/admin runtime depende de:
+  - `canonical_products.group_key`
+  - `canonical_product_aliases`
+  - `canonical_product_facets`
+- `search_product_establishment_mv` ahora calcula `product_group` desde:
+  - `coalesce(canonical_products.group_key, canonical_products.product_group)`
+- Se mantiene la columna de salida `product_group` para compatibilidad de frontend.
+- Se habilita lectura anon/authenticated con RLS en:
+  - `canonical_product_aliases`
+  - `canonical_product_facets`
+  - `canonical_product_use_cases`
+
+En esta fase no se eliminan columnas legacy; se reduce dependencia operativa manteniendo fallback.

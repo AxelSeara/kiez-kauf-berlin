@@ -31,7 +31,9 @@ export async function GET(request: Request) {
 
     let query = supabase
       .from("canonical_products")
-      .select("id, normalized_name, display_name_en, display_name_de, display_name_es, product_group, synonyms")
+      .select(
+        "id, normalized_name, display_name_en, display_name_de, display_name_es, group_key, product_group, is_active, coverage_tier, priority"
+      )
       .order("normalized_name", { ascending: true })
       .limit(limit);
 
@@ -45,12 +47,52 @@ export async function GET(request: Request) {
     const { data, error } = await query;
     if (error) throw new Error(error.message);
 
+    const rows = (data ?? []) as Array<{
+      id: number;
+      normalized_name: string;
+      display_name_en: string | null;
+      display_name_de: string | null;
+      display_name_es: string | null;
+      group_key: string | null;
+      product_group?: string | null;
+      is_active: boolean | null;
+      coverage_tier: string | null;
+      priority: number | null;
+    }>;
+
+    const ids = rows.map((row) => row.id);
+    const aliasMap = new Map<number, string[]>();
+    if (ids.length > 0) {
+      const { data: aliases, error: aliasesError } = await supabase
+        .from("canonical_product_aliases")
+        .select("canonical_product_id, alias")
+        .in("canonical_product_id", ids)
+        .eq("is_active", true)
+        .order("priority", { ascending: false })
+        .limit(6000);
+
+      if (aliasesError) throw new Error(aliasesError.message);
+      for (const item of aliases ?? []) {
+        const productId = Number(item.canonical_product_id);
+        const alias = String(item.alias ?? "").trim();
+        if (!alias) continue;
+        const current = aliasMap.get(productId) ?? [];
+        if (!current.includes(alias) && current.length < 12) {
+          current.push(alias);
+          aliasMap.set(productId, current);
+        }
+      }
+    }
+
     return NextResponse.json({
-      rows: data ?? []
+      rows: rows.map((row) => ({
+        ...row,
+        product_group: row.group_key ?? row.product_group ?? "uncategorized",
+        synonyms: aliasMap.get(row.id) ?? []
+      }))
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unexpected canonical products admin error.";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-
