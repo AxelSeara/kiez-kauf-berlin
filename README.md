@@ -167,6 +167,12 @@ Orquestacion completa:
 npm run refresh:berlin
 ```
 
+Orquestacion lean-v1 (menos ruido + menos escrituras + prune):
+
+```bash
+npm run refresh:berlin:lean-v1
+```
+
 Ejecucion por lotes y reanudacion:
 
 ```bash
@@ -176,6 +182,12 @@ npm run enrich:websites -- --batch-size=25 --stale-days=10 --resume
 npm run generate:rule-candidates -- --batch-size=350 --resume
 npm run generate:ai-candidates -- --batch-size=120 --resume
 npm run merge:candidates -- --batch-size=500 --resume
+```
+
+Pruning de auditoria (control de crecimiento):
+
+```bash
+npm run maintenance:prune-audit -- --keep-latest-per-candidate=2
 ```
 
 Reporte before/after de calidad (20-30 tiendas):
@@ -195,6 +207,11 @@ Salida para buscador:
 
 - Materialized view: `search_product_establishment_mv`
 - View conveniente: `search_product_establishment_dataset`
+
+Pack lean-v1:
+
+- Guia operativa: `docs/lean-v1.md`
+- Migracion guardrails: `supabase/migrations/20260419092218_lean_v1_guardrails.sql`
 
 ## Admin panel
 

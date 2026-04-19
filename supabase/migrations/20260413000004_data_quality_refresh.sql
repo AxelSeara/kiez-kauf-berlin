@@ -66,17 +66,44 @@ where external_source = 'osm-overpass';
 alter table establishments
   alter column freshness_score set default 0.75;
 
-alter table establishments
-  add constraint establishments_freshness_score_check
-    check (freshness_score is null or (freshness_score >= 0 and freshness_score <= 1));
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'establishments_freshness_score_check'
+  ) then
+    alter table establishments
+      add constraint establishments_freshness_score_check
+      check (freshness_score is null or (freshness_score >= 0 and freshness_score <= 1));
+  end if;
+end $$;
 
-alter table establishments
-  add constraint establishments_opening_hours_confidence_check
-    check (opening_hours_confidence is null or (opening_hours_confidence >= 0 and opening_hours_confidence <= 1));
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'establishments_opening_hours_confidence_check'
+  ) then
+    alter table establishments
+      add constraint establishments_opening_hours_confidence_check
+      check (opening_hours_confidence is null or (opening_hours_confidence >= 0 and opening_hours_confidence <= 1));
+  end if;
+end $$;
 
-alter table establishments
-  add constraint establishments_duplicate_confidence_check
-    check (duplicate_confidence is null or (duplicate_confidence >= 0 and duplicate_confidence <= 1));
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'establishments_duplicate_confidence_check'
+  ) then
+    alter table establishments
+      add constraint establishments_duplicate_confidence_check
+      check (duplicate_confidence is null or (duplicate_confidence >= 0 and duplicate_confidence <= 1));
+  end if;
+end $$;
 
 create index if not exists idx_establishments_last_seen_at on establishments(last_seen_at desc);
 create index if not exists idx_establishments_last_imported_at on establishments(last_imported_at desc);

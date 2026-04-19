@@ -1263,15 +1263,56 @@ export function SearchExperience({
       ? "h-[clamp(248px,42svh,430px)] md:h-[66vh] md:min-h-[360px]"
       : "h-[clamp(320px,56svh,560px)] md:h-[66vh] md:min-h-[360px]";
 
-  function scrollToMapSection() {
+  function scrollToMapSection(force = false) {
+    if (typeof window === "undefined") {
+      return;
+    }
     const mapSection = mapSectionRef.current;
     if (!mapSection) {
       return;
     }
+
+    const rect = mapSection.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const sectionMostlyVisible = rect.top <= viewportHeight * 0.2 && rect.bottom >= viewportHeight * 0.72;
+
+    if (!force && sectionMostlyVisible) {
+      return;
+    }
+
+    const topOffset = window.innerWidth < 768 ? 8 : 12;
+    const ensureVisible = (behavior: ScrollBehavior = "smooth") => {
+      const nextRect = mapSection.getBoundingClientRect();
+      const mapTopVisible = nextRect.top <= 18;
+      const mapHasEnoughViewport = nextRect.bottom >= Math.min(window.innerHeight * 0.58, 360);
+      if (mapTopVisible && mapHasEnoughViewport) {
+        return;
+      }
+
+      const targetTop = Math.max(0, window.scrollY + nextRect.top - topOffset);
+      window.scrollTo({
+        top: targetTop,
+        behavior
+      });
+    };
+
+    // First try native alignment (Safari behaves very well here).
     mapSection.scrollIntoView({
       behavior: "smooth",
-      block: "start"
+      block: "start",
+      inline: "nearest"
     });
+
+    // Chrome can occasionally ignore/under-scroll during layout updates; verify and fallback.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        ensureVisible("smooth");
+      });
+    });
+
+    setTimeout(() => {
+      ensureVisible("auto");
+    }, 170);
   }
 
   function inferSearchCategoryFromQuery(searchQuery: string) {
@@ -1716,7 +1757,7 @@ export function SearchExperience({
     const isActiveSameRoute =
       activeRoute?.offerId === result.offer.id && activeRoute.mode === mode;
     setSelectedOfferId(result.offer.id);
-    scrollToMapSection();
+    scrollToMapSection(true);
 
     if (isActiveSameRoute) {
       setActiveRoute(null);
@@ -1724,6 +1765,9 @@ export function SearchExperience({
       trackEvent("route_clear_on_map", {
         offer_id: result.offer.id,
         mode
+      });
+      requestAnimationFrame(() => {
+        scrollToMapSection(true);
       });
       return;
     }
@@ -1756,6 +1800,9 @@ export function SearchExperience({
         trackEvent("route_cache_hit", {
           offer_id: result.offer.id,
           mode
+        });
+        requestAnimationFrame(() => {
+          scrollToMapSection(true);
         });
         setRouteLoadingKey((current) => (current === routeKey ? null : current));
         return;
@@ -1807,6 +1854,9 @@ export function SearchExperience({
         mode,
         duration_min: durationMinutes,
         fallback: Boolean(data.fallback)
+      });
+      requestAnimationFrame(() => {
+        scrollToMapSection(true);
       });
       pulse([8, 18, 8]);
     } catch (error) {

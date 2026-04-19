@@ -71,14 +71,14 @@ function hasStrongWebsiteSignals(establishment) {
 
 function pickRecommendationLimit(establishment, maxRecommendations) {
   if (hasStrongWebsiteSignals(establishment)) {
-    return Math.min(maxRecommendations, 6);
+    return Math.min(maxRecommendations, 5);
   }
 
   if (!establishment.websiteSignals || !establishment.website) {
-    return Math.min(maxRecommendations, 3);
+    return Math.min(maxRecommendations, 2);
   }
 
-  return Math.min(maxRecommendations, 4);
+  return Math.min(maxRecommendations, 3);
 }
 
 function productIsTooGeneric(product) {
@@ -324,7 +324,7 @@ function heuristicCandidates(establishment, canonicalProducts, limit) {
       generation_method: "conservative_profile_heuristic_v2",
       extraction_method: "rules_profile_heuristic_v2",
       source_url: establishment.websiteSignals?.source_url ?? establishment.website ?? null,
-      confidence: Number(clamp(entry.score * 0.86, 0.41, 0.78).toFixed(4)),
+      confidence: Number(clamp(entry.score * 0.82, 0.48, 0.76).toFixed(4)),
       why: `Conservative profile match: ${entry.reasonBits.slice(0, 2).join("; ")}.`,
       category_path: ["rules", "conservative-heuristic", ...(establishment.app_categories.slice(0, 1) || ["uncategorized"])]
     }));
@@ -569,6 +569,18 @@ with incoming (
     freshness_score = excluded.freshness_score,
     updated_at = now()
   where establishment_product_candidates.validation_status not in ('validated', 'rejected')
+    and (
+      establishment_product_candidates.confidence is distinct from excluded.confidence
+      or establishment_product_candidates.validation_status is distinct from excluded.validation_status
+      or establishment_product_candidates.validation_notes is distinct from excluded.validation_notes
+      or establishment_product_candidates.why_this_product_matches is distinct from excluded.why_this_product_matches
+      or establishment_product_candidates.category_path is distinct from excluded.category_path
+      or establishment_product_candidates.inferred_from is distinct from excluded.inferred_from
+      or establishment_product_candidates.source_url is distinct from excluded.source_url
+      or establishment_product_candidates.extraction_method is distinct from excluded.extraction_method
+      or establishment_product_candidates.last_checked_at is distinct from excluded.last_checked_at
+      or establishment_product_candidates.freshness_score is distinct from excluded.freshness_score
+    )
   returning id
 )
 select count(*)::int as affected_rows from upserted;
@@ -578,7 +590,7 @@ select count(*)::int as affected_rows from upserted;
 async function main() {
   const args = parseArgs(process.argv);
   const batchSize = Number(args["batch-size"] ?? 120);
-  const maxRecommendations = Number(args["max-recommendations"] ?? 6);
+  const maxRecommendations = Number(args["max-recommendations"] ?? 5);
   const resume = Boolean(args.resume);
   const forceHeuristic = Boolean(args["force-heuristic"]);
   const maxEstablishments = args["max-establishments"] ? Number(args["max-establishments"]) : null;
@@ -639,7 +651,7 @@ async function main() {
 
       const fallbackNeeded = !aiRows.length;
       const fallbackRows = fallbackNeeded
-        ? heuristicCandidates(establishment, canonicalProducts, Math.min(storeLimit, 3))
+        ? heuristicCandidates(establishment, canonicalProducts, Math.min(storeLimit, 2))
         : [];
 
       const selected = dedupeAndTrimCandidates(

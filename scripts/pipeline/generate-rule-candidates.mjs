@@ -145,6 +145,18 @@ upserted as (
     freshness_score = excluded.freshness_score,
     updated_at = now()
   where establishment_product_candidates.validation_status not in ('validated', 'rejected')
+    and (
+      establishment_product_candidates.confidence is distinct from excluded.confidence
+      or establishment_product_candidates.validation_status is distinct from excluded.validation_status
+      or establishment_product_candidates.validation_notes is distinct from excluded.validation_notes
+      or establishment_product_candidates.why_this_product_matches is distinct from excluded.why_this_product_matches
+      or establishment_product_candidates.category_path is distinct from excluded.category_path
+      or establishment_product_candidates.inferred_from is distinct from excluded.inferred_from
+      or establishment_product_candidates.source_url is distinct from excluded.source_url
+      or establishment_product_candidates.extraction_method is distinct from excluded.extraction_method
+      or establishment_product_candidates.last_checked_at is distinct from excluded.last_checked_at
+      or establishment_product_candidates.freshness_score is distinct from excluded.freshness_score
+    )
   returning id
 )
 select count(*)::int as affected_rows from upserted;

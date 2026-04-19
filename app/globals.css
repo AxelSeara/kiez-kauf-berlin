@@ -23,6 +23,12 @@
   --note-empty: #c2c2c2;
   --map-filter: grayscale(0.94) contrast(1.06) brightness(1.02);
   --map-edge-glow: rgba(180, 180, 180, 0.32);
+  --overlay-surface: color-mix(in srgb, var(--surface) 94%, transparent 6%);
+  --overlay-surface-soft: color-mix(in srgb, var(--surface) 90%, transparent 10%);
+  --overlay-line: var(--line-strong);
+  --overlay-ink: var(--ink-soft);
+  --map-control-surface: var(--surface);
+  --map-control-surface-hover: var(--surface-soft);
 }
 
 :root[data-theme="dark"] {
@@ -42,8 +48,14 @@
   --note-label: #c4c4c4;
   --note-mark: #a8a8a8;
   --note-empty: #7a7a7a;
-  --map-filter: grayscale(1) contrast(1.12) brightness(0.84);
+  --map-filter: grayscale(1) contrast(1.08) brightness(0.92);
   --map-edge-glow: rgba(255, 255, 255, 0.12);
+  --overlay-surface: color-mix(in srgb, var(--surface) 97%, transparent 3%);
+  --overlay-surface-soft: color-mix(in srgb, var(--surface-soft) 92%, transparent 8%);
+  --overlay-line: color-mix(in srgb, var(--line-strong) 82%, var(--ink) 18%);
+  --overlay-ink: color-mix(in srgb, var(--ink) 88%, var(--ink-soft) 12%);
+  --map-control-surface: color-mix(in srgb, var(--surface) 95%, var(--surface-soft) 5%);
+  --map-control-surface-hover: color-mix(in srgb, var(--surface-soft) 82%, var(--ink) 18%);
 }
 
 body {
@@ -561,6 +573,7 @@ input[type="checkbox"] {
   padding: 0.16rem 0.52rem;
   font-size: 0.65rem;
   color: var(--ink-soft);
+  background: var(--surface);
   font-family: var(--font-mono), "Courier New", monospace;
   line-height: 1.2;
 }
@@ -589,6 +602,7 @@ input[type="checkbox"] {
   padding: 0.18rem 0.56rem;
   font-size: 0.68rem;
   color: var(--ink-soft);
+  background: var(--surface);
   font-family: var(--font-mono), "Courier New", monospace;
   line-height: 1.22;
   white-space: nowrap;
@@ -675,8 +689,8 @@ input[type="checkbox"] {
 }
 
 .bw-map .maplibregl-ctrl-group {
-  background: var(--surface);
-  border: 1px solid var(--line-strong);
+  background: var(--map-control-surface);
+  border: 1px solid var(--overlay-line);
   border-radius: 0.5rem;
   box-shadow: none;
   overflow: hidden;
@@ -684,15 +698,15 @@ input[type="checkbox"] {
 
 .bw-map .maplibregl-ctrl-group button {
   position: relative;
-  background: var(--surface);
-  color: var(--ink);
+  background: var(--map-control-surface);
+  color: var(--overlay-ink);
   width: 34px;
   height: 34px;
   border: 0;
 }
 
 .bw-map .maplibregl-ctrl-group button:hover {
-  background: var(--surface-soft);
+  background: var(--map-control-surface-hover);
 }
 
 .bw-map .maplibregl-ctrl-group button + button {
@@ -751,13 +765,17 @@ input[type="checkbox"] {
 
 .bw-map .maplibregl-ctrl-attrib,
 .bw-map .maplibregl-ctrl-attrib a {
-  color: var(--ink-soft);
-  background: color-mix(in srgb, var(--surface) 92%, transparent 8%);
+  color: var(--overlay-ink);
+  background: var(--overlay-surface-soft);
 }
 
 .map-stroke-frame {
   position: relative;
   border: 1px solid var(--line);
+}
+
+:root[data-theme="dark"] .map-stroke-frame {
+  border-color: var(--line-strong);
 }
 
 .map-stroke-frame::after {
@@ -988,10 +1006,10 @@ input[type="checkbox"] {
   top: 0.58rem;
   z-index: 3;
   max-width: min(88%, 320px);
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--overlay-line);
   border-radius: 0.46rem;
-  background: color-mix(in srgb, var(--surface) 94%, transparent 6%);
-  color: var(--ink-soft);
+  background: var(--overlay-surface);
+  color: var(--overlay-ink);
   font-family: var(--font-mono), "Courier New", monospace;
   font-size: 0.66rem;
   line-height: 1.28;
@@ -1005,10 +1023,10 @@ input[type="checkbox"] {
   left: 0.6rem;
   bottom: 0.58rem;
   z-index: 3;
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--overlay-line);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--surface) 94%, transparent 6%);
-  color: var(--ink-soft);
+  background: var(--overlay-surface);
+  color: var(--overlay-ink);
   font-family: var(--font-mono), "Courier New", monospace;
   font-size: 0.64rem;
   line-height: 1.2;
@@ -1030,7 +1048,7 @@ input[type="checkbox"] {
   content: "";
   position: absolute;
   inset: 0;
-  background: color-mix(in srgb, var(--surface) 72%, transparent 28%);
+  background: color-mix(in srgb, var(--overlay-surface-soft) 78%, transparent 22%);
 }
 
 .map-loading-badge {
@@ -1039,10 +1057,10 @@ input[type="checkbox"] {
   display: inline-flex;
   align-items: center;
   gap: 0.38rem;
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--overlay-line);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--surface) 96%, transparent 4%);
-  color: var(--ink);
+  background: var(--overlay-surface);
+  color: var(--overlay-ink);
   padding: 0.28rem 0.62rem;
 }
 
@@ -1050,7 +1068,7 @@ input[type="checkbox"] {
   font-size: 0.66rem;
   line-height: 1.2;
   font-family: var(--font-mono), "Courier New", monospace;
-  color: var(--ink-soft);
+  color: var(--overlay-ink);
 }
 
 .map-loading-scribble {
@@ -1307,6 +1325,18 @@ input[type="checkbox"] {
   border-color: var(--line);
   color: var(--ink-soft);
   background: var(--surface);
+}
+
+:root[data-theme="dark"] .store-summary-badge.is-closed-now {
+  border-color: color-mix(in srgb, var(--line-strong) 62%, var(--ink-soft) 38%);
+  color: var(--ink-soft);
+  background: color-mix(in srgb, var(--surface-soft) 70%, var(--surface) 30%);
+}
+
+:root[data-theme="dark"] .store-summary-badge.is-hours-unknown {
+  border-color: var(--line-strong);
+  color: var(--ink-soft);
+  background: color-mix(in srgb, var(--surface-soft) 62%, var(--surface) 38%);
 }
 
 .store-summary-icon {

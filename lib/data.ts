@@ -34,6 +34,7 @@ const CHAIN_NAME_HINTS = [
   "fressnapf",
   "muller"
 ];
+const STRATEGY_AUGMENT_THRESHOLD = 110;
 
 function inferOwnershipTypeFromStoreName(name: string | null | undefined): Store["ownershipType"] {
   const normalized = normalizeQuery(name ?? "");
@@ -127,6 +128,8 @@ type JoinedRow = {
   whyThisProductMatches?: string | null;
   lastCheckedAt?: string | null;
   sourceType?: SearchResult["sourceType"];
+  candidateFreshnessScore?: number | null;
+  establishmentFreshnessScore?: number | null;
 };
 
 type SupabaseOfferRow = {
@@ -184,6 +187,7 @@ type SupabaseSearchDatasetRow = {
   validation_status: SearchResult["validationStatus"];
   why_this_product_matches: string | null;
   candidate_last_checked_at?: string | null;
+  candidate_freshness_score?: number | null;
   updated_at: string;
   establishment_name: string;
   address: string;
@@ -193,6 +197,7 @@ type SupabaseSearchDatasetRow = {
   osm_category: string | null;
   app_categories: string[] | null;
   opening_hours?: string | null;
+  freshness_score?: number | null;
   source_url?: string | null;
   product_normalized_name: string;
   product_group: string;
@@ -215,7 +220,11 @@ type SupabaseCanonicalProductRow = {
   product_group: string;
 };
 
-type DatasetSearchStrategy = "product_name" | "canonical_multilingual" | "group_keyword";
+type DatasetSearchStrategy =
+  | "product_name"
+  | "canonical_multilingual"
+  | "group_keyword"
+  | "category_intent";
 
 type DatasetSearchResponse = {
   rows: JoinedRow[];
@@ -233,6 +242,60 @@ let canonicalCatalogCache:
   | null = null;
 
 const CANONICAL_CACHE_TTL_MS = 1000 * 60 * 10;
+const APP_CATEGORY_INTENT_MAP: Array<{ category: string; terms: string[] }> = [
+  {
+    category: "art",
+    terms: [
+      "art",
+      "arts",
+      "art supplies",
+      "craft",
+      "crafts",
+      "stationery",
+      "papeleria",
+      "papeleria tecnica",
+      "kunst",
+      "kunstbedarf",
+      "schreibwaren"
+    ]
+  },
+  {
+    category: "antiques",
+    terms: ["antique", "antiques", "antiquities", "vintage", "antiguedades", "antik", "antikladen"]
+  }
+];
+const APP_CATEGORY_INTENT_OSM_ALLOWLIST: Record<string, string[]> = {
+  art: ["art", "stationery", "craft", "antiques", "books", "second_hand"],
+  antiques: ["antiques", "art", "second_hand", "books", "stationery", "craft"]
+};
+
+function inferAppCategoryIntents(query: string): string[] {
+  const normalized = normalizeSearchQuery(query);
+  if (!normalized) {
+    return [];
+  }
+
+  const queryTokens = new Set(splitNormalizedTokens(normalized));
+  const matched = new Set<string>();
+
+  for (const { category, terms } of APP_CATEGORY_INTENT_MAP) {
+    const normalizedTerms = terms.map((term) => normalizeSearchQuery(term)).filter(Boolean);
+    for (const term of normalizedTerms) {
+      if (term === normalized) {
+        matched.add(category);
+        break;
+      }
+
+      const termTokens = splitNormalizedTokens(term);
+      if (termTokens.length > 0 && termTokens.every((token) => queryTokens.has(token))) {
+        matched.add(category);
+        break;
+      }
+    }
+  }
+
+  return Array.from(matched);
+}
 
 function normalizedContains(a: string, b: string): boolean {
   return a.includes(b) || b.includes(a);
@@ -323,6 +386,79 @@ function normalizedFuzzyMatch(term: string, normalizedQuery: string): boolean {
   );
 }
 
+function hasMeaningfulTokenMatch(productNameNormalized: string, normalizedQuery: string): boolean {
+  const productTokens = splitNormalizedTokens(productNameNormalized);
+  const queryTokens = splitNormalizedTokens(normalizedQuery).filter((token) => token.length >= 4);
+  if (productTokens.length === 0 || queryTokens.length === 0) {
+    return false;
+  }
+
+  return queryTokens.some((queryToken) =>
+    productTokens.some((productToken) => {
+      if (
+        productToken === queryToken ||
+        productToken.includes(queryToken) ||
+        queryToken.includes(productToken)
+      ) {
+        return true;
+      }
+      return isFuzzyTokenMatch(productToken, queryToken);
+    })
+  );
+}
+
+function isSpecificProductQuery(normalizedQuery: string): boolean {
+  if (!normalizedQuery) {
+    return false;
+  }
+  if (GENERIC_QUERY_TERMS.has(normalizedQuery) || BROAD_QUERY_TERMS.has(normalizedQuery)) {
+    return false;
+  }
+
+  const queryTokens = splitNormalizedTokens(normalizedQuery);
+  if (queryTokens.length === 0) {
+    return false;
+  }
+
+  if (queryTokens.length === 1) {
+    return queryTokens[0].length >= 5;
+  }
+
+  return queryTokens.some((token) => token.length >= 4);
+}
+
+function shouldKeepGroupFallbackRow(args: {
+  normalizedQuery: string;
+  productNameNormalized: string;
+  confidence: number;
+  sourceType: SearchResult["sourceType"] | null | undefined;
+  validationStatus: SearchResult["validationStatus"] | null | undefined;
+}): boolean {
+  const { normalizedQuery, productNameNormalized, confidence, sourceType, validationStatus } = args;
+
+  if (!isSpecificProductQuery(normalizedQuery)) {
+    return true;
+  }
+
+  const hasStrongTextMatch =
+    productNameNormalized === normalizedQuery ||
+    productNameNormalized.includes(normalizedQuery) ||
+    normalizedFuzzyMatch(productNameNormalized, normalizedQuery) ||
+    hasMeaningfulTokenMatch(productNameNormalized, normalizedQuery);
+
+  if (hasStrongTextMatch) {
+    return true;
+  }
+
+  const highTrustSource =
+    sourceType === "user_validated" ||
+    sourceType === "merchant_added" ||
+    sourceType === "website_extracted" ||
+    validationStatus === "validated";
+
+  return highTrustSource && confidence >= 0.9;
+}
+
 function scoreMatchedVocabularyTerm(term: string, normalizedQuery: string): number {
   const queryTokens = splitNormalizedTokens(normalizedQuery);
   const termTokens = splitNormalizedTokens(term);
@@ -410,6 +546,61 @@ function inferProductGroupsFromKeyword(query: string): string[] {
     .filter(({ score }) => !isShortSingleTokenQuery || score >= topScore)
     .slice(0, MAX_INFERRED_GROUPS)
     .map(({ group }) => group);
+}
+
+function validationRank(status: SearchResult["validationStatus"] | null | undefined): number {
+  if (status === "validated") return 4;
+  if (status === "likely") return 3;
+  if (status === "unvalidated") return 2;
+  if (status === "rejected") return 0;
+  return 1;
+}
+
+function sourceRank(sourceType: SearchResult["sourceType"] | null | undefined): number {
+  if (sourceType === "user_validated" || sourceType === "validated") return 6;
+  if (sourceType === "merchant_added") return 5;
+  if (sourceType === "website_extracted") return 4;
+  if (sourceType === "ai_generated") return 3;
+  if (sourceType === "rules_generated") return 2;
+  if (sourceType === "imported") return 1;
+  return 0;
+}
+
+function strategyRank(strategy: DatasetSearchStrategy): number {
+  if (strategy === "category_intent") return 4;
+  if (strategy === "canonical_multilingual") return 3;
+  if (strategy === "group_keyword") return 2;
+  return 1;
+}
+
+function mergeRowsByPriority(
+  target: Map<string, { row: SupabaseSearchDatasetRow; strategy: DatasetSearchStrategy }>,
+  rows: SupabaseSearchDatasetRow[],
+  strategy: DatasetSearchStrategy
+) {
+  for (const row of rows) {
+    const key = `${row.establishment_id}:${row.canonical_product_id}`;
+    const existing = target.get(key);
+    if (!existing) {
+      target.set(key, { row, strategy });
+      continue;
+    }
+
+    const existingScore =
+      strategyRank(existing.strategy) * 1_000_000 +
+      validationRank(existing.row.validation_status) * 100_000 +
+      sourceRank(existing.row.source_type) * 10_000 +
+      Math.round((existing.row.confidence ?? 0) * 1_000);
+    const nextScore =
+      strategyRank(strategy) * 1_000_000 +
+      validationRank(row.validation_status) * 100_000 +
+      sourceRank(row.source_type) * 10_000 +
+      Math.round((row.confidence ?? 0) * 1_000);
+
+    if (nextScore > existingScore) {
+      target.set(key, { row, strategy });
+    }
+  }
 }
 
 async function getCanonicalCatalog(): Promise<SupabaseCanonicalProductRow[]> {
@@ -548,6 +739,7 @@ function rankResults(rows: JoinedRow[], args: { query: string; lat: number; lng:
       );
       const exactMatch = row.product.normalizedName === normalized ? 1 : 0;
       const includesMatch = row.product.normalizedName.includes(normalized) ? 1 : 0;
+      const fuzzyMatch = normalizedFuzzyMatch(normalizeQuery(row.product.normalizedName), normalized) ? 1 : 0;
       const confidenceScore = typeof row.confidence === "number" ? row.confidence * 2000 : 0;
       const validationScore =
         row.validationStatus === "validated"
@@ -557,9 +749,23 @@ function rankResults(rows: JoinedRow[], args: { query: string; lat: number; lng:
             : row.validationStatus === "rejected"
               ? -10000
               : 0;
+      const sourceScore =
+        sourceRank(row.sourceType) * 230;
+      const candidateFreshnessScore = typeof row.candidateFreshnessScore === "number" ? row.candidateFreshnessScore : 0;
+      const establishmentFreshnessScore =
+        typeof row.establishmentFreshnessScore === "number" ? row.establishmentFreshnessScore : 0;
+      const freshnessScore = candidateFreshnessScore * 520 + establishmentFreshnessScore * 280;
 
       const rank =
-        exactMatch * 100000 + includesMatch * 50000 + confidenceScore + validationScore - distanceMeters - freshnessHours * 2;
+        exactMatch * 100000 +
+        includesMatch * 50000 +
+        fuzzyMatch * 8000 +
+        confidenceScore +
+        validationScore +
+        sourceScore +
+        freshnessScore -
+        distanceMeters -
+        freshnessHours * 2;
 
       return {
         offer: row.offer,
@@ -577,6 +783,25 @@ function rankResults(rows: JoinedRow[], args: { query: string; lat: number; lng:
     })
     .filter((row) => row.distanceMeters <= args.radius)
     .sort((a, b) => b.rank - a.rank);
+}
+
+function minConfidenceThresholdForRow(row: JoinedRow): number {
+  if (row.validationStatus === "validated") {
+    return 0;
+  }
+  if (row.sourceType === "user_validated" || row.sourceType === "merchant_added") {
+    return 0;
+  }
+  if (row.sourceType === "website_extracted") {
+    return 0.33;
+  }
+  if (row.sourceType === "ai_generated") {
+    return 0.44;
+  }
+  if (row.sourceType === "rules_generated") {
+    return 0.53;
+  }
+  return MIN_CONFIDENCE_FOR_WEAK_MATCH;
 }
 
 function dedupeRankedResults(results: SearchResult[]): SearchResult[] {
@@ -717,6 +942,7 @@ async function searchSupabaseRowsFromDataset(args: {
   const db = supabase;
 
   const normalized = normalizeSearchQuery(args.query);
+  const categoryIntents = inferAppCategoryIntents(args.query);
   const canonicalProducts = await getCanonicalCatalog();
   const canonicalIds = findCanonicalProductIdsByQuery(args.query, canonicalProducts);
   const inferredGroups = inferProductGroupsFromKeyword(args.query);
@@ -731,7 +957,7 @@ async function searchSupabaseRowsFromDataset(args: {
     db
       .from("search_product_establishment_dataset")
       .select(
-        "establishment_id, canonical_product_id, source_type, confidence, validation_status, why_this_product_matches, updated_at, establishment_name, address, district, lat, lon, osm_category, app_categories, opening_hours, source_url, product_normalized_name, product_group, candidate_last_checked_at"
+        "establishment_id, canonical_product_id, source_type, confidence, validation_status, why_this_product_matches, updated_at, establishment_name, address, district, lat, lon, osm_category, app_categories, opening_hours, source_url, product_normalized_name, product_group, candidate_last_checked_at, candidate_freshness_score, freshness_score"
       )
       .gte("lat", bounds.minLat)
       .lte("lat", bounds.maxLat)
@@ -765,10 +991,37 @@ async function searchSupabaseRowsFromDataset(args: {
     return (data ?? []) as SupabaseSearchDatasetRow[];
   };
 
-  let rows: SupabaseSearchDatasetRow[] = [];
+  const mergedRows = new Map<
+    string,
+    { row: SupabaseSearchDatasetRow; strategy: DatasetSearchStrategy }
+  >();
   let strategy: DatasetSearchStrategy = "product_name";
+  let hasPrimaryStrategy = false;
 
-  if (canonicalIds.length > 0) {
+  if (categoryIntents.length > 0) {
+    for (const category of categoryIntents) {
+      const allowedOsmCategories = APP_CATEGORY_INTENT_OSM_ALLOWLIST[category] ?? [];
+      // eslint-disable-next-line no-await-in-loop
+      const categoryRows = await executeQuery("category_intent", (queryBuilder) =>
+        allowedOsmCategories.length > 0
+          ? queryBuilder.contains("app_categories", [category]).in("osm_category", allowedOsmCategories)
+          : queryBuilder.contains("app_categories", [category])
+      );
+      if (categoryRows === null) {
+        return null;
+      }
+      if (categoryRows.length > 0) {
+        mergeRowsByPriority(mergedRows, categoryRows, "category_intent");
+      }
+    }
+
+    if (mergedRows.size > 0) {
+      strategy = "category_intent";
+      hasPrimaryStrategy = true;
+    }
+  }
+
+  if (!hasPrimaryStrategy && canonicalIds.length > 0) {
     const canonicalRows = await executeQuery("canonical_multilingual", (queryBuilder) =>
       queryBuilder.in("canonical_product_id", canonicalIds)
     );
@@ -776,12 +1029,13 @@ async function searchSupabaseRowsFromDataset(args: {
       return null;
     }
     if (canonicalRows.length > 0) {
-      rows = canonicalRows;
+      mergeRowsByPriority(mergedRows, canonicalRows, "canonical_multilingual");
       strategy = "canonical_multilingual";
+      hasPrimaryStrategy = true;
     }
   }
 
-  if (rows.length === 0 && inferredGroups.length > 0) {
+  if (!hasPrimaryStrategy && inferredGroups.length > 0) {
     const groupRows = await executeQuery("group_keyword", (queryBuilder) =>
       queryBuilder.in("product_group", inferredGroups)
     );
@@ -789,21 +1043,34 @@ async function searchSupabaseRowsFromDataset(args: {
       return null;
     }
     if (groupRows.length > 0) {
-      rows = groupRows;
-      strategy = "group_keyword";
+      const shouldAugment = !hasPrimaryStrategy || mergedRows.size < STRATEGY_AUGMENT_THRESHOLD;
+      if (shouldAugment) {
+        mergeRowsByPriority(mergedRows, groupRows, "group_keyword");
+      }
+      if (!hasPrimaryStrategy) {
+        strategy = "group_keyword";
+        hasPrimaryStrategy = true;
+      }
     }
   }
 
-  if (rows.length === 0) {
+  if (!hasPrimaryStrategy || (strategy !== "category_intent" && mergedRows.size < STRATEGY_AUGMENT_THRESHOLD)) {
     const fallbackRows = await executeQuery("product_name", (queryBuilder) =>
       queryBuilder.ilike("product_normalized_name", `%${normalized}%`)
     );
     if (fallbackRows === null) {
       return null;
     }
-    rows = fallbackRows;
-    strategy = "product_name";
+    if (fallbackRows.length > 0) {
+      mergeRowsByPriority(mergedRows, fallbackRows, "product_name");
+      if (!hasPrimaryStrategy) {
+        strategy = "product_name";
+        hasPrimaryStrategy = true;
+      }
+    }
   }
+
+  const rows = Array.from(mergedRows.values()).map((item) => item.row);
 
   const joinedRows: JoinedRow[] = [];
   let malformedRows = 0;
@@ -887,7 +1154,9 @@ async function searchSupabaseRowsFromDataset(args: {
       validationStatus: row.validation_status,
       whyThisProductMatches: row.why_this_product_matches,
       lastCheckedAt: row.candidate_last_checked_at ?? row.updated_at ?? null,
-      sourceType: row.source_type
+      sourceType: row.source_type,
+      candidateFreshnessScore: row.candidate_freshness_score ?? null,
+      establishmentFreshnessScore: row.freshness_score ?? null
     } satisfies JoinedRow);
   }
 
@@ -1048,7 +1317,9 @@ export async function searchOffersDetailed(args: {
   }
 
   const filtered =
-    datasetStrategy === "canonical_multilingual" || datasetStrategy === "group_keyword"
+    datasetStrategy === "canonical_multilingual" ||
+    datasetStrategy === "group_keyword" ||
+    datasetStrategy === "category_intent"
       ? rows
       : rows.filter((row) => {
           const productName = normalizeQuery(row.product.normalizedName);
@@ -1056,12 +1327,29 @@ export async function searchOffersDetailed(args: {
         });
   const plausibilityFiltered = filtered.filter((row) => {
     const productName = normalizeQuery(row.product.normalizedName);
-    const hasStrongTextMatch = productName === normalized || productName.includes(normalized);
+    const hasStrongTextMatch =
+      productName === normalized ||
+      productName.includes(normalized) ||
+      normalizedFuzzyMatch(productName, normalized);
+    const confidence = typeof row.confidence === "number" ? row.confidence : 0;
+
+    if (datasetStrategy === "group_keyword") {
+      const keepByGroupGuard = shouldKeepGroupFallbackRow({
+        normalizedQuery: normalized,
+        productNameNormalized: productName,
+        confidence,
+        sourceType: row.sourceType,
+        validationStatus: row.validationStatus
+      });
+      if (!keepByGroupGuard) {
+        return false;
+      }
+    }
+
     if (hasStrongTextMatch) {
       return true;
     }
-    const confidence = typeof row.confidence === "number" ? row.confidence : 0;
-    return confidence >= MIN_CONFIDENCE_FOR_WEAK_MATCH;
+    return confidence >= minConfidenceThresholdForRow(row);
   });
 
   const results = dedupeRankedResults(
@@ -1112,5 +1400,9 @@ export function getBerlinCenter() {
 export const __private = {
   inferProductGroupsFromKeyword,
   findCanonicalProductIdsByQuery,
-  dedupeRankedResults
+  dedupeRankedResults,
+  hasMeaningfulTokenMatch,
+  isSpecificProductQuery,
+  shouldKeepGroupFallbackRow,
+  inferAppCategoryIntents
 };

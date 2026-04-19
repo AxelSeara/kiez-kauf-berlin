@@ -113,4 +113,40 @@ describe("keyword intent helpers", () => {
     expect(normalizeQuery("jalapeño!!")).toBe("jalapeno");
     expect(normalizeQuery("milk-1L")).toBe("milk 1l");
   });
+
+  it("applies strict lexical guard for specific group-fallback queries", () => {
+    expect(__private.isSpecificProductQuery("jalapeno")).toBe(true);
+    expect(__private.isSpecificProductQuery("milk")).toBe(false);
+
+    expect(__private.hasMeaningfulTokenMatch("jalapeno 100g", "jalapeno")).toBe(true);
+    expect(__private.hasMeaningfulTokenMatch("bananen 1kg", "jalapeno")).toBe(false);
+
+    expect(
+      __private.shouldKeepGroupFallbackRow({
+        normalizedQuery: "jalapeno",
+        productNameNormalized: "jalapeno 100g",
+        confidence: 0.72,
+        sourceType: "rules_generated",
+        validationStatus: "likely"
+      })
+    ).toBe(true);
+
+    expect(
+      __private.shouldKeepGroupFallbackRow({
+        normalizedQuery: "jalapeno",
+        productNameNormalized: "bananen 1kg",
+        confidence: 0.93,
+        sourceType: "rules_generated",
+        validationStatus: "likely"
+      })
+    ).toBe(false);
+  });
+
+  it("maps category-intent queries to app categories for store-first fallback", () => {
+    expect(__private.inferAppCategoryIntents("antiques")).toContain("antiques");
+    expect(__private.inferAppCategoryIntents("antique")).toContain("antiques");
+    expect(__private.inferAppCategoryIntents("art")).toContain("art");
+    expect(__private.inferAppCategoryIntents("art supplies")).toContain("art");
+    expect(__private.inferAppCategoryIntents("stationery")).toContain("art");
+  });
 });

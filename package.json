@@ -20,6 +20,8 @@
     "merge:candidates": "node scripts/pipeline/merge-candidates.mjs",
     "build:search-dataset": "node scripts/pipeline/build-search-dataset.mjs",
     "refresh:berlin": "node scripts/pipeline/refresh-berlin.mjs",
+    "refresh:berlin:lean-v1": "node scripts/pipeline/lean-v1-refresh.mjs",
+    "maintenance:prune-audit": "node scripts/pipeline/prune-audit.mjs",
     "audit:enrichment": "node scripts/pipeline/audit-enrichment.mjs"
   },
   "dependencies": {

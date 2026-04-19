@@ -216,6 +216,21 @@ with source_priority(source_type, weight) as (
     establishment_product_merged.validation_status = 'validated'
     and excluded.validation_status <> 'validated'
   )
+    and (
+      establishment_product_merged.primary_source_type is distinct from excluded.primary_source_type
+      or establishment_product_merged.merged_sources is distinct from excluded.merged_sources
+      or establishment_product_merged.merged_generation_methods is distinct from excluded.merged_generation_methods
+      or establishment_product_merged.merged_candidate_ids is distinct from excluded.merged_candidate_ids
+      or establishment_product_merged.confidence is distinct from excluded.confidence
+      or establishment_product_merged.validation_status is distinct from excluded.validation_status
+      or establishment_product_merged.why_this_product_matches is distinct from excluded.why_this_product_matches
+      or establishment_product_merged.category_path is distinct from excluded.category_path
+      or establishment_product_merged.inferred_from is distinct from excluded.inferred_from
+      or establishment_product_merged.source_url is distinct from excluded.source_url
+      or establishment_product_merged.extraction_method is distinct from excluded.extraction_method
+      or establishment_product_merged.last_checked_at is distinct from excluded.last_checked_at
+      or establishment_product_merged.freshness_score is distinct from excluded.freshness_score
+  )
   returning id
 )
 select
@@ -227,7 +242,7 @@ select
 async function main() {
   const args = parseArgs(process.argv);
   const batchSize = Number(args["batch-size"] ?? 500);
-  const maxProductsPerEstablishment = Number(args["max-products-per-establishment"] ?? 14);
+  const maxProductsPerEstablishment = Number(args["max-products-per-establishment"] ?? 8);
   const resume = Boolean(args.resume);
 
   const checkpoint = await loadCheckpoint();
