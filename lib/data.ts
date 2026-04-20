@@ -533,7 +533,7 @@ function shouldKeepGroupFallbackRow(args: {
     normalizedGroup.length > 0 &&
     normalizedOsmCategory.length > 0 &&
     allowedStoreCategories.includes(normalizedOsmCategory);
-  if (hasStoreGroupFit && confidence >= 0.82 && validationStatus !== "rejected") {
+  if (hasStoreGroupFit && confidence >= 0.78 && validationStatus !== "rejected") {
     return true;
   }
 

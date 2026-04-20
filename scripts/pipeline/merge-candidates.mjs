@@ -105,6 +105,7 @@ with source_priority(source_type, weight) as (
   select
     a.establishment_id,
     a.canonical_product_id,
+    coalesce(cp.priority, 50) as canonical_priority,
     a.primary_source_type,
     a.merged_sources,
     a.merged_generation_methods,
@@ -119,6 +120,7 @@ with source_priority(source_type, weight) as (
     a.last_checked_at,
     a.freshness_score
   from aggregated a
+  left join canonical_products cp on cp.id = a.canonical_product_id
   join ranked r
     on r.establishment_id = a.establishment_id
    and r.canonical_product_id = a.canonical_product_id
@@ -145,6 +147,7 @@ with source_priority(source_type, weight) as (
           when 'ai_generated' then 2
           else 1
         end desc,
+        f.canonical_priority desc,
         f.canonical_product_id asc
     ) as store_rank
   from final_rows f

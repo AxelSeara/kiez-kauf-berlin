@@ -1438,5 +1438,187 @@
     ],
     "aliases": [],
     "use_cases": []
+  },
+  {
+    "normalized_name": "erdbeeren 500g",
+    "family_slug": "erdbeeren-500g",
+    "group_key": "fresh_produce",
+    "display_name_en": "Strawberries 500g",
+    "display_name_de": "Erdbeeren 500g",
+    "display_name_es": "Fresas 500g",
+    "is_active": true,
+    "priority": 72,
+    "coverage_tier": "core",
+    "synonyms": [
+      "strawberry",
+      "strawberries"
+    ],
+    "facets": [
+      "fresh_produce"
+    ],
+    "aliases": [],
+    "use_cases": []
+  },
+  {
+    "normalized_name": "mango stueck",
+    "family_slug": "mango-stueck",
+    "group_key": "fresh_produce",
+    "display_name_en": "Mango",
+    "display_name_de": "Mango",
+    "display_name_es": "Mango",
+    "is_active": true,
+    "priority": 70,
+    "coverage_tier": "core",
+    "synonyms": [
+      "mango",
+      "mangos"
+    ],
+    "facets": [
+      "fresh_produce"
+    ],
+    "aliases": [],
+    "use_cases": []
+  },
+  {
+    "normalized_name": "pfirsiche 1kg",
+    "family_slug": "pfirsiche-1kg",
+    "group_key": "fresh_produce",
+    "display_name_en": "Peaches 1kg",
+    "display_name_de": "Pfirsiche 1kg",
+    "display_name_es": "Melocotones 1kg",
+    "is_active": true,
+    "priority": 67,
+    "coverage_tier": "core",
+    "synonyms": [
+      "peach",
+      "peaches"
+    ],
+    "facets": [
+      "fresh_produce"
+    ],
+    "aliases": [],
+    "use_cases": []
+  },
+  {
+    "normalized_name": "aubergine stueck",
+    "family_slug": "aubergine-stueck",
+    "group_key": "fresh_produce",
+    "display_name_en": "Eggplant",
+    "display_name_de": "Aubergine",
+    "display_name_es": "Berenjena",
+    "is_active": true,
+    "priority": 68,
+    "coverage_tier": "core",
+    "synonyms": [
+      "eggplant",
+      "aubergine"
+    ],
+    "facets": [
+      "fresh_produce"
+    ],
+    "aliases": [],
+    "use_cases": []
+  },
+  {
+    "normalized_name": "rosmarin bund",
+    "family_slug": "rosmarin-bund",
+    "group_key": "fresh_produce",
+    "display_name_en": "Rosemary bunch",
+    "display_name_de": "Rosmarin Bund",
+    "display_name_es": "Romero manojo",
+    "is_active": true,
+    "priority": 65,
+    "coverage_tier": "extended",
+    "synonyms": [
+      "rosemary",
+      "romero"
+    ],
+    "facets": [
+      "fresh_produce"
+    ],
+    "aliases": [],
+    "use_cases": []
+  },
+  {
+    "normalized_name": "sesam 200g",
+    "family_slug": "sesam-200g",
+    "group_key": "groceries",
+    "display_name_en": "Sesame seeds 200g",
+    "display_name_de": "Sesam 200g",
+    "display_name_es": "Semillas de sesamo 200g",
+    "is_active": true,
+    "priority": 63,
+    "coverage_tier": "extended",
+    "synonyms": [
+      "sesame",
+      "sesame seeds"
+    ],
+    "facets": [
+      "groceries"
+    ],
+    "aliases": [],
+    "use_cases": []
+  },
+  {
+    "normalized_name": "schere universal",
+    "family_slug": "schere-universal",
+    "group_key": "household",
+    "display_name_en": "Scissors",
+    "display_name_de": "Schere Universal",
+    "display_name_es": "Tijeras",
+    "is_active": true,
+    "priority": 72,
+    "coverage_tier": "core",
+    "synonyms": [
+      "scissor",
+      "scissors",
+      "tijeras"
+    ],
+    "facets": [
+      "household"
+    ],
+    "aliases": [],
+    "use_cases": []
+  },
+  {
+    "normalized_name": "streichholz schachtel",
+    "family_slug": "streichholz-schachtel",
+    "group_key": "household",
+    "display_name_en": "Matches box",
+    "display_name_de": "Streichholz Schachtel",
+    "display_name_es": "Caja de cerillas",
+    "is_active": true,
+    "priority": 64,
+    "coverage_tier": "extended",
+    "synonyms": [
+      "matches",
+      "match box"
+    ],
+    "facets": [
+      "household"
+    ],
+    "aliases": [],
+    "use_cases": []
+  },
+  {
+    "normalized_name": "katzenfutter nass 85g",
+    "family_slug": "katzenfutter-nass-85g",
+    "group_key": "pet_care",
+    "display_name_en": "Cat food wet 85g",
+    "display_name_de": "Katzenfutter Nass 85g",
+    "display_name_es": "Comida gato humeda 85g",
+    "is_active": true,
+    "priority": 70,
+    "coverage_tier": "core",
+    "synonyms": [
+      "cat food",
+      "wet cat food",
+      "katzenfutter"
+    ],
+    "facets": [
+      "pet_care"
+    ],
+    "aliases": [],
+    "use_cases": []
   }
 ]

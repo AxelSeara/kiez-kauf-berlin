@@ -287,6 +287,15 @@ type AdminCopy = {
   runDistrictRefresh: string;
   runningDistrictRefresh: string;
   copyDistrictImportCommand: string;
+  manualFixTitle: string;
+  manualFixHint: string;
+  aliasTermLabel: string;
+  aliasLangLabel: string;
+  aliasPriorityLabel: string;
+  searchCanonicalForAlias: string;
+  saveAliasMapping: string;
+  preparingAlias: string;
+  prepareAliasFix: string;
 };
 
 const ADMIN_KEY_STORAGE = "kiezkauf:admin-panel-key";
@@ -360,7 +369,16 @@ const COPY: Record<"en" | "de", AdminCopy> = {
     activeOnlyLabel: "Active only",
     runDistrictRefresh: "Refresh district data",
     runningDistrictRefresh: "Refreshing district...",
-    copyDistrictImportCommand: "Copy import command"
+    copyDistrictImportCommand: "Copy import command",
+    manualFixTitle: "Manual search fix",
+    manualFixHint: "Map an unresolved term to a canonical product alias to improve matching fast.",
+    aliasTermLabel: "Unresolved term",
+    aliasLangLabel: "Alias language",
+    aliasPriorityLabel: "Priority",
+    searchCanonicalForAlias: "Find canonical product",
+    saveAliasMapping: "Save alias mapping",
+    preparingAlias: "Preparing...",
+    prepareAliasFix: "Prepare alias fix"
   },
   de: {
     title: "Admin-Panel",
@@ -430,7 +448,16 @@ const COPY: Record<"en" | "de", AdminCopy> = {
     activeOnlyLabel: "Nur aktiv",
     runDistrictRefresh: "Bezirk-Daten refreshen",
     runningDistrictRefresh: "Bezirk wird refreshed...",
-    copyDistrictImportCommand: "Import-Befehl kopieren"
+    copyDistrictImportCommand: "Import-Befehl kopieren",
+    manualFixTitle: "Manueller Search-Fix",
+    manualFixHint: "Ordne einen Suchbegriff ohne Treffer als Alias einem kanonischen Produkt zu.",
+    aliasTermLabel: "Suchbegriff ohne Treffer",
+    aliasLangLabel: "Alias-Sprache",
+    aliasPriorityLabel: "Priorität",
+    searchCanonicalForAlias: "Kanonisches Produkt finden",
+    saveAliasMapping: "Alias-Mapping speichern",
+    preparingAlias: "Wird vorbereitet...",
+    prepareAliasFix: "Alias-Fix vorbereiten"
   }
 };
 
@@ -536,6 +563,15 @@ export function AdminPanel({ locale }: { locale: Locale }) {
   const [manualReason, setManualReason] = useState("");
   const [manualProductId, setManualProductId] = useState<number | null>(null);
   const [isAddingProduct, setIsAddingProduct] = useState(false);
+  const [aliasTermInput, setAliasTermInput] = useState("");
+  const [aliasLang, setAliasLang] = useState<"und" | "en" | "de" | "es">("und");
+  const [aliasPriority, setAliasPriority] = useState(80);
+  const [aliasCanonicalQuery, setAliasCanonicalQuery] = useState("");
+  const [aliasCanonicalResults, setAliasCanonicalResults] = useState<CanonicalProductSearch["rows"]>([]);
+  const [aliasCanonicalProductId, setAliasCanonicalProductId] = useState<number | null>(null);
+  const [isSearchingAliasCanonical, setIsSearchingAliasCanonical] = useState(false);
+  const [isSavingAliasMapping, setIsSavingAliasMapping] = useState(false);
+  const [isPreparingAlias, setIsPreparingAlias] = useState(false);
 
   const pageSize = 30;
 
@@ -873,6 +909,78 @@ export function AdminPanel({ locale }: { locale: Locale }) {
       setSaveMessage(error instanceof Error ? error.message : "Unable to add product.");
     } finally {
       setIsAddingProduct(false);
+    }
+  };
+
+  const onSearchCanonicalForAlias = async () => {
+    if (!aliasCanonicalQuery.trim()) {
+      setAliasCanonicalResults([]);
+      return;
+    }
+    setIsSearchingAliasCanonical(true);
+    try {
+      const payload = (await apiFetch(
+        `/api/admin/canonical-products?q=${encodeURIComponent(aliasCanonicalQuery)}&limit=30`
+      )) as CanonicalProductSearch;
+      setAliasCanonicalResults(payload.rows);
+    } catch (error) {
+      setSaveMessage(error instanceof Error ? error.message : "Alias product search failed.");
+    } finally {
+      setIsSearchingAliasCanonical(false);
+    }
+  };
+
+  const onPrepareAliasFix = async (term: string) => {
+    const cleanTerm = term.trim();
+    if (!cleanTerm) return;
+    setIsPreparingAlias(true);
+    setAliasTermInput(cleanTerm);
+    setAliasCanonicalQuery(cleanTerm);
+    setAliasCanonicalProductId(null);
+    setAliasCanonicalResults([]);
+    try {
+      const payload = (await apiFetch(
+        `/api/admin/canonical-products?q=${encodeURIComponent(cleanTerm)}&limit=20`
+      )) as CanonicalProductSearch;
+      setAliasCanonicalResults(payload.rows);
+    } catch (error) {
+      setSaveMessage(error instanceof Error ? error.message : "Unable to prepare alias fix.");
+    } finally {
+      setIsPreparingAlias(false);
+    }
+  };
+
+  const onSaveAliasMapping = async () => {
+    const cleanAlias = aliasTermInput.trim();
+    if (!cleanAlias) {
+      setSaveMessage("Alias term is required.");
+      return;
+    }
+    if (!aliasCanonicalProductId) {
+      setSaveMessage("Select a canonical product first.");
+      return;
+    }
+
+    setIsSavingAliasMapping(true);
+    setSaveMessage(null);
+    try {
+      await apiFetch("/api/admin/canonical-products/aliases", {
+        method: "POST",
+        body: JSON.stringify({
+          canonicalProductId: aliasCanonicalProductId,
+          alias: cleanAlias,
+          lang: aliasLang,
+          priority: aliasPriority,
+          isActive: true
+        })
+      });
+
+      setSaveMessage(`Alias saved: "${cleanAlias}"`);
+      await Promise.all([fetchInsightsAndCatalog(), fetchReviewQueue()]);
+    } catch (error) {
+      setSaveMessage(error instanceof Error ? error.message : "Unable to save alias mapping.");
+    } finally {
+      setIsSavingAliasMapping(false);
     }
   };
 
@@ -1251,6 +1359,108 @@ export function AdminPanel({ locale }: { locale: Locale }) {
                 <p className="text-sm text-[var(--ink-soft)]">{copy.reviewQueueHint}</p>
               </div>
 
+              <div className="surface-card p-3">
+                <p className="note-subtitle">{copy.manualFixTitle}</p>
+                <p className="mb-3 text-sm text-[var(--ink-soft)]">{copy.manualFixHint}</p>
+
+                <div className="grid gap-3 md:grid-cols-[2fr_1fr_1fr]">
+                  <label className="space-y-1 text-sm">
+                    <span className="note-label">{copy.aliasTermLabel}</span>
+                    <input
+                      type="text"
+                      className="field-input"
+                      value={aliasTermInput}
+                      onChange={(event) => setAliasTermInput(event.target.value)}
+                      placeholder="e.g. toothbrush, pharmacies, strawberry"
+                    />
+                  </label>
+                  <label className="space-y-1 text-sm">
+                    <span className="note-label">{copy.aliasLangLabel}</span>
+                    <select
+                      className="field-input"
+                      value={aliasLang}
+                      onChange={(event) => setAliasLang(event.target.value as "und" | "en" | "de" | "es")}
+                    >
+                      <option value="und">und</option>
+                      <option value="en">en</option>
+                      <option value="de">de</option>
+                      <option value="es">es</option>
+                    </select>
+                  </label>
+                  <label className="space-y-1 text-sm">
+                    <span className="note-label">{copy.aliasPriorityLabel}</span>
+                    <input
+                      type="number"
+                      className="field-input"
+                      value={aliasPriority}
+                      min={0}
+                      max={100}
+                      onChange={(event) => {
+                        const next = Number(event.target.value);
+                        if (!Number.isFinite(next)) return;
+                        setAliasPriority(Math.max(0, Math.min(100, Math.round(next))));
+                      }}
+                    />
+                  </label>
+                </div>
+
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  <input
+                    type="text"
+                    className="field-input min-w-[260px] flex-1"
+                    value={aliasCanonicalQuery}
+                    onChange={(event) => setAliasCanonicalQuery(event.target.value)}
+                    placeholder={copy.productSearchPlaceholder}
+                  />
+                  <button
+                    type="button"
+                    className="btn-ghost"
+                    onClick={() => {
+                      void onSearchCanonicalForAlias();
+                    }}
+                    disabled={isSearchingAliasCanonical}
+                  >
+                    {isSearchingAliasCanonical ? copy.loadingProducts : copy.searchCanonicalForAlias}
+                  </button>
+                </div>
+
+                {aliasCanonicalResults.length > 0 ? (
+                  <ul className="mt-3 grid gap-2 md:grid-cols-2">
+                    {aliasCanonicalResults.slice(0, 10).map((item) => (
+                      <li key={`alias-canonical-${item.id}`} className="rounded-md border border-[var(--line)] p-2">
+                        <label className="flex cursor-pointer items-start gap-2">
+                          <input
+                            type="radio"
+                            name="alias-canonical-product"
+                            checked={aliasCanonicalProductId === item.id}
+                            onChange={() => setAliasCanonicalProductId(item.id)}
+                          />
+                          <span>
+                            <span className="block text-sm font-semibold">{item.display_name_en || item.normalized_name}</span>
+                            <span className="block text-xs text-[var(--ink-soft)]">
+                              {item.product_group} · #{item.id}
+                            </span>
+                          </span>
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    className="btn-secondary"
+                    onClick={() => {
+                      void onSaveAliasMapping();
+                    }}
+                    disabled={isSavingAliasMapping || !aliasTermInput.trim() || !aliasCanonicalProductId}
+                  >
+                    {isSavingAliasMapping ? copy.loading : copy.saveAliasMapping}
+                  </button>
+                </div>
+              </div>
+
               <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 <div className="surface-card p-3">
                   <p className="note-label">{copy.flaggedBusinesses}</p>
@@ -1296,6 +1506,16 @@ export function AdminPanel({ locale }: { locale: Locale }) {
                               onClick={() => onUseTermForBusinessSearch(term.term)}
                             >
                               {copy.useForSearch}
+                            </button>
+                            <button
+                              type="button"
+                              className="btn-ghost text-xs"
+                              onClick={() => {
+                                void onPrepareAliasFix(term.term);
+                              }}
+                              disabled={isPreparingAlias}
+                            >
+                              {isPreparingAlias ? copy.preparingAlias : copy.prepareAliasFix}
                             </button>
                           </div>
                         </li>

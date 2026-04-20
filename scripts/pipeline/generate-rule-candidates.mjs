@@ -14,6 +14,7 @@ const CATEGORY_GROUP_RULES = [
   ["grocery", "beverages", 0.79, "grocery stores typically include beverage aisles"],
   ["grocery", "fresh_produce", 0.76, "grocery stores often include produce"],
   ["grocery", "household", 0.71, "grocery stores often carry household basics"],
+  ["grocery", "pet_care", 0.74, "many grocery stores carry basic pet food and pet care"],
   ["convenience", "beverages", 0.8, "convenience stores focus on ready-to-buy drinks"],
   ["convenience", "snacks", 0.78, "convenience stores are snack-heavy"],
   ["convenience", "groceries", 0.65, "convenience stores carry a compact grocery set"],

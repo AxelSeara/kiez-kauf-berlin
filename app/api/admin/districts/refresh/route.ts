@@ -88,6 +88,7 @@ const CATEGORY_GROUP_RULES: Array<{
   { appCategory: "grocery", productGroup: "beverages", baseConfidence: 0.79, reason: "grocery stores typically include beverage aisles" },
   { appCategory: "grocery", productGroup: "fresh_produce", baseConfidence: 0.76, reason: "grocery stores often include produce" },
   { appCategory: "grocery", productGroup: "household", baseConfidence: 0.71, reason: "grocery stores often carry household basics" },
+  { appCategory: "grocery", productGroup: "pet_care", baseConfidence: 0.74, reason: "many grocery stores carry basic pet food and pet care" },
   { appCategory: "convenience", productGroup: "beverages", baseConfidence: 0.8, reason: "convenience stores focus on ready-to-buy drinks" },
   { appCategory: "convenience", productGroup: "snacks", baseConfidence: 0.78, reason: "convenience stores are snack-heavy" },
   { appCategory: "convenience", productGroup: "groceries", baseConfidence: 0.65, reason: "convenience stores carry a compact grocery set" },
