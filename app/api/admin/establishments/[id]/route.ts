@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ensureAdminAccess } from "@/lib/admin-auth";
+import { recordCurationEvent } from "@/lib/admin-curation";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 
 type EstablishmentDetailRow = {
@@ -86,6 +87,24 @@ function sanitizeCategories(input: unknown): string[] {
     unique.add(clean.slice(0, 60));
   }
   return [...unique];
+}
+
+function normalizeCategoryArray(values: string[] | null | undefined): string[] {
+  const unique = new Set<string>();
+  for (const entry of values ?? []) {
+    const clean = String(entry ?? "").trim().toLowerCase();
+    if (!clean) continue;
+    unique.add(clean);
+  }
+  return [...unique].sort((a, b) => a.localeCompare(b));
+}
+
+function arraysEqual(a: string[], b: string[]): boolean {
+  if (a.length !== b.length) return false;
+  for (let index = 0; index < a.length; index += 1) {
+    if (a[index] !== b[index]) return false;
+  }
+  return true;
 }
 
 function coerceNullableString(input: unknown, maxLength = 300) {
@@ -320,6 +339,18 @@ export async function PATCH(
     }
 
     const supabase = getSupabaseAdminClient();
+    const { data: beforeEstablishment, error: beforeError } = await supabase
+      .from("establishments")
+      .select(
+        "id, external_source, external_id, name, address, district, lat, lon, osm_category, app_categories, website, phone, opening_hours, description, active_status, updated_at"
+      )
+      .eq("id", establishmentId)
+      .single();
+
+    if (beforeError) {
+      throw new Error(beforeError.message);
+    }
+
     const { data, error } = await supabase
       .from("establishments")
       .update(updatePayload)
@@ -330,6 +361,56 @@ export async function PATCH(
       .single();
 
     if (error) throw new Error(error.message);
+
+    const beforeRow = beforeEstablishment as EstablishmentDetailRow;
+    const afterRow = data as EstablishmentDetailRow;
+    const beforeCategories = normalizeCategoryArray(beforeRow.app_categories);
+    const afterCategories = normalizeCategoryArray(afterRow.app_categories);
+    const addedCategories = afterCategories.filter((entry) => !beforeCategories.includes(entry));
+    const removedCategories = beforeCategories.filter((entry) => !afterCategories.includes(entry));
+
+    await recordCurationEvent(supabase, {
+      eventType: "establishment_update",
+      entityType: "establishment",
+      establishmentId,
+      reason: "Manual establishment edit from admin panel.",
+      beforeState: {
+        district: beforeRow.district,
+        app_categories: beforeCategories,
+        active_status: beforeRow.active_status,
+        website: beforeRow.website,
+        phone: beforeRow.phone,
+        opening_hours: beforeRow.opening_hours,
+        description: beforeRow.description
+      },
+      afterState: {
+        district: afterRow.district,
+        app_categories: afterCategories,
+        active_status: afterRow.active_status,
+        website: afterRow.website,
+        phone: afterRow.phone,
+        opening_hours: afterRow.opening_hours,
+        description: afterRow.description
+      },
+      metadata: {
+        changed_fields: Object.keys(updatePayload)
+      }
+    });
+
+    if (!arraysEqual(beforeCategories, afterCategories)) {
+      await recordCurationEvent(supabase, {
+        eventType: "category_set",
+        entityType: "establishment",
+        establishmentId,
+        reason: "Manual category correction from admin panel.",
+        beforeState: { app_categories: beforeCategories },
+        afterState: { app_categories: afterCategories },
+        metadata: {
+          added_categories: addedCategories,
+          removed_categories: removedCategories
+        }
+      });
+    }
 
     return NextResponse.json({
       establishment: data

@@ -26,12 +26,20 @@ type CanonicalProductRow = {
   id: number;
   group_key: string | null;
   product_group: string | null;
+  priority: number | null;
   is_active: boolean | null;
 };
 
 type CanonicalFacetRow = {
   canonical_product_id: number;
   facet_normalized: string;
+};
+
+type AppCategoryGroupRuleRow = {
+  app_category: string;
+  product_group: string;
+  base_confidence: number;
+  reason: string;
 };
 
 type ExistingCandidateRow = {
@@ -60,6 +68,8 @@ type CandidateRow = {
 type MergedRow = {
   establishment_id: number;
   canonical_product_id: number;
+  canonical_group: string;
+  canonical_priority: number;
   primary_source_type: SourceType;
   merged_sources: SourceType[];
   merged_generation_methods: string[];
@@ -78,40 +88,6 @@ type MergedRow = {
 const GENERATION_METHOD = "rule_engine_v2_berlin";
 const EXTRACTION_METHOD = "rule_engine_mapping_v2";
 
-const CATEGORY_GROUP_RULES: Array<{
-  appCategory: string;
-  productGroup: string;
-  baseConfidence: number;
-  reason: string;
-}> = [
-  { appCategory: "grocery", productGroup: "groceries", baseConfidence: 0.82, reason: "grocery stores usually stock pantry essentials" },
-  { appCategory: "grocery", productGroup: "beverages", baseConfidence: 0.79, reason: "grocery stores typically include beverage aisles" },
-  { appCategory: "grocery", productGroup: "fresh_produce", baseConfidence: 0.76, reason: "grocery stores often include produce" },
-  { appCategory: "grocery", productGroup: "household", baseConfidence: 0.71, reason: "grocery stores often carry household basics" },
-  { appCategory: "grocery", productGroup: "pet_care", baseConfidence: 0.74, reason: "many grocery stores carry basic pet food and pet care" },
-  { appCategory: "convenience", productGroup: "beverages", baseConfidence: 0.8, reason: "convenience stores focus on ready-to-buy drinks" },
-  { appCategory: "convenience", productGroup: "snacks", baseConfidence: 0.78, reason: "convenience stores are snack-heavy" },
-  { appCategory: "convenience", productGroup: "groceries", baseConfidence: 0.65, reason: "convenience stores carry a compact grocery set" },
-  { appCategory: "fresh-food", productGroup: "fresh_produce", baseConfidence: 0.84, reason: "fresh food stores strongly map to produce" },
-  { appCategory: "fresh-food", productGroup: "groceries", baseConfidence: 0.69, reason: "fresh food stores may carry pantry complement products" },
-  { appCategory: "bakery", productGroup: "bakery", baseConfidence: 0.9, reason: "bakery category directly maps to bakery items" },
-  { appCategory: "bakery", productGroup: "beverages", baseConfidence: 0.63, reason: "bakeries often sell coffee and drinks" },
-  { appCategory: "butcher", productGroup: "meat", baseConfidence: 0.92, reason: "butcher category directly maps to meat products" },
-  { appCategory: "butcher", productGroup: "groceries", baseConfidence: 0.57, reason: "butchers may carry supporting groceries" },
-  { appCategory: "produce", productGroup: "fresh_produce", baseConfidence: 0.91, reason: "produce category maps to fruits and vegetables" },
-  { appCategory: "drinks", productGroup: "beverages", baseConfidence: 0.92, reason: "drink stores map to beverage products" },
-  { appCategory: "pharmacy", productGroup: "pharmacy", baseConfidence: 0.93, reason: "pharmacies map to medicine products" },
-  { appCategory: "pharmacy", productGroup: "personal_care", baseConfidence: 0.82, reason: "pharmacies stock personal care products" },
-  { appCategory: "personal-care", productGroup: "personal_care", baseConfidence: 0.86, reason: "personal care category maps directly" },
-  { appCategory: "medical-supplies", productGroup: "pharmacy", baseConfidence: 0.93, reason: "medical supply stores map to pharmacy essentials" },
-  { appCategory: "medical-supplies", productGroup: "personal_care", baseConfidence: 0.72, reason: "medical supply stores may include care products" },
-  { appCategory: "household", productGroup: "household", baseConfidence: 0.88, reason: "household category maps directly" },
-  { appCategory: "hardware", productGroup: "household", baseConfidence: 0.93, reason: "hardware stores map to repair and household products" },
-  { appCategory: "bio", productGroup: "groceries", baseConfidence: 0.74, reason: "organic stores stock core groceries" },
-  { appCategory: "bio", productGroup: "fresh_produce", baseConfidence: 0.77, reason: "organic stores stock produce" },
-  { appCategory: "bio", productGroup: "beverages", baseConfidence: 0.7, reason: "organic stores stock beverages" }
-];
-
 const SOURCE_PRIORITY: Record<SourceType, number> = {
   validated: 60,
   user_validated: 50,
@@ -128,6 +104,8 @@ const VALIDATION_PRIORITY: Record<ValidationStatus, number> = {
   unvalidated: 1,
   rejected: 0
 };
+const MERGE_GROUP_QUOTA_GROUPS = ["pet_care"];
+const MERGE_GROUP_QUOTA_MIN_CONFIDENCE = 0.62;
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
@@ -148,6 +126,16 @@ function normalizeDistrictInput(value: unknown) {
 
 function toStatusFromConfidence(confidence: number): ValidationStatus {
   return confidence >= 0.74 ? "likely" : "unvalidated";
+}
+
+function compareMergedRows(a: MergedRow, b: MergedRow) {
+  const validationDiff = (VALIDATION_PRIORITY[b.validation_status] ?? 0) - (VALIDATION_PRIORITY[a.validation_status] ?? 0);
+  if (validationDiff !== 0) return validationDiff;
+  if (b.confidence !== a.confidence) return b.confidence - a.confidence;
+  const sourceDiff = (SOURCE_PRIORITY[b.primary_source_type] ?? 0) - (SOURCE_PRIORITY[a.primary_source_type] ?? 0);
+  if (sourceDiff !== 0) return sourceDiff;
+  if (b.canonical_priority !== a.canonical_priority) return b.canonical_priority - a.canonical_priority;
+  return a.canonical_product_id - b.canonical_product_id;
 }
 
 export async function POST(request: Request) {
@@ -194,20 +182,32 @@ export async function POST(request: Request) {
     const establishmentIds = establishments.map((row) => row.id);
     const establishmentIdsSet = new Set(establishmentIds);
 
-    const [{ data: productData, error: productError }, { data: facetData, error: facetError }] = await Promise.all([
+    const [
+      { data: productData, error: productError },
+      { data: facetData, error: facetError },
+      { data: ruleData, error: ruleError }
+    ] = await Promise.all([
       supabase
         .from("canonical_products")
-        .select("id, group_key, product_group, is_active")
+        .select("id, group_key, product_group, priority, is_active")
         .eq("is_active", true)
         .limit(8000),
-      supabase.from("canonical_product_facets").select("canonical_product_id, facet_normalized").limit(30000)
+      supabase.from("canonical_product_facets").select("canonical_product_id, facet_normalized").limit(30000),
+      supabase
+        .from("app_category_group_rules")
+        .select("app_category, product_group, base_confidence, reason")
+        .eq("is_active", true)
+        .limit(1200)
     ]);
 
     if (productError) throw new Error(productError.message);
     if (facetError) throw new Error(facetError.message);
+    if (ruleError) throw new Error(ruleError.message);
 
     const products = (productData ?? []) as CanonicalProductRow[];
     const facets = (facetData ?? []) as CanonicalFacetRow[];
+    const rules = (ruleData ?? []) as AppCategoryGroupRuleRow[];
+    const productMetaById = new Map<number, { group: string; priority: number }>();
 
     const groupToProductIds = new Map<string, Set<number>>();
     for (const product of products) {
@@ -215,6 +215,8 @@ export async function POST(request: Request) {
       if (!Number.isFinite(id)) continue;
       const group = String(product.group_key ?? product.product_group ?? "").trim().toLowerCase();
       if (!group) continue;
+      const priority = Number.isFinite(Number(product.priority)) ? Number(product.priority) : 50;
+      productMetaById.set(id, { group, priority });
       if (!groupToProductIds.has(group)) groupToProductIds.set(group, new Set());
       groupToProductIds.get(group)?.add(id);
     }
@@ -258,6 +260,19 @@ export async function POST(request: Request) {
         freshness_score: number;
       }
     >();
+    const rulesByCategory = new Map<string, AppCategoryGroupRuleRow[]>();
+    for (const rule of rules) {
+      const category = String(rule.app_category ?? "").trim().toLowerCase();
+      if (!category) continue;
+      const bucket = rulesByCategory.get(category) ?? [];
+      bucket.push({
+        app_category: category,
+        product_group: String(rule.product_group ?? "").trim().toLowerCase(),
+        base_confidence: Number(rule.base_confidence ?? 0),
+        reason: String(rule.reason ?? "").trim() || "Rule from app_category_group_rules"
+      });
+      rulesByCategory.set(category, bucket);
+    }
 
     for (const establishment of establishments) {
       const categories = (establishment.app_categories ?? []).map((item) => String(item ?? "").trim().toLowerCase()).filter(Boolean);
@@ -265,13 +280,13 @@ export async function POST(request: Request) {
       if (categories.length === 0) continue;
 
       for (const category of categories) {
-        const applicableRules = CATEGORY_GROUP_RULES.filter((rule) => rule.appCategory === category);
+        const applicableRules = rulesByCategory.get(category) ?? [];
         for (const rule of applicableRules) {
-          const productIds = groupToProductIds.get(rule.productGroup);
+          const productIds = groupToProductIds.get(rule.product_group);
           if (!productIds || productIds.size === 0) continue;
 
           const boostedConfidence =
-            rule.baseConfidence + (osmCategory === "supermarket" || osmCategory === "pharmacy" ? 0.04 : 0);
+            Number(rule.base_confidence ?? 0) + (osmCategory === "supermarket" || osmCategory === "pharmacy" ? 0.04 : 0);
           const confidence = Number(clamp(boostedConfidence, 0.3, 0.99).toFixed(4));
 
           for (const canonicalProductId of productIds) {
@@ -285,7 +300,7 @@ export async function POST(request: Request) {
                 canonical_product_id: canonicalProductId,
                 confidence,
                 app_category: category,
-                product_group: rule.productGroup,
+                product_group: rule.product_group,
                 reason: rule.reason,
                 source_url: establishment.source_url ?? null,
                 freshness_score: Number(clamp(establishment.freshness_score ?? 0.7, 0, 1).toFixed(4))
@@ -394,6 +409,7 @@ export async function POST(request: Request) {
       const mergedSources = Array.from(new Set(rows.map((row) => row.source_type)));
       const mergedMethods = Array.from(new Set(rows.map((row) => row.generation_method)));
       const mergedCandidateIds = sortedByConfidence.map((row) => row.id);
+      const productMeta = productMetaById.get(canonical_product_id);
 
       const latestCheckedAt = rows
         .map((row) => row.last_checked_at)
@@ -406,6 +422,8 @@ export async function POST(request: Request) {
       mergedRows.push({
         establishment_id,
         canonical_product_id,
+        canonical_group: productMeta?.group ?? "uncategorized",
+        canonical_priority: productMeta?.priority ?? 50,
         primary_source_type: primary.source_type,
         merged_sources: mergedSources,
         merged_generation_methods: mergedMethods,
@@ -437,15 +455,35 @@ export async function POST(request: Request) {
 
     const trimmedRows: MergedRow[] = [];
     for (const [establishmentId, rows] of byEstablishment.entries()) {
-      const sorted = [...rows].sort((a, b) => {
-        const validationDiff = (VALIDATION_PRIORITY[b.validation_status] ?? 0) - (VALIDATION_PRIORITY[a.validation_status] ?? 0);
-        if (validationDiff !== 0) return validationDiff;
-        if (b.confidence !== a.confidence) return b.confidence - a.confidence;
-        const sourceDiff = (SOURCE_PRIORITY[b.primary_source_type] ?? 0) - (SOURCE_PRIORITY[a.primary_source_type] ?? 0);
-        if (sourceDiff !== 0) return sourceDiff;
-        return a.canonical_product_id - b.canonical_product_id;
-      });
-      trimmedRows.push(...sorted.slice(0, maxProductsPerEstablishment).map((row) => ({ ...row, establishment_id: establishmentId })));
+      const sorted = [...rows].sort(compareMergedRows);
+      const baseRows = sorted.slice(0, maxProductsPerEstablishment);
+      const baseKeys = new Set(baseRows.map((row) => `${row.establishment_id}:${row.canonical_product_id}`));
+
+      const quotaRows: MergedRow[] = [];
+      for (const group of MERGE_GROUP_QUOTA_GROUPS) {
+        const quotaCandidate = sorted.find(
+          (row) =>
+            row.canonical_group === group &&
+            row.validation_status !== "rejected" &&
+            row.confidence >= MERGE_GROUP_QUOTA_MIN_CONFIDENCE
+        );
+        if (!quotaCandidate) continue;
+        const quotaKey = `${quotaCandidate.establishment_id}:${quotaCandidate.canonical_product_id}`;
+        if (baseKeys.has(quotaKey)) continue;
+        quotaRows.push(quotaCandidate);
+      }
+
+      const quotaKeySet = new Set(quotaRows.map((row) => `${row.establishment_id}:${row.canonical_product_id}`));
+      const combined = [...baseRows, ...quotaRows]
+        .sort((a, b) => {
+          const aQuota = quotaKeySet.has(`${a.establishment_id}:${a.canonical_product_id}`) ? 1 : 0;
+          const bQuota = quotaKeySet.has(`${b.establishment_id}:${b.canonical_product_id}`) ? 1 : 0;
+          if (aQuota !== bQuota) return bQuota - aQuota;
+          return compareMergedRows(a, b);
+        })
+        .slice(0, maxProductsPerEstablishment);
+
+      trimmedRows.push(...combined.map((row) => ({ ...row, establishment_id: establishmentId })));
     }
 
     const validatedMergedKeys = new Set<string>();
@@ -480,10 +518,15 @@ export async function POST(request: Request) {
         if (!validatedMergedKeys.has(key)) return true;
         return row.validation_status === "validated";
       })
-      .map((row) => ({
-        ...row,
-        updated_at: new Date().toISOString()
-      }));
+      .map((row) => {
+        const persistableRow = { ...row } as Record<string, unknown>;
+        delete persistableRow.canonical_group;
+        delete persistableRow.canonical_priority;
+        return {
+          ...persistableRow,
+          updated_at: new Date().toISOString()
+        };
+      });
 
     let mergedUpserted = 0;
     for (const chunk of chunkArray(mergedUpsertRows, 600)) {

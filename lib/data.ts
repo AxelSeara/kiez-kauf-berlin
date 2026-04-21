@@ -65,6 +65,16 @@ const GROUP_FALLBACK_OSM_ALLOWLIST: Record<string, string[]> = {
   pet_care: ["pet", "supermarket", "department_store", "mall", "convenience"],
   snacks: ["supermarket", "convenience", "kiosk", "beverages", "department_store", "deli"]
 };
+const GROUP_FALLBACK_APP_CATEGORY_ALLOWLIST: Record<string, string[]> = {
+  groceries: ["grocery", "convenience", "bio", "produce", "fresh-food"],
+  fresh_produce: ["produce", "fresh-food", "grocery", "bio"],
+  beverages: ["drinks", "grocery", "convenience", "bio", "bakery"],
+  household: ["household", "hardware", "grocery", "convenience"],
+  pharmacy: ["pharmacy", "medical-supplies"],
+  personal_care: ["personal-care", "pharmacy", "medical-supplies"],
+  pet_care: ["pet", "grocery", "convenience"],
+  snacks: ["convenience", "grocery", "bakery", "drinks"]
+};
 const STRATEGY_AUGMENT_THRESHOLD = 110;
 
 function isSchemaCompatibilityError(message: string | undefined): boolean {
@@ -498,6 +508,8 @@ function shouldKeepGroupFallbackRow(args: {
   productNameNormalized: string;
   productGroup?: string | null;
   osmCategory?: string | null;
+  appCategories?: string[] | null;
+  storeName?: string | null;
   confidence: number;
   sourceType: SearchResult["sourceType"] | null | undefined;
   validationStatus: SearchResult["validationStatus"] | null | undefined;
@@ -507,6 +519,8 @@ function shouldKeepGroupFallbackRow(args: {
     productNameNormalized,
     productGroup,
     osmCategory,
+    appCategories,
+    storeName,
     confidence,
     sourceType,
     validationStatus
@@ -528,11 +542,39 @@ function shouldKeepGroupFallbackRow(args: {
 
   const normalizedGroup = normalizeQuery(String(productGroup ?? "")).replace(/\s+/g, "_");
   const normalizedOsmCategory = normalizeQuery(String(osmCategory ?? ""));
+  const normalizedAppCategories = Array.isArray(appCategories)
+    ? appCategories.map((value) => normalizeQuery(String(value ?? ""))).filter(Boolean)
+    : [];
+  const normalizedStoreName = normalizeQuery(String(storeName ?? ""));
+  const isChainStore =
+    normalizedStoreName.length > 0 &&
+    CHAIN_NAME_HINTS.some((hint) => normalizedStoreName.includes(hint));
+  const isServiceOnlyStore =
+    SERVICE_ONLY_OSM_CATEGORIES.has(normalizedOsmCategory) ||
+    normalizedAppCategories.some((category) => SERVICE_ONLY_APP_CATEGORIES.has(category));
+
+  if (
+    isServiceOnlyStore &&
+    !isChainStore &&
+    validationStatus !== "validated" &&
+    sourceType !== "merchant_added" &&
+    sourceType !== "user_validated"
+  ) {
+    return false;
+  }
+
   const allowedStoreCategories = GROUP_FALLBACK_OSM_ALLOWLIST[normalizedGroup] ?? [];
-  const hasStoreGroupFit =
+  const allowedAppCategories = GROUP_FALLBACK_APP_CATEGORY_ALLOWLIST[normalizedGroup] ?? [];
+  const hasOsmGroupFit =
     normalizedGroup.length > 0 &&
     normalizedOsmCategory.length > 0 &&
     allowedStoreCategories.includes(normalizedOsmCategory);
+  const hasAppCategoryFit =
+    normalizedGroup.length > 0 &&
+    normalizedAppCategories.length > 0 &&
+    normalizedAppCategories.some((category) => allowedAppCategories.includes(category));
+  const hasStoreGroupFit = hasOsmGroupFit || hasAppCategoryFit;
+
   if (hasStoreGroupFit && confidence >= 0.78 && validationStatus !== "rejected") {
     return true;
   }
@@ -543,7 +585,7 @@ function shouldKeepGroupFallbackRow(args: {
     sourceType === "website_extracted" ||
     validationStatus === "validated";
 
-  return highTrustSource && confidence >= 0.9;
+  return highTrustSource && confidence >= 0.9 && (hasStoreGroupFit || confidence >= 0.97);
 }
 
 function scoreMatchedVocabularyTerm(term: string, normalizedQuery: string): number {
@@ -1253,10 +1295,8 @@ async function searchSupabaseRowsFromDataset(args: {
       }
     }
 
-    if (mergedRows.size > 0) {
-      strategy = "category_intent";
-      hasPrimaryStrategy = true;
-    }
+    strategy = "category_intent";
+    hasPrimaryStrategy = true;
   }
 
   if (!hasPrimaryStrategy && canonicalIds.length > 0) {
@@ -1599,12 +1639,18 @@ export async function searchOffersDetailed(args: {
       normalizedFuzzyMatch(productName, normalized);
     const confidence = typeof row.confidence === "number" ? row.confidence : 0;
 
-    if (datasetStrategy === "group_keyword") {
+    if (
+      datasetStrategy === "group_keyword" ||
+      datasetStrategy === "product_name" ||
+      datasetStrategy === "canonical_multilingual"
+    ) {
       const keepByGroupGuard = shouldKeepGroupFallbackRow({
         normalizedQuery: normalized,
         productNameNormalized: productName,
         productGroup: row.product.category,
         osmCategory: row.store.osmCategory ?? null,
+        appCategories: row.store.appCategories ?? null,
+        storeName: row.store.name,
         confidence,
         sourceType: row.sourceType,
         validationStatus: row.validationStatus

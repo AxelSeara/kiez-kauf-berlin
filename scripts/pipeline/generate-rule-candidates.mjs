@@ -9,40 +9,8 @@ import {
   sqlLiteral
 } from "./_utils.mjs";
 
-const CATEGORY_GROUP_RULES = [
-  ["grocery", "groceries", 0.82, "grocery stores usually stock pantry essentials"],
-  ["grocery", "beverages", 0.79, "grocery stores typically include beverage aisles"],
-  ["grocery", "fresh_produce", 0.76, "grocery stores often include produce"],
-  ["grocery", "household", 0.71, "grocery stores often carry household basics"],
-  ["grocery", "pet_care", 0.74, "many grocery stores carry basic pet food and pet care"],
-  ["convenience", "beverages", 0.8, "convenience stores focus on ready-to-buy drinks"],
-  ["convenience", "snacks", 0.78, "convenience stores are snack-heavy"],
-  ["convenience", "groceries", 0.65, "convenience stores carry a compact grocery set"],
-  ["fresh-food", "fresh_produce", 0.84, "fresh food stores strongly map to produce"],
-  ["fresh-food", "groceries", 0.69, "fresh food stores may carry pantry complement products"],
-  ["bakery", "bakery", 0.9, "bakery category directly maps to bakery items"],
-  ["bakery", "beverages", 0.63, "bakeries often sell coffee and drinks"],
-  ["butcher", "meat", 0.92, "butcher category directly maps to meat products"],
-  ["butcher", "groceries", 0.57, "butchers may carry supporting groceries"],
-  ["produce", "fresh_produce", 0.91, "produce category maps to fruits and vegetables"],
-  ["drinks", "beverages", 0.92, "drink stores map to beverage products"],
-  ["pharmacy", "pharmacy", 0.93, "pharmacies map to medicine products"],
-  ["pharmacy", "personal_care", 0.82, "pharmacies stock personal care products"],
-  ["personal-care", "personal_care", 0.86, "personal care category maps directly"],
-  ["medical-supplies", "pharmacy", 0.93, "medical supply stores map to pharmacy essentials"],
-  ["medical-supplies", "personal_care", 0.72, "medical supply stores may include care products"],
-  ["household", "household", 0.88, "household category maps directly"],
-  ["hardware", "household", 0.93, "hardware stores map to repair and household products"],
-  ["bio", "groceries", 0.74, "organic stores stock core groceries"],
-  ["bio", "fresh_produce", 0.77, "organic stores stock produce"],
-  ["bio", "beverages", 0.7, "organic stores stock beverages"]
-];
-
 function buildRulesSql(establishmentIds, generationMethod) {
   const idsLiteral = `array[${establishmentIds.map((id) => Number(id)).join(",")}]::bigint[]`;
-  const ruleValues = CATEGORY_GROUP_RULES.map((rule) => {
-    return `(${rule.map((value) => sqlLiteral(value)).join(",")})`;
-  }).join(",\n");
 
   return `
 with target_establishments as (
@@ -50,10 +18,10 @@ with target_establishments as (
   from establishments
   where id = any(${idsLiteral})
     and active_status = 'active'
-),
-category_map(app_category, product_group, base_confidence, reason) as (
-  values
-  ${ruleValues}
+), category_map as (
+  select app_category, product_group, base_confidence, reason
+  from app_category_group_rules
+  where is_active = true
 ),
 expanded as (
   select

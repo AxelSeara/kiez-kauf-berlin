@@ -29,8 +29,10 @@ MVP web responsive para buscar productos concretos y encontrar tiendas de barrio
 - `GET /api/admin/catalog`
 - `GET /api/admin/establishments`
 - `GET/PATCH /api/admin/establishments/:id`
-- `POST /api/admin/establishments/:id/products`
+- `POST/PATCH/DELETE /api/admin/establishments/:id/products`
 - `GET /api/admin/canonical-products`
+- `POST /api/admin/canonical-products/aliases`
+- `GET/POST /api/admin/curation/suggestions`
 - `POST /api/admin/rebuild-search-dataset`
 
 ## Setup local
@@ -191,6 +193,19 @@ Pruning de auditoria (control de crecimiento):
 npm run maintenance:prune-audit -- --keep-latest-per-candidate=2
 ```
 
+Curation feedback loop (P1/P2):
+
+```bash
+# 1) generar sugerencias desde acciones manuales del admin
+npm run generate:curation-rule-suggestions -- --window-days=90 --min-support=20 --min-positive=10 --min-precision=0.9
+
+# 2) aplicar de forma conservadora solo reglas con señal fuerte
+npm run apply:curation-rules -- --window-days=90 --min-support=20 --min-positive=10 --min-precision=0.9 --max-apply=120
+
+# 3) refrescar serving dataset
+npm run build:search-dataset
+```
+
 Reporte before/after de calidad (20-30 tiendas):
 
 ```bash
@@ -214,6 +229,7 @@ Pack lean-v1:
 - Guia operativa: `docs/lean-v1.md`
 - Migracion guardrails: `supabase/migrations/20260419092218_lean_v1_guardrails.sql`
 - Modelo de catalogo Phase A (core + tablas hijas): `docs/db/catalog-model-phase-a.md`
+- Modelo de curation feedback loop Phase F: `docs/db/admin-curation-phase-f.md`
 
 ## Admin panel
 

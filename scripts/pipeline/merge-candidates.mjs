@@ -23,8 +23,13 @@ limit ${Number(batchSize)};
   return (res.parsed.rows ?? []).map((row) => Number(row.id));
 }
 
-function buildMergeSql(establishmentIds, maxProductsPerEstablishment) {
+function buildMergeSql(establishmentIds, maxProductsPerEstablishment, quotaGroups, quotaMinConfidence) {
   const idsLiteral = `array[${establishmentIds.map((id) => Number(id)).join(",")}]::bigint[]`;
+  const normalizedQuotaGroups = quotaGroups.map((group) => String(group).trim().toLowerCase()).filter(Boolean);
+  const quotaGroupsLiteral =
+    normalizedQuotaGroups.length > 0
+      ? `array[${normalizedQuotaGroups.map((group) => sqlLiteral(group)).join(", ")}]::text[]`
+      : "array[]::text[]";
 
   return `
 with source_priority(source_type, weight) as (
@@ -105,6 +110,7 @@ with source_priority(source_type, weight) as (
   select
     a.establishment_id,
     a.canonical_product_id,
+    coalesce(nullif(lower(cp.group_key), ''), nullif(lower(cp.product_group), ''), 'uncategorized') as canonical_group,
     coalesce(cp.priority, 50) as canonical_priority,
     a.primary_source_type,
     a.merged_sources,
@@ -149,18 +155,91 @@ with source_priority(source_type, weight) as (
         end desc,
         f.canonical_priority desc,
         f.canonical_product_id asc
-    ) as store_rank
+    ) as store_rank,
+    row_number() over (
+      partition by f.establishment_id, f.canonical_group
+      order by
+        case f.validation_status
+          when 'validated' then 3
+          when 'likely' then 2
+          when 'unvalidated' then 1
+          else 0
+        end desc,
+        f.confidence desc,
+        case f.primary_source_type
+          when 'validated' then 7
+          when 'user_validated' then 6
+          when 'merchant_added' then 5
+          when 'website_extracted' then 4
+          when 'imported' then 3
+          when 'ai_generated' then 2
+          else 1
+        end desc,
+        f.canonical_priority desc,
+        f.canonical_product_id asc
+    ) as group_rank
   from final_rows f
+), base_selected as (
+  select t.*, false::boolean as forced_group_quota
+  from trimmed t
+  where t.store_rank <= ${Number(maxProductsPerEstablishment)}
+), group_quota_selected as (
+  select t.*, true::boolean as forced_group_quota
+  from trimmed t
+  where t.canonical_group = any(${quotaGroupsLiteral})
+    and t.group_rank = 1
+    and t.validation_status <> 'rejected'
+    and coalesce(t.confidence, 0) >= ${Number(quotaMinConfidence)}
+    and not exists (
+      select 1
+      from base_selected b
+      where b.establishment_id = t.establishment_id
+        and b.canonical_product_id = t.canonical_product_id
+    )
+), selected_pre_trim as (
+  select * from base_selected
+  union all
+  select * from group_quota_selected
+), selected as (
+  select *
+  from (
+    select
+      s.*,
+      row_number() over (
+        partition by s.establishment_id
+        order by
+          case when s.forced_group_quota then 1 else 0 end desc,
+          case s.validation_status
+            when 'validated' then 3
+            when 'likely' then 2
+            when 'unvalidated' then 1
+            else 0
+          end desc,
+          s.confidence desc,
+          case s.primary_source_type
+            when 'validated' then 7
+            when 'user_validated' then 6
+            when 'merchant_added' then 5
+            when 'website_extracted' then 4
+            when 'imported' then 3
+            when 'ai_generated' then 2
+            else 1
+          end desc,
+          s.canonical_priority desc,
+          s.canonical_product_id asc
+      ) as selected_rank
+    from selected_pre_trim s
+  ) ranked_selected
+  where ranked_selected.selected_rank <= ${Number(maxProductsPerEstablishment)}
 ), deleted as (
   delete from establishment_product_merged m
   where m.establishment_id = any(${idsLiteral})
     and m.validation_status <> 'validated'
     and not exists (
       select 1
-      from trimmed t
-      where t.store_rank <= ${Number(maxProductsPerEstablishment)}
-        and t.establishment_id = m.establishment_id
-        and t.canonical_product_id = m.canonical_product_id
+      from selected s
+      where s.establishment_id = m.establishment_id
+        and s.canonical_product_id = m.canonical_product_id
     )
   returning id
 ), upserted as (
@@ -197,8 +276,7 @@ with source_priority(source_type, weight) as (
     extraction_method,
     last_checked_at,
     freshness_score
-  from trimmed
-  where store_rank <= ${Number(maxProductsPerEstablishment)}
+  from selected
   on conflict (establishment_id, canonical_product_id)
   do update set
     primary_source_type = excluded.primary_source_type,
@@ -246,6 +324,11 @@ async function main() {
   const args = parseArgs(process.argv);
   const batchSize = Number(args["batch-size"] ?? 500);
   const maxProductsPerEstablishment = Number(args["max-products-per-establishment"] ?? 12);
+  const quotaGroups = String(args["quota-groups"] ?? "pet_care")
+    .split(",")
+    .map((group) => group.trim().toLowerCase())
+    .filter(Boolean);
+  const quotaMinConfidence = Number(args["quota-min-confidence"] ?? 0.62);
   const resume = Boolean(args.resume);
 
   const checkpoint = await loadCheckpoint();
@@ -257,6 +340,8 @@ async function main() {
   logInfo("Phase 7 (part A) - merge candidates", {
     batchSize,
     maxProductsPerEstablishment,
+    quotaGroups,
+    quotaMinConfidence,
     startFromId: cursor,
     checkpointFile: CHECKPOINT_FILE
   });
@@ -268,7 +353,7 @@ async function main() {
       break;
     }
 
-    const sql = buildMergeSql(ids, maxProductsPerEstablishment);
+    const sql = buildMergeSql(ids, maxProductsPerEstablishment, quotaGroups, quotaMinConfidence);
     const result = await runSupabaseQuery({ sql, output: "json" });
     const mergedRows = Number(result.parsed.rows?.[0]?.merged_rows ?? 0);
     const deletedRows = Number(result.parsed.rows?.[0]?.deleted_rows ?? 0);

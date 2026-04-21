@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ensureAdminAccess } from "@/lib/admin-auth";
+import { recordCurationEvent } from "@/lib/admin-curation";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 
 type AliasPayload = {
@@ -62,7 +63,7 @@ export async function POST(request: Request) {
 
     const { data: canonicalProduct, error: canonicalError } = await supabase
       .from("canonical_products")
-      .select("id, normalized_name")
+      .select("id, normalized_name, group_key, product_group")
       .eq("id", canonicalProductId)
       .maybeSingle();
 
@@ -100,6 +101,29 @@ export async function POST(request: Request) {
         throw new Error(updateError.message);
       }
 
+      await recordCurationEvent(supabase, {
+        eventType: "alias_add",
+        entityType: "alias",
+        canonicalProductId,
+        productGroup: String(canonicalProduct.group_key ?? canonicalProduct.product_group ?? "uncategorized"),
+        reason: `Alias ${isActive ? "updated" : "deactivated"} in admin panel.`,
+        beforeState: {
+          alias: existingAlias.alias,
+          lang: existingAlias.lang,
+          priority: existingAlias.priority,
+          is_active: existingAlias.is_active
+        },
+        afterState: {
+          alias: updatedAlias.alias,
+          lang: updatedAlias.lang,
+          priority: updatedAlias.priority,
+          is_active: updatedAlias.is_active
+        },
+        metadata: {
+          canonical_normalized_name: canonicalProduct.normalized_name
+        }
+      });
+
       return NextResponse.json({
         status: "updated",
         alias: updatedAlias,
@@ -122,6 +146,24 @@ export async function POST(request: Request) {
     if (insertError) {
       throw new Error(insertError.message);
     }
+
+    await recordCurationEvent(supabase, {
+      eventType: "alias_add",
+      entityType: "alias",
+      canonicalProductId,
+      productGroup: String(canonicalProduct.group_key ?? canonicalProduct.product_group ?? "uncategorized"),
+      reason: "Alias inserted in admin panel.",
+      beforeState: {},
+      afterState: {
+        alias: insertedAlias.alias,
+        lang: insertedAlias.lang,
+        priority: insertedAlias.priority,
+        is_active: insertedAlias.is_active
+      },
+      metadata: {
+        canonical_normalized_name: canonicalProduct.normalized_name
+      }
+    });
 
     return NextResponse.json({
       status: "inserted",

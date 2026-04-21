@@ -18,6 +18,8 @@
     "cleanup:legacy-ai": "node scripts/pipeline/cleanup-legacy-ai-labels.mjs",
     "cleanup:category-mismatch": "node scripts/pipeline/cleanup-category-mismatch-candidates.mjs",
     "generate:rule-candidates": "node scripts/pipeline/generate-rule-candidates.mjs",
+    "generate:curation-rule-suggestions": "node scripts/pipeline/generate-curation-rule-suggestions.mjs",
+    "apply:curation-rules": "node scripts/pipeline/apply-curation-rules.mjs",
     "generate:ai-candidates": "node scripts/pipeline/generate-ai-candidates.mjs",
     "merge:candidates": "node scripts/pipeline/merge-candidates.mjs",
     "build:search-dataset": "node scripts/pipeline/build-search-dataset.mjs",

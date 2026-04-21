@@ -18,6 +18,9 @@ type InsightsPayload = {
     avg_results_per_search: number;
     establishments_total: number;
     canonical_products_total: number;
+    suspected_false_positives: number;
+    suspected_false_positive_rate: number;
+    rule_suggestions_pending_auto_apply: number;
   };
   top_terms: Array<{ term: string; total: number; unresolved: number }>;
   unresolved_terms: Array<{ term: string; total: number; unresolved: number }>;
@@ -31,6 +34,36 @@ type InsightsPayload = {
   }>;
   unresolved_trend_14d: Array<{ day: string; count: number }>;
   endpoint_usage: Array<{ endpoint: string; count: number }>;
+  category_quality: Array<{
+    group: string;
+    total: number;
+    suspicious: number;
+    validated: number;
+    high_confidence_suspicious: number;
+    suspicious_rate: number;
+  }>;
+  suspicious_examples: Array<{
+    establishment_id: number;
+    establishment_name: string;
+    district: string;
+    product_group: string;
+    confidence: number;
+    validation_status: string;
+    source_type: string | null;
+    osm_category: string | null;
+    app_categories: string[];
+  }>;
+  rule_suggestions: Array<{
+    id: number;
+    app_category: string;
+    product_group: string;
+    support_count: number;
+    positive_count: number;
+    precision_score: number;
+    auto_apply_eligible: boolean;
+    status: "suggested" | "applied" | "discarded";
+    generated_at: string;
+  }>;
 };
 
 type CatalogPayload = {
@@ -256,6 +289,10 @@ type AdminCopy = {
   unresolvedSearches: string;
   topSearches: string;
   endpointUsage: string;
+  categoryQuality: string;
+  suspectedFalsePositives: string;
+  suspiciousExamples: string;
+  prepareSuspiciousFix: string;
   categories: string;
   productGroups: string;
   noData: string;
@@ -296,6 +333,19 @@ type AdminCopy = {
   saveAliasMapping: string;
   preparingAlias: string;
   prepareAliasFix: string;
+  categoriesHint: string;
+  categoryPickerSearchPlaceholder: string;
+  noCategoryMatches: string;
+  validateProduct: string;
+  rejectProduct: string;
+  removeProduct: string;
+  productActionReasonPlaceholder: string;
+  runRuleSuggestion: string;
+  runningRuleSuggestion: string;
+  applyAutoRules: string;
+  applyingAutoRules: string;
+  ruleSuggestionsTitle: string;
+  pendingAutoRules: string;
 };
 
 const ADMIN_KEY_STORAGE = "kiezkauf:admin-panel-key";
@@ -328,6 +378,9 @@ const COPY: Record<"en" | "de", AdminCopy> = {
     reasonPlaceholder: "Why this product should be available here (short note)",
     activeStatusLabel: "Active status",
     categoriesLabel: "App categories (comma separated)",
+    categoriesHint: "Pick categories from taxonomy. These are used by rule generation and quality checks.",
+    categoryPickerSearchPlaceholder: "Filter categories...",
+    noCategoryMatches: "No categories match this filter.",
     websiteLabel: "Website",
     phoneLabel: "Phone",
     openingHoursLabel: "Opening hours",
@@ -339,6 +392,10 @@ const COPY: Record<"en" | "de", AdminCopy> = {
     unresolvedSearches: "Recent unresolved searches",
     topSearches: "Top searched terms",
     endpointUsage: "Endpoint usage",
+    categoryQuality: "Category mismatch risk",
+    suspectedFalsePositives: "Suspected false positives",
+    suspiciousExamples: "Suspicious examples to review",
+    prepareSuspiciousFix: "Prepare fix",
     categories: "Current categories",
     productGroups: "Products by group",
     noData: "No data yet",
@@ -378,7 +435,17 @@ const COPY: Record<"en" | "de", AdminCopy> = {
     searchCanonicalForAlias: "Find canonical product",
     saveAliasMapping: "Save alias mapping",
     preparingAlias: "Preparing...",
-    prepareAliasFix: "Prepare alias fix"
+    prepareAliasFix: "Prepare alias fix",
+    validateProduct: "Validate",
+    rejectProduct: "Reject",
+    removeProduct: "Remove",
+    productActionReasonPlaceholder: "Reason for validation/rejection/removal",
+    runRuleSuggestion: "Generate learned rules",
+    runningRuleSuggestion: "Generating rules...",
+    applyAutoRules: "Apply conservative auto-rules",
+    applyingAutoRules: "Applying rules...",
+    ruleSuggestionsTitle: "Learned rule suggestions",
+    pendingAutoRules: "Pending auto-apply"
   },
   de: {
     title: "Admin-Panel",
@@ -407,6 +474,9 @@ const COPY: Record<"en" | "de", AdminCopy> = {
     reasonPlaceholder: "Warum sollte dieses Produkt hier verfügbar sein?",
     activeStatusLabel: "Status",
     categoriesLabel: "App-Kategorien (kommagetrennt)",
+    categoriesHint: "Wähle Kategorien aus der Taxonomie. Diese steuern Rules und Qualitätschecks.",
+    categoryPickerSearchPlaceholder: "Kategorien filtern...",
+    noCategoryMatches: "Keine passenden Kategorien gefunden.",
     websiteLabel: "Website",
     phoneLabel: "Telefon",
     openingHoursLabel: "Öffnungszeiten",
@@ -418,6 +488,10 @@ const COPY: Record<"en" | "de", AdminCopy> = {
     unresolvedSearches: "Neueste Suchanfragen ohne Treffer",
     topSearches: "Top-Suchbegriffe",
     endpointUsage: "Endpoint-Nutzung",
+    categoryQuality: "Risiko von Kategorie-Fehlzuordnungen",
+    suspectedFalsePositives: "Vermutete Fehlzuordnungen",
+    suspiciousExamples: "Verdächtige Beispiele zur Prüfung",
+    prepareSuspiciousFix: "Fix vorbereiten",
     categories: "Aktuelle Kategorien",
     productGroups: "Produkte je Gruppe",
     noData: "Noch keine Daten",
@@ -457,7 +531,17 @@ const COPY: Record<"en" | "de", AdminCopy> = {
     searchCanonicalForAlias: "Kanonisches Produkt finden",
     saveAliasMapping: "Alias-Mapping speichern",
     preparingAlias: "Wird vorbereitet...",
-    prepareAliasFix: "Alias-Fix vorbereiten"
+    prepareAliasFix: "Alias-Fix vorbereiten",
+    validateProduct: "Validieren",
+    rejectProduct: "Ablehnen",
+    removeProduct: "Entfernen",
+    productActionReasonPlaceholder: "Grund für Validierung/Ablehnung/Entfernung",
+    runRuleSuggestion: "Gelernte Regeln erzeugen",
+    runningRuleSuggestion: "Regeln werden erzeugt...",
+    applyAutoRules: "Konservative Auto-Regeln anwenden",
+    applyingAutoRules: "Regeln werden angewendet...",
+    ruleSuggestionsTitle: "Gelernte Regelvorschläge",
+    pendingAutoRules: "Auto-Apply ausstehend"
   }
 };
 
@@ -548,7 +632,8 @@ export function AdminPanel({ locale }: { locale: Locale }) {
   const [isLoadingDetail, setIsLoadingDetail] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
-  const [editCategories, setEditCategories] = useState("");
+  const [editCategories, setEditCategories] = useState<string[]>([]);
+  const [categoryPickerQuery, setCategoryPickerQuery] = useState("");
   const [editActiveStatus, setEditActiveStatus] = useState<ActiveStatus>("active");
   const [editWebsite, setEditWebsite] = useState("");
   const [editPhone, setEditPhone] = useState("");
@@ -556,6 +641,10 @@ export function AdminPanel({ locale }: { locale: Locale }) {
   const [editDescription, setEditDescription] = useState("");
   const [editDistrict, setEditDistrict] = useState("");
   const [isSavingBusiness, setIsSavingBusiness] = useState(false);
+  const [productActionReason, setProductActionReason] = useState("");
+  const [productActionBusyKey, setProductActionBusyKey] = useState<string | null>(null);
+  const [isGeneratingRuleSuggestions, setIsGeneratingRuleSuggestions] = useState(false);
+  const [isApplyingAutoRules, setIsApplyingAutoRules] = useState(false);
 
   const [canonicalQuery, setCanonicalQuery] = useState("");
   const [canonicalResults, setCanonicalResults] = useState<CanonicalProductSearch["rows"]>([]);
@@ -638,7 +727,8 @@ export function AdminPanel({ locale }: { locale: Locale }) {
       try {
         const payload = (await apiFetch(`/api/admin/establishments/${id}`)) as EstablishmentDetailResponse;
         setBusinessDetail(payload);
-        setEditCategories(toCommaList(payload.establishment.app_categories));
+        setEditCategories((payload.establishment.app_categories ?? []).map((entry) => String(entry).trim().toLowerCase()).filter(Boolean));
+        setCategoryPickerQuery("");
         setEditActiveStatus(payload.establishment.active_status);
         setEditWebsite(payload.establishment.website ?? "");
         setEditPhone(payload.establishment.phone ?? "");
@@ -809,6 +899,28 @@ export function AdminPanel({ locale }: { locale: Locale }) {
   const businesses = businessListResponse?.rows ?? [];
   const totalBusinesses = businessListResponse?.pagination.total ?? 0;
   const shownBusinesses = businesses.length;
+  const businessCategoryOptions = useMemo(() => {
+    const source = catalog?.categories ?? [];
+    return source
+      .filter((item) => item.is_searchable)
+      .map((item) => ({
+        slug: item.slug,
+        label: locale === "de" ? item.display_name_de || item.display_name_en : item.display_name_en || item.display_name_de,
+        count: item.establishment_count
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }, [catalog?.categories, locale]);
+
+  const filteredBusinessCategoryOptions = useMemo(() => {
+    const query = categoryPickerQuery.trim().toLowerCase();
+    if (!query) {
+      return businessCategoryOptions;
+    }
+    return businessCategoryOptions.filter((item) => {
+      const haystack = `${item.slug} ${item.label}`.toLowerCase();
+      return haystack.includes(query);
+    });
+  }, [businessCategoryOptions, categoryPickerQuery]);
 
   const onUnlock = async () => {
     setAuthError(null);
@@ -840,7 +952,7 @@ export function AdminPanel({ locale }: { locale: Locale }) {
       const payload = await apiFetch(`/api/admin/establishments/${selectedBusinessId}`, {
         method: "PATCH",
         body: JSON.stringify({
-          appCategories: parseCommaList(editCategories),
+          appCategories: editCategories,
           activeStatus: editActiveStatus,
           website: editWebsite,
           phone: editPhone,
@@ -864,6 +976,100 @@ export function AdminPanel({ locale }: { locale: Locale }) {
       setSaveMessage(error instanceof Error ? error.message : "Save failed.");
     } finally {
       setIsSavingBusiness(false);
+    }
+  };
+
+  const onToggleBusinessCategory = (slug: string) => {
+    const clean = slug.trim().toLowerCase();
+    if (!clean) return;
+    setEditCategories((current) => {
+      if (current.includes(clean)) {
+        return current.filter((entry) => entry !== clean);
+      }
+      return [...current, clean].sort((a, b) => a.localeCompare(b));
+    });
+  };
+
+  const onProductAction = async (
+    canonicalProductId: number,
+    action: "validate" | "reject" | "remove"
+  ) => {
+    if (!selectedBusinessId) return;
+    setProductActionBusyKey(`${canonicalProductId}:${action}`);
+    setSaveMessage(null);
+    try {
+      const requestInit: RequestInit =
+        action === "remove"
+          ? {
+              method: "DELETE",
+              body: JSON.stringify({
+                canonicalProductId,
+                reason: productActionReason
+              })
+            }
+          : {
+              method: "PATCH",
+              body: JSON.stringify({
+                canonicalProductId,
+                action,
+                reason: productActionReason
+              })
+            };
+
+      await apiFetch(`/api/admin/establishments/${selectedBusinessId}/products`, requestInit);
+      await Promise.all([fetchDetail(selectedBusinessId), fetchReviewQueue(), fetchInsightsAndCatalog()]);
+      setSaveMessage(`Product ${action} saved.`);
+    } catch (error) {
+      setSaveMessage(error instanceof Error ? error.message : "Product action failed.");
+    } finally {
+      setProductActionBusyKey(null);
+    }
+  };
+
+  const onGenerateRuleSuggestions = async () => {
+    setIsGeneratingRuleSuggestions(true);
+    setSaveMessage(null);
+    try {
+      await apiFetch("/api/admin/curation/suggestions", {
+        method: "POST",
+        body: JSON.stringify({
+          action: "generate",
+          windowDays: 90,
+          minSupport: 20,
+          minPositive: 10,
+          minPrecision: 0.9
+        })
+      });
+      await fetchInsightsAndCatalog();
+      setSaveMessage("Rule suggestions generated.");
+    } catch (error) {
+      setSaveMessage(error instanceof Error ? error.message : "Rule suggestion generation failed.");
+    } finally {
+      setIsGeneratingRuleSuggestions(false);
+    }
+  };
+
+  const onApplyAutoRules = async () => {
+    setIsApplyingAutoRules(true);
+    setSaveMessage(null);
+    try {
+      await apiFetch("/api/admin/curation/suggestions", {
+        method: "POST",
+        body: JSON.stringify({
+          action: "apply",
+          windowDays: 90,
+          minSupport: 20,
+          minPositive: 10,
+          minPrecision: 0.9,
+          maxApply: 120
+        })
+      });
+      await Promise.all([fetchInsightsAndCatalog(), onRefreshDataset()]);
+      setSaveMessage("Conservative rules applied and dataset refreshed.");
+    } catch (error) {
+      setSaveMessage(error instanceof Error ? error.message : "Auto-rule apply failed.");
+    } finally {
+      setIsApplyingAutoRules(false);
     }
   };
 
@@ -945,6 +1151,43 @@ export function AdminPanel({ locale }: { locale: Locale }) {
       setAliasCanonicalResults(payload.rows);
     } catch (error) {
       setSaveMessage(error instanceof Error ? error.message : "Unable to prepare alias fix.");
+    } finally {
+      setIsPreparingAlias(false);
+    }
+  };
+
+  const onPrepareSuspiciousExampleFix = async (example: InsightsPayload["suspicious_examples"][number]) => {
+    const suggestedTerm = String(example.product_group ?? "")
+      .replaceAll("_", " ")
+      .trim();
+    if (!suggestedTerm) {
+      return;
+    }
+
+    setTab("review");
+    setSaveMessage(null);
+    setIsPreparingAlias(true);
+    setAliasTermInput(suggestedTerm);
+    setAliasCanonicalQuery(suggestedTerm);
+    setAliasCanonicalProductId(null);
+    setAliasCanonicalResults([]);
+    setAliasLang("und");
+
+    try {
+      const payload = (await apiFetch(
+        `/api/admin/canonical-products?q=${encodeURIComponent(suggestedTerm)}&limit=20`
+      )) as CanonicalProductSearch;
+      setAliasCanonicalResults(payload.rows);
+      setBusinessQuery(example.establishment_name ?? "");
+      await fetchBusinesses({
+        query: example.establishment_name ?? "",
+        offset: 0
+      });
+      setSaveMessage(
+        `Prepared from suspicious match: ${example.establishment_name} -> ${example.product_group}. Review alias and business category.`
+      );
+    } catch (error) {
+      setSaveMessage(error instanceof Error ? error.message : "Unable to prepare suspicious fix.");
     } finally {
       setIsPreparingAlias(false);
     }
@@ -1263,7 +1506,7 @@ export function AdminPanel({ locale }: { locale: Locale }) {
 
           {!isBootstrapping && tab === "insights" && (
             <div className="space-y-4">
-              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
                 <div className="surface-card p-3">
                   <p className="note-label">Searches (30d)</p>
                   <p className="text-xl font-semibold">{insights?.totals.searches ?? 0}</p>
@@ -1282,6 +1525,64 @@ export function AdminPanel({ locale }: { locale: Locale }) {
                   <p className="note-label">Canonical products</p>
                   <p className="text-xl font-semibold">{insights?.totals.canonical_products_total ?? 0}</p>
                 </div>
+                <div className="surface-card p-3">
+                  <p className="note-label">{copy.suspectedFalsePositives}</p>
+                  <p className="text-xl font-semibold">
+                    {insights ? `${Math.round(insights.totals.suspected_false_positive_rate * 100)}%` : "0%"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="surface-card p-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <p className="note-subtitle">{copy.ruleSuggestionsTitle}</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="mono text-xs text-[var(--ink-soft)]">
+                      {copy.pendingAutoRules}: {insights?.totals.rule_suggestions_pending_auto_apply ?? 0}
+                    </span>
+                    <button
+                      type="button"
+                      className="btn-ghost text-xs"
+                      onClick={() => {
+                        void onGenerateRuleSuggestions();
+                      }}
+                      disabled={isGeneratingRuleSuggestions}
+                    >
+                      {isGeneratingRuleSuggestions ? copy.runningRuleSuggestion : copy.runRuleSuggestion}
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-ghost text-xs"
+                      onClick={() => {
+                        void onApplyAutoRules();
+                      }}
+                      disabled={isApplyingAutoRules}
+                    >
+                      {isApplyingAutoRules ? copy.applyingAutoRules : copy.applyAutoRules}
+                    </button>
+                  </div>
+                </div>
+                {insights?.rule_suggestions?.length ? (
+                  <ul className="mt-3 grid gap-2 lg:grid-cols-2">
+                    {insights.rule_suggestions.slice(0, 12).map((row) => (
+                      <li key={`rule-suggestion-${row.id}`} className="rounded-md border border-[var(--line)] p-2 text-sm">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-medium">
+                            {row.app_category} → {row.product_group}
+                          </span>
+                          <span className="mono text-xs text-[var(--ink-soft)]">{row.status}</span>
+                        </div>
+                        <p className="mt-1 text-xs text-[var(--ink-soft)]">
+                          support {row.support_count} · positive {row.positive_count} · precision{" "}
+                          {Math.round(Number(row.precision_score ?? 0) * 100)}%
+                          {row.auto_apply_eligible ? " · auto-eligible" : ""}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-2 text-sm text-[var(--ink-soft)]">{copy.noData}</p>
+                )}
               </div>
 
               <div className="grid gap-4 xl:grid-cols-3">
@@ -1310,6 +1611,58 @@ export function AdminPanel({ locale }: { locale: Locale }) {
                         <li key={item.endpoint} className="flex items-center justify-between gap-2">
                           <span className="truncate">{item.endpoint}</span>
                           <span className="mono text-[var(--ink-soft)]">{item.count}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-[var(--ink-soft)]">{copy.noData}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid gap-4 xl:grid-cols-2">
+                <div className="surface-card p-3">
+                  <p className="note-subtitle mb-2">{copy.categoryQuality}</p>
+                  {insights?.category_quality?.length ? (
+                    <ul className="space-y-1 text-sm">
+                      {insights.category_quality.slice(0, 12).map((item) => (
+                        <li key={item.group} className="flex items-center justify-between gap-2">
+                          <span>{item.group.replaceAll("_", " ")}</span>
+                          <span className="mono text-[var(--ink-soft)]">
+                            {Math.round(item.suspicious_rate * 100)}% · {item.suspicious}/{item.total}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-[var(--ink-soft)]">{copy.noData}</p>
+                  )}
+                </div>
+                <div className="surface-card p-3">
+                  <p className="note-subtitle mb-2">{copy.suspiciousExamples}</p>
+                  {insights?.suspicious_examples?.length ? (
+                    <ul className="space-y-2 text-sm">
+                      {insights.suspicious_examples.slice(0, 14).map((row) => (
+                        <li
+                          key={`${row.establishment_id}-${row.product_group}-${row.confidence}`}
+                          className="flex flex-wrap items-center justify-between gap-2"
+                        >
+                          <div className="min-w-0">
+                            <p className="font-medium">{row.establishment_name}</p>
+                            <p className="text-[var(--ink-soft)]">
+                              {row.product_group} · {Math.round(row.confidence * 100)}% · {row.district}
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            className="btn-ghost text-xs"
+                            onClick={() => {
+                              void onPrepareSuspiciousExampleFix(row);
+                            }}
+                            disabled={isPreparingAlias}
+                          >
+                            {isPreparingAlias ? copy.preparingAlias : copy.prepareSuspiciousFix}
+                          </button>
                         </li>
                       ))}
                     </ul>
@@ -1978,14 +2331,50 @@ export function AdminPanel({ locale }: { locale: Locale }) {
                       </label>
                     </div>
 
-                    <label className="text-sm">
+                    <div className="text-sm">
                       <span className="note-label">{copy.categoriesLabel}</span>
+                      <p className="mt-1 text-xs text-[var(--ink-soft)]">{copy.categoriesHint}</p>
                       <input
-                        className="field-input mt-1"
-                        value={editCategories}
-                        onChange={(event) => setEditCategories(event.target.value)}
+                        className="field-input mt-2"
+                        value={categoryPickerQuery}
+                        placeholder={copy.categoryPickerSearchPlaceholder}
+                        onChange={(event) => setCategoryPickerQuery(event.target.value)}
                       />
-                    </label>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {editCategories.length > 0 ? (
+                          editCategories.map((category) => (
+                            <button
+                              key={`selected-category-${category}`}
+                              type="button"
+                              className="btn-ghost text-xs is-active"
+                              onClick={() => onToggleBusinessCategory(category)}
+                            >
+                              {category}
+                            </button>
+                          ))
+                        ) : (
+                          <span className="text-xs text-[var(--ink-soft)]">{copy.noData}</span>
+                        )}
+                      </div>
+                      <div className="mt-2 max-h-40 overflow-auto rounded-md border border-[var(--line)] p-2">
+                        {filteredBusinessCategoryOptions.length > 0 ? (
+                          <div className="flex flex-wrap gap-2">
+                            {filteredBusinessCategoryOptions.slice(0, 80).map((category) => (
+                              <button
+                                key={`taxonomy-category-${category.slug}`}
+                                type="button"
+                                className={`btn-ghost text-xs ${editCategories.includes(category.slug) ? "is-active" : ""}`}
+                                onClick={() => onToggleBusinessCategory(category.slug)}
+                              >
+                                {category.label} ({category.count})
+                              </button>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-xs text-[var(--ink-soft)]">{copy.noCategoryMatches}</p>
+                        )}
+                      </div>
+                    </div>
 
                     <div className="grid gap-3 md:grid-cols-2">
                       <label className="text-sm">
@@ -2026,6 +2415,12 @@ export function AdminPanel({ locale }: { locale: Locale }) {
 
                     <div className="hand-divider pt-2">
                       <p className="note-subtitle">{copy.productsInStore}</p>
+                      <input
+                        className="field-input mt-2"
+                        value={productActionReason}
+                        placeholder={copy.productActionReasonPlaceholder}
+                        onChange={(event) => setProductActionReason(event.target.value)}
+                      />
                       {businessDetail.products.length === 0 ? (
                         <p className="text-sm text-[var(--ink-soft)]">{copy.noData}</p>
                       ) : (
@@ -2063,6 +2458,44 @@ export function AdminPanel({ locale }: { locale: Locale }) {
                               {item.why_this_product_matches ? (
                                 <p className="mt-1 text-xs text-[var(--ink-soft)]">why: {item.why_this_product_matches}</p>
                               ) : null}
+                              <div className="mt-2 flex flex-wrap gap-2">
+                                <button
+                                  type="button"
+                                  className="btn-ghost text-xs"
+                                  onClick={() => {
+                                    void onProductAction(item.canonical_product_id, "validate");
+                                  }}
+                                  disabled={Boolean(productActionBusyKey)}
+                                >
+                                  {productActionBusyKey === `${item.canonical_product_id}:validate`
+                                    ? copy.loading
+                                    : copy.validateProduct}
+                                </button>
+                                <button
+                                  type="button"
+                                  className="btn-ghost text-xs"
+                                  onClick={() => {
+                                    void onProductAction(item.canonical_product_id, "reject");
+                                  }}
+                                  disabled={Boolean(productActionBusyKey)}
+                                >
+                                  {productActionBusyKey === `${item.canonical_product_id}:reject`
+                                    ? copy.loading
+                                    : copy.rejectProduct}
+                                </button>
+                                <button
+                                  type="button"
+                                  className="btn-ghost text-xs"
+                                  onClick={() => {
+                                    void onProductAction(item.canonical_product_id, "remove");
+                                  }}
+                                  disabled={Boolean(productActionBusyKey)}
+                                >
+                                  {productActionBusyKey === `${item.canonical_product_id}:remove`
+                                    ? copy.loading
+                                    : copy.removeProduct}
+                                </button>
+                              </div>
                             </li>
                           ))}
                         </ul>
