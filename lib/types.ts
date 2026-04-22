@@ -18,6 +18,7 @@ export type Store = {
 export type Product = {
   id: string;
   normalizedName: string;
+  displayName?: string | null;
   brand: string | null;
   category: string;
 };

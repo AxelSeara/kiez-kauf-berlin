@@ -84,6 +84,12 @@ const RELATED_TERM_HINTS: Array<{ trigger: string; terms: string[] }> = [
   { trigger: "clean", terms: ["detergent", "bleach", "droguerie"] },
   { trigger: "cable", terms: ["adapter", "charger", "electronics"] }
 ];
+const QUICK_INTENT_KEYWORDS: Record<string, string[]> = {
+  pharmacy: ["pharmacy", "apotheke", "apotheke berlin", "drugstore", "chemist"],
+  hardware: ["hardware", "tool", "tools", "baumarkt", "diy", "ferreteria"],
+  spaeti: ["spaeti", "spati", "kiosk", "convenience", "late shop"],
+  essentials: ["essentials", "basic", "basics", "groceries", "grocery", "lebensmittel"]
+};
 
 function readCachedLocation(): { lat: number; lng: number } | null {
   if (typeof window === "undefined") {
@@ -256,6 +262,16 @@ function compactWhyText(value: string | null | undefined, maxLength = 130) {
   return `${normalized.slice(0, maxLength - 1)}...`;
 }
 
+function humanizeProductName(value: string | null | undefined) {
+  if (!value) {
+    return "";
+  }
+  return value
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function formatRelativeCheckedAt(
   value: string | null | undefined,
   dictionary: Pick<
@@ -336,6 +352,11 @@ function formatStoreOwnership(
     return dictionary.ownershipChain;
   }
   return dictionary.ownershipUnknown;
+}
+
+function displayProductName(product: SearchResult["product"]) {
+  const readable = humanizeProductName(product.displayName ?? product.normalizedName);
+  return readable || product.normalizedName;
 }
 
 function openingStatusToneClass(status: OpeningStatus) {
@@ -560,6 +581,7 @@ export function SearchExperience({
   const [showCachedResultBadge, setShowCachedResultBadge] = useState(false);
   const [lastSearchEndpoint, setLastSearchEndpoint] = useState<string | null>(null);
   const [isSearchInputFocused, setIsSearchInputFocused] = useState(false);
+  const [activeRecentIndex, setActiveRecentIndex] = useState(-1);
   const lastHapticAtRef = useRef(0);
   const searchAbortRef = useRef<AbortController | null>(null);
   const routeAbortRef = useRef<AbortController | null>(null);
@@ -1173,6 +1195,19 @@ export function SearchExperience({
   }, [query, recentSearches]);
   const showRecentSearchesDropdown = isSearchInputFocused && visibleRecentSearches.length > 0;
 
+  useEffect(() => {
+    if (!showRecentSearchesDropdown) {
+      setActiveRecentIndex(-1);
+      return;
+    }
+    setActiveRecentIndex((current) => {
+      if (current >= 0 && current < visibleRecentSearches.length) {
+        return current;
+      }
+      return 0;
+    });
+  }, [showRecentSearchesDropdown, visibleRecentSearches.length]);
+
   const filtersHideAllResults = hasSearched && results.length > 0 && filteredListResults.length === 0;
   const districtContext = useMemo(() => {
     const firstResult = filteredListResults[0]?.result;
@@ -1325,8 +1360,34 @@ export function SearchExperience({
     if (!normalized) {
       return null;
     }
-    const matched = quickIntents.find((intent) => normalizeQueryForAnalytics(intent.label) === normalized);
-    return matched?.id ?? null;
+
+    const includesTerm = (haystack: string, needle: string) => {
+      if (!needle) {
+        return false;
+      }
+      if (haystack === needle) {
+        return true;
+      }
+      const escaped = needle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return new RegExp(`\\b${escaped}\\b`).test(haystack);
+    };
+
+    for (const intent of quickIntents) {
+      const normalizedLabel = normalizeQueryForAnalytics(intent.label);
+      if (includesTerm(normalized, normalizedLabel)) {
+        return intent.id;
+      }
+
+      const keywords = QUICK_INTENT_KEYWORDS[intent.id] ?? [];
+      for (const keyword of keywords) {
+        const normalizedKeyword = normalizeQueryForAnalytics(keyword);
+        if (includesTerm(normalized, normalizedKeyword)) {
+          return intent.id;
+        }
+      }
+    }
+
+    return null;
   }
 
   async function fetchSearchWithTimeout(
@@ -1417,6 +1478,14 @@ export function SearchExperience({
       )
     ].slice(0, MAX_RECENT_SEARCHES);
     persistRecentSearches(next);
+  }
+
+  function selectRecentSearch(term: string) {
+    setQuery(term);
+    setActiveQuickIntent(null);
+    setIsSearchInputFocused(false);
+    setActiveRecentIndex(-1);
+    void runSearch({ overrideQuery: term, category: null });
   }
 
   function toggleSavedStore(storeId: string) {
@@ -1942,8 +2011,33 @@ export function SearchExperience({
                   }
                 }}
                 onKeyDown={(event) => {
+                  if (showRecentSearchesDropdown && event.key === "ArrowDown") {
+                    event.preventDefault();
+                    setActiveRecentIndex((current) =>
+                      Math.min(current + 1, visibleRecentSearches.length - 1)
+                    );
+                    return;
+                  }
+                  if (showRecentSearchesDropdown && event.key === "ArrowUp") {
+                    event.preventDefault();
+                    setActiveRecentIndex((current) => Math.max(current - 1, 0));
+                    return;
+                  }
+                  if (showRecentSearchesDropdown && event.key === "Escape") {
+                    event.preventDefault();
+                    setIsSearchInputFocused(false);
+                    setActiveRecentIndex(-1);
+                    return;
+                  }
                   if (event.key === "Enter") {
                     event.preventDefault();
+                    if (showRecentSearchesDropdown && activeRecentIndex >= 0) {
+                      const highlighted = visibleRecentSearches[activeRecentIndex];
+                      if (highlighted) {
+                        selectRecentSearch(highlighted);
+                        return;
+                      }
+                    }
                     void runSearch();
                   }
                 }}
@@ -1965,22 +2059,38 @@ export function SearchExperience({
                 }}
                 placeholder={dictionary.searchPlaceholder}
                 className="field-input search-input"
+                role="combobox"
+                aria-haspopup="listbox"
+                aria-autocomplete="list"
+                aria-expanded={showRecentSearchesDropdown}
+                aria-controls="recent-searches-listbox"
+                aria-activedescendant={
+                  showRecentSearchesDropdown && activeRecentIndex >= 0
+                    ? `recent-option-${activeRecentIndex}`
+                    : undefined
+                }
               />
               {showRecentSearchesDropdown ? (
-                <div className="search-recent-dropdown" role="listbox" aria-label={dictionary.recentSearchesLabel}>
+                <div
+                  id="recent-searches-listbox"
+                  className="search-recent-dropdown"
+                  role="listbox"
+                  aria-label={dictionary.recentSearchesLabel}
+                >
                   <p className="search-recent-label">{dictionary.recentSearchesLabel}</p>
-                  {visibleRecentSearches.map((term) => (
+                  {visibleRecentSearches.map((term, index) => (
                     <button
-                      key={`recent-dropdown-${term}`}
+                      key={`recent-dropdown-${term}-${index}`}
+                      id={`recent-option-${index}`}
                       type="button"
                       className="search-recent-item"
+                      role="option"
+                      aria-selected={activeRecentIndex === index}
                       onMouseDown={(event) => {
                         event.preventDefault();
-                        setQuery(term);
-                        setActiveQuickIntent(null);
-                        setIsSearchInputFocused(false);
-                        void runSearch({ overrideQuery: term, category: null });
+                        selectRecentSearch(term);
                       }}
+                      onMouseEnter={() => setActiveRecentIndex(index)}
                       disabled={isLoading}
                     >
                       {term}
@@ -2001,6 +2111,27 @@ export function SearchExperience({
               >
                 <span className="btn-label">{isLoading ? dictionary.searchingLabel : dictionary.searchButton}</span>
               </button>
+            </div>
+            <div className="md:col-span-2 quick-intents flex flex-wrap items-center gap-1.5">
+              <span className="note-label">{dictionary.quickIntentLabel}</span>
+              {quickIntents.map((intent) => (
+                <button
+                  key={`quick-intent-top-${intent.id}`}
+                  type="button"
+                  className={`btn-ghost quick-intent-chip px-2.5 py-1.5 text-[0.72rem] ${
+                    activeQuickIntent === intent.id ? "is-active" : ""
+                  }`}
+                  onClick={() => {
+                    setQuery(intent.label);
+                    setActiveQuickIntent(intent.id);
+                    void runSearch({ overrideQuery: intent.label, category: intent.id });
+                  }}
+                  disabled={isLoading}
+                  aria-pressed={activeQuickIntent === intent.id}
+                >
+                  {intent.label}
+                </button>
+              ))}
             </div>
             <div className="search-compact-controls md:col-span-2">
               <label htmlFor="radius-km-picker" className="note-label">
@@ -2228,7 +2359,7 @@ export function SearchExperience({
                   <p className="store-detail-line">
                     <UiIcon kind="product" className="store-detail-icon" />
                     <span>
-                      {dictionary.matchedProductLabel}: {selectedResultEntry.result.product.normalizedName}
+                      {dictionary.matchedProductLabel}: {displayProductName(selectedResultEntry.result.product)}
                     </span>
                   </p>
                   <p className="store-detail-line">
@@ -2402,9 +2533,13 @@ export function SearchExperience({
               {visibleListResults.map(({ result, openingStatus, openingInfo }, index) => {
                 const isSelected = selectedOfferId === result.offer.id;
                 const rowWalkRouteKey = `${result.offer.id}:walk`;
+                const rowBikeRouteKey = `${result.offer.id}:bike`;
                 const rowWalkRouteActive =
                   activeRoute?.offerId === result.offer.id && activeRoute.mode === "walk";
+                const rowBikeRouteActive =
+                  activeRoute?.offerId === result.offer.id && activeRoute.mode === "bike";
                 const rowWalkRouteLoading = routeLoadingKey === rowWalkRouteKey;
+                const rowBikeRouteLoading = routeLoadingKey === rowBikeRouteKey;
 
                 return (
                   <div
@@ -2458,7 +2593,21 @@ export function SearchExperience({
                             ? dictionary.routeLoadingLabel
                             : rowWalkRouteActive
                               ? dictionary.clearRouteAction
-                              : dictionary.routeAction}
+                              : dictionary.walkTimeLabel}
+                        </button>
+                        <button
+                          type="button"
+                          className={`btn-ghost px-2 py-1 text-[0.66rem] ${rowBikeRouteActive ? "is-active" : ""}`}
+                          disabled={rowBikeRouteLoading}
+                          onClick={() => {
+                            void drawRouteOnMap(result, "bike");
+                          }}
+                        >
+                          {rowBikeRouteLoading
+                            ? dictionary.routeLoadingLabel
+                            : rowBikeRouteActive
+                              ? dictionary.clearRouteAction
+                              : dictionary.bikeTimeLabel}
                         </button>
                       </div>
                     </div>

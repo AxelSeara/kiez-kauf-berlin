@@ -1181,6 +1181,9 @@ async function searchSupabaseRowsFromDataset(args: {
   const normalized = normalizeSearchQuery(args.query);
   const categoryIntents = inferAppCategoryIntents(args.query);
   const canonicalProducts = await getCanonicalCatalog();
+  const canonicalProductsById = new Map(
+    canonicalProducts.map((product) => [String(product.id), product])
+  );
   const canonicalIds = findCanonicalProductIdsByQuery(args.query, canonicalProducts);
   const inferredGroups = inferProductGroupsFromKeyword(args.query);
   const limit = args.limit ?? 450;
@@ -1410,6 +1413,7 @@ async function searchSupabaseRowsFromDataset(args: {
 
     const storeId = String(row.establishment_id);
     const productId = String(row.canonical_product_id);
+    const canonicalProduct = canonicalProductsById.get(productId);
     const offerId = `candidate_${storeId}_${productId}_${row.source_type ?? "unknown"}`;
     const updatedAt = row.updated_at ?? new Date().toISOString();
     const establishmentMetadata = metadataById.get(row.establishment_id);
@@ -1442,6 +1446,11 @@ async function searchSupabaseRowsFromDataset(args: {
       product: {
         id: productId,
         normalizedName: String(row.product_normalized_name ?? ""),
+        displayName:
+          canonicalProduct?.display_name_en ??
+          canonicalProduct?.display_name_de ??
+          canonicalProduct?.display_name_es ??
+          null,
         brand: null,
         category: String(row.product_group ?? "")
       },
@@ -1527,6 +1536,10 @@ async function getStoreDetailFromDataset(id: string): Promise<StoreDetail | null
 
   const metadata = metadataRlsBlocked ? null : (establishmentData as SupabaseEstablishmentMetadataRow | null);
   const storeName = first.establishment_name ?? metadata?.name ?? "Unknown store";
+  const canonicalProducts = await getCanonicalCatalog();
+  const canonicalProductsById = new Map(
+    canonicalProducts.map((product) => [String(product.id), product])
+  );
 
   const store: Store = {
     id: String(first.establishment_id),
@@ -1548,6 +1561,7 @@ async function getStoreDetailFromDataset(id: string): Promise<StoreDetail | null
     offers: rows.map((row) => {
       const storeId = String(row.establishment_id);
       const productId = String(row.canonical_product_id);
+      const canonicalProduct = canonicalProductsById.get(productId);
       return {
         offer: {
           id: `candidate_${storeId}_${productId}_${row.source_type ?? "unknown"}`,
@@ -1560,6 +1574,11 @@ async function getStoreDetailFromDataset(id: string): Promise<StoreDetail | null
         product: {
           id: productId,
           normalizedName: row.product_normalized_name,
+          displayName:
+            canonicalProduct?.display_name_en ??
+            canonicalProduct?.display_name_de ??
+            canonicalProduct?.display_name_es ??
+            null,
           brand: null,
           category: row.product_group
         }

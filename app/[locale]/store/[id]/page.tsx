@@ -5,6 +5,16 @@ import { getStoreDetail } from "@/lib/data";
 import { getDictionary } from "@/lib/i18n";
 import { isSupportedLocale } from "@/lib/locale";
 
+function displayProductName(
+  product: { displayName?: string | null; normalizedName: string }
+) {
+  const label = (product.displayName ?? product.normalizedName)
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return label || product.normalizedName;
+}
+
 export default async function StoreDetailPage({
   params
 }: {
@@ -61,7 +71,7 @@ export default async function StoreDetailPage({
               <p className="status-text mb-1">
                 {dictionary.itemLabel} {String(index + 1).padStart(2, "0")}
               </p>
-              <p className="text-sm">{item.product.normalizedName}</p>
+              <p className="text-sm">{displayProductName(item.product)}</p>
               <p className="status-text mt-1">{dictionary.storeCategoryLabel}: {item.product.category}</p>
             </li>
           ))}

@@ -445,6 +445,12 @@ input[type="checkbox"] {
   outline: none;
 }
 
+.search-recent-item[aria-selected="true"] {
+  border-color: var(--line);
+  background: var(--surface-soft);
+  color: var(--ink);
+}
+
 .quick-intents {
   display: flex;
   flex-wrap: wrap;
