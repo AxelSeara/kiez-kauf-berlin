@@ -48,6 +48,7 @@ async function main() {
     ["node", ["scripts/pipeline/cleanup-legacy-ai-labels.mjs"]],
     ["node", ["scripts/pipeline/cleanup-category-mismatch-candidates.mjs"]],
     ["node", mergeArgs],
+    ["node", ["scripts/pipeline/prune-nonserving-candidates.mjs"]],
     ["node", ["scripts/pipeline/build-search-dataset.mjs"]],
     [
       "node",

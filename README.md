@@ -191,6 +191,9 @@ Pruning de auditoria (control de crecimiento):
 
 ```bash
 npm run maintenance:prune-audit -- --keep-latest-per-candidate=2
+npm run maintenance:prune-nonserving-candidates
+# opcional compactacion fisica agresiva:
+npm run maintenance:prune-nonserving-candidates -- --vacuum-full=true
 ```
 
 Curation feedback loop (P1/P2):

@@ -26,6 +26,7 @@
     "refresh:berlin": "node scripts/pipeline/refresh-berlin.mjs",
     "refresh:berlin:lean-v1": "node scripts/pipeline/lean-v1-refresh.mjs",
     "maintenance:prune-audit": "node scripts/pipeline/prune-audit.mjs",
+    "maintenance:prune-nonserving-candidates": "node scripts/pipeline/prune-nonserving-candidates.mjs",
     "audit:enrichment": "node scripts/pipeline/audit-enrichment.mjs"
   },
   "dependencies": {

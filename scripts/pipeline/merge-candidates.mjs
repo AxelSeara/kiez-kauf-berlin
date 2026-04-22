@@ -231,6 +231,7 @@ with source_priority(source_type, weight) as (
     from selected_pre_trim s
   ) ranked_selected
   where ranked_selected.selected_rank <= ${Number(maxProductsPerEstablishment)}
+    and ranked_selected.validation_status <> 'rejected'
 ), deleted as (
   delete from establishment_product_merged m
   where m.establishment_id = any(${idsLiteral})
