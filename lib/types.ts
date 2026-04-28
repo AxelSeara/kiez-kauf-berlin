@@ -47,11 +47,14 @@ export type SearchResult = {
     | "imported"
     | "rules_generated"
     | "ai_generated"
+    | "ai_inferred"
     | "merchant_added"
     | "user_validated"
     | "website_extracted"
     | "validated"
     | null;
+  resultKind?: "product" | "service";
+  availabilityStatus?: "confirmed" | "likely" | "unknown" | "rejected" | null;
 };
 
 export type StoreDetail = {

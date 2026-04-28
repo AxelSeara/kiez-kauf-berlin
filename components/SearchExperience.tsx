@@ -13,6 +13,8 @@ type SearchPayload = {
   origin: { lat: number; lng: number };
   radius: number;
   results: SearchResult[];
+  service_fallback?: SearchResult[];
+  result_mode?: "products_only" | "products_plus_services" | "services_fallback_only";
   endpoint?: string;
 };
 
@@ -1431,6 +1433,7 @@ export function SearchExperience({
     resultsCount: number;
     hasResults: boolean;
     endpoint: string;
+    reason?: "no_results_products" | "no_results_any" | null;
   }) {
     try {
       await fetch("/api/analytics/search", {
@@ -1446,7 +1449,8 @@ export function SearchExperience({
           radiusKm: Number(args.radiusKm.toFixed(1)),
           resultsCount: args.resultsCount,
           hasResults: args.hasResults,
-          endpoint: args.endpoint
+          endpoint: args.endpoint,
+          reason: args.reason ?? null
         })
       });
     } catch {
@@ -1688,9 +1692,24 @@ export function SearchExperience({
       setLastSearchEndpoint(primaryResponse.endpointUsed);
 
       const primaryResults = sanitizeResults(Array.isArray(data?.results) ? data.results : [], effectiveRadiusKm);
+      const serviceFallbackResults = sanitizeResults(
+        Array.isArray(data?.service_fallback) ? data.service_fallback : [],
+        effectiveRadiusKm
+      ).map((result) => ({
+        ...result,
+        resultKind: "service" as const
+      }));
+      const displayResults =
+        primaryResults.length > 0 ? primaryResults : serviceFallbackResults;
+      const analyticsReason: "no_results_products" | "no_results_any" | null =
+        primaryResults.length === 0
+          ? serviceFallbackResults.length > 0
+            ? "no_results_products"
+            : "no_results_any"
+          : null;
       let guidance: NoResultsGuidance | null = null;
 
-      if (primaryResults.length === 0) {
+      if (displayResults.length === 0) {
         if (effectiveRadiusKm < MAX_RADIUS_KM) {
           const nearbyResponse = await fetchSearchPayload(MAX_RADIUS_KM);
           const nearbyData = nearbyResponse.payload;
@@ -1702,10 +1721,16 @@ export function SearchExperience({
           }
           setLastSearchEndpoint((current) => current ?? nearbyResponse.endpointUsed);
 
-          const nearbyResults = sanitizeResults(
+          const nearbyPrimaryResults = sanitizeResults(
             Array.isArray(nearbyData?.results) ? nearbyData.results : [],
             MAX_RADIUS_KM
           );
+          const nearbyServiceFallbackResults = sanitizeResults(
+            Array.isArray(nearbyData?.service_fallback) ? nearbyData.service_fallback : [],
+            MAX_RADIUS_KM
+          );
+          const nearbyResults =
+            nearbyPrimaryResults.length > 0 ? nearbyPrimaryResults : nearbyServiceFallbackResults;
           if (nearbyResults.length > 0) {
             const nearestDistanceMeters = nearbyResults.reduce(
               (currentMin, result) => Math.min(currentMin, result.distanceMeters),
@@ -1728,37 +1753,42 @@ export function SearchExperience({
         }
       }
 
-      setResults(primaryResults);
-      setSelectedOfferId(primaryResults[0]?.offer.id ?? null);
+      setResults(displayResults);
+      setSelectedOfferId(displayResults[0]?.offer.id ?? null);
       setHasSearched(true);
       setNoResultsGuidance(guidance);
       addRecentSearch(effectiveQuery);
-      const withOpeningHours = primaryResults.filter(
+      const withOpeningHours = displayResults.filter(
         (result) => typeof result.store.openingHours === "string" && result.store.openingHours.trim().length > 0
       ).length;
-      const validatedCount = primaryResults.filter((result) => result.validationStatus === "validated").length;
-      const likelyCount = primaryResults.filter((result) => result.validationStatus === "likely").length;
+      const validatedCount = displayResults.filter((result) => result.validationStatus === "validated").length;
+      const likelyCount = displayResults.filter((result) => result.validationStatus === "likely").length;
       const avgConfidence =
-        primaryResults.length > 0
+        displayResults.length > 0
           ? Number(
               (
-                primaryResults.reduce(
+                displayResults.reduce(
                   (sum, result) => sum + (typeof result.confidence === "number" ? result.confidence : 0),
                   0
-                ) / primaryResults.length
+                ) / displayResults.length
               ).toFixed(3)
             )
           : 0;
       const finishedAt = typeof performance !== "undefined" ? performance.now() : Date.now();
       trackEvent("search_success", {
-        results_count: primaryResults.length,
+        results_count: displayResults.length,
+        product_results_count: primaryResults.length,
+        service_fallback_count: serviceFallbackResults.length,
+        result_mode: data?.result_mode ?? null,
         radius_km: Number(effectiveRadiusKm.toFixed(1)),
         duration_ms: Math.round(finishedAt - startedAt),
         no_results_guidance: guidance?.type ?? null,
         suggested_radius_km: guidance?.type === "nearby" ? Number(guidance.suggestedRadiusKm.toFixed(1)) : null
       });
       trackEvent("search_quality_snapshot", {
-        results_count: primaryResults.length,
+        results_count: displayResults.length,
+        product_results_count: primaryResults.length,
+        service_fallback_count: serviceFallbackResults.length,
         with_opening_hours: withOpeningHours,
         validated_count: validatedCount,
         likely_count: likelyCount,
@@ -1768,11 +1798,12 @@ export function SearchExperience({
         searchTerm: effectiveQuery,
         category: effectiveCategory,
         radiusKm: effectiveRadiusKm,
-        resultsCount: primaryResults.length,
-        hasResults: primaryResults.length > 0,
-        endpoint: primaryResponse.endpointUsed
+        resultsCount: displayResults.length,
+        hasResults: displayResults.length > 0,
+        endpoint: primaryResponse.endpointUsed,
+        reason: analyticsReason
       });
-      if (primaryResults.length === 0) {
+      if (displayResults.length === 0) {
         trackEvent("search_zero_results", {
           query_normalized: queryForAnalytics || null,
           radius_km: Number(effectiveRadiusKm.toFixed(1)),

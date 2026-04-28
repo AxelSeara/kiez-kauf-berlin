@@ -12,6 +12,10 @@ type EstablishmentRow = {
   active_status: "active" | "inactive" | "temporarily_closed" | "unknown";
   website: string | null;
   phone: string | null;
+  store_role_primary: string | null;
+  store_roles: string[] | null;
+  role_confidence: number | null;
+  manual_review_status: "pending" | "approved" | "rejected" | "not_needed" | null;
   updated_at: string;
 };
 
@@ -53,7 +57,7 @@ export async function GET(request: Request) {
     let listQuery = supabase
       .from("establishments")
       .select(
-        "id, name, address, district, app_categories, active_status, website, phone, updated_at",
+        "id, name, address, district, app_categories, active_status, website, phone, store_role_primary, store_roles, role_confidence, manual_review_status, updated_at",
         { count: "exact" }
       )
       .order("updated_at", { ascending: false })
@@ -106,4 +110,3 @@ export async function GET(request: Request) {
     return adminInternalError(error);
   }
 }
-

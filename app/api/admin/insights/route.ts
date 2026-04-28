@@ -48,6 +48,18 @@ type RuleSuggestionRow = {
   generated_at: string;
 };
 
+type AiRunRow = {
+  id: number;
+  status: "running" | "completed" | "failed" | "stopped_budget";
+  district_scope: string | null;
+  model: string;
+  processed_establishments: number;
+  llm_used_establishments: number;
+  estimated_cost_usd: number;
+  started_at: string;
+  completed_at: string | null;
+};
+
 const GROUP_EXPECTED_APP_CATEGORIES: Record<string, string[]> = {
   groceries: ["grocery", "convenience", "bio", "fresh-food", "produce", "bakery", "butcher"],
   fresh_produce: ["produce", "fresh-food", "grocery", "bio"],
@@ -242,6 +254,10 @@ export async function GET(request: Request) {
       string,
       { total: number; suspicious: number; validated: number; high_confidence_suspicious: number }
     >();
+    const sourceStats = new Map<
+      string,
+      { total: number; likely_or_validated: number; validated: number; avg_conf_sum: number }
+    >();
     const suspiciousExamples: Array<{
       establishment_id: number;
       establishment_name: string;
@@ -325,6 +341,23 @@ export async function GET(request: Request) {
         }
 
         categoryStats.set(group, stats);
+
+        const sourceType = String(merged.primary_source_type ?? "unknown");
+        const sourceEntry = sourceStats.get(sourceType) ?? {
+          total: 0,
+          likely_or_validated: 0,
+          validated: 0,
+          avg_conf_sum: 0
+        };
+        sourceEntry.total += 1;
+        sourceEntry.avg_conf_sum += confidence;
+        if (merged.validation_status === "validated") {
+          sourceEntry.validated += 1;
+          sourceEntry.likely_or_validated += 1;
+        } else if (merged.validation_status === "likely") {
+          sourceEntry.likely_or_validated += 1;
+        }
+        sourceStats.set(sourceType, sourceEntry);
       }
     }
 
@@ -349,6 +382,49 @@ export async function GET(request: Request) {
     const autoApplyPending = suggestionRows.filter(
       (row) => row.status === "suggested" && row.auto_apply_eligible
     ).length;
+    const sourceQualityEstimate = [...sourceStats.entries()]
+      .map(([source, stats]) => ({
+        source,
+        total: stats.total,
+        likely_or_validated: stats.likely_or_validated,
+        validated: stats.validated,
+        estimated_precision:
+          stats.total > 0 ? Number((stats.likely_or_validated / stats.total).toFixed(4)) : 0,
+        avg_confidence: stats.total > 0 ? Number((stats.avg_conf_sum / stats.total).toFixed(4)) : 0
+      }))
+      .sort((a, b) => b.total - a.total);
+
+    let aiRuns: AiRunRow[] = [];
+    {
+      const { data, error } = await supabase
+        .from("ai_enrichment_runs")
+        .select(
+          "id, status, district_scope, model, processed_establishments, llm_used_establishments, estimated_cost_usd, started_at, completed_at"
+        )
+        .order("started_at", { ascending: false })
+        .limit(180);
+
+      if (error) {
+        const lower = error.message.toLowerCase();
+        const missingRelation = lower.includes("does not exist") || lower.includes("relation");
+        if (!missingRelation) {
+          throw new Error(error.message);
+        }
+      } else {
+        aiRuns = (data ?? []) as AiRunRow[];
+      }
+    }
+
+    const now = Date.now();
+    const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000;
+    const thirtyDaysAgo = now - 30 * 24 * 60 * 60 * 1000;
+    const runs7d = aiRuns.filter((run) => new Date(run.started_at).getTime() >= sevenDaysAgo);
+    const runs30d = aiRuns.filter((run) => new Date(run.started_at).getTime() >= thirtyDaysAgo);
+    const cost7d = runs7d.reduce((sum, run) => sum + Number(run.estimated_cost_usd ?? 0), 0);
+    const cost30d = runs30d.reduce((sum, run) => sum + Number(run.estimated_cost_usd ?? 0), 0);
+    const processed7d = runs7d.reduce((sum, run) => sum + Number(run.processed_establishments ?? 0), 0);
+    const llmUsed7d = runs7d.reduce((sum, run) => sum + Number(run.llm_used_establishments ?? 0), 0);
+    const llmCoverage7d = processed7d > 0 ? Number((llmUsed7d / processed7d).toFixed(4)) : 0;
 
     return NextResponse.json({
       window_days: 30,
@@ -371,6 +447,15 @@ export async function GET(request: Request) {
       endpoint_usage: [...endpointStats.entries()]
         .map(([endpoint, count]) => ({ endpoint, count }))
         .sort((a, b) => b.count - a.count),
+      ai_enrichment: {
+        runs_7d: runs7d.length,
+        runs_30d: runs30d.length,
+        estimated_cost_usd_7d: Number(cost7d.toFixed(4)),
+        estimated_cost_usd_30d: Number(cost30d.toFixed(4)),
+        llm_coverage_7d: llmCoverage7d,
+        latest_runs: aiRuns.slice(0, 20)
+      },
+      source_precision_estimate: sourceQualityEstimate,
       category_quality: categoryQuality,
       suspicious_examples: suspiciousExamples
         .sort((a, b) => {

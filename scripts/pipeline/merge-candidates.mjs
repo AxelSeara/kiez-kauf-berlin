@@ -9,13 +9,52 @@ import {
   sqlLiteral
 } from "./_utils.mjs";
 
-async function fetchBatch(lastId, batchSize) {
+const DISTRICT_SCOPE_MAP = {
+  mitte: ["Mitte", "Moabit", "Wedding", "Gesundbrunnen", "Tiergarten", "Hansaviertel"]
+};
+
+function resolveDistrictScopeNames(rawScope) {
+  const scope = String(rawScope ?? "").trim().toLowerCase();
+  if (!scope) return [];
+  if (DISTRICT_SCOPE_MAP[scope]) return DISTRICT_SCOPE_MAP[scope];
+  return scope
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function resolvePostalCodeScope(rawScope) {
+  return String(rawScope ?? "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .map((item) => item.replace(/[^\d]/g, ""))
+    .filter((item) => item.length >= 4 && item.length <= 6);
+}
+
+async function fetchBatch(lastId, batchSize, districtNames = [], postalCodes = []) {
+  const districtFilter =
+    districtNames.length > 0
+      ? `
+  and lower(e.district) = any(array[${districtNames.map((name) => sqlLiteral(name.toLowerCase())).join(", ")}]::text[])
+`
+      : "";
+  const postalFilter =
+    postalCodes.length > 0
+      ? `
+  and coalesce(e.address, '') ilike any(array[${postalCodes.map((code) => sqlLiteral(`%${code}%`)).join(", ")}]::text[])
+`
+      : "";
+
   const sql = `
 select id
-from establishments
-where external_source = 'osm-overpass'
-  and id > ${Number(lastId)}
-order by id asc
+from establishments e
+where e.external_source = 'osm-overpass'
+  and e.id > ${Number(lastId)}
+  and e.active_status in ('active', 'temporarily_closed', 'unknown')
+  ${districtFilter}
+  ${postalFilter}
+order by e.id asc
 limit ${Number(batchSize)};
 `;
 
@@ -39,6 +78,7 @@ with source_priority(source_type, weight) as (
     ('merchant_added'::source_type_enum, 40),
     ('website_extracted'::source_type_enum, 35),
     ('imported'::source_type_enum, 30),
+    ('ai_inferred'::source_type_enum, 20),
     ('ai_generated'::source_type_enum, 20),
     ('rules_generated'::source_type_enum, 10)
 ), base as (
@@ -150,6 +190,7 @@ with source_priority(source_type, weight) as (
           when 'merchant_added' then 5
           when 'website_extracted' then 4
           when 'imported' then 3
+          when 'ai_inferred' then 2
           when 'ai_generated' then 2
           else 1
         end desc,
@@ -324,13 +365,17 @@ select
 async function main() {
   const args = parseArgs(process.argv);
   const batchSize = Number(args["batch-size"] ?? 500);
-  const maxProductsPerEstablishment = Number(args["max-products-per-establishment"] ?? 12);
+  const maxProductsPerEstablishment = Number(args["max-products-per-establishment"] ?? 8);
   const quotaGroups = String(args["quota-groups"] ?? "pet_care")
     .split(",")
     .map((group) => group.trim().toLowerCase())
     .filter(Boolean);
   const quotaMinConfidence = Number(args["quota-min-confidence"] ?? 0.62);
   const resume = Boolean(args.resume);
+  const districtScope = String(args["district-scope"] ?? "").trim();
+  const districtNames = resolveDistrictScopeNames(districtScope);
+  const postalCodeScope = String(args["postal-code-scope"] ?? "").trim();
+  const postalCodes = resolvePostalCodeScope(postalCodeScope);
 
   const checkpoint = await loadCheckpoint();
   const state = checkpoint.mergeCandidates ?? {};
@@ -343,13 +388,17 @@ async function main() {
     maxProductsPerEstablishment,
     quotaGroups,
     quotaMinConfidence,
+    districtScope: districtScope || null,
+    postalCodeScope: postalCodeScope || null,
+    districtNames,
+    postalCodes,
     startFromId: cursor,
     checkpointFile: CHECKPOINT_FILE
   });
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    const ids = await fetchBatch(cursor, batchSize);
+    const ids = await fetchBatch(cursor, batchSize, districtNames, postalCodes);
     if (!ids.length) {
       break;
     }
@@ -365,6 +414,8 @@ async function main() {
 
     checkpoint.mergeCandidates = {
       lastId: cursor,
+      districtScope: districtScope || null,
+      postalCodeScope: postalCodeScope || null,
       totalEstablishments,
       totalMergedRows,
       updatedAt: new Date().toISOString()
@@ -382,6 +433,8 @@ async function main() {
 
   checkpoint.mergeCandidates = {
     lastId: cursor,
+    districtScope: districtScope || null,
+    postalCodeScope: postalCodeScope || null,
     totalEstablishments,
     totalMergedRows,
     completed: true,

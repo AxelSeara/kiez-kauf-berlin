@@ -35,6 +35,31 @@ const CATEGORY_HINTS = [
   "fresh"
 ];
 
+const DISTRICT_SCOPE_MAP = {
+  mitte: ["Mitte", "Moabit", "Wedding", "Gesundbrunnen", "Tiergarten", "Hansaviertel"]
+};
+
+function resolveDistrictScopeNames(rawScope) {
+  const scope = String(rawScope ?? "").trim().toLowerCase();
+  if (!scope) return [];
+  if (DISTRICT_SCOPE_MAP[scope]) {
+    return DISTRICT_SCOPE_MAP[scope];
+  }
+  return scope
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function resolvePostalCodeScope(rawScope) {
+  return String(rawScope ?? "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .map((item) => item.replace(/[^\d]/g, ""))
+    .filter((item) => item.length >= 4 && item.length <= 6);
+}
+
 function decodeHtml(value) {
   return String(value ?? "")
     .replace(/&nbsp;/gi, " ")
@@ -231,6 +256,16 @@ function scoreFreshnessFromFetch(args) {
   return 0.33;
 }
 
+function computeEligibleForLlmFromSignals(signals) {
+  const httpStatus = Number(signals?.http_status ?? 0);
+  if (httpStatus < 200 || httpStatus > 299) return false;
+  const headingCount = Array.isArray(signals?.headings) ? signals.headings.length : 0;
+  const categoriesCount = Array.isArray(signals?.visible_categories) ? signals.visible_categories.length : 0;
+  const schemaCount = Array.isArray(signals?.schema_entities) ? signals.schema_entities.length : 0;
+  const strongStructure = headingCount >= 2 || categoriesCount >= 2 || schemaCount >= 1;
+  return strongStructure;
+}
+
 function buildUpsertSql(rows) {
   if (!rows.length) {
     return "select 0::int as upserted_rows, 0::int as updated_establishments;";
@@ -254,7 +289,8 @@ function buildUpsertSql(rows) {
         sqlLiteral(row.extracted_opening_hours),
         sqlLiteral(row.extraction_notes),
         sqlLiteral(row.content_hash),
-        `${sqlLiteral(row.freshness_score)}::numeric(5,4)`
+        `${sqlLiteral(row.freshness_score)}::numeric(5,4)`,
+        sqlLiteral(row.eligible_for_llm)
       ].join(",")})`;
     })
     .join(",\n");
@@ -276,7 +312,8 @@ with incoming(
   extracted_opening_hours,
   extraction_notes,
   content_hash,
-  freshness_score
+  freshness_score,
+  eligible_for_llm
 ) as (
   values
   ${values}
@@ -297,7 +334,8 @@ upserted as (
     schema_opening_hours,
     extracted_opening_hours,
     extraction_notes,
-    content_hash
+    content_hash,
+    eligible_for_llm
   )
   select
     establishment_id,
@@ -314,7 +352,8 @@ upserted as (
     schema_opening_hours,
     extracted_opening_hours,
     extraction_notes,
-    content_hash
+    content_hash,
+    eligible_for_llm
   from incoming
   on conflict (establishment_id)
   do update set
@@ -332,6 +371,7 @@ upserted as (
     extracted_opening_hours = excluded.extracted_opening_hours,
     extraction_notes = excluded.extraction_notes,
     content_hash = excluded.content_hash,
+    eligible_for_llm = excluded.eligible_for_llm,
     updated_at = now()
   returning establishment_id
 ),
@@ -414,10 +454,22 @@ select
 `;
 }
 
-async function fetchBatch(lastId, batchSize, staleDays) {
+async function fetchBatch(lastId, batchSize, staleDays, districtNames = [], postalCodes = []) {
   const staleFilter = Number.isFinite(staleDays)
     ? `and (e.last_enriched_at is null or e.last_enriched_at < now() - interval '${Number(staleDays)} day')`
     : "";
+  const districtFilter =
+    districtNames.length > 0
+      ? `
+  and lower(e.district) = any(array[${districtNames.map((name) => sqlLiteral(name.toLowerCase())).join(", ")}]::text[])
+`
+      : "";
+  const postalFilter =
+    postalCodes.length > 0
+      ? `
+  and coalesce(e.address, '') ilike any(array[${postalCodes.map((code) => sqlLiteral(`%${code}%`)).join(", ")}]::text[])
+`
+      : "";
 
   const sql = `
 select
@@ -434,6 +486,8 @@ where e.external_source = 'osm-overpass'
   and e.website is not null
   and btrim(e.website) <> ''
   and e.id > ${Number(lastId)}
+  ${districtFilter}
+  ${postalFilter}
   ${staleFilter}
 order by e.id asc
 limit ${Number(batchSize)};
@@ -499,6 +553,10 @@ async function main() {
   const concurrency = Number(args.concurrency ?? 6);
   const maxEstablishments = args["max-establishments"] ? Number(args["max-establishments"]) : null;
   const staleDays = args["stale-days"] ? Number(args["stale-days"]) : Number.NaN;
+  const districtScope = String(args["district-scope"] ?? "").trim();
+  const districtNames = resolveDistrictScopeNames(districtScope);
+  const postalCodeScope = String(args["postal-code-scope"] ?? "").trim();
+  const postalCodes = resolvePostalCodeScope(postalCodeScope);
 
   const checkpoint = await loadCheckpoint();
   const state = checkpoint.enrichWebsites ?? {};
@@ -513,6 +571,10 @@ async function main() {
     timeoutMs,
     concurrency,
     maxEstablishments,
+    districtScope: districtScope || null,
+    districtNames,
+    postalCodeScope: postalCodeScope || null,
+    postalCodes,
     staleDays: Number.isFinite(staleDays) ? staleDays : null,
     startFromId: cursor,
     checkpointFile: CHECKPOINT_FILE
@@ -520,7 +582,7 @@ async function main() {
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    const establishments = await fetchBatch(cursor, batchSize, staleDays);
+    const establishments = await fetchBatch(cursor, batchSize, staleDays, districtNames, postalCodes);
     if (!establishments.length) {
       break;
     }
@@ -575,11 +637,13 @@ async function main() {
               source_url: normalizedUrl,
               fetched_at: fetchedAt,
               ...signals,
+              eligible_for_llm: computeEligibleForLlmFromSignals(signals),
               freshness_score: freshnessScore
             };
           } catch (error) {
             return {
               ...fallback,
+              eligible_for_llm: false,
               extraction_notes: `Website fetch failed: ${String(error).slice(0, 240)}`
             };
           }

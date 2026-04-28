@@ -20,6 +20,14 @@ type EstablishmentDetailRow = {
   opening_hours: string | null;
   description: string | null;
   active_status: "active" | "inactive" | "temporarily_closed" | "unknown";
+  store_role_primary: string | null;
+  store_roles: string[] | null;
+  role_confidence: number | null;
+  role_classification_method: string | null;
+  role_classified_at: string | null;
+  is_relevant_for_kiezkauf: boolean | null;
+  manual_review_status: "pending" | "approved" | "rejected" | "not_needed" | null;
+  manual_review_notes: string | null;
   updated_at: string;
 };
 
@@ -90,6 +98,29 @@ function sanitizeCategories(input: unknown): string[] {
   return [...unique];
 }
 
+function sanitizeStoreRoles(input: unknown): string[] {
+  if (!Array.isArray(input)) return [];
+  const allowed = new Set([
+    "sells_physical_products",
+    "sells_services",
+    "repair_service",
+    "food_prepared",
+    "food_grocery",
+    "health_care",
+    "beauty_personal_care",
+    "specialist_retail",
+    "unclear"
+  ]);
+  const unique = new Set<string>();
+  for (const entry of input) {
+    const value = String(entry ?? "").trim().toLowerCase();
+    if (!value || !allowed.has(value)) continue;
+    unique.add(value);
+  }
+  if (!unique.size) unique.add("unclear");
+  return [...unique].sort((a, b) => a.localeCompare(b));
+}
+
 function normalizeCategoryArray(values: string[] | null | undefined): string[] {
   const unique = new Set<string>();
   for (const entry of values ?? []) {
@@ -142,7 +173,7 @@ export async function GET(
         supabase
           .from("establishments")
           .select(
-            "id, external_source, external_id, name, address, district, lat, lon, osm_category, app_categories, website, phone, opening_hours, description, active_status, updated_at"
+            "id, external_source, external_id, name, address, district, lat, lon, osm_category, app_categories, website, phone, opening_hours, description, active_status, store_role_primary, store_roles, role_confidence, role_classification_method, role_classified_at, is_relevant_for_kiezkauf, manual_review_status, manual_review_notes, updated_at"
           )
           .eq("id", establishmentId)
           .single(),
@@ -301,6 +332,11 @@ export async function PATCH(
       openingHours?: unknown;
       description?: unknown;
       district?: unknown;
+      storeRoles?: unknown;
+      storeRolePrimary?: unknown;
+      isRelevantForKiezkauf?: unknown;
+      manualReviewStatus?: unknown;
+      manualReviewNotes?: unknown;
     };
 
     const activeStatus =
@@ -314,6 +350,39 @@ export async function PATCH(
     const updatePayload: Record<string, unknown> = {};
     if (body.appCategories !== undefined) {
       updatePayload.app_categories = sanitizeCategories(body.appCategories);
+    }
+    if (body.storeRoles !== undefined) {
+      updatePayload.store_roles = sanitizeStoreRoles(body.storeRoles);
+    }
+    if (body.storeRolePrimary !== undefined) {
+      const storeRolePrimary = String(body.storeRolePrimary ?? "").trim().toLowerCase();
+      if (
+        [
+          "sells_physical_products",
+          "sells_services",
+          "repair_service",
+          "food_prepared",
+          "food_grocery",
+          "health_care",
+          "beauty_personal_care",
+          "specialist_retail",
+          "unclear"
+        ].includes(storeRolePrimary)
+      ) {
+        updatePayload.store_role_primary = storeRolePrimary;
+      }
+    }
+    if (body.isRelevantForKiezkauf !== undefined && typeof body.isRelevantForKiezkauf === "boolean") {
+      updatePayload.is_relevant_for_kiezkauf = body.isRelevantForKiezkauf;
+    }
+    if (body.manualReviewStatus !== undefined) {
+      const manualReviewStatus = String(body.manualReviewStatus ?? "").trim().toLowerCase();
+      if (["pending", "approved", "rejected", "not_needed"].includes(manualReviewStatus)) {
+        updatePayload.manual_review_status = manualReviewStatus;
+      }
+    }
+    if (body.manualReviewNotes !== undefined) {
+      updatePayload.manual_review_notes = coerceNullableString(body.manualReviewNotes, 400);
     }
     if (activeStatus) {
       updatePayload.active_status = activeStatus;

@@ -36,6 +36,23 @@ Objetivo: mejorar calidad util y contener crecimiento de base de datos sin rehac
 - Script nuevo: `scripts/pipeline/lean-v1-refresh.mjs`
 - Ejecuta pipeline completo + prune de auditoria.
 
+7. Control de coste + trazabilidad IA
+- Nuevo tracking por run:
+  - `ai_enrichment_runs`
+  - `ai_enrichment_run_items`
+- Flags nuevos en `generate-ai-candidates`:
+  - `--district-scope=mitte`
+  - `--max-cost-usd-per-run=3`
+  - `--max-cost-usd-per-day=2`
+  - `--max-establishments=250`
+  - `--require-website-signals=true`
+  - `--only-ambiguous=true`
+- Se guarda hash de prompt (`prompt_hash`) y métricas agregadas (tokens/coste), no prompts completos.
+
+8. Coherencia merged -> candidates
+- Script nuevo: `scripts/pipeline/repair-merged-candidate-coherence.mjs`
+- Rellena candidatos faltantes desde `establishment_product_merged` para evitar huérfanos históricos.
+
 ## Comandos
 
 Aplicar migraciones:
@@ -56,10 +73,22 @@ Pipeline lean con reanudacion:
 npm run refresh:berlin:lean-v1 -- --resume
 ```
 
+Piloto IA conservador en Mitte:
+
+```bash
+npm run refresh:mitte:ai-pilot
+```
+
 Forzar modo sin LLM real (solo reglas + website):
 
 ```bash
 npm run refresh:berlin:lean-v1 -- --force-heuristic
+```
+
+Forzar reparación de coherencia merged->candidates durante refresh:
+
+```bash
+npm run refresh:berlin:lean-v1 -- --repair-coherence=true
 ```
 
 Prune de auditoria manual:

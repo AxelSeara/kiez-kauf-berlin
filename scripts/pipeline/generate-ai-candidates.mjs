@@ -1,6 +1,8 @@
+import { createHash } from "node:crypto";
 import {
   CHECKPOINT_FILE,
   clamp,
+  loadLocalEnvFiles,
   loadCheckpoint,
   logInfo,
   logWarn,
@@ -11,6 +13,16 @@ import {
   sqlLiteral,
   stableNormalizeText
 } from "./_utils.mjs";
+
+const DISTRICT_SCOPE_MAP = {
+  mitte: ["Mitte", "Moabit", "Wedding", "Gesundbrunnen", "Tiergarten", "Hansaviertel"]
+};
+
+const MODEL_PRICING_USD_PER_MILLION = {
+  "gpt-4.1-mini": { input: 0.4, output: 1.6 },
+  "gpt-4.1": { input: 2.0, output: 8.0 },
+  "gpt-4.1-nano": { input: 0.1, output: 0.4 }
+};
 
 const AI_GROUP_WEIGHTS = {
   grocery: { groceries: 0.8, beverages: 0.66, fresh_produce: 0.64, household: 0.55, snacks: 0.52 },
@@ -73,12 +85,49 @@ function normalizeTextArray(value) {
   return value.map((item) => String(item ?? "")).filter(Boolean);
 }
 
+function resolveDistrictScopeNames(rawScope) {
+  const scope = String(rawScope ?? "").trim().toLowerCase();
+  if (!scope) return [];
+  if (DISTRICT_SCOPE_MAP[scope]) return DISTRICT_SCOPE_MAP[scope];
+  return scope
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function resolvePostalCodeScope(rawScope) {
+  return String(rawScope ?? "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .map((item) => item.replace(/[^\d]/g, ""))
+    .filter((item) => item.length >= 4 && item.length <= 6);
+}
+
+function parseBooleanArg(value, fallback = false) {
+  if (value === undefined) return fallback;
+  if (value === true) return true;
+  const normalized = String(value).trim().toLowerCase();
+  if (["1", "true", "yes", "y", "on"].includes(normalized)) return true;
+  if (["0", "false", "no", "n", "off"].includes(normalized)) return false;
+  return fallback;
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
 function hasStrongWebsiteSignals(establishment) {
   if (!establishment.websiteSignals) {
     return false;
   }
 
   const s = establishment.websiteSignals;
+  if (typeof s.eligible_for_llm === "boolean") {
+    return s.eligible_for_llm;
+  }
   const strongHttp = typeof s.http_status === "number" && s.http_status >= 200 && s.http_status < 300;
   const hasStructure =
     (s.headings?.length ?? 0) >= 2 ||
@@ -192,7 +241,20 @@ order by id asc;
   }
 }
 
-async function fetchEstablishmentBatch(lastId, batchSize) {
+async function fetchEstablishmentBatch(lastId, batchSize, districtNames = [], postalCodes = []) {
+  const districtFilter =
+    districtNames.length > 0
+      ? `
+  and lower(e.district) = any(array[${districtNames.map((name) => sqlLiteral(name.toLowerCase())).join(", ")}]::text[])
+`
+      : "";
+  const postalFilter =
+    postalCodes.length > 0
+      ? `
+  and coalesce(e.address, '') ilike any(array[${postalCodes.map((code) => sqlLiteral(`%${code}%`)).join(", ")}]::text[])
+`
+      : "";
+
   const sql = `
 select
   e.id,
@@ -214,12 +276,28 @@ select
   w.schema_entities,
   w.schema_opening_hours,
   w.extracted_opening_hours,
-  w.fetched_at
+  w.fetched_at,
+  w.eligible_for_llm,
+  coalesce(ms.merged_total, 0)::int as merged_total,
+  coalesce(ms.rules_mid_conf, 0)::int as rules_mid_conf
 from establishments e
 left join establishment_website_enrichment w on w.establishment_id = e.id
+left join lateral (
+  select
+    count(*) as merged_total,
+    count(*) filter (
+      where m.primary_source_type = 'rules_generated'
+        and m.validation_status <> 'rejected'
+        and m.confidence between 0.55 and 0.82
+    ) as rules_mid_conf
+  from establishment_product_merged m
+  where m.establishment_id = e.id
+) ms on true
 where e.external_source = 'osm-overpass'
   and e.id > ${Number(lastId)}
   and e.active_status in ('active', 'temporarily_closed')
+  ${districtFilter}
+  ${postalFilter}
 order by e.id asc
 limit ${Number(batchSize)};
 `;
@@ -234,6 +312,8 @@ limit ${Number(batchSize)};
     website: row.website ? String(row.website) : null,
     freshness_score: row.freshness_score == null ? null : Number(row.freshness_score),
     last_enriched_at: row.last_enriched_at ? String(row.last_enriched_at) : null,
+    merged_total: Number(row.merged_total ?? 0),
+    rules_mid_conf: Number(row.rules_mid_conf ?? 0),
     websiteSignals: row.website_source_url
       ? {
           source_url: String(row.website_source_url),
@@ -247,7 +327,8 @@ limit ${Number(batchSize)};
           schema_entities: Array.isArray(row.schema_entities) ? row.schema_entities : [],
           schema_opening_hours: row.schema_opening_hours ? String(row.schema_opening_hours) : null,
           extracted_opening_hours: row.extracted_opening_hours ? String(row.extracted_opening_hours) : null,
-          fetched_at: row.fetched_at ? String(row.fetched_at) : null
+          fetched_at: row.fetched_at ? String(row.fetched_at) : null,
+          eligible_for_llm: Boolean(row.eligible_for_llm)
         }
       : null
   }));
@@ -449,30 +530,67 @@ async function llmCandidates(establishment, canonicalProducts, maxRecommendation
 
   if (!pool.length) return [];
 
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
-      model,
-      temperature: 0.1,
-      messages: [
-        {
-          role: "system",
-          content:
-            "You produce compact JSON for database ingestion. Avoid markdown. Confidence must be in [0,1]."
-        },
-        {
-          role: "user",
-          content: buildPrompt(establishment, pool, maxRecommendations)
-        }
-      ]
-    })
-  });
+  const prompt = buildPrompt(establishment, pool, maxRecommendations);
+  const promptHash = createHash("sha1").update(prompt).digest("hex");
+  const requestBody = {
+    model,
+    temperature: 0.1,
+    messages: [
+      {
+        role: "system",
+        content:
+          "You produce compact JSON for database ingestion. Avoid markdown. Confidence must be in [0,1]."
+      },
+      {
+        role: "user",
+        content: prompt
+      }
+    ]
+  };
 
-  if (!response.ok) {
+  const maxAttempts = 4;
+  let response = null;
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`
+        },
+        body: JSON.stringify(requestBody),
+        signal: AbortSignal.timeout(45_000)
+      });
+    } catch (error) {
+      const timeoutLike =
+        String(error?.name ?? "").toLowerCase().includes("abort") ||
+        String(error ?? "").toLowerCase().includes("timeout");
+      if (attempt === maxAttempts || !timeoutLike) {
+        throw error;
+      }
+      const backoffMs = 700 * 2 ** (attempt - 1) + Math.floor(Math.random() * 220);
+      await sleep(backoffMs);
+      continue;
+    }
+
+    if (response.ok) {
+      break;
+    }
+
+    const status = Number(response.status);
+    const isRetryable = status === 429 || status >= 500;
+    if (!isRetryable || attempt === maxAttempts) {
+      throw new Error(`OpenAI API failed ${status}`);
+    }
+
+    const retryAfter = Number(response.headers.get("retry-after"));
+    const backoffMs = Number.isFinite(retryAfter) && retryAfter > 0
+      ? retryAfter * 1000
+      : 700 * 2 ** (attempt - 1) + Math.floor(Math.random() * 220);
+    await sleep(backoffMs);
+  }
+
+  if (!response || !response.ok) {
     throw new Error(`OpenAI API failed ${response.status}`);
   }
 
@@ -491,8 +609,10 @@ async function llmCandidates(establishment, canonicalProducts, maxRecommendation
   const parsed = JSON.parse(content.slice(start, end + 1));
   const recommendations = Array.isArray(parsed.recommendations) ? parsed.recommendations : [];
   const validPoolIds = new Set(pool.map((item) => Number(item.id)));
+  const promptTokens = Number(payload.usage?.prompt_tokens ?? 0);
+  const completionTokens = Number(payload.usage?.completion_tokens ?? 0);
 
-  return recommendations
+  const candidates = recommendations
     .filter((item) => Number.isFinite(Number(item.canonical_product_id)))
     .map((item) => ({
       canonical_product_id: Number(item.canonical_product_id),
@@ -504,13 +624,22 @@ async function llmCandidates(establishment, canonicalProducts, maxRecommendation
     .map((item) => ({
       canonical_product_id: item.canonical_product_id,
       source_type: "ai_generated",
-      generation_method: "openai_llm_candidate_refiner_v2",
+      generation_method: "openai_llm_candidate_refiner_v3",
       extraction_method: `openai_chat_completions_${model}`,
       source_url: establishment.websiteSignals?.source_url ?? establishment.website ?? null,
       confidence: item.confidence,
       why: `LLM inference from store + website context: ${item.why}`,
       category_path: ["ai", "llm", ...(establishment.app_categories.slice(0, 1) || ["uncategorized"])]
     }));
+
+  return {
+    candidates,
+    inputTokens: promptTokens,
+    outputTokens: completionTokens,
+    estimatedCostUsd: estimateCostUsd(model, promptTokens, completionTokens),
+    promptHash,
+    poolSize: pool.length
+  };
 }
 
 function chooseValidationStatus(sourceType, confidence) {
@@ -521,6 +650,222 @@ function chooseValidationStatus(sourceType, confidence) {
     return confidence >= 0.82 ? "likely" : "unvalidated";
   }
   return confidence >= 0.72 ? "likely" : "unvalidated";
+}
+
+function hasDistrictDemand(unresolvedDemandByDistrict, district) {
+  const normalized = stableNormalizeText(district);
+  if (!normalized) return false;
+  return (unresolvedDemandByDistrict.get(normalized) ?? 0) >= 3;
+}
+
+function isAmbiguousEstablishment(establishment, unresolvedDemandByDistrict) {
+  if (establishment.rules_mid_conf > 0) {
+    return true;
+  }
+  if (establishment.merged_total > 8) {
+    return true;
+  }
+  return hasDistrictDemand(unresolvedDemandByDistrict, establishment.district);
+}
+
+function getModelPricing(model) {
+  return MODEL_PRICING_USD_PER_MILLION[model] ?? MODEL_PRICING_USD_PER_MILLION["gpt-4.1-mini"];
+}
+
+function estimateCostUsd(model, inputTokens, outputTokens) {
+  const pricing = getModelPricing(model);
+  const inCost = (Number(inputTokens) / 1_000_000) * pricing.input;
+  const outCost = (Number(outputTokens) / 1_000_000) * pricing.output;
+  return Number((inCost + outCost).toFixed(6));
+}
+
+async function fetchUnresolvedDemandByDistrict() {
+  const sql = `
+select
+  lower(coalesce(nullif(btrim(district), ''), 'berlin')) as district_key,
+  count(*)::int as unresolved_count
+from searches
+where has_results = false
+  and timestamp >= now() - interval '30 day'
+group by 1;
+`;
+  const res = await runSupabaseQuery({ sql, output: "json" });
+  const out = new Map();
+  for (const row of res.parsed.rows ?? []) {
+    const key = String(row.district_key ?? "").trim();
+    if (!key) continue;
+    out.set(stableNormalizeText(key), Number(row.unresolved_count ?? 0));
+  }
+  return out;
+}
+
+async function fetchDailyAiCostUsd() {
+  const sql = `
+select coalesce(sum(estimated_cost_usd), 0)::numeric(12,6) as daily_cost
+from ai_enrichment_runs
+where started_at >= date_trunc('day', now())
+  and status in ('running', 'completed', 'stopped_budget');
+`;
+
+  try {
+    const res = await runSupabaseQuery({ sql, output: "json" });
+    return Number(res.parsed.rows?.[0]?.daily_cost ?? 0);
+  } catch (error) {
+    const message = String(error ?? "").toLowerCase();
+    if (message.includes("does not exist") || message.includes("relation")) {
+      return 0;
+    }
+    throw error;
+  }
+}
+
+async function createAiRunRecord(payload) {
+  const sql = `
+insert into ai_enrichment_runs (
+  status,
+  district_scope,
+  model,
+  mode,
+  max_cost_usd_per_run,
+  max_cost_usd_per_day,
+  max_establishments,
+  max_recommendations,
+  require_website_signals,
+  only_ambiguous,
+  force_heuristic,
+  used_llm,
+  checkpoint_from_id,
+  notes
+)
+values (
+  'running',
+  ${sqlLiteral(payload.district_scope)},
+  ${sqlLiteral(payload.model)},
+  ${sqlLiteral(payload.mode)},
+  ${sqlLiteral(payload.max_cost_usd_per_run)},
+  ${sqlLiteral(payload.max_cost_usd_per_day)},
+  ${sqlLiteral(payload.max_establishments)},
+  ${sqlLiteral(payload.max_recommendations)},
+  ${sqlLiteral(payload.require_website_signals)},
+  ${sqlLiteral(payload.only_ambiguous)},
+  ${sqlLiteral(payload.force_heuristic)},
+  ${sqlLiteral(payload.used_llm)},
+  ${sqlLiteral(payload.checkpoint_from_id)},
+  ${sqlLiteral(payload.notes)}
+)
+returning id;
+`;
+
+  try {
+    const res = await runSupabaseQuery({ sql, output: "json" });
+    return Number(res.parsed.rows?.[0]?.id ?? 0) || null;
+  } catch (error) {
+    const message = String(error ?? "").toLowerCase();
+    if (message.includes("does not exist") || message.includes("relation")) {
+      return null;
+    }
+    throw error;
+  }
+}
+
+async function appendAiRunItems(runId, rows) {
+  if (!runId || !rows.length) return;
+  const values = rows
+    .map((row) => {
+      return `(${[
+        sqlLiteral(runId),
+        sqlLiteral(row.establishment_id),
+        sqlLiteral(row.district),
+        sqlLiteral(row.eligible_for_llm),
+        sqlLiteral(row.is_ambiguous),
+        sqlLiteral(row.used_llm),
+        sqlLiteral(row.llm_skipped_reason),
+        sqlLiteral(row.prompt_hash),
+        sqlLiteral(row.product_pool_size),
+        sqlLiteral(row.website_candidates_count),
+        sqlLiteral(row.llm_candidates_count),
+        sqlLiteral(row.heuristic_candidates_count),
+        sqlLiteral(row.selected_candidates_count),
+        sqlLiteral(row.input_tokens),
+        sqlLiteral(row.output_tokens),
+        sqlLiteral(row.estimated_cost_usd),
+        sqlLiteral(row.error_message)
+      ].join(",")})`;
+    })
+    .join(",\n");
+
+  const sql = `
+insert into ai_enrichment_run_items (
+  run_id,
+  establishment_id,
+  district,
+  eligible_for_llm,
+  is_ambiguous,
+  used_llm,
+  llm_skipped_reason,
+  prompt_hash,
+  product_pool_size,
+  website_candidates_count,
+  llm_candidates_count,
+  heuristic_candidates_count,
+  selected_candidates_count,
+  input_tokens,
+  output_tokens,
+  estimated_cost_usd,
+  error_message
+)
+values
+${values}
+on conflict (run_id, establishment_id)
+do update set
+  district = excluded.district,
+  eligible_for_llm = excluded.eligible_for_llm,
+  is_ambiguous = excluded.is_ambiguous,
+  used_llm = excluded.used_llm,
+  llm_skipped_reason = excluded.llm_skipped_reason,
+  prompt_hash = excluded.prompt_hash,
+  product_pool_size = excluded.product_pool_size,
+  website_candidates_count = excluded.website_candidates_count,
+  llm_candidates_count = excluded.llm_candidates_count,
+  heuristic_candidates_count = excluded.heuristic_candidates_count,
+  selected_candidates_count = excluded.selected_candidates_count,
+  input_tokens = excluded.input_tokens,
+  output_tokens = excluded.output_tokens,
+  estimated_cost_usd = excluded.estimated_cost_usd,
+  error_message = excluded.error_message;
+`;
+  await runSupabaseQuery({ sql, output: "json" });
+}
+
+async function finalizeAiRunRecord(runId, payload) {
+  if (!runId) return;
+  const sql = `
+update ai_enrichment_runs
+set
+  status = ${sqlLiteral(payload.status)},
+  processed_establishments = ${sqlLiteral(payload.processed_establishments)},
+  eligible_establishments = ${sqlLiteral(payload.eligible_establishments)},
+  ambiguous_establishments = ${sqlLiteral(payload.ambiguous_establishments)},
+  llm_attempted_establishments = ${sqlLiteral(payload.llm_attempted_establishments)},
+  llm_used_establishments = ${sqlLiteral(payload.llm_used_establishments)},
+  website_only_establishments = ${sqlLiteral(payload.website_only_establishments)},
+  heuristic_only_establishments = ${sqlLiteral(payload.heuristic_only_establishments)},
+  website_extracted_candidates = ${sqlLiteral(payload.website_extracted_candidates)},
+  ai_generated_candidates = ${sqlLiteral(payload.ai_generated_candidates)},
+  rules_generated_candidates = ${sqlLiteral(payload.rules_generated_candidates)},
+  total_upsert_rows = ${sqlLiteral(payload.total_upsert_rows)},
+  affected_rows = ${sqlLiteral(payload.affected_rows)},
+  errors_count = ${sqlLiteral(payload.errors_count)},
+  tokens_input = ${sqlLiteral(payload.tokens_input)},
+  tokens_output = ${sqlLiteral(payload.tokens_output)},
+  estimated_cost_usd = ${sqlLiteral(payload.estimated_cost_usd)},
+  checkpoint_to_id = ${sqlLiteral(payload.checkpoint_to_id)},
+  notes = ${sqlLiteral(payload.notes)},
+  completed_at = now(),
+  updated_at = now()
+where id = ${sqlLiteral(runId)};
+`;
+  await runSupabaseQuery({ sql, output: "json" });
 }
 
 function dedupeAndTrimCandidates(candidates, maxPerStore) {
@@ -650,12 +995,21 @@ select count(*)::int as affected_rows from upserted;
 }
 
 async function main() {
+  loadLocalEnvFiles();
   const args = parseArgs(process.argv);
   const batchSize = Number(args["batch-size"] ?? 120);
   const maxRecommendations = Number(args["max-recommendations"] ?? 5);
   const resume = Boolean(args.resume);
   const forceHeuristic = Boolean(args["force-heuristic"]);
   const maxEstablishments = args["max-establishments"] ? Number(args["max-establishments"]) : null;
+  const maxCostUsdPerRun = Number(args["max-cost-usd-per-run"] ?? 3);
+  const maxCostUsdPerDay = Number(args["max-cost-usd-per-day"] ?? 2);
+  const requireWebsiteSignals = parseBooleanArg(args["require-website-signals"], false);
+  const onlyAmbiguous = parseBooleanArg(args["only-ambiguous"], false);
+  const districtScope = String(args["district-scope"] ?? "").trim();
+  const districtNames = resolveDistrictScopeNames(districtScope);
+  const postalCodeScope = String(args["postal-code-scope"] ?? "").trim();
+  const postalCodes = resolvePostalCodeScope(postalCodeScope);
   const model = String(args.model ?? process.env.OPENAI_MODEL ?? "gpt-4.1-mini");
 
   const checkpoint = await loadCheckpoint();
@@ -664,12 +1018,24 @@ async function main() {
 
   const hasApiKey = Boolean(process.env.OPENAI_API_KEY);
   const useLlm = hasApiKey && !forceHeuristic;
+  const unresolvedDemandByDistrict = await fetchUnresolvedDemandByDistrict();
+  const dailyCostAtStart = await fetchDailyAiCostUsd();
+  let runId = null;
 
   const canonicalProducts = await fetchCanonicalProducts();
   logInfo("Phase 6 - generate enriched candidates", {
     batchSize,
     maxRecommendations,
     maxEstablishments,
+    maxCostUsdPerRun,
+    maxCostUsdPerDay,
+    requireWebsiteSignals,
+    onlyAmbiguous,
+    districtScope: districtScope || null,
+    districtNames,
+    postalCodeScope: postalCodeScope || null,
+    postalCodes,
+    dailyCostAtStart,
     useLlm,
     model,
     canonicalProducts: canonicalProducts.length,
@@ -679,19 +1045,121 @@ async function main() {
 
   let totalEstablishments = 0;
   let totalGenerated = 0;
+  let totalUpsertRows = 0;
+  let llmAttemptedCount = 0;
   let llmUsedCount = 0;
   let websiteExtractedCount = 0;
+  let aiGeneratedCount = 0;
+  let rulesGeneratedCount = 0;
+  let eligibleForLlmCount = 0;
+  let ambiguousCount = 0;
+  let websiteOnlyStores = 0;
+  let heuristicOnlyStores = 0;
+  let totalTokensInput = 0;
+  let totalTokensOutput = 0;
+  let totalCostUsd = 0;
+  let budgetStopReason = null;
+  let errorCount = 0;
+
+  runId = await createAiRunRecord({
+    district_scope: districtScope || null,
+    model,
+    mode: useLlm ? "gpt_plus_website" : "rules_plus_website",
+    max_cost_usd_per_run: maxCostUsdPerRun,
+    max_cost_usd_per_day: maxCostUsdPerDay,
+    max_establishments: maxEstablishments,
+    max_recommendations: maxRecommendations,
+    require_website_signals: requireWebsiteSignals,
+    only_ambiguous: onlyAmbiguous,
+    force_heuristic: forceHeuristic,
+    used_llm: useLlm,
+    checkpoint_from_id: cursor,
+    notes: [districtScope ? `district_scope=${districtScope}` : null, postalCodeScope ? `postal_code_scope=${postalCodeScope}` : null]
+      .filter(Boolean)
+      .join("; ")
+  });
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    const establishments = await fetchEstablishmentBatch(cursor, batchSize);
-    if (!establishments.length) {
+    if (totalCostUsd >= maxCostUsdPerRun) {
+      budgetStopReason = `Stopped by run budget cap (${maxCostUsdPerRun} USD).`;
+      break;
+    }
+    if (dailyCostAtStart + totalCostUsd >= maxCostUsdPerDay) {
+      budgetStopReason = `Stopped by daily budget cap (${maxCostUsdPerDay} USD).`;
       break;
     }
 
+    let establishments = await fetchEstablishmentBatch(cursor, batchSize, districtNames, postalCodes);
+    if (!establishments.length) {
+      break;
+    }
+    if (maxEstablishments && totalEstablishments + establishments.length > maxEstablishments) {
+      const remaining = Math.max(0, maxEstablishments - totalEstablishments);
+      establishments = establishments.slice(0, remaining);
+      if (!establishments.length) {
+        break;
+      }
+    }
+
     const upsertRows = [];
+    const runItems = [];
 
     for (const establishment of establishments) {
+      const strongSignals = hasStrongWebsiteSignals(establishment);
+      const ambiguous = isAmbiguousEstablishment(establishment, unresolvedDemandByDistrict);
+      const eligibleForLlm = strongSignals;
+      if (eligibleForLlm) {
+        eligibleForLlmCount += 1;
+      }
+      if (ambiguous) {
+        ambiguousCount += 1;
+      }
+
+      if (requireWebsiteSignals && !strongSignals) {
+        runItems.push({
+          establishment_id: establishment.id,
+          district: establishment.district,
+          eligible_for_llm: false,
+          is_ambiguous: ambiguous,
+          used_llm: false,
+          llm_skipped_reason: "website_signals_not_strong",
+          prompt_hash: null,
+          product_pool_size: 0,
+          website_candidates_count: 0,
+          llm_candidates_count: 0,
+          heuristic_candidates_count: 0,
+          selected_candidates_count: 0,
+          input_tokens: 0,
+          output_tokens: 0,
+          estimated_cost_usd: 0,
+          error_message: null
+        });
+        continue;
+      }
+
+      if (onlyAmbiguous && !ambiguous) {
+        runItems.push({
+          establishment_id: establishment.id,
+          district: establishment.district,
+          eligible_for_llm: eligibleForLlm,
+          is_ambiguous: false,
+          used_llm: false,
+          llm_skipped_reason: "not_ambiguous",
+          prompt_hash: null,
+          product_pool_size: 0,
+          website_candidates_count: 0,
+          llm_candidates_count: 0,
+          heuristic_candidates_count: 0,
+          selected_candidates_count: 0,
+          input_tokens: 0,
+          output_tokens: 0,
+          estimated_cost_usd: 0,
+          error_message: null
+        });
+        continue;
+      }
+
       const storeLimit = pickRecommendationLimit(establishment, maxRecommendations);
       const nowIso = new Date().toISOString();
       const freshness = Number(clamp(establishment.freshness_score ?? 0.64, 0.05, 0.99).toFixed(4));
@@ -700,14 +1168,45 @@ async function main() {
       websiteExtractedCount += websiteCandidates.length;
 
       let aiRows = [];
+      let llmTokensIn = 0;
+      let llmTokensOut = 0;
+      let llmCostUsd = 0;
+      let promptHash = null;
+      let poolSize = 0;
+      let llmSkippedReason = null;
+      let llmError = null;
+
       if (useLlm) {
-        try {
-          aiRows = (await llmCandidates(establishment, canonicalProducts, storeLimit, model)) ?? [];
-          if (aiRows.length) {
-            llmUsedCount += 1;
+        if (!eligibleForLlm) {
+          llmSkippedReason = "website_signals_not_strong";
+        } else if (dailyCostAtStart + totalCostUsd >= maxCostUsdPerDay) {
+          llmSkippedReason = "daily_budget_cap_reached";
+        } else if (totalCostUsd >= maxCostUsdPerRun) {
+          llmSkippedReason = "run_budget_cap_reached";
+        } else {
+          llmAttemptedCount += 1;
+          try {
+            const llmResult = await llmCandidates(establishment, canonicalProducts, storeLimit, model);
+            aiRows = llmResult?.candidates ?? [];
+            llmTokensIn = Number(llmResult?.inputTokens ?? 0);
+            llmTokensOut = Number(llmResult?.outputTokens ?? 0);
+            llmCostUsd = Number(llmResult?.estimatedCostUsd ?? 0);
+            promptHash = llmResult?.promptHash ?? null;
+            poolSize = Number(llmResult?.poolSize ?? 0);
+            totalTokensInput += llmTokensIn;
+            totalTokensOutput += llmTokensOut;
+            totalCostUsd = Number((totalCostUsd + llmCostUsd).toFixed(6));
+            if (aiRows.length) {
+              llmUsedCount += 1;
+            }
+          } catch (error) {
+            llmError = String(error);
+            errorCount += 1;
+            logWarn(
+              `LLM generation failed for establishment ${establishment.id}, using conservative fallback`,
+              llmError
+            );
           }
-        } catch (error) {
-          logWarn(`LLM generation failed for establishment ${establishment.id}, using conservative fallback`, String(error));
         }
       }
 
@@ -715,6 +1214,12 @@ async function main() {
       const fallbackRows = fallbackNeeded
         ? heuristicCandidates(establishment, canonicalProducts, Math.min(storeLimit, 2))
         : [];
+      if (!aiRows.length && websiteCandidates.length > 0) {
+        websiteOnlyStores += 1;
+      }
+      if (!aiRows.length && fallbackRows.length > 0) {
+        heuristicOnlyStores += 1;
+      }
 
       const selected = dedupeAndTrimCandidates(
         [...websiteCandidates, ...aiRows, ...fallbackRows],
@@ -723,6 +1228,11 @@ async function main() {
 
       for (const candidate of selected) {
         const validationStatus = chooseValidationStatus(candidate.source_type, candidate.confidence);
+        if (candidate.source_type === "ai_generated") {
+          aiGeneratedCount += 1;
+        } else if (candidate.source_type === "rules_generated") {
+          rulesGeneratedCount += 1;
+        }
         upsertRows.push({
           establishment_id: establishment.id,
           canonical_product_id: candidate.canonical_product_id,
@@ -753,11 +1263,32 @@ async function main() {
           freshness_score: freshness
         });
       }
+
+      runItems.push({
+        establishment_id: establishment.id,
+        district: establishment.district,
+        eligible_for_llm: eligibleForLlm,
+        is_ambiguous: ambiguous,
+        used_llm: aiRows.length > 0,
+        llm_skipped_reason: llmSkippedReason,
+        prompt_hash: promptHash,
+        product_pool_size: poolSize,
+        website_candidates_count: websiteCandidates.length,
+        llm_candidates_count: aiRows.length,
+        heuristic_candidates_count: fallbackRows.length,
+        selected_candidates_count: selected.length,
+        input_tokens: llmTokensIn,
+        output_tokens: llmTokensOut,
+        estimated_cost_usd: llmCostUsd,
+        error_message: llmError
+      });
     }
 
     const upsertSql = buildUpsertSql(upsertRows);
     const upsertResult = await runSupabaseQuery({ sql: upsertSql, output: "json" });
     const affectedRows = Number(upsertResult.parsed.rows?.[0]?.affected_rows ?? 0);
+    totalUpsertRows += upsertRows.length;
+    await appendAiRunItems(runId, runItems);
 
     totalEstablishments += establishments.length;
     totalGenerated += affectedRows;
@@ -768,7 +1299,23 @@ async function main() {
       mode: useLlm ? "gpt_plus_website" : "rules_plus_website",
       totalEstablishments,
       totalGenerated,
+      totalUpsertRows,
+      maxCostUsdPerRun,
+      maxCostUsdPerDay,
+      totalCostUsd,
+      llmAttemptedCount,
       llmUsedCount,
+      totalTokensInput,
+      totalTokensOutput,
+      eligibleForLlmCount,
+      ambiguousCount,
+      websiteOnlyStores,
+      heuristicOnlyStores,
+      aiGeneratedCount,
+      rulesGeneratedCount,
+      requireWebsiteSignals,
+      onlyAmbiguous,
+      districtScope: districtScope || null,
       websiteExtractedCount,
       updatedAt: new Date().toISOString()
     };
@@ -780,7 +1327,11 @@ async function main() {
       affectedRows,
       cursor,
       cumulativeGenerated: totalGenerated,
+      cumulativeCostUsd: totalCostUsd,
+      llmAttemptedCount,
       llmUsedCount,
+      totalTokensInput,
+      totalTokensOutput,
       websiteExtractedCount
     });
 
@@ -793,22 +1344,68 @@ async function main() {
     }
   }
 
+  const status = budgetStopReason ? "stopped_budget" : "completed";
   checkpoint.generateAiCandidates = {
     lastId: cursor,
     mode: useLlm ? "gpt_plus_website" : "rules_plus_website",
     totalEstablishments,
     totalGenerated,
+    totalUpsertRows,
+    maxCostUsdPerRun,
+    maxCostUsdPerDay,
+    totalCostUsd,
+    llmAttemptedCount,
     llmUsedCount,
+    totalTokensInput,
+    totalTokensOutput,
+    eligibleForLlmCount,
+    ambiguousCount,
+    websiteOnlyStores,
+    heuristicOnlyStores,
+    aiGeneratedCount,
+    rulesGeneratedCount,
+    requireWebsiteSignals,
+    onlyAmbiguous,
+    districtScope: districtScope || null,
     websiteExtractedCount,
-    completed: true,
+    completed: status === "completed",
+    stoppedByBudget: Boolean(budgetStopReason),
+    stopReason: budgetStopReason,
     updatedAt: new Date().toISOString()
   };
   await saveCheckpoint(checkpoint);
+  await finalizeAiRunRecord(runId, {
+    status,
+    processed_establishments: totalEstablishments,
+    eligible_establishments: eligibleForLlmCount,
+    ambiguous_establishments: ambiguousCount,
+    llm_attempted_establishments: llmAttemptedCount,
+    llm_used_establishments: llmUsedCount,
+    website_only_establishments: websiteOnlyStores,
+    heuristic_only_establishments: heuristicOnlyStores,
+    website_extracted_candidates: websiteExtractedCount,
+    ai_generated_candidates: aiGeneratedCount,
+    rules_generated_candidates: rulesGeneratedCount,
+    total_upsert_rows: totalUpsertRows,
+    affected_rows: totalGenerated,
+    errors_count: errorCount,
+    tokens_input: totalTokensInput,
+    tokens_output: totalTokensOutput,
+    estimated_cost_usd: totalCostUsd,
+    checkpoint_to_id: cursor,
+    notes: budgetStopReason ?? "Run completed."
+  });
 
   logInfo("Phase 6 completed", {
     totalEstablishments,
     totalGenerated,
+    totalCostUsd,
+    llmAttemptedCount,
     llmUsedCount,
+    totalTokensInput,
+    totalTokensOutput,
+    status,
+    budgetStopReason,
     websiteExtractedCount,
     mode: useLlm ? "gpt_plus_website" : "rules_plus_website"
   });

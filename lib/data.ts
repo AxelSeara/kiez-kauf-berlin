@@ -285,6 +285,59 @@ type SupabaseCanonicalProductFacetRow = {
   facet_normalized: string;
 };
 
+type SupabaseCanonicalServiceRow = {
+  id: number;
+  slug: string;
+  display_name_en: string | null;
+  display_name_es: string | null;
+  display_name_de: string | null;
+  group_key: string | null;
+  is_active: boolean | null;
+};
+
+type SupabaseCanonicalServiceAliasRow = {
+  canonical_service_id: number;
+  alias: string;
+  is_active: boolean | null;
+};
+
+type SupabaseServiceSearchRow = {
+  establishment_id: number;
+  canonical_service_id: number;
+  primary_source_type: SearchResult["sourceType"];
+  confidence: number;
+  validation_status: SearchResult["validationStatus"];
+  availability_status: SearchResult["availabilityStatus"];
+  why_this_service_matches: string | null;
+  source_url: string | null;
+  updated_at: string;
+  canonical_services:
+    | {
+        id: number;
+        slug: string;
+        display_name_en: string | null;
+        display_name_de: string | null;
+        display_name_es: string | null;
+        group_key: string | null;
+      }
+    | null;
+  establishments:
+    | {
+        id: number;
+        name: string | null;
+        address: string | null;
+        district: string | null;
+        lat: number | null;
+        lon: number | null;
+        opening_hours: string | null;
+        website: string | null;
+        phone: string | null;
+        osm_category: string | null;
+        app_categories: string[] | null;
+      }
+    | null;
+};
+
 type DatasetSearchStrategy =
   | "product_name"
   | "canonical_multilingual"
@@ -303,6 +356,14 @@ let canonicalCatalogCache:
   | {
       loadedAt: number;
       rows: SupabaseCanonicalProductRow[];
+    }
+  | null = null;
+
+let canonicalServiceCatalogCache:
+  | {
+      loadedAt: number;
+      rows: SupabaseCanonicalServiceRow[];
+      aliasesByServiceId: Map<number, Set<string>>;
     }
   | null = null;
 
@@ -690,6 +751,7 @@ function sourceRank(sourceType: SearchResult["sourceType"] | null | undefined): 
   if (sourceType === "merchant_added") return 5;
   if (sourceType === "website_extracted") return 4;
   if (sourceType === "ai_generated") return 3;
+  if (sourceType === "ai_inferred") return 3;
   if (sourceType === "rules_generated") return 2;
   if (sourceType === "imported") return 1;
   return 0;
@@ -944,6 +1006,308 @@ function findCanonicalProductIdsByQuery(query: string, products: SupabaseCanonic
     .map((entry) => entry.id);
 }
 
+async function getCanonicalServiceCatalog(): Promise<{
+  rows: SupabaseCanonicalServiceRow[];
+  aliasesByServiceId: Map<number, Set<string>>;
+}> {
+  const db = supabase;
+  if (!db) {
+    return {
+      rows: [],
+      aliasesByServiceId: new Map()
+    };
+  }
+
+  if (
+    canonicalServiceCatalogCache &&
+    Date.now() - canonicalServiceCatalogCache.loadedAt < CANONICAL_CACHE_TTL_MS
+  ) {
+    return {
+      rows: canonicalServiceCatalogCache.rows,
+      aliasesByServiceId: canonicalServiceCatalogCache.aliasesByServiceId
+    };
+  }
+
+  const { data: serviceData, error: serviceError } = await db
+    .from("canonical_services")
+    .select("id, slug, display_name_en, display_name_es, display_name_de, group_key, is_active")
+    .eq("is_active", true)
+    .limit(2000);
+
+  if (serviceError) {
+    if (isSchemaCompatibilityError(serviceError.message)) {
+      if (DEV_DEBUG) {
+        console.warn("[catalog-compat] canonical_services not available for service fallback");
+      }
+      return {
+        rows: [],
+        aliasesByServiceId: new Map()
+      };
+    }
+    throw new Error(`Supabase canonical services query failed: ${serviceError.message}`);
+  }
+
+  const aliasMap = new Map<number, Set<string>>();
+  const { data: aliasData, error: aliasError } = await db
+    .from("canonical_service_aliases")
+    .select("canonical_service_id, alias, is_active")
+    .eq("is_active", true)
+    .limit(12000);
+
+  if (aliasError) {
+    if (!isSchemaCompatibilityError(aliasError.message)) {
+      throw new Error(`Supabase canonical service aliases query failed: ${aliasError.message}`);
+    }
+    if (DEV_DEBUG) {
+      console.warn("[catalog-compat] canonical_service_aliases not available for service fallback");
+    }
+  } else {
+    for (const row of (aliasData ?? []) as SupabaseCanonicalServiceAliasRow[]) {
+      const serviceId = Number(row.canonical_service_id);
+      if (!Number.isFinite(serviceId)) {
+        continue;
+      }
+
+      const alias = String(row.alias ?? "").trim();
+      if (!alias) {
+        continue;
+      }
+
+      if (!aliasMap.has(serviceId)) {
+        aliasMap.set(serviceId, new Set());
+      }
+      aliasMap.get(serviceId)?.add(alias);
+    }
+  }
+
+  const rows = ((serviceData ?? []) as SupabaseCanonicalServiceRow[]).filter(
+    (row) => row.is_active !== false
+  );
+
+  canonicalServiceCatalogCache = {
+    loadedAt: Date.now(),
+    rows,
+    aliasesByServiceId: aliasMap
+  };
+
+  return {
+    rows,
+    aliasesByServiceId: aliasMap
+  };
+}
+
+function findCanonicalServiceIdsByQuery(
+  query: string,
+  services: SupabaseCanonicalServiceRow[],
+  aliasesByServiceId: Map<number, Set<string>>
+): number[] {
+  const normalized = normalizeSearchQuery(query);
+  if (!normalized || services.length === 0) {
+    return [];
+  }
+
+  const queryTokens = splitNormalizedTokens(normalized);
+  const matches: Array<{ id: number; score: number }> = [];
+
+  for (const service of services) {
+    const terms = Array.from(
+      new Set(
+        [
+          service.slug,
+          service.display_name_en ?? "",
+          service.display_name_de ?? "",
+          service.display_name_es ?? "",
+          ...(aliasesByServiceId.has(service.id) ? Array.from(aliasesByServiceId.get(service.id) ?? []) : [])
+        ]
+          .map((value) => normalizeQuery(String(value)))
+          .filter(Boolean)
+      )
+    );
+
+    if (terms.length === 0) {
+      continue;
+    }
+
+    const hasExact = terms.some((term) => term === normalized);
+    const hasIncludes = terms.some((term) => normalizedContains(term, normalized));
+    const hasFuzzy = terms.some((term) => normalizedFuzzyMatch(term, normalized));
+    const hasToken = terms.some((term) =>
+      queryTokens.some((token) => token.length >= 3 && term.includes(token))
+    );
+
+    if (!hasExact && !hasIncludes && !hasFuzzy && !hasToken) {
+      continue;
+    }
+
+    const score =
+      (hasExact ? 100 : 0) +
+      (hasIncludes ? 40 : 0) +
+      (hasFuzzy ? 22 : 0) +
+      (hasToken ? 10 : 0) +
+      (service.group_key === "repair" ? 3 : 0);
+
+    matches.push({ id: service.id, score });
+  }
+
+  if (matches.length === 0) {
+    return [];
+  }
+
+  matches.sort((a, b) => b.score - a.score);
+  const threshold = Math.max(14, (matches[0]?.score ?? 0) - 40);
+  return matches
+    .filter((entry) => entry.score >= threshold)
+    .slice(0, 24)
+    .map((entry) => entry.id);
+}
+
+async function searchServiceFallbackResults(args: {
+  query: string;
+  lat: number;
+  lng: number;
+  radiusMeters: number;
+  excludeStoreIds?: Set<string>;
+}): Promise<SearchResult[]> {
+  if (!supabase) {
+    return [];
+  }
+
+  const { rows: services, aliasesByServiceId } = await getCanonicalServiceCatalog();
+  if (services.length === 0) {
+    return [];
+  }
+
+  const matchedServiceIds = findCanonicalServiceIdsByQuery(args.query, services, aliasesByServiceId);
+  if (matchedServiceIds.length === 0) {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("establishment_service_merged")
+    .select(
+      "establishment_id, canonical_service_id, primary_source_type, confidence, validation_status, availability_status, why_this_service_matches, source_url, updated_at, canonical_services:canonical_service_id(id, slug, display_name_en, display_name_de, display_name_es, group_key), establishments:establishment_id(id, name, address, district, lat, lon, opening_hours, website, phone, osm_category, app_categories)"
+    )
+    .in("canonical_service_id", matchedServiceIds)
+    .neq("validation_status", "rejected")
+    .limit(900);
+
+  if (error) {
+    if (isSchemaCompatibilityError(error.message)) {
+      return [];
+    }
+    throw new Error(`Supabase service fallback query failed: ${error.message}`);
+  }
+
+  const rows = (data ?? []) as SupabaseServiceSearchRow[];
+  const normalizedQuery = normalizeSearchQuery(args.query);
+  const results: SearchResult[] = [];
+  let malformedRows = 0;
+
+  for (const row of rows) {
+    const store = row.establishments;
+    const service = row.canonical_services;
+    if (!store || !service || !hasValidStoreCoordinates({ lat: store.lat, lng: store.lon })) {
+      malformedRows += 1;
+      if (malformedRows <= 5) {
+        debugMalformedRecord("Skipping malformed service fallback row", {
+          establishmentId: row.establishment_id,
+          serviceId: row.canonical_service_id,
+          store,
+          service
+        });
+      }
+      continue;
+    }
+
+    const storeId = String(store.id);
+    if (args.excludeStoreIds?.has(storeId)) {
+      continue;
+    }
+
+    const distanceMeters = haversineMeters(args.lat, args.lng, store.lat, store.lon);
+    if (distanceMeters > args.radiusMeters) {
+      continue;
+    }
+
+    const serviceName =
+      service.display_name_en ?? service.display_name_de ?? service.display_name_es ?? service.slug;
+    const normalizedServiceName = normalizeQuery(String(serviceName ?? service.slug ?? ""));
+    const exactMatch = normalizedServiceName === normalizedQuery ? 1 : 0;
+    const includesMatch = normalizedServiceName.includes(normalizedQuery) ? 1 : 0;
+    const fuzzyMatch = normalizedFuzzyMatch(normalizedServiceName, normalizedQuery) ? 1 : 0;
+    const confidence = typeof row.confidence === "number" ? row.confidence : 0;
+    const validationScore =
+      row.validation_status === "validated"
+        ? 1500
+        : row.validation_status === "likely"
+          ? 700
+          : row.validation_status === "rejected"
+            ? -10000
+            : 0;
+    const sourceScore = sourceRank(row.primary_source_type) * 220;
+    const freshnessHours = Math.max(
+      1,
+      Math.round((Date.now() - new Date(row.updated_at).getTime()) / (60 * 60 * 1000))
+    );
+
+    const rank =
+      exactMatch * 92000 +
+      includesMatch * 46000 +
+      fuzzyMatch * 8000 +
+      confidence * 2000 +
+      validationScore +
+      sourceScore -
+      distanceMeters -
+      freshnessHours * 2;
+
+    results.push({
+      offer: {
+        id: `service_${storeId}_${service.id}_${row.primary_source_type ?? "unknown"}`,
+        storeId,
+        productId: `service_${service.id}`,
+        priceOptional: null,
+        availability: "unknown",
+        updatedAt: row.updated_at ?? new Date().toISOString()
+      },
+      store: {
+        id: storeId,
+        name: String(store.name ?? "Unknown store"),
+        address: String(store.address ?? ""),
+        district: String(store.district ?? "Berlin"),
+        openingHours: String(store.opening_hours ?? ""),
+        lat: store.lat,
+        lng: store.lon,
+        website: store.website ?? row.source_url ?? null,
+        phone: store.phone ?? null,
+        ownershipType: inferOwnershipTypeFromStoreName(store.name),
+        appCategories: store.app_categories ?? [],
+        osmCategory: store.osm_category
+      },
+      product: {
+        id: `service_${service.id}`,
+        normalizedName: normalizedServiceName || normalizeQuery(service.slug),
+        displayName: String(serviceName ?? service.slug),
+        brand: null,
+        category: String(service.group_key ?? "services")
+      },
+      distanceMeters,
+      freshnessHours,
+      rank,
+      confidence,
+      validationStatus: row.validation_status ?? "unvalidated",
+      whyThisProductMatches: row.why_this_service_matches ?? "Service fallback match",
+      lastCheckedAt: row.updated_at ?? null,
+      sourceType: row.primary_source_type ?? "rules_generated",
+      resultKind: "service",
+      availabilityStatus: row.availability_status ?? "likely"
+    });
+  }
+
+  return dedupeRankedResults(results)
+    .sort((a, b) => b.rank - a.rank)
+    .slice(0, MAX_SEARCH_RESULTS);
+}
+
 function rankResults(rows: JoinedRow[], args: { query: string; lat: number; lng: number; radius: number }): SearchResult[] {
   const normalized = normalizeSearchQuery(args.query);
   const validRows: JoinedRow[] = [];
@@ -1015,7 +1379,9 @@ function rankResults(rows: JoinedRow[], args: { query: string; lat: number; lng:
         validationStatus: row.validationStatus ?? null,
         whyThisProductMatches: row.whyThisProductMatches ?? null,
         lastCheckedAt: row.lastCheckedAt ?? row.offer.updatedAt,
-        sourceType: row.sourceType ?? null
+        sourceType: row.sourceType ?? null,
+        resultKind: "product",
+        availabilityStatus: null
       };
     })
     .filter((row) => row.distanceMeters <= args.radius)
@@ -1033,6 +1399,9 @@ function minConfidenceThresholdForRow(row: JoinedRow): number {
     return 0.33;
   }
   if (row.sourceType === "ai_generated") {
+    return 0.44;
+  }
+  if (row.sourceType === "ai_inferred") {
     return 0.44;
   }
   if (row.sourceType === "rules_generated") {
@@ -1594,7 +1963,12 @@ export async function searchOffersDetailed(args: {
   lat?: number;
   lng?: number;
   radiusMeters?: number;
-}): Promise<{ results: SearchResult[]; backendSource: SearchBackendSource }> {
+}): Promise<{
+  results: SearchResult[];
+  serviceFallback: SearchResult[];
+  resultMode: "products_only" | "products_plus_services" | "services_fallback_only";
+  backendSource: SearchBackendSource;
+}> {
   const lat = typeof args.lat === "number" ? args.lat : BERLIN_CENTER.lat;
   const lng = typeof args.lng === "number" ? args.lng : BERLIN_CENTER.lng;
   const radius = typeof args.radiusMeters === "number" ? args.radiusMeters : 2000;
@@ -1626,6 +2000,8 @@ export async function searchOffersDetailed(args: {
   if (GENERIC_QUERY_TERMS.has(normalized)) {
     return {
       results: [],
+      serviceFallback: [],
+      resultMode: "products_only",
       backendSource
     };
   }
@@ -1689,8 +2065,27 @@ export async function searchOffersDetailed(args: {
     rankResults(plausibilityFiltered, { query: args.query, lat, lng, radius })
   ).slice(0, MAX_SEARCH_RESULTS);
 
+  const serviceFallback = await searchServiceFallbackResults({
+    query: args.query,
+    lat,
+    lng,
+    radiusMeters: radius,
+    excludeStoreIds: new Set(results.map((result) => result.store.id))
+  });
+
+  const resultMode: "products_only" | "products_plus_services" | "services_fallback_only" =
+    results.length > 0
+      ? serviceFallback.length > 0
+        ? "products_plus_services"
+        : "products_only"
+      : serviceFallback.length > 0
+        ? "services_fallback_only"
+        : "products_only";
+
   return {
     results,
+    serviceFallback,
+    resultMode,
     backendSource
   };
 }

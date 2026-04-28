@@ -99,12 +99,26 @@ function parseBboxArg(value) {
 function resolveImportScope(args) {
   const neighborhood = String(args.neighborhood ?? "").trim().toLowerCase();
   const districtFilter = String(args["district-filter"] ?? neighborhood ?? "").trim().toLowerCase();
+  const areaName = String(args["area-name"] ?? "").trim();
+  const forceDistrict = String(args["force-district"] ?? "").trim();
 
   if (neighborhood === "moabit") {
     return {
       label: "moabit",
       bbox: MOABIT_BBOX,
-      districtFilter: districtFilter || "moabit"
+      districtFilter: districtFilter || "moabit",
+      areaName: null,
+      forceDistrict: forceDistrict || null
+    };
+  }
+
+  if (areaName) {
+    return {
+      label: stableNormalizeText(areaName).replace(/\s+/g, "-") || "custom-area",
+      bbox: null,
+      districtFilter,
+      areaName,
+      forceDistrict: forceDistrict || null
     };
   }
 
@@ -113,18 +127,37 @@ function resolveImportScope(args) {
     return {
       label: "custom",
       bbox: bboxFromArg,
-      districtFilter
+      districtFilter,
+      areaName: null,
+      forceDistrict: forceDistrict || null
     };
   }
 
   return {
     label: "berlin",
     bbox: DEFAULT_BERLIN_BBOX,
-    districtFilter
+    districtFilter,
+    areaName: null,
+    forceDistrict: forceDistrict || null
   };
 }
 
 function buildOverpassQuery(scope) {
+  if (scope.areaName) {
+    const areaNameSafe = scope.areaName.replace(/"/g, '\\"');
+    return `
+[out:json][timeout:300];
+area["name"="Berlin"]["boundary"="administrative"]->.berlin;
+rel(area.berlin)["boundary"="administrative"]["name"="${areaNameSafe}"];
+map_to_area->.searchArea;
+(
+  nwr["shop"~"${SHOP_REGEX}"](area.searchArea);
+  nwr["amenity"="pharmacy"](area.searchArea);
+);
+out center tags;
+`.trim();
+  }
+
   const { south, west, north, east } = scope.bbox;
 
   return `
@@ -192,6 +225,7 @@ function toAddress(tags, districtFallback) {
 function normalizeElements(elements, scope) {
   const byExternalId = new Map();
   const districtFilterNormalized = stableNormalizeText(scope.districtFilter ?? "");
+  const forceDistrict = scope.forceDistrict ? String(scope.forceDistrict).trim() : null;
 
   for (const row of elements) {
     const tags = row.tags ?? {};
@@ -208,9 +242,9 @@ function normalizeElements(elements, scope) {
       continue;
     }
 
-    const district =
-      (tags["addr:suburb"] ?? tags["addr:district"] ?? tags["addr:city_district"] ?? "Berlin").trim() ||
-      "Berlin";
+    const district = forceDistrict
+      ? forceDistrict
+      : (tags["addr:suburb"] ?? tags["addr:district"] ?? tags["addr:city_district"] ?? "Berlin").trim() || "Berlin";
     const districtNormalized = stableNormalizeText(district);
     if (districtFilterNormalized && !districtNormalized.includes(districtFilterNormalized)) {
       continue;
@@ -554,7 +588,9 @@ async function main() {
     scope: {
       neighborhood: String(args.neighborhood ?? ""),
       districtFilter: String(args["district-filter"] ?? ""),
-      bbox: String(args.bbox ?? "")
+      bbox: String(args.bbox ?? ""),
+      areaName: String(args["area-name"] ?? ""),
+      forceDistrict: String(args["force-district"] ?? "")
     },
     checkpointFile: CHECKPOINT_FILE
   });

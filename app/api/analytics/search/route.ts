@@ -10,6 +10,7 @@ type SearchAnalyticsPayload = {
   resultsCount?: number;
   hasResults?: boolean;
   endpoint?: string;
+  reason?: "no_results_products" | "no_results_any" | string | null;
 };
 
 const NOMINATIM_ENDPOINT = "https://nominatim.openstreetmap.org/reverse";
@@ -44,6 +45,11 @@ function normalizeDistrictName(value: string) {
   const normalized = normalizeText(value).replace(/ß/g, "ss");
   const match = DISTRICT_LOOKUP.find((district) => normalized.includes(normalizeText(district)));
   return match ?? null;
+}
+
+function isSchemaCompatibilityError(message: string) {
+  const text = message.toLowerCase();
+  return text.includes("does not exist") || text.includes("relation") || text.includes("column");
 }
 
 async function reverseGeocodeDistrict(lat: number, lng: number): Promise<string | null> {
@@ -129,6 +135,11 @@ export async function POST(request: Request) {
       typeof body.hasResults === "boolean"
         ? body.hasResults
         : resultsCount > 0;
+    const reasonRaw = typeof body.reason === "string" ? body.reason.trim().toLowerCase() : "";
+    const reason =
+      reasonRaw === "no_results_products" || reasonRaw === "no_results_any"
+        ? reasonRaw
+        : null;
 
     const district = lat !== null && lng !== null ? await reverseGeocodeDistrict(lat, lng) : null;
 
@@ -145,6 +156,24 @@ export async function POST(request: Request) {
 
       if (error) {
         throw new Error(error.message);
+      }
+
+      if (!hasResults || reason === "no_results_products" || reason === "no_results_any") {
+        const { error: failedSearchError } = await supabase.from("failed_searches").insert({
+          query: searchTerm,
+          district,
+          lat,
+          lon: lng,
+          radius_meters: radiusKm ? Math.round(radiusKm * 1000) : null,
+          result_count: resultsCount,
+          reason: reason ?? "no_results_any",
+          endpoint: body.endpoint?.trim() || null,
+          source: "search_analytics"
+        });
+
+        if (failedSearchError && !isSchemaCompatibilityError(failedSearchError.message)) {
+          throw new Error(failedSearchError.message);
+        }
       }
     }
 

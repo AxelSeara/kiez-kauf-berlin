@@ -9,6 +9,29 @@ import {
   sqlLiteral
 } from "./_utils.mjs";
 
+const DISTRICT_SCOPE_MAP = {
+  mitte: ["Mitte", "Moabit", "Wedding", "Gesundbrunnen", "Tiergarten", "Hansaviertel"]
+};
+
+function resolveDistrictScopeNames(rawScope) {
+  const scope = String(rawScope ?? "").trim().toLowerCase();
+  if (!scope) return [];
+  if (DISTRICT_SCOPE_MAP[scope]) return DISTRICT_SCOPE_MAP[scope];
+  return scope
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function resolvePostalCodeScope(rawScope) {
+  return String(rawScope ?? "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .map((item) => item.replace(/[^\d]/g, ""))
+    .filter((item) => item.length >= 4 && item.length <= 6);
+}
+
 function buildRulesSql(establishmentIds, generationMethod) {
   const idsLiteral = `array[${establishmentIds.map((id) => Number(id)).join(",")}]::bigint[]`;
 
@@ -152,13 +175,29 @@ select count(*)::int as affected_rows from upserted;
 `;
 }
 
-async function fetchBatch(lastId, batchSize) {
+async function fetchBatch(lastId, batchSize, districtNames = [], postalCodes = []) {
+  const districtFilter =
+    districtNames.length > 0
+      ? `
+  and lower(e.district) = any(array[${districtNames.map((name) => sqlLiteral(name.toLowerCase())).join(", ")}]::text[])
+`
+      : "";
+  const postalFilter =
+    postalCodes.length > 0
+      ? `
+  and coalesce(e.address, '') ilike any(array[${postalCodes.map((code) => sqlLiteral(`%${code}%`)).join(", ")}]::text[])
+`
+      : "";
+
   const sql = `
 select id
-from establishments
-where external_source = 'osm-overpass'
-  and id > ${Number(lastId)}
-order by id asc
+from establishments e
+where e.external_source = 'osm-overpass'
+  and e.id > ${Number(lastId)}
+  and e.active_status in ('active', 'temporarily_closed', 'unknown')
+  ${districtFilter}
+  ${postalFilter}
+order by e.id asc
 limit ${Number(batchSize)};
 `;
 
@@ -171,6 +210,10 @@ async function main() {
   const batchSize = Number(args["batch-size"] ?? 350);
   const resume = Boolean(args.resume);
   const generationMethod = String(args["generation-method"] ?? "rule_engine_v2_berlin");
+  const districtScope = String(args["district-scope"] ?? "").trim();
+  const districtNames = resolveDistrictScopeNames(districtScope);
+  const postalCodeScope = String(args["postal-code-scope"] ?? "").trim();
+  const postalCodes = resolvePostalCodeScope(postalCodeScope);
 
   const checkpoint = await loadCheckpoint();
   const state = checkpoint.generateRuleCandidates ?? {};
@@ -181,13 +224,17 @@ async function main() {
   logInfo("Phase 5 - generate rule candidates", {
     batchSize,
     generationMethod,
+    districtScope: districtScope || null,
+    postalCodeScope: postalCodeScope || null,
+    districtNames,
+    postalCodes,
     startFromId: cursor,
     checkpointFile: CHECKPOINT_FILE
   });
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    const ids = await fetchBatch(cursor, batchSize);
+    const ids = await fetchBatch(cursor, batchSize, districtNames, postalCodes);
     if (!ids.length) {
       break;
     }
@@ -203,6 +250,8 @@ async function main() {
     checkpoint.generateRuleCandidates = {
       lastId: cursor,
       generationMethod,
+      districtScope: districtScope || null,
+      postalCodeScope: postalCodeScope || null,
       totalEstablishments,
       totalAffected,
       updatedAt: new Date().toISOString()
@@ -220,6 +269,8 @@ async function main() {
   checkpoint.generateRuleCandidates = {
     lastId: cursor,
     generationMethod,
+    districtScope: districtScope || null,
+    postalCodeScope: postalCodeScope || null,
     totalEstablishments,
     totalAffected,
     completed: true,

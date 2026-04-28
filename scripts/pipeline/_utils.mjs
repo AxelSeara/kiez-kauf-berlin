@@ -1,4 +1,5 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { existsSync, readFileSync } from "node:fs";
 import { spawn } from "node:child_process";
 import path from "node:path";
 
@@ -70,6 +71,53 @@ export function parseArgs(argv) {
   }
 
   return args;
+}
+
+function normalizeEnvValue(rawValue) {
+  let value = rawValue.trim();
+  if (!value) return "";
+
+  const quoted =
+    (value.startsWith('"') && value.endsWith('"')) ||
+    (value.startsWith("'") && value.endsWith("'"));
+  if (quoted) {
+    value = value.slice(1, -1);
+  }
+
+  return value
+    .replace(/\\n/g, "\n")
+    .replace(/\\r/g, "\r");
+}
+
+export function loadLocalEnvFiles(files = [".env.local", ".env"]) {
+  for (const relativeFile of files) {
+    const absolutePath = path.join(PROJECT_ROOT, relativeFile);
+    if (!existsSync(absolutePath)) {
+      continue;
+    }
+
+    const raw = readFileSync(absolutePath, "utf8");
+    const lines = raw.split(/\r?\n/);
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith("#")) {
+        continue;
+      }
+
+      const separatorIndex = trimmed.indexOf("=");
+      if (separatorIndex <= 0) {
+        continue;
+      }
+
+      const key = trimmed.slice(0, separatorIndex).trim();
+      if (!key || process.env[key] !== undefined) {
+        continue;
+      }
+
+      const value = normalizeEnvValue(trimmed.slice(separatorIndex + 1));
+      process.env[key] = value;
+    }
+  }
 }
 
 export async function loadCheckpoint() {

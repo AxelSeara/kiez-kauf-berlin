@@ -81,13 +81,15 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const { results, backendSource } = searchResponse;
+    const { results, serviceFallback, resultMode, backendSource } = searchResponse;
 
     return NextResponse.json({
       query: q,
       origin: { lat, lng },
       radius,
       results,
+      service_fallback: serviceFallback,
+      result_mode: resultMode,
       endpoint: `${fallbackRequested ? "search_api_fallback" : "search_api_primary"}:${backendSource}`
     });
   } catch (error) {
