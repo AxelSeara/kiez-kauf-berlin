@@ -1151,6 +1151,11 @@ export function SearchExperience({
     dictionary.unknownCategory,
     selectedResultEntry
   ]);
+
+  const selectedEntityLabel =
+    selectedResultEntry?.result.resultKind === "service"
+      ? dictionary.matchedServiceLabel
+      : dictionary.matchedProductLabel;
   const selectedDisplayValidationStatus = useMemo(() => {
     if (!selectedResultEntry) {
       return "unvalidated" as const;
@@ -2390,7 +2395,7 @@ export function SearchExperience({
                   <p className="store-detail-line">
                     <UiIcon kind="product" className="store-detail-icon" />
                     <span>
-                      {dictionary.matchedProductLabel}: {displayProductName(selectedResultEntry.result.product)}
+                      {selectedEntityLabel}: {displayProductName(selectedResultEntry.result.product)}
                     </span>
                   </p>
                   <p className="store-detail-line">

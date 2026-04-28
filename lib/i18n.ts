@@ -34,6 +34,7 @@ export type Dictionary = {
   openStore: string;
   routeAction: string;
   matchedProductLabel: string;
+  matchedServiceLabel: string;
   openingHoursLabel: string;
   openingStatusLabel: string;
   openUntilTemplate: string;
@@ -155,6 +156,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     openStore: "Filiale ansehen",
     routeAction: "Route",
     matchedProductLabel: "Produkt",
+    matchedServiceLabel: "Service",
     openingHoursLabel: "Oeffnungszeiten",
     openingStatusLabel: "Status",
     openUntilTemplate: "Offen bis {time}",
@@ -274,6 +276,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     openStore: "Store details",
     routeAction: "Route",
     matchedProductLabel: "Product",
+    matchedServiceLabel: "Service",
     openingHoursLabel: "Opening hours",
     openingStatusLabel: "Status",
     openUntilTemplate: "Open until {time}",
@@ -393,6 +396,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     openStore: "Ver tienda",
     routeAction: "Ruta",
     matchedProductLabel: "Producto",
+    matchedServiceLabel: "Servicio",
     openingHoursLabel: "Horario",
     openingStatusLabel: "Estado",
     openUntilTemplate: "Abierto hasta {time}",

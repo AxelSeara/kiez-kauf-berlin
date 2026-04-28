@@ -1189,6 +1189,7 @@ async function searchServiceFallbackResults(args: {
     )
     .in("canonical_service_id", matchedServiceIds)
     .neq("validation_status", "rejected")
+    .gte("confidence", 0.7)
     .limit(900);
 
   if (error) {
@@ -1226,6 +1227,10 @@ async function searchServiceFallbackResults(args: {
 
     const distanceMeters = haversineMeters(args.lat, args.lng, store.lat, store.lon);
     if (distanceMeters > args.radiusMeters) {
+      continue;
+    }
+
+    if (row.primary_source_type === "rules_generated" && Number(row.confidence ?? 0) < 0.78) {
       continue;
     }
 

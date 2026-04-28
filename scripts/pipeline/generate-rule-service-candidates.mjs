@@ -15,12 +15,16 @@ const DISTRICT_SCOPE_MAP = {
 };
 
 const ROLE_SERVICE_MAP = {
-  repair_service: ["phone-repair", "computer-repair", "bike-repair", "shoe-repair", "key-cutting", "watch-battery-replacement"],
-  beauty_personal_care: ["pedicure", "manicure"],
-  health_care: ["watch-battery-replacement"],
-  sells_services: ["copy-print", "dry-cleaning"],
-  specialist_retail: ["copy-print"]
+  beauty_personal_care: ["pedicure", "manicure"]
 };
+
+const COPY_PRINT_NAME_HINTS = ["copy", "print", "druck", "kopie", "copyshop", "fotokopie"];
+const DRY_CLEANING_NAME_HINTS = ["reinigung", "cleaning", "dry clean", "laundry", "waescherei", "waschsalon"];
+const TAILORING_NAME_HINTS = ["schneiderei", "tailor", "alteration", "aenderung", "änderung"];
+const PHONE_REPAIR_NAME_HINTS = ["handy", "iphone", "smartphone", "display", "screen repair", "phone repair"];
+const COMPUTER_REPAIR_NAME_HINTS = ["computer", "laptop", "pc", "notebook", "it service"];
+const SHOE_REPAIR_NAME_HINTS = ["schuh", "shoe repair", "cobbler"];
+const KEY_CUTTING_NAME_HINTS = ["schluessel", "schlüssel", "locksmith", "key copy", "key cutting"];
 
 function resolveDistrictScopeNames(rawScope) {
   const scope = String(rawScope ?? "").trim().toLowerCase();
@@ -100,6 +104,11 @@ function inferServiceSlugs(establishment, availableServiceSlugs, maxServicesPerS
   const slugs = new Set();
   const name = stableNormalizeText(establishment.name);
   const appCategories = establishment.app_categories.map((value) => stableNormalizeText(value));
+  const isGroceryLike =
+    appCategories.includes("grocery") ||
+    appCategories.includes("convenience") ||
+    appCategories.includes("fresh-food") ||
+    appCategories.includes("drinks");
 
   const roles = new Set([establishment.store_role_primary, ...establishment.store_roles]);
   for (const role of roles) {
@@ -113,19 +122,57 @@ function inferServiceSlugs(establishment, availableServiceSlugs, maxServicesPerS
   if (name.includes("schluessel") || name.includes("locksmith") || name.includes("key")) {
     if (availableServiceSlugs.has("key-cutting")) slugs.add("key-cutting");
   }
+  if (KEY_CUTTING_NAME_HINTS.some((hint) => name.includes(hint))) {
+    if (availableServiceSlugs.has("key-cutting")) slugs.add("key-cutting");
+  }
   if (name.includes("fahrrad") || name.includes("bike")) {
     if (availableServiceSlugs.has("bike-repair")) slugs.add("bike-repair");
   }
-  if (name.includes("copy") || name.includes("print")) {
+  if (COPY_PRINT_NAME_HINTS.some((hint) => name.includes(hint))) {
     if (availableServiceSlugs.has("copy-print")) slugs.add("copy-print");
+  }
+  if (DRY_CLEANING_NAME_HINTS.some((hint) => name.includes(hint))) {
+    if (availableServiceSlugs.has("dry-cleaning")) slugs.add("dry-cleaning");
+  }
+  if (TAILORING_NAME_HINTS.some((hint) => name.includes(hint))) {
+    if (availableServiceSlugs.has("tailoring")) slugs.add("tailoring");
+  }
+  if (PHONE_REPAIR_NAME_HINTS.some((hint) => name.includes(hint))) {
+    if (availableServiceSlugs.has("phone-repair")) slugs.add("phone-repair");
+  }
+  if (COMPUTER_REPAIR_NAME_HINTS.some((hint) => name.includes(hint))) {
+    if (availableServiceSlugs.has("computer-repair")) slugs.add("computer-repair");
+  }
+  if (SHOE_REPAIR_NAME_HINTS.some((hint) => name.includes(hint))) {
+    if (availableServiceSlugs.has("shoe-repair")) slugs.add("shoe-repair");
   }
   if (name.includes("nail") || name.includes("pedicure") || name.includes("manicure") || name.includes("kosmetik")) {
     if (availableServiceSlugs.has("pedicure")) slugs.add("pedicure");
     if (availableServiceSlugs.has("manicure")) slugs.add("manicure");
   }
 
-  if (appCategories.includes("pharmacy") || appCategories.includes("medical-supplies")) {
+  if (
+    !isGroceryLike &&
+    (appCategories.includes("pharmacy") || appCategories.includes("medical-supplies")) &&
+    (name.includes("uhr") || name.includes("watch") || name.includes("battery"))
+  ) {
     if (availableServiceSlugs.has("watch-battery-replacement")) slugs.add("watch-battery-replacement");
+  }
+
+  // Guardrail: if it's clearly a grocery-like store with no explicit service hint, keep it product-only.
+  if (isGroceryLike) {
+    const hasExplicitServiceHint =
+      COPY_PRINT_NAME_HINTS.some((hint) => name.includes(hint)) ||
+      DRY_CLEANING_NAME_HINTS.some((hint) => name.includes(hint)) ||
+      TAILORING_NAME_HINTS.some((hint) => name.includes(hint)) ||
+      KEY_CUTTING_NAME_HINTS.some((hint) => name.includes(hint)) ||
+      PHONE_REPAIR_NAME_HINTS.some((hint) => name.includes(hint)) ||
+      COMPUTER_REPAIR_NAME_HINTS.some((hint) => name.includes(hint)) ||
+      SHOE_REPAIR_NAME_HINTS.some((hint) => name.includes(hint));
+
+    if (!hasExplicitServiceHint) {
+      return [];
+    }
   }
 
   return [...slugs].slice(0, maxServicesPerStore);
@@ -133,6 +180,21 @@ function inferServiceSlugs(establishment, availableServiceSlugs, maxServicesPerS
 
 function confidenceForSlug(establishment, slug) {
   const roles = new Set([establishment.store_role_primary, ...establishment.store_roles]);
+  const name = stableNormalizeText(establishment.name);
+
+  if (slug === "copy-print") {
+    return COPY_PRINT_NAME_HINTS.some((hint) => name.includes(hint)) ? 0.86 : 0.56;
+  }
+  if (slug === "dry-cleaning") {
+    return DRY_CLEANING_NAME_HINTS.some((hint) => name.includes(hint)) ? 0.84 : 0.54;
+  }
+  if (slug === "tailoring") {
+    return TAILORING_NAME_HINTS.some((hint) => name.includes(hint)) ? 0.85 : 0.57;
+  }
+  if (slug === "watch-battery-replacement") {
+    return name.includes("uhr") || name.includes("watch") || name.includes("battery") ? 0.72 : 0.48;
+  }
+
   if (roles.has("repair_service") && ["phone-repair", "computer-repair", "bike-repair", "shoe-repair", "key-cutting"].includes(slug)) {
     return 0.84;
   }
@@ -162,9 +224,25 @@ function reasonForSlug(slug) {
   return reasons[slug] ?? "Likely service inferred from store role and category mapping.";
 }
 
-function buildUpsertSql(rows) {
-  if (!rows.length) {
+function buildUpsertSql(establishmentIds, rows) {
+  const ids = establishmentIds.map((id) => Number(id)).filter(Number.isFinite);
+  if (ids.length === 0) {
     return "select 0::int as affected_rows;";
+  }
+  const idsLiteral = `array[${ids.join(",")}]::bigint[]`;
+
+  if (!rows.length) {
+    return `
+with deleted as (
+  delete from public.establishment_service_candidates c
+  where c.establishment_id = any(${idsLiteral})
+    and c.source_type = 'rules_generated'
+    and c.generation_method = 'service_role_rules_v1'
+    and c.validation_status not in ('validated', 'rejected')
+  returning c.id
+)
+select count(*)::int as affected_rows from deleted;
+`;
   }
 
   const values = rows
@@ -197,6 +275,12 @@ with incoming(
 ) as (
   values
   ${values}
+), deleted as (
+  delete from public.establishment_service_candidates c
+  where c.establishment_id = any(${idsLiteral})
+    and c.source_type = 'rules_generated'
+    and c.generation_method = 'service_role_rules_v1'
+    and c.validation_status not in ('validated', 'rejected')
 ), upserted as (
   insert into public.establishment_service_candidates (
     establishment_id,
@@ -291,7 +375,10 @@ async function main() {
       }
     }
 
-    const sql = buildUpsertSql(candidateRows);
+    const sql = buildUpsertSql(
+      establishments.map((establishment) => establishment.id),
+      candidateRows
+    );
     const result = await runSupabaseQuery({ sql, output: "json" });
     const affectedRows = Number(result.parsed.rows?.[0]?.affected_rows ?? 0);
 
