@@ -30,7 +30,22 @@ const DISTRICT_SCOPE_MAP = {
 const GROCERY_CATEGORIES = new Set(["grocery", "convenience", "fresh-food", "produce", "bio", "drinks", "bakery", "butcher"]);
 const SERVICE_CATEGORIES = new Set(["beauty", "personal-care", "medical-supplies"]);
 const HEALTH_CATEGORIES = new Set(["pharmacy", "medical-supplies"]);
-const REPAIR_OSM = new Set(["locksmith", "repair", "bicycle", "car_repair", "motorcycle_repair", "computer"]);
+const REPAIR_OSM = new Set([
+  "locksmith",
+  "key cutter",
+  "repair",
+  "bicycle",
+  "car_repair",
+  "motorcycle_repair",
+  "computer",
+  "mobile phone",
+  "electronics",
+  "electronics repair",
+  "shoemaker",
+  "tailor"
+]);
+
+const SERVICE_RETAIL_OSM = new Set(["copyshop", "tailor", "shoemaker", "watchmaker", "optician"]);
 
 const REPAIR_HINTS = [
   "repair",
@@ -44,7 +59,12 @@ const REPAIR_HINTS = [
   "schuh",
   "bike",
   "fahrrad",
-  "handy"
+  "handy",
+  "iphone",
+  "mobile",
+  "copy",
+  "print",
+  "druck"
 ];
 
 const BEAUTY_HINTS = ["beauty", "nail", "pedicure", "manicure", "hair", "barber", "kosmetik", "friseur"];
@@ -118,6 +138,11 @@ function classifyRole(row) {
 
   if (REPAIR_OSM.has(osmCategory) || REPAIR_HINTS.some((hint) => normalizedName.includes(hint))) {
     roles.add("repair_service");
+    roles.add("sells_services");
+  }
+
+  if (SERVICE_RETAIL_OSM.has(osmCategory)) {
+    roles.add("specialist_retail");
     roles.add("sells_services");
   }
 

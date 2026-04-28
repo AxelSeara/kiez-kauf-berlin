@@ -24,7 +24,7 @@ const TAILORING_NAME_HINTS = ["schneiderei", "tailor", "alteration", "aenderung"
 const PHONE_REPAIR_NAME_HINTS = ["handy", "iphone", "smartphone", "display", "screen repair", "phone repair"];
 const COMPUTER_REPAIR_NAME_HINTS = ["computer", "laptop", "pc", "notebook", "it service"];
 const SHOE_REPAIR_NAME_HINTS = ["schuh", "shoe repair", "cobbler"];
-const KEY_CUTTING_NAME_HINTS = ["schluessel", "schlüssel", "locksmith", "key copy", "key cutting"];
+const KEY_CUTTING_NAME_HINTS = ["schluessel", "schlussel", "schlüssel", "locksmith", "key copy", "key cutting"];
 
 function resolveDistrictScopeNames(rawScope) {
   const scope = String(rawScope ?? "").trim().toLowerCase();
@@ -103,6 +103,7 @@ limit ${Number(batchSize)};
 function inferServiceSlugs(establishment, availableServiceSlugs, maxServicesPerStore) {
   const slugs = new Set();
   const name = stableNormalizeText(establishment.name);
+  const normalizedOsmCategory = stableNormalizeText(establishment.osm_category ?? "");
   const appCategories = establishment.app_categories.map((value) => stableNormalizeText(value));
   const isGroceryLike =
     appCategories.includes("grocery") ||
@@ -124,6 +125,9 @@ function inferServiceSlugs(establishment, availableServiceSlugs, maxServicesPerS
   }
   if (KEY_CUTTING_NAME_HINTS.some((hint) => name.includes(hint))) {
     if (availableServiceSlugs.has("key-cutting")) slugs.add("key-cutting");
+  }
+  if ((normalizedOsmCategory.includes("key cutter") || normalizedOsmCategory.includes("locksmith")) && availableServiceSlugs.has("key-cutting")) {
+    slugs.add("key-cutting");
   }
   if (name.includes("fahrrad") || name.includes("bike")) {
     if (availableServiceSlugs.has("bike-repair")) slugs.add("bike-repair");

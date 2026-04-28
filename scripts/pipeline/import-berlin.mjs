@@ -64,14 +64,35 @@ const SHOP_TYPES = [
   "orthopedics",
   "hardware",
   "doityourself",
-  "household"
+  "household",
+  "copyshop",
+  "mobile_phone",
+  "electronics",
+  "computer",
+  "bicycle",
+  "locksmith"
 ];
 
 const SHOP_REGEX = SHOP_TYPES.join("|");
 
+const AMENITY_TYPES = ["pharmacy", "bicycle_repair", "internet_cafe"];
+const AMENITY_REGEX = AMENITY_TYPES.join("|");
+
+const CRAFT_TYPES = [
+  "tailor",
+  "shoemaker",
+  "watchmaker",
+  "key_cutter",
+  "electronics_repair",
+  "bicycle_repair",
+  "optician"
+];
+const CRAFT_REGEX = CRAFT_TYPES.join("|");
+
 const USEFUL_CATEGORIES = new Set([
   ...SHOP_TYPES,
-  "pharmacy"
+  ...AMENITY_TYPES,
+  ...CRAFT_TYPES
 ]);
 
 function parseBboxArg(value) {
@@ -152,7 +173,8 @@ rel(area.berlin)["boundary"="administrative"]["name"="${areaNameSafe}"];
 map_to_area->.searchArea;
 (
   nwr["shop"~"${SHOP_REGEX}"](area.searchArea);
-  nwr["amenity"="pharmacy"](area.searchArea);
+  nwr["amenity"~"${AMENITY_REGEX}"](area.searchArea);
+  nwr["craft"~"${CRAFT_REGEX}"](area.searchArea);
 );
 out center tags;
 `.trim();
@@ -164,7 +186,8 @@ out center tags;
 [out:json][timeout:300];
 (
   nwr["shop"~"${SHOP_REGEX}"](${south},${west},${north},${east});
-  nwr["amenity"="pharmacy"](${south},${west},${north},${east});
+  nwr["amenity"~"${AMENITY_REGEX}"](${south},${west},${north},${east});
+  nwr["craft"~"${CRAFT_REGEX}"](${south},${west},${north},${east});
 );
 out center tags;
 `.trim();
@@ -181,7 +204,9 @@ async function fetchOverpassPayload(query) {
         const response = await fetch(endpoint, {
           method: "POST",
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+            Accept: "application/json",
+            "User-Agent": "kiez-kauf-finder/0.1 (data-refresh; contact=admin@kiezkauf.local)"
           },
           body: `data=${encodeURIComponent(query)}`,
           signal: AbortSignal.timeout(120000)
@@ -237,7 +262,7 @@ function normalizeElements(elements, scope) {
       continue;
     }
 
-    const osmCategory = (tags.shop ?? tags.amenity ?? "").trim();
+    const osmCategory = (tags.shop ?? tags.amenity ?? tags.craft ?? "").trim();
     if (!USEFUL_CATEGORIES.has(osmCategory)) {
       continue;
     }
