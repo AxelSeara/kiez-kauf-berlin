@@ -15,6 +15,7 @@ import {
 
 const BENCHMARK_FILE_DEFAULT = path.join(PROJECT_ROOT, "data", "berlin", "persona-benchmark.v1.json");
 const REPORTS_DIR = path.join(PROJECT_ROOT, "data", "berlin", "reports");
+const API_BASE_URL_DEFAULT = process.env.BENCHMARK_BASE_URL ?? "http://127.0.0.1:3000";
 
 function toRadians(value) {
   return (value * Math.PI) / 180;
@@ -315,6 +316,34 @@ where e.lat between ${box.minLat} and ${box.maxLat}
     .slice(0, 120);
 }
 
+async function fetchSearchApiResult({ baseUrl, query, lat, lng, radiusMeters, timeoutMs }) {
+  const url = new URL("/api/search", baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`);
+  url.searchParams.set("q", query);
+  url.searchParams.set("lat", String(lat));
+  url.searchParams.set("lng", String(lng));
+  url.searchParams.set("radius", String(radiusMeters));
+
+  const response = await fetch(url, {
+    method: "GET",
+    signal: AbortSignal.timeout(timeoutMs)
+  });
+
+  if (!response.ok) {
+    const bodyText = await response.text();
+    throw new Error(`search_api_http_${response.status}:${bodyText.slice(0, 160)}`);
+  }
+
+  const payload = await response.json();
+  const results = Array.isArray(payload?.results) ? payload.results : [];
+  const serviceFallback = Array.isArray(payload?.service_fallback) ? payload.service_fallback : [];
+
+  return {
+    resultMode: String(payload?.result_mode ?? "products_only"),
+    results,
+    serviceFallback
+  };
+}
+
 function isTrusted(validationStatus, sourceType) {
   return (
     validationStatus === "validated" ||
@@ -360,18 +389,26 @@ function scoreServiceMatch(row, normalizedQuery, canonicalIds) {
 
 async function main() {
   const args = parseArgs(process.argv);
+  const mode = String(args.mode ?? "api").trim().toLowerCase();
   const benchmarkFile = String(args.file ?? BENCHMARK_FILE_DEFAULT);
   const outputName = String(args.output ?? "r0-persona-benchmark-gated.json");
   const minHitRate = Number(args["min-hit-rate"] ?? 0.65);
   const minQueries = Number(args["min-queries"] ?? 20);
   const failOnBelowThreshold = parseBoolean(args["fail-on-below-threshold"], false);
+  const apiBaseUrl = String(args["base-url"] ?? API_BASE_URL_DEFAULT).trim();
+  const requestTimeoutMs = Number(args["request-timeout-ms"] ?? 10000);
+  const allowDatasetFallback = parseBoolean(args["allow-dataset-fallback"], true);
 
   logInfo("Running persona benchmark suite", {
+    mode,
     benchmarkFile,
     outputName,
     minHitRate,
     minQueries,
     failOnBelowThreshold,
+    apiBaseUrl,
+    requestTimeoutMs,
+    allowDatasetFallback,
     checkpointFile: CHECKPOINT_FILE
   });
 
@@ -405,6 +442,56 @@ async function main() {
     const productIds = resolveCanonicalIdsFromQuery(normalizedQuery, productCandidates);
     const serviceIds = resolveCanonicalIdsFromQuery(normalizedQuery, serviceCandidates);
 
+    try {
+      if (mode === "api") {
+        // eslint-disable-next-line no-await-in-loop
+        const runtimeResult = await fetchSearchApiResult({
+          baseUrl: apiBaseUrl,
+          query,
+          lat,
+          lng,
+          radiusMeters,
+          timeoutMs: requestTimeoutMs
+        });
+        const hasAny = runtimeResult.results.length > 0 || runtimeResult.serviceFallback.length > 0;
+        if (hasAny) totalHits += 1;
+
+        const topProduct = runtimeResult.results[0] ?? null;
+        const topService = runtimeResult.serviceFallback[0] ?? null;
+        const topStore = topProduct?.store?.name ?? topService?.store?.name ?? null;
+        const topItem =
+          topProduct?.product?.normalizedName ??
+          topService?.product?.normalizedName ??
+          null;
+        const topDistance =
+          parseNumeric(topProduct?.distanceMeters ?? topService?.distanceMeters) ?? null;
+
+        rows.push({
+          persona,
+          query,
+          intent,
+          mode: "api",
+          radius_meters: radiusMeters,
+          product_hits: runtimeResult.results.length,
+          service_hits: runtimeResult.serviceFallback.length,
+          has_any: hasAny,
+          top_store: topStore,
+          top_item: topItem ? stableNormalizeText(String(topItem)) : null,
+          distance_meters: topDistance
+        });
+        continue;
+      }
+    } catch (error) {
+      if (!allowDatasetFallback) {
+        throw error;
+      }
+      logWarn("Benchmark API mode failed for query, falling back to dataset", {
+        query,
+        error: String(error)
+      });
+    }
+
+    // Dataset fallback mode
     // eslint-disable-next-line no-await-in-loop
     const nearbyProducts = await fetchNearbyProducts({ lat, lng, radiusMeters });
     // eslint-disable-next-line no-await-in-loop
@@ -439,6 +526,7 @@ async function main() {
       persona,
       query,
       intent,
+      mode: "dataset",
       radius_meters: radiusMeters,
       product_hits: productHits.length,
       service_hits: serviceHits.length,

@@ -200,8 +200,12 @@ npm run curate:moabit:ring:daily
 Benchmark + demanda no resuelta (gates de calidad):
 
 ```bash
-# benchmark de personas (usa suite fija y genera reporte)
-npm run benchmark:personas -- --min-hit-rate=0.65 --fail-on-below-threshold=true
+# benchmark de personas contra API real (recomendado en QA/CI)
+# requiere app corriendo (ej: npm run start, luego base-url)
+npm run benchmark:personas -- --mode=api --base-url=http://127.0.0.1:3000 --allow-dataset-fallback=false --min-hit-rate=0.55 --fail-on-below-threshold=true
+
+# fallback dataset-only (si no hay server disponible)
+npm run benchmark:personas -- --mode=dataset --min-hit-rate=0.55 --fail-on-below-threshold=false
 
 # reporte de zero-results para expansion dirigida de catalogo
 npm run report:zero-results-demand -- --window-days=21 --district-scope=mitte

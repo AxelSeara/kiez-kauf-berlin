@@ -43,7 +43,7 @@ async function main() {
   const onlyAmbiguous = parseBoolean(args["only-ambiguous"], true);
   const pruneKeepLatest = Number(args["prune-keep-latest"] ?? 2);
   const runBenchmarkGate = parseBoolean(args["run-benchmark-gate"], true);
-  const benchmarkMinHitRate = Number(args["benchmark-min-hit-rate"] ?? 0.42);
+  const benchmarkMinHitRate = Number(args["benchmark-min-hit-rate"] ?? 0.6);
   const benchmarkFailOnBelowThreshold = parseBoolean(
     args["benchmark-fail-on-below-threshold"],
     true
@@ -166,6 +166,8 @@ async function main() {
           "node",
           [
             "scripts/pipeline/benchmark-persona-suite.mjs",
+            "--mode=api",
+            "--allow-dataset-fallback=true",
             "--output=r0-persona-benchmark-gated.json",
             `--min-hit-rate=${benchmarkMinHitRate}`,
             `--fail-on-below-threshold=${benchmarkFailOnBelowThreshold}`

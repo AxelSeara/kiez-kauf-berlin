@@ -57,23 +57,24 @@ function queryMatchesTerm(query, term, aliases) {
   const normalizedQuery = stableNormalizeText(query);
   const normalizedTerm = stableNormalizeText(term);
   if (!normalizedQuery || !normalizedTerm) return false;
+  const shortToken = normalizedQuery.length < 4 || normalizedTerm.length < 4;
 
-  if (
-    normalizedQuery === normalizedTerm ||
-    normalizedQuery.includes(normalizedTerm) ||
-    normalizedTerm.includes(normalizedQuery)
-  ) {
+  if (normalizedQuery === normalizedTerm) {
+    return true;
+  }
+
+  if (!shortToken && (normalizedQuery.includes(normalizedTerm) || normalizedTerm.includes(normalizedQuery))) {
     return true;
   }
 
   const normalizedAliases = Array.isArray(aliases) ? aliases.map((alias) => stableNormalizeText(alias)) : [];
   return normalizedAliases.some((alias) => {
     if (!alias) return false;
-    return (
-      normalizedQuery === alias ||
-      normalizedQuery.includes(alias) ||
-      alias.includes(normalizedQuery)
-    );
+    if (normalizedQuery === alias) return true;
+    if (normalizedQuery.length < 4 || alias.length < 4) {
+      return false;
+    }
+    return normalizedQuery.includes(alias) || alias.includes(normalizedQuery);
   });
 }
 

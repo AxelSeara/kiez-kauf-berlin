@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { hasSupabase, supabase } from "@/lib/supabase";
+import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 
 type SearchAnalyticsPayload = {
   searchTerm?: string;
@@ -144,7 +145,14 @@ export async function POST(request: Request) {
     const district = lat !== null && lng !== null ? await reverseGeocodeDistrict(lat, lng) : null;
 
     if (hasSupabase && supabase) {
-      const { error } = await supabase.from("searches").insert({
+      let dbClient = supabase;
+      try {
+        dbClient = getSupabaseAdminClient();
+      } catch {
+        // Fallback to anon client when service role is unavailable.
+      }
+
+      const { error } = await dbClient.from("searches").insert({
         search_term: searchTerm,
         category: body.category?.trim() || null,
         district,
@@ -159,7 +167,7 @@ export async function POST(request: Request) {
       }
 
       if (!hasResults || reason === "no_results_products" || reason === "no_results_any") {
-        const { error: failedSearchError } = await supabase.from("failed_searches").insert({
+        const { error: failedSearchError } = await dbClient.from("failed_searches").insert({
           query: searchTerm,
           district,
           lat,

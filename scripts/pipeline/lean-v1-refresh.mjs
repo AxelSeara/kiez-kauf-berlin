@@ -42,7 +42,7 @@ async function main() {
   const maxAiEstablishments = Number(args["max-ai-establishments"] ?? 250);
   const repairCoherence = parseBoolean(args["repair-coherence"], false);
   const runBenchmarkGate = parseBoolean(args["run-benchmark-gate"], true);
-  const benchmarkMinHitRate = Number(args["benchmark-min-hit-rate"] ?? 0.4);
+  const benchmarkMinHitRate = Number(args["benchmark-min-hit-rate"] ?? 0.55);
   const benchmarkFailOnBelowThreshold = parseBoolean(
     args["benchmark-fail-on-below-threshold"],
     false
@@ -143,6 +143,8 @@ async function main() {
           "node",
           [
             "scripts/pipeline/benchmark-persona-suite.mjs",
+            "--mode=api",
+            "--allow-dataset-fallback=true",
             "--output=r0-persona-benchmark-gated.json",
             `--min-hit-rate=${benchmarkMinHitRate}`,
             `--fail-on-below-threshold=${benchmarkFailOnBelowThreshold}`
