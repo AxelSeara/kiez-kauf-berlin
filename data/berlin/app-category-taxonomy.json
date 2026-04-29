@@ -104,6 +104,14 @@
     "parent_slug": "household"
   },
   {
+    "slug": "second-hand",
+    "display_name_es": "Segunda mano",
+    "display_name_en": "Second hand",
+    "display_name_de": "Second hand",
+    "description": "Thrift, charity and used-goods stores",
+    "parent_slug": "household"
+  },
+  {
     "slug": "beauty",
     "display_name_es": "Belleza",
     "display_name_en": "Beauty",

@@ -112,7 +112,6 @@ const SERVICE_INTENT_QUERY_HINTS = [
   "copy shop",
   "druck",
   "dry cleaning",
-  "laundry",
   "shoe glue"
 ];
 const SERVICE_SINGLE_TOKEN_HINTS = new Set([
@@ -130,7 +129,6 @@ const SERVICE_SINGLE_TOKEN_HINTS = new Set([
   "tailoring",
   "schneiderei",
   "cobbler",
-  "laundry",
   "alteration"
 ]);
 const STRICT_GROUP_TOKEN_MATCH = new Set([
@@ -253,6 +251,7 @@ type JoinedRow = {
   sourceType?: SearchResult["sourceType"];
   candidateFreshnessScore?: number | null;
   establishmentFreshnessScore?: number | null;
+  matchedByStrategy?: DatasetSearchStrategy | null;
 };
 
 type SupabaseOfferRow = {
@@ -576,6 +575,22 @@ const APP_CATEGORY_INTENT_MAP: Array<{ category: string; terms: string[] }> = [
   {
     category: "antiques",
     terms: ["antique", "antiques", "antiquities", "vintage", "antiguedades", "antik", "antikladen"]
+  },
+  {
+    category: "second-hand",
+    terms: [
+      "second hand",
+      "second-hand",
+      "secondhand",
+      "thrift",
+      "thrift shop",
+      "charity shop",
+      "used clothes",
+      "vintage clothes",
+      "gebraucht",
+      "gebrauchtwaren",
+      "humana"
+    ]
   }
 ];
 const APP_CATEGORY_INTENT_OSM_ALLOWLIST: Record<string, string[]> = {
@@ -584,13 +599,15 @@ const APP_CATEGORY_INTENT_OSM_ALLOWLIST: Record<string, string[]> = {
   electronics: ["electronics", "mobile_phone", "computer", "hifi", "appliance", "convenience", "kiosk"],
   beauty: ["beauty", "cosmetics", "perfumery", "hairdresser", "chemist"],
   art: ["art", "stationery", "craft", "antiques", "books", "second_hand"],
-  antiques: ["antiques", "art", "second_hand", "books", "stationery", "craft"]
+  antiques: ["antiques", "art", "second_hand", "books", "stationery", "craft"],
+  "second-hand": ["second_hand", "charity", "antiques"]
 };
 const APP_CATEGORY_INTENT_GROUP_ALLOWLIST: Record<string, string[]> = {
   pharmacy: ["pharmacy", "personal_care"],
   hardware: ["household"],
   electronics: ["household"],
-  beauty: ["personal_care", "pharmacy"]
+  beauty: ["personal_care", "pharmacy"],
+  "second-hand": ["household", "personal_care", "groceries"]
 };
 
 function inferAppCategoryIntents(query: string): string[] {
@@ -930,6 +947,7 @@ function shouldKeepGroupFallbackRow(args: {
   confidence: number;
   sourceType: SearchResult["sourceType"] | null | undefined;
   validationStatus: SearchResult["validationStatus"] | null | undefined;
+  matchedByStrategy?: DatasetSearchStrategy | null;
 }): boolean {
   const {
     normalizedQuery,
@@ -940,7 +958,8 @@ function shouldKeepGroupFallbackRow(args: {
     storeName,
     confidence,
     sourceType,
-    validationStatus
+    validationStatus,
+    matchedByStrategy
   } = args;
 
   if (!isSpecificProductQuery(normalizedQuery)) {
@@ -998,6 +1017,18 @@ function shouldKeepGroupFallbackRow(args: {
     sourceType === "website_extracted" ||
     validationStatus === "validated";
   const hasTokenLevelMatch = hasMeaningfulTokenMatch(productNameNormalized, normalizedQuery);
+
+  // Canonical multilingual match should be preserved when the store-category fit is coherent.
+  // Otherwise require a stronger source to avoid exploding false positives.
+  if (matchedByStrategy === "canonical_multilingual") {
+    if (validationStatus === "rejected") {
+      return false;
+    }
+    if (hasStoreGroupFit && confidence >= 0.55) {
+      return true;
+    }
+    return trustedSource && confidence >= 0.85;
+  }
 
   if (strictGroup && !hasTokenLevelMatch && !trustedSource) {
     return false;
@@ -1749,7 +1780,8 @@ async function searchCategoryIntentStoreFallback(args: {
     const normalizedApps = (row.app_categories ?? []).map((item) => normalizeQuery(String(item ?? "")));
     const matchedCategory = categoryIntents.find((category) => {
       const allowedOsm = APP_CATEGORY_INTENT_OSM_ALLOWLIST[category] ?? [];
-      return normalizedApps.includes(category) || allowedOsm.includes(normalizedOsm);
+      const allowedOsmNormalized = allowedOsm.map((value) => normalizeQuery(value));
+      return normalizedApps.includes(category) || allowedOsmNormalized.includes(normalizedOsm);
     });
 
     if (!matchedCategory) {
@@ -1768,8 +1800,20 @@ async function searchCategoryIntentStoreFallback(args: {
     }
 
     const rank = 22000 - distanceMeters;
-    const displayName = matchedCategory === "antiques" ? "Antiques shop" : matchedCategory === "art" ? "Art shop" : `${matchedCategory} store`;
-    const normalizedName = matchedCategory === "antiques" ? "antiques" : matchedCategory;
+    const displayName =
+      matchedCategory === "antiques"
+        ? "Antiques shop"
+        : matchedCategory === "art"
+          ? "Art shop"
+          : matchedCategory === "second-hand"
+            ? "Second-hand shop"
+            : `${matchedCategory} store`;
+    const normalizedName =
+      matchedCategory === "antiques"
+        ? "antiques"
+        : matchedCategory === "second-hand"
+          ? "second hand"
+          : matchedCategory;
 
     results.push({
       offer: {
@@ -2267,7 +2311,8 @@ async function searchSupabaseRowsFromDataset(args: {
     }
   }
 
-  const rows = Array.from(mergedRows.values()).map((item) => item.row);
+  const mergedEntries = Array.from(mergedRows.values());
+  const rows = mergedEntries.map((item) => item.row);
 
   const joinedRows: JoinedRow[] = [];
   let malformedRows = 0;
@@ -2296,7 +2341,8 @@ async function searchSupabaseRowsFromDataset(args: {
     }
   }
 
-  for (const row of rows) {
+  for (const entry of mergedEntries) {
+    const row = entry.row;
     if (!hasValidStoreCoordinates({ lat: row.lat, lng: row.lon })) {
       malformedRows += 1;
       if (malformedRows <= 5) {
@@ -2359,7 +2405,8 @@ async function searchSupabaseRowsFromDataset(args: {
       lastCheckedAt: row.candidate_last_checked_at ?? row.updated_at ?? null,
       sourceType: row.source_type,
       candidateFreshnessScore: row.candidate_freshness_score ?? null,
-      establishmentFreshnessScore: row.freshness_score ?? null
+      establishmentFreshnessScore: row.freshness_score ?? null,
+      matchedByStrategy: entry.strategy
     } satisfies JoinedRow);
   }
 
@@ -2615,7 +2662,8 @@ export async function searchOffersDetailed(args: {
         storeName: row.store.name,
         confidence,
         sourceType: row.sourceType,
-        validationStatus: row.validationStatus
+        validationStatus: row.validationStatus,
+        matchedByStrategy: row.matchedByStrategy ?? datasetStrategy
       });
       if (!keepByGroupGuard) {
         return false;
@@ -2626,7 +2674,12 @@ export async function searchOffersDetailed(args: {
       return true;
     }
 
-    if (queryIsSpecific && profileContradictsProductIntent(storeProfile, normalized)) {
+    const matchedByCanonicalAlias = row.matchedByStrategy === "canonical_multilingual";
+    if (
+      queryIsSpecific &&
+      !matchedByCanonicalAlias &&
+      profileContradictsProductIntent(storeProfile, normalized)
+    ) {
       return false;
     }
 

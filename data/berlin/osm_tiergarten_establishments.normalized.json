@@ -1,6 +1,43 @@
 [
   {
     "external_source": "osm-overpass",
+    "external_id": "node/3834271582",
+    "name": "Acne Studios",
+    "address": "Potsdamer Straße 87, 10785, Berlin",
+    "district": "Tiergarten",
+    "lat": 52.501835,
+    "lon": 13.364945,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": "https://www.acnestudios.com/emea/en/home",
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "93a6ae3008a904464b2319b4ce20149e68230a24",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "87",
+      "addr:postcode": "10785",
+      "addr:street": "Potsdamer Straße",
+      "addr:suburb": "Tiergarten",
+      "check_date": "2024-07-26",
+      "name": "Acne Studios",
+      "opening_hours": "Mo-Sa 10:00-18:00",
+      "shop": "clothes",
+      "website": "https://www.acnestudios.com/emea/en/home"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 3834271582,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.520Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
     "external_id": "node/3834271557",
     "name": "Am Lützow",
     "address": "Potsdamer Straße 95, 10785, Berlin",
@@ -34,7 +71,82 @@
       "osm_type": "node",
       "osm_id": 3834271557,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.261Z"
+      "fetched_at": "2026-04-29T13:59:40.520Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/3838228798",
+    "name": "Andreas Murkudis",
+    "address": "Potsdamer Straße 81e, 10785, Berlin",
+    "district": "Tiergarten",
+    "lat": 52.501951,
+    "lon": 13.365584,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": "https://andreasmurkudis.com/",
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-20:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "b4b18a6abb48c8df6b73837a2835344f7596a34a",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "81e",
+      "addr:postcode": "10785",
+      "addr:street": "Potsdamer Straße",
+      "addr:suburb": "Tiergarten",
+      "clothes": "fashion",
+      "name": "Andreas Murkudis",
+      "opening_hours": "Mo-Sa 10:00-20:00",
+      "shop": "clothes",
+      "website": "https://andreasmurkudis.com/"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 3838228798,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.520Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4986968130",
+    "name": "B.M.C. Audio",
+    "address": "Lützowstraße 69, 10785, Berlin",
+    "district": "Tiergarten",
+    "lat": 52.504509,
+    "lon": 13.357447,
+    "osm_category": "electronics",
+    "app_categories": [],
+    "website": "http://bmc-audio.com",
+    "phone": "+4930602006061",
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "9a0b7382544d1866da709301fde81a5fea7ea78f",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "69",
+      "addr:postcode": "10785",
+      "addr:street": "Lützowstraße",
+      "check_date:opening_hours": "2024-04-24",
+      "email": "info@bmc-audio.com",
+      "name": "B.M.C. Audio",
+      "name:de": "B.M.C. Audio",
+      "name:en": "B.M.C. Audio",
+      "opening_hours:signed": "no",
+      "phone": "+4930602006061",
+      "shop": "electronics",
+      "website": "http://bmc-audio.com"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4986968130,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.521Z"
     }
   },
   {
@@ -67,7 +179,7 @@
       "osm_type": "node",
       "osm_id": 10693118854,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.263Z"
+      "fetched_at": "2026-04-29T13:59:40.522Z"
     }
   },
   {
@@ -109,7 +221,7 @@
       "osm_type": "way",
       "osm_id": 464904422,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.263Z"
+      "fetched_at": "2026-04-29T13:59:40.523Z"
     }
   },
   {
@@ -146,7 +258,7 @@
       "osm_type": "node",
       "osm_id": 9846044364,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.263Z"
+      "fetched_at": "2026-04-29T13:59:40.522Z"
     }
   },
   {
@@ -177,7 +289,7 @@
       "osm_type": "node",
       "osm_id": 6932885264,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.262Z"
+      "fetched_at": "2026-04-29T13:59:40.521Z"
     }
   },
   {
@@ -213,7 +325,7 @@
       "osm_type": "node",
       "osm_id": 2638723694,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.261Z"
+      "fetched_at": "2026-04-29T13:59:40.520Z"
     }
   },
   {
@@ -241,7 +353,7 @@
       "osm_type": "node",
       "osm_id": 731948133,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.259Z"
+      "fetched_at": "2026-04-29T13:59:40.519Z"
     }
   },
   {
@@ -272,7 +384,7 @@
       "osm_type": "node",
       "osm_id": 1816857024,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.261Z"
+      "fetched_at": "2026-04-29T13:59:40.520Z"
     }
   },
   {
@@ -309,7 +421,75 @@
       "osm_type": "node",
       "osm_id": 2837335509,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.261Z"
+      "fetched_at": "2026-04-29T13:59:40.520Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/8685448351",
+    "name": "Car-HiFi W&D",
+    "address": "Lützowufer 24, 10787, Berlin",
+    "district": "Tiergarten",
+    "lat": 52.505838,
+    "lon": 13.350426,
+    "osm_category": "electronics",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 09:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "313137bf48fe70a1154a559c592958e4ea1247e9",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "24",
+      "addr:postcode": "10787",
+      "addr:street": "Lützowufer",
+      "addr:suburb": "Tiergarten",
+      "contact:phone": "+49 30 23634466",
+      "contact:website": "http://www.car-hifi-wd.de",
+      "entrance": "yes",
+      "name": "Car-HiFi W&D",
+      "opening_hours": "Mo-Fr 09:00-18:00",
+      "shop": "electronics"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 8685448351,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.522Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/13338103583",
+    "name": "Concept Pop Up",
+    "address": "Berlin",
+    "district": "Tiergarten",
+    "lat": 52.507609,
+    "lon": 13.374025,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "8b379c264d4d28230bf022a611ba1e5b87252204",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2025-11-28",
+      "level": "0",
+      "name": "Concept Pop Up",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 13338103583,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.523Z"
     }
   },
   {
@@ -337,7 +517,81 @@
       "osm_type": "node",
       "osm_id": 12367863338,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.263Z"
+      "fetched_at": "2026-04-29T13:59:40.523Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/7090995488",
+    "name": "Darklands",
+    "address": "Potsdamer Straße 81A, 10785, Berlin",
+    "district": "Tiergarten",
+    "lat": 52.502211,
+    "lon": 13.365812,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 12:00-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "72d957eb0a1ce810432a885c53791966e1fa1a85",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "81A",
+      "addr:postcode": "10785",
+      "addr:street": "Potsdamer Straße",
+      "addr:suburb": "Tiergarten",
+      "clothes": "men;women",
+      "contact:website": "https://www.darklandsberlin.com/",
+      "level": "1",
+      "name": "Darklands",
+      "opening_hours": "Mo-Sa 12:00-19:00",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 7090995488,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.522Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/7090995487",
+    "name": "darklands-x",
+    "address": "Potsdamer Straße 79, 10785, Berlin",
+    "district": "Tiergarten",
+    "lat": 52.502267,
+    "lon": 13.36546,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "7bbeed1c812f1e2a91f5c4bb65a10da2356de90d",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "79",
+      "addr:postcode": "10785",
+      "addr:street": "Potsdamer Straße",
+      "addr:suburb": "Tiergarten",
+      "clothes": "men",
+      "contact:website": "https://darklands-x.com/",
+      "name": "darklands-x",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 7090995487,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.522Z"
     }
   },
   {
@@ -378,7 +632,7 @@
       "osm_type": "node",
       "osm_id": 9167462921,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.262Z"
+      "fetched_at": "2026-04-29T13:59:40.522Z"
     }
   },
   {
@@ -416,7 +670,7 @@
       "osm_type": "node",
       "osm_id": 9711334386,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.262Z"
+      "fetched_at": "2026-04-29T13:59:40.522Z"
     }
   },
   {
@@ -452,7 +706,7 @@
       "osm_type": "node",
       "osm_id": 11565459167,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.263Z"
+      "fetched_at": "2026-04-29T13:59:40.523Z"
     }
   },
   {
@@ -483,7 +737,107 @@
       "osm_type": "way",
       "osm_id": 464904423,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.263Z"
+      "fetched_at": "2026-04-29T13:59:40.523Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/775822057",
+    "name": "Eplus",
+    "address": "Berlin",
+    "district": "Tiergarten",
+    "lat": 52.499947,
+    "lon": 13.363267,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "de629c02d5677bd48832c36781077d47a34e4242",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "Eplus",
+      "shop": "mobile_phone"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 775822057,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.519Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/3834271559",
+    "name": "Fahrrad-Doktor",
+    "address": "Pohlstraße 52, 10785, Berlin",
+    "district": "Tiergarten",
+    "lat": 52.500842,
+    "lon": 13.364353,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": "http://berliner-fahrradladen.de/",
+    "phone": null,
+    "opening_hours": "Mo-Fr 10:00-18:00; Sa 10:00-14:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "9c925505bb13d9ee8d60a193fc1d24b2b5d780d2",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "52",
+      "addr:postcode": "10785",
+      "addr:street": "Pohlstraße",
+      "addr:suburb": "Tiergarten",
+      "name": "Fahrrad-Doktor",
+      "opening_hours": "Mo-Fr 10:00-18:00; Sa 10:00-14:00",
+      "repair": "yes",
+      "service:bicycle:rental": "yes",
+      "service:bicycle:repair": "yes",
+      "service:bicycle:retail": "yes",
+      "shop": "bicycle",
+      "website": "http://berliner-fahrradladen.de/"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 3834271559,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.520Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/3834271560",
+    "name": "Fiona Bennett",
+    "address": "Berlin",
+    "district": "Tiergarten",
+    "lat": 52.502152,
+    "lon": 13.365173,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": "https://www.fionabennett.com/",
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "6a508dc4e8818e53859241e39261a94bf834564c",
+    "is_useful": true,
+    "raw_tags": {
+      "clothes": "hats",
+      "name": "Fiona Bennett",
+      "opening_hours": "Mo-Sa 10:00-19:00",
+      "shop": "clothes",
+      "website": "https://www.fionabennett.com/",
+      "wheelchair": "limited"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 3834271560,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.520Z"
     }
   },
   {
@@ -520,7 +874,7 @@
       "osm_type": "node",
       "osm_id": 4736904443,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.262Z"
+      "fetched_at": "2026-04-29T13:59:40.521Z"
     }
   },
   {
@@ -563,7 +917,7 @@
       "osm_type": "node",
       "osm_id": 4883870521,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.262Z"
+      "fetched_at": "2026-04-29T13:59:40.521Z"
     }
   },
   {
@@ -593,7 +947,7 @@
       "osm_type": "node",
       "osm_id": 3837620194,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.261Z"
+      "fetched_at": "2026-04-29T13:59:40.520Z"
     }
   },
   {
@@ -637,7 +991,7 @@
       "osm_type": "node",
       "osm_id": 7752603784,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.262Z"
+      "fetched_at": "2026-04-29T13:59:40.522Z"
     }
   },
   {
@@ -670,7 +1024,7 @@
       "osm_type": "node",
       "osm_id": 6029582385,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.262Z"
+      "fetched_at": "2026-04-29T13:59:40.521Z"
     }
   },
   {
@@ -711,7 +1065,7 @@
       "osm_type": "node",
       "osm_id": 3834271596,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.261Z"
+      "fetched_at": "2026-04-29T13:59:40.520Z"
     }
   },
   {
@@ -740,7 +1094,7 @@
       "osm_type": "node",
       "osm_id": 11516533589,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.263Z"
+      "fetched_at": "2026-04-29T13:59:40.523Z"
     }
   },
   {
@@ -778,7 +1132,7 @@
       "osm_type": "node",
       "osm_id": 3834271597,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.261Z"
+      "fetched_at": "2026-04-29T13:59:40.520Z"
     }
   },
   {
@@ -809,7 +1163,41 @@
       "osm_type": "node",
       "osm_id": 3113263544,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.261Z"
+      "fetched_at": "2026-04-29T13:59:40.520Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11392853254",
+    "name": "Lena's lovely vintage",
+    "address": "Pohlstraße 101, 10785, Berlin",
+    "district": "Tiergarten",
+    "lat": 52.50061,
+    "lon": 13.363961,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Tu-Sa 12:00-7:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "14925e3ae0046454be204137d6ec06d86e17be4b",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:housenumber": "101",
+      "addr:postcode": "10785",
+      "addr:street": "Pohlstraße",
+      "clothes": "vintage",
+      "name": "Lena's lovely vintage",
+      "opening_hours": "Tu-Sa 12:00-7:00",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11392853254,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.523Z"
     }
   },
   {
@@ -844,7 +1232,7 @@
       "osm_type": "node",
       "osm_id": 3834273064,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.261Z"
+      "fetched_at": "2026-04-29T13:59:40.520Z"
     }
   },
   {
@@ -877,7 +1265,7 @@
       "osm_type": "node",
       "osm_id": 10693118839,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.263Z"
+      "fetched_at": "2026-04-29T13:59:40.522Z"
     }
   },
   {
@@ -914,7 +1302,42 @@
       "osm_type": "node",
       "osm_id": 4307225827,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.262Z"
+      "fetched_at": "2026-04-29T13:59:40.521Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11516533596",
+    "name": "MK Brautmode",
+    "address": "Budapester Straße 18B, Berlin",
+    "district": "Tiergarten",
+    "lat": 52.506196,
+    "lon": 13.342522,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": "https://www.mk-brautmode.de",
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "d0b6ed2e887f9f26dfa0e5d3b9fff3e9ef517699",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "18B",
+      "addr:street": "Budapester Straße",
+      "check_date": "2025-09-19",
+      "check_date:opening_hours": "2025-09-19",
+      "clothes": "wedding",
+      "name": "MK Brautmode",
+      "opening_hours:signed": "no",
+      "shop": "clothes",
+      "website": "https://www.mk-brautmode.de"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11516533596,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.523Z"
     }
   },
   {
@@ -956,7 +1379,7 @@
       "osm_type": "node",
       "osm_id": 1773431934,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.261Z"
+      "fetched_at": "2026-04-29T13:59:40.520Z"
     }
   },
   {
@@ -995,7 +1418,7 @@
       "osm_type": "node",
       "osm_id": 6754031358,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.262Z"
+      "fetched_at": "2026-04-29T13:59:40.521Z"
     }
   },
   {
@@ -1028,7 +1451,108 @@
       "osm_type": "node",
       "osm_id": 1574753265,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.260Z"
+      "fetched_at": "2026-04-29T13:59:40.520Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11222086794",
+    "name": "NOX CYCLES",
+    "address": "Berlin",
+    "district": "Tiergarten",
+    "lat": 52.506454,
+    "lon": 13.375847,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": "https://www.noxcycles.com/",
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "a1d135e078616f03163422a2607468af22acd915",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "NOX CYCLES",
+      "operator": "NOX Cycles Gmbh",
+      "shop": "bicycle",
+      "website": "https://www.noxcycles.com/",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11222086794,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.522Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/7109304248",
+    "name": "Odeeh Space",
+    "address": "Potsdamer Straße 81A, 10785, Berlin",
+    "district": "Tiergarten",
+    "lat": 52.502208,
+    "lon": 13.36587,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "01ce602541f0ce9ca5a70d06216f958280a643e1",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "81A",
+      "addr:postcode": "10785",
+      "addr:street": "Potsdamer Straße",
+      "addr:suburb": "Tiergarten",
+      "clothes": "women",
+      "contact:website": "https://odeeh.com/odeeh-space-berlin-potsdamerstr-81a/",
+      "level": "0",
+      "name": "Odeeh Space",
+      "operator": "Odeeh",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 7109304248,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.522Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/13512469662",
+    "name": "ONLY",
+    "address": "Berlin",
+    "district": "Tiergarten",
+    "lat": 52.507563,
+    "lon": 13.374043,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "cfbf566be39c5b1329fcc0264f17f208d0807164",
+    "is_useful": true,
+    "raw_tags": {
+      "brand": "ONLY",
+      "brand:wikidata": "Q61799370",
+      "check_date": "2026-01-30",
+      "level": "-1",
+      "name": "ONLY",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 13512469662,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.523Z"
     }
   },
   {
@@ -1057,7 +1581,115 @@
       "osm_type": "node",
       "osm_id": 6932885261,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.262Z"
+      "fetched_at": "2026-04-29T13:59:40.521Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/6932885263",
+    "name": "Paul Smith",
+    "address": "Potsdamer Straße 75, Berlin",
+    "district": "Tiergarten",
+    "lat": 52.502604,
+    "lon": 13.365561,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "8657162e02c37050775ac5fc4d12765e9e2df8c4",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "75",
+      "addr:street": "Potsdamer Straße",
+      "brand": "Paul Smith",
+      "brand:wikidata": "Q56356277",
+      "check_date": "2023-01-13",
+      "clothes": "women",
+      "name": "Paul Smith",
+      "opening_hours": "Mo-Sa 10:00-19:00",
+      "shop": "clothes",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 6932885263,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.521Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/10693118848",
+    "name": "Peek & Cloppenburg",
+    "address": "Berlin",
+    "district": "Tiergarten",
+    "lat": 52.508025,
+    "lon": 13.374605,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "f9434aa92b00a7fbecd58732ce6e0342df7548c8",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2025-11-28",
+      "level": "-1;0;1",
+      "name": "Peek & Cloppenburg",
+      "payment:cash": "yes",
+      "payment:credit_cards": "yes",
+      "payment:debit_cards": "yes",
+      "shop": "clothes",
+      "stroller": "yes",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 10693118848,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.522Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/10693118852",
+    "name": "Pepco",
+    "address": "Berlin",
+    "district": "Tiergarten",
+    "lat": 52.507027,
+    "lon": 13.374063,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": "https://pepco-stores.de/",
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-18:00; Su,PH off",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "bf4694a54f0095bb3a0f0e92dfce893ed051d7ae",
+    "is_useful": true,
+    "raw_tags": {
+      "brand": "Pepco",
+      "brand:wikidata": "Q11815580",
+      "check_date": "2026-01-30",
+      "clothes": "women",
+      "level": "-1",
+      "name": "Pepco",
+      "opening_hours": "Mo-Sa 10:00-18:00; Su,PH off",
+      "shop": "clothes",
+      "stroller": "yes",
+      "website": "https://pepco-stores.de/",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 10693118852,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.522Z"
     }
   },
   {
@@ -1092,7 +1724,42 @@
       "osm_type": "node",
       "osm_id": 6143046477,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.262Z"
+      "fetched_at": "2026-04-29T13:59:40.521Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/5264952318",
+    "name": "ReSales Secondhand",
+    "address": "Potsdamer Straße 105, 10785, Berlin",
+    "district": "Tiergarten",
+    "lat": 52.50026,
+    "lon": 13.363571,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 09:30-19:00; Sa 09:30-16:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "8d8cc702b60e1b73a3dcdeb91f44f9430998d3a4",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:housenumber": "105",
+      "addr:postcode": "10785",
+      "addr:street": "Potsdamer Straße",
+      "check_date": "2024-07-26",
+      "name": "ReSales Secondhand",
+      "opening_hours": "Mo-Fr 09:30-19:00; Sa 09:30-16:00",
+      "second_hand": "yes",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 5264952318,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.521Z"
     }
   },
   {
@@ -1130,7 +1797,7 @@
       "osm_type": "node",
       "osm_id": 766602125,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.259Z"
+      "fetched_at": "2026-04-29T13:59:40.519Z"
     }
   },
   {
@@ -1168,7 +1835,39 @@
       "osm_type": "node",
       "osm_id": 9167471817,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.262Z"
+      "fetched_at": "2026-04-29T13:59:40.522Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/10693118845",
+    "name": "Service Punkt",
+    "address": "Berlin",
+    "district": "Tiergarten",
+    "lat": 52.506737,
+    "lon": 13.373544,
+    "osm_category": "locksmith",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-20:00; PH,Su off",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "e1c8268a56a3518ab8c6f1b0d7e314ab0ebac82b",
+    "is_useful": true,
+    "raw_tags": {
+      "level": "-1",
+      "name": "Service Punkt",
+      "opening_hours": "Mo-Sa 10:00-20:00; PH,Su off",
+      "shop": "locksmith",
+      "stroller": "yes",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 10693118845,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.522Z"
     }
   },
   {
@@ -1200,7 +1899,7 @@
       "osm_type": "node",
       "osm_id": 10693118851,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.263Z"
+      "fetched_at": "2026-04-29T13:59:40.522Z"
     }
   },
   {
@@ -1230,7 +1929,7 @@
       "osm_type": "node",
       "osm_id": 1820978713,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.261Z"
+      "fetched_at": "2026-04-29T13:59:40.520Z"
     }
   },
   {
@@ -1263,7 +1962,7 @@
       "osm_type": "node",
       "osm_id": 1397070387,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.260Z"
+      "fetched_at": "2026-04-29T13:59:40.519Z"
     }
   },
   {
@@ -1301,7 +2000,7 @@
       "osm_type": "node",
       "osm_id": 3837626627,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.261Z"
+      "fetched_at": "2026-04-29T13:59:40.520Z"
     }
   },
   {
@@ -1337,7 +2036,7 @@
       "osm_type": "node",
       "osm_id": 6135428374,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.262Z"
+      "fetched_at": "2026-04-29T13:59:40.521Z"
     }
   },
   {
@@ -1376,7 +2075,76 @@
       "osm_type": "way",
       "osm_id": 464904418,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.263Z"
+      "fetched_at": "2026-04-29T13:59:40.523Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11516533595",
+    "name": "Sunneva",
+    "address": "Budapester Straße 16A, Berlin",
+    "district": "Tiergarten",
+    "lat": 52.506264,
+    "lon": 13.342921,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": "https://www.sunneva.de",
+    "phone": null,
+    "opening_hours": "Mo,Su,PH off; Tu-Fr 13:00-19:00; Sa 10:00-16:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "f562280511fe2dfdb161adb26a8d2a1239cb2cea",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "16A",
+      "addr:street": "Budapester Straße",
+      "check_date": "2025-02-18",
+      "check_date:opening_hours": "2025-02-18",
+      "name": "Sunneva",
+      "opening_hours": "Mo,Su,PH off; Tu-Fr 13:00-19:00; Sa 10:00-16:00",
+      "shop": "clothes",
+      "website": "https://www.sunneva.de",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11516533595,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.523Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11516533599",
+    "name": "Taste Lux",
+    "address": "Budapester Straße 26, Berlin",
+    "district": "Tiergarten",
+    "lat": 52.506064,
+    "lon": 13.341952,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": "https://www.tastelux.de",
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "b8eee22d17d539771a2cef08158d22ae7d7e7fde",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "26",
+      "addr:street": "Budapester Straße",
+      "check_date": "2025-09-19",
+      "check_date:opening_hours": "2025-09-19",
+      "name": "Taste Lux",
+      "opening_hours:signed": "no",
+      "shop": "clothes",
+      "website": "https://www.tastelux.de"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11516533599,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.523Z"
     }
   },
   {
@@ -1421,7 +2189,37 @@
       "osm_type": "way",
       "osm_id": 22989670,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.263Z"
+      "fetched_at": "2026-04-29T13:59:40.523Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/828199465",
+    "name": "The Streets",
+    "address": "Berlin",
+    "district": "Tiergarten",
+    "lat": 52.507073,
+    "lon": 13.374782,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "4aeb7a40cde73745649645922aec02f4c24fb8ce",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "The Streets",
+      "opening_hours": "Mo-Sa 10:00-19:00",
+      "shop": "clothes",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 828199465,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.519Z"
     }
   },
   {
@@ -1455,7 +2253,56 @@
       "osm_type": "node",
       "osm_id": 13261598526,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.263Z"
+      "fetched_at": "2026-04-29T13:59:40.523Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/9972096010",
+    "name": "Trek",
+    "address": "Kemperplatz 1, 10785, Berlin",
+    "district": "Tiergarten",
+    "lat": 52.510509,
+    "lon": 13.371941,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Tu,We,Fr 11:00-19:00; Sa 10:00-16:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "e066cfe5186880d59d2a6b9262bbd5c3930bebba",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "1",
+      "addr:postcode": "10785",
+      "addr:street": "Kemperplatz",
+      "addr:suburb": "Tiergarten",
+      "alt_name": "Trek Bicycle Store",
+      "branch": "Berlin Mitte",
+      "brand": "Trek",
+      "brand:wikidata": "Q1067617",
+      "contact:email": "berlinmitte@trekbikes.com",
+      "contact:phone": "+49 30 72621409",
+      "contact:website": "https://www.trekbikes.com/de/de_DE/retail/berlin_mitte/",
+      "internet_access": "wlan",
+      "level": "0",
+      "name": "Trek",
+      "opening_hours": "Tu,We,Fr 11:00-19:00; Sa 10:00-16:00",
+      "operator": "Trek Bicycle Berlin Mitte",
+      "service:bicycle:pump": "yes",
+      "service:bicycle:repair": "yes",
+      "service:bicycle:retail": "yes",
+      "shop": "bicycle",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 9972096010,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.522Z"
     }
   },
   {
@@ -1487,7 +2334,37 @@
       "osm_type": "node",
       "osm_id": 13305419201,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.263Z"
+      "fetched_at": "2026-04-29T13:59:40.523Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/13512491162",
+    "name": "Wade.Phone",
+    "address": "Berlin",
+    "district": "Tiergarten",
+    "lat": 52.507164,
+    "lon": 13.373865,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "f94937ba400723999f5e6f3c6a589be02441a101",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2026-01-30",
+      "level": "-1",
+      "name": "Wade.Phone",
+      "shop": "mobile_phone"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 13512491162,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.523Z"
     }
   },
   {
@@ -1525,7 +2402,43 @@
       "osm_type": "way",
       "osm_id": 464904378,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.263Z"
+      "fetched_at": "2026-04-29T13:59:40.523Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/5147944699",
+    "name": "Wilvorst Herrenmode",
+    "address": "Berlin",
+    "district": "Tiergarten",
+    "lat": 52.506227,
+    "lon": 13.342709,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": "https://www.mk-herrenmode.de/",
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "6cf3811b6e0cd7f7ddff413e8ede8805c6598d15",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date:opening_hours": "2025-02-18",
+      "email": "info@mk-herrenmode.de",
+      "male": "yes",
+      "name": "Wilvorst Herrenmode",
+      "opening_hours": "Mo-Sa 10:00-19:00",
+      "organic": "no",
+      "second_hand": "no",
+      "shop": "clothes",
+      "website": "https://www.mk-herrenmode.de/",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 5147944699,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:40.521Z"
     }
   },
   {
@@ -1560,7 +2473,7 @@
       "osm_type": "node",
       "osm_id": 1812309215,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.261Z"
+      "fetched_at": "2026-04-29T13:59:40.520Z"
     }
   },
   {
@@ -1590,7 +2503,7 @@
       "osm_type": "node",
       "osm_id": 11227904770,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.263Z"
+      "fetched_at": "2026-04-29T13:59:40.523Z"
     }
   },
   {
@@ -1620,7 +2533,7 @@
       "osm_type": "node",
       "osm_id": 6570389927,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:09.262Z"
+      "fetched_at": "2026-04-29T13:59:40.521Z"
     }
   }
 ]

@@ -30,6 +30,9 @@ const OSM_TO_CATEGORY_MAP = {
   beauty: ["beauty"],
   cosmetics: ["beauty"],
   perfumery: ["beauty"],
+  clothes: ["personal-care", "household"],
+  second_hand: ["second-hand", "antiques", "art"],
+  charity: ["second-hand", "household"],
   beverages: ["drinks", "convenience"],
   kiosk: ["convenience", "drinks"],
   pharmacy: ["pharmacy", "personal-care"],
@@ -60,6 +63,7 @@ function keywordCategories(nameNormalized) {
   if (/(beauty|kosmetik|cosmetic|parfum|perfum)/.test(nameNormalized)) out.add("beauty");
   if (/(kunst|atelier|craft|bastel|papier|\bart\b)/.test(nameNormalized)) out.add("art");
   if (/(antiq|vintage)/.test(nameNormalized)) out.add("antiques");
+  if (/(second hand|secondhand|thrift|charity|humana|gebraucht)/.test(nameNormalized)) out.add("second-hand");
   if (/(hardware|werkzeug|baumarkt|diy)/.test(nameNormalized)) out.add("hardware");
 
   return [...out];

@@ -44,7 +44,7 @@
       "osm_type": "node",
       "osm_id": 816598789,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:25.537Z"
+      "fetched_at": "2026-04-29T14:00:03.729Z"
     }
   },
   {
@@ -76,7 +76,37 @@
       "osm_type": "node",
       "osm_id": 8333748450,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:25.539Z"
+      "fetched_at": "2026-04-29T14:00:03.730Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/2724240145",
+    "name": "Dienstleistungs - Center",
+    "address": "10557, Berlin",
+    "district": "Hansaviertel",
+    "lat": 52.518627,
+    "lon": 13.342744,
+    "osm_category": "tailor",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 09:00-18:00; Sa 09:00-13:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "4cdaf08930b31b0abbd7ee351d7716cba2ec9058",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:postcode": "10557",
+      "craft": "tailor",
+      "name": "Dienstleistungs - Center",
+      "opening_hours": "Mo-Fr 09:00-18:00; Sa 09:00-13:00"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 2724240145,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T14:00:03.730Z"
     }
   },
   {
@@ -115,7 +145,7 @@
       "osm_type": "node",
       "osm_id": 2283101504,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:25.538Z"
+      "fetched_at": "2026-04-29T14:00:03.730Z"
     }
   },
   {
@@ -147,7 +177,7 @@
       "osm_type": "node",
       "osm_id": 2724240147,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:25.539Z"
+      "fetched_at": "2026-04-29T14:00:03.730Z"
     }
   },
   {
@@ -198,7 +228,7 @@
       "osm_type": "way",
       "osm_id": 25779478,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:25.539Z"
+      "fetched_at": "2026-04-29T14:00:03.731Z"
     }
   },
   {
@@ -249,7 +279,7 @@
       "osm_type": "way",
       "osm_id": 268901430,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:25.539Z"
+      "fetched_at": "2026-04-29T14:00:03.731Z"
     }
   },
   {
@@ -279,7 +309,7 @@
       "osm_type": "node",
       "osm_id": 11622451233,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:25.539Z"
+      "fetched_at": "2026-04-29T14:00:03.730Z"
     }
   },
   {
@@ -311,7 +341,7 @@
       "osm_type": "node",
       "osm_id": 12307298106,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:57:25.539Z"
+      "fetched_at": "2026-04-29T14:00:03.730Z"
     }
   }
 ]

@@ -62,6 +62,9 @@ const SHOP_TYPES = [
   "medical_supply",
   "orthopaedic",
   "orthopedics",
+  "clothes",
+  "second_hand",
+  "charity",
   "hardware",
   "doityourself",
   "household",
@@ -262,7 +265,11 @@ function normalizeElements(elements, scope) {
       continue;
     }
 
-    const osmCategory = (tags.shop ?? tags.amenity ?? tags.craft ?? "").trim();
+    const rawOsmCategory = (tags.shop ?? tags.amenity ?? tags.craft ?? "").trim();
+    const secondHandTag = stableNormalizeText(tags.second_hand ?? "");
+    const isSecondHandTagged =
+      secondHandTag === "yes" || secondHandTag === "only" || secondHandTag === "true";
+    const osmCategory = isSecondHandTagged ? "second_hand" : rawOsmCategory;
     if (!USEFUL_CATEGORIES.has(osmCategory)) {
       continue;
     }

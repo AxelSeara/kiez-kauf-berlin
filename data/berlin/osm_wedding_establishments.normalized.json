@@ -29,7 +29,77 @@
       "osm_type": "way",
       "osm_id": 221259962,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.647Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/3140301716",
+    "name": "A.D.O.",
+    "address": "Müllerstraße 165, 13353, Berlin",
+    "district": "Wedding",
+    "lat": 52.543085,
+    "lon": 13.364486,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "e156c95620683ce7d475ff3305ff2d1c3792f6dd",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "165",
+      "addr:postcode": "13353",
+      "addr:street": "Müllerstraße",
+      "addr:suburb": "Wedding",
+      "check_date": "2025-08-28",
+      "check_date:opening_hours": "2025-08-28",
+      "name": "A.D.O.",
+      "opening_hours:signed": "no",
+      "second_hand": "yes",
+      "shop": "electronics",
+      "wheelchair": "limited"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 3140301716,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.643Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/6532305050",
+    "name": "A&W Digitaldruck",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.551556,
+    "lon": 13.348693,
+    "osm_category": "copyshop",
+    "app_categories": [],
+    "website": "http://www.aw-digital.de",
+    "phone": "+49 30 4515813",
+    "opening_hours": "Mo-Fr 09:00-17:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "2f24399fd196bccc239da98c9ec48252c9f12ce7",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "A&W Digitaldruck",
+      "opening_hours": "Mo-Fr 09:00-17:00",
+      "phone": "+49 30 4515813",
+      "shop": "copyshop",
+      "website": "http://www.aw-digital.de"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 6532305050,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -61,7 +131,7 @@
       "osm_type": "node",
       "osm_id": 2303114798,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -97,7 +167,7 @@
       "osm_type": "node",
       "osm_id": 4381394723,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -127,7 +197,41 @@
       "osm_type": "node",
       "osm_id": 4381394724,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/2298418673",
+    "name": "Afro-Euro Beauty Shop",
+    "address": "Schulstraße 17, Berlin",
+    "district": "Wedding",
+    "lat": 52.548396,
+    "lon": 13.362738,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 10:00-20:00; Sa 10:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "244974c75da9bcc0663906956c233cf63270629f",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "17",
+      "addr:street": "Schulstraße",
+      "check_date": "2025-02-09",
+      "level": "0",
+      "name": "Afro-Euro Beauty Shop",
+      "opening_hours": "Mo-Fr 10:00-20:00; Sa 10:00-18:00",
+      "shop": "mobile_phone",
+      "wheelchair": "limited"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 2298418673,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -155,7 +259,7 @@
       "osm_type": "node",
       "osm_id": 7773607314,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -185,7 +289,7 @@
       "osm_type": "node",
       "osm_id": 2303114813,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -227,7 +331,7 @@
       "osm_type": "node",
       "osm_id": 245261389,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.799Z"
+      "fetched_at": "2026-04-29T13:58:57.638Z"
     }
   },
   {
@@ -258,7 +362,41 @@
       "osm_type": "node",
       "osm_id": 3404516540,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/6610291463",
+    "name": "amara's shop",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.549846,
+    "lon": 13.351599,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "eba711df0e9ead20727d6ba0dba727e214e73869",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2025-11-09",
+      "check_date:opening_hours": "2022-09-18",
+      "name": "amara's shop",
+      "opening_hours:signed": "no",
+      "payment:credit_cards": "yes",
+      "payment:debit_cards": "yes",
+      "shop": "clothes",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 6610291463,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -294,7 +432,63 @@
       "osm_type": "node",
       "osm_id": 7428911689,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11109218960",
+    "name": "An- und Verkauf",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.5523,
+    "lon": 13.356422,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "6b09b93d425056271b567caef7a864a9855ed08e",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "An- und Verkauf",
+      "shop": "second_hand"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11109218960,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/10793765732",
+    "name": "An- und Verkauf Zahra",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.550984,
+    "lon": 13.361633,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "d5c636d652046ff08cd5cf2562682b2f65c40df5",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "An- und Verkauf Zahra",
+      "shop": "second_hand"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 10793765732,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -322,7 +516,7 @@
       "osm_type": "node",
       "osm_id": 10228989617,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -350,7 +544,7 @@
       "osm_type": "node",
       "osm_id": 7609527371,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -391,7 +585,7 @@
       "osm_type": "node",
       "osm_id": 658444284,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.800Z"
+      "fetched_at": "2026-04-29T13:58:57.639Z"
     }
   },
   {
@@ -425,7 +619,7 @@
       "osm_type": "node",
       "osm_id": 332961993,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.799Z"
+      "fetched_at": "2026-04-29T13:58:57.638Z"
     }
   },
   {
@@ -453,7 +647,7 @@
       "osm_type": "node",
       "osm_id": 13290631064,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -482,7 +676,7 @@
       "osm_type": "node",
       "osm_id": 7761726675,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -526,7 +720,74 @@
       "osm_type": "node",
       "osm_id": 4138580438,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.804Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/728285534",
+    "name": "AXESS computer",
+    "address": "Reinickendorfer Straße 113, Berlin",
+    "district": "Wedding",
+    "lat": 52.543331,
+    "lon": 13.369421,
+    "osm_category": "computer",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "8479d67f24f92bf167606df86a2995a718396df6",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "113",
+      "addr:street": "Reinickendorfer Straße",
+      "check_date": "2025-03-01",
+      "check_date:opening_hours": "2025-03-01",
+      "level": "0",
+      "name": "AXESS computer",
+      "opening_hours": "Mo-Sa 10:00-18:00",
+      "shop": "computer",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 728285534,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.641Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/3780185337",
+    "name": "Aziz An-und Verkauf",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.547045,
+    "lon": 13.349983,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 10:00-18:00; Sa 10:00-16:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "4fd1893bd24086225545016cb442fb531e8286e4",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2025-02-09",
+      "check_date:opening_hours": "2021-11-06",
+      "name": "Aziz An-und Verkauf",
+      "opening_hours": "Mo-Fr 10:00-18:00; Sa 10:00-16:00",
+      "second_hand": "yes",
+      "shop": "second_hand"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 3780185337,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -564,7 +825,7 @@
       "osm_type": "node",
       "osm_id": 317179425,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.799Z"
+      "fetched_at": "2026-04-29T13:58:57.638Z"
     }
   },
   {
@@ -602,7 +863,7 @@
       "osm_type": "way",
       "osm_id": 437780958,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.647Z"
     }
   },
   {
@@ -636,7 +897,7 @@
       "osm_type": "node",
       "osm_id": 7647312766,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -672,7 +933,7 @@
       "osm_type": "node",
       "osm_id": 678968214,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.800Z"
+      "fetched_at": "2026-04-29T13:58:57.640Z"
     }
   },
   {
@@ -700,7 +961,7 @@
       "osm_type": "node",
       "osm_id": 2127393893,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -731,7 +992,7 @@
       "osm_type": "node",
       "osm_id": 3284006261,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -763,7 +1024,7 @@
       "osm_type": "node",
       "osm_id": 762607353,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -799,7 +1060,7 @@
       "osm_type": "node",
       "osm_id": 1296442460,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -827,7 +1088,7 @@
       "osm_type": "node",
       "osm_id": 12830935662,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -862,7 +1123,7 @@
       "osm_type": "node",
       "osm_id": 10755840510,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -894,7 +1155,7 @@
       "osm_type": "node",
       "osm_id": 1699353556,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -942,7 +1203,7 @@
       "osm_type": "way",
       "osm_id": 24049246,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.647Z"
     }
   },
   {
@@ -979,7 +1240,7 @@
       "osm_type": "node",
       "osm_id": 7609092397,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -1008,7 +1269,44 @@
       "osm_type": "node",
       "osm_id": 13540856074,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.647Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/6766866585",
+    "name": "Best Mobile",
+    "address": "Müllerstraße 126A, 13349, Berlin",
+    "district": "Wedding",
+    "lat": 52.552827,
+    "lon": 13.347356,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 09:00-20:00; Sa 09:00-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "b9e0be15ad6c28d8affe67ec2af551670048f157",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "126A",
+      "addr:postcode": "13349",
+      "addr:street": "Müllerstraße",
+      "addr:suburb": "Wedding",
+      "check_date": "2025-03-28",
+      "name": "Best Mobile",
+      "opening_hours": "Mo-Fr 09:00-20:00; Sa 09:00-19:00",
+      "shop": "mobile_phone",
+      "wheelchair": "limited"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 6766866585,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -1039,7 +1337,7 @@
       "osm_type": "node",
       "osm_id": 4304633809,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -1070,7 +1368,7 @@
       "osm_type": "node",
       "osm_id": 4603298590,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -1105,7 +1403,7 @@
       "osm_type": "node",
       "osm_id": 2305236082,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -1147,7 +1445,7 @@
       "osm_type": "node",
       "osm_id": 3218143489,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -1190,7 +1488,45 @@
       "osm_type": "node",
       "osm_id": 1515489375,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/13629305576",
+    "name": "Blaulicht Bike Club",
+    "address": "Amsterdamer Straße 9, 13347, Berlin",
+    "district": "Wedding",
+    "lat": 52.550661,
+    "lon": 13.356235,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": null,
+    "phone": "+49 1575 584 7413",
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "1e5a80d27c02d9ee638d37475047d902dc8fe158",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "9",
+      "addr:postcode": "13347",
+      "addr:street": "Amsterdamer Straße",
+      "addr:suburb": "Wedding",
+      "email": "commercial.blaulicht@gmail.com",
+      "name": "Blaulicht Bike Club",
+      "phone": "+49 1575 584 7413",
+      "service:bicycle:retail": "yes",
+      "service:bicycle:second_hand": "yes",
+      "shop": "bicycle"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 13629305576,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.647Z"
     }
   },
   {
@@ -1228,7 +1564,7 @@
       "osm_type": "node",
       "osm_id": 707425776,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -1264,7 +1600,7 @@
       "osm_type": "node",
       "osm_id": 3577574383,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -1296,7 +1632,81 @@
       "osm_type": "node",
       "osm_id": 678967934,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.800Z"
+      "fetched_at": "2026-04-29T13:58:57.639Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/7672976821",
+    "name": "Burkhard's",
+    "address": "Lüderitzstraße 20, 13351, Berlin",
+    "district": "Wedding",
+    "lat": 52.551111,
+    "lon": 13.348036,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Tu-Fr 13:00-18:30",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "666d8f505a62b609e8f7aa995f8c7cda5e73bc6e",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "20",
+      "addr:postcode": "13351",
+      "addr:street": "Lüderitzstraße",
+      "addr:suburb": "Wedding",
+      "check_date:opening_hours": "2021-11-06",
+      "contact:phone": "+49 30 4526138",
+      "name": "Burkhard's",
+      "opening_hours": "Tu-Fr 13:00-18:30",
+      "shop": "second_hand"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 7672976821,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4381394727",
+    "name": "Buy & Sell",
+    "address": "Lindower Straße 23, Berlin",
+    "district": "Wedding",
+    "lat": 52.543262,
+    "lon": 13.36699,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "8c20c6449919ae259acf1662ef925d0bfd16368a",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "23",
+      "addr:street": "Lindower Straße",
+      "check_date": "2024-08-30",
+      "check_date:opening_hours": "2024-08-30",
+      "level": "0",
+      "name": "Buy & Sell",
+      "opening_hours:signed": "no",
+      "payment:credit_cards": "yes",
+      "payment:debit_cards": "yes",
+      "shop": "mobile_phone",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4381394727,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -1331,7 +1741,43 @@
       "osm_type": "node",
       "osm_id": 2303852086,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/6698553798",
+    "name": "Calanthe",
+    "address": "Müllerstraße 132, 13349, Berlin",
+    "district": "Wedding",
+    "lat": 52.551474,
+    "lon": 13.349753,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "7c881b20e3f3b8fdf82cc80740cf176d3652463d",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "132",
+      "addr:postcode": "13349",
+      "addr:street": "Müllerstraße",
+      "addr:suburb": "Wedding",
+      "level": "0",
+      "name": "Calanthe",
+      "shop": "clothes",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 6698553798,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -1366,7 +1812,7 @@
       "osm_type": "node",
       "osm_id": 2308657329,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -1399,7 +1845,46 @@
       "osm_type": "node",
       "osm_id": 5693005986,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/5693170696",
+    "name": "Chakal",
+    "address": "Togostraße 79a, 13351, Berlin",
+    "district": "Wedding",
+    "lat": 52.549161,
+    "lon": 13.347262,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": "https://chakal.de",
+    "phone": "+49 30 81705512",
+    "opening_hours": "Mo-Sa 16:00+",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "e3387e5199aac1e789375e87ebcc0a524a8bb800",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:housenumber": "79a",
+      "addr:postcode": "13351",
+      "addr:street": "Togostraße",
+      "check_date:opening_hours": "2023-05-12",
+      "name": "Chakal",
+      "opening_hours": "Mo-Sa 16:00+",
+      "phone": "+49 30 81705512",
+      "shop": "clothes",
+      "toilets:wheelchair": "no",
+      "website": "https://chakal.de",
+      "wheelchair": "yes",
+      "wheelchair:description": "mobile Rampe vorhanden, s. Foto. Netter kleiner Laden mit selbstgeschneiderten und auf Maß angefertigter Kleidung zu bezahlbaren Preisen. Coole Taschen aus LKW Plane gibt es auch."
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 5693170696,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -1433,7 +1918,7 @@
       "osm_type": "node",
       "osm_id": 10313697458,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -1469,7 +1954,7 @@
       "osm_type": "node",
       "osm_id": 2542447131,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -1510,7 +1995,7 @@
       "osm_type": "way",
       "osm_id": 75405910,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.647Z"
     }
   },
   {
@@ -1541,7 +2026,36 @@
       "osm_type": "way",
       "osm_id": 1311962700,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.647Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11109353942",
+    "name": "Cybertec24",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.550987,
+    "lon": 13.36199,
+    "osm_category": "computer",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 10:00-16:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "1528051603760fd9d23407f1100d38b6e63f13cc",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "Cybertec24",
+      "opening_hours": "Mo-Fr 10:00-16:00",
+      "shop": "computer"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11109353942,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -1569,7 +2083,7 @@
       "osm_type": "node",
       "osm_id": 4381394738,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -1598,7 +2112,7 @@
       "osm_type": "node",
       "osm_id": 8118641417,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -1652,7 +2166,7 @@
       "osm_type": "node",
       "osm_id": 10762166139,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -1710,7 +2224,46 @@
       "osm_type": "node",
       "osm_id": 6131114962,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/2262772641",
+    "name": "Digitaldruck Wedding",
+    "address": "Tegeler Straße 29, 13353, Berlin",
+    "district": "Wedding",
+    "lat": 52.543023,
+    "lon": 13.356048,
+    "osm_category": "copyshop",
+    "app_categories": [],
+    "website": "https://copyshop-wedding.de/",
+    "phone": null,
+    "opening_hours": "Mo-Fr 09:00-18:00; Sa 10:00-14:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "44c5fa5e9f5fa47376fc71a395b0f1c8c3157f34",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "29",
+      "addr:postcode": "13353",
+      "addr:street": "Tegeler Straße",
+      "addr:suburb": "Wedding",
+      "contact:phone": "+49 30 4538463",
+      "name": "Digitaldruck Wedding",
+      "opening_hours": "Mo-Fr 09:00-18:00; Sa 10:00-14:00",
+      "shop": "copyshop",
+      "website": "https://copyshop-wedding.de/",
+      "wheelchair": "no",
+      "wheelchair:description": "Stufe vorhanden"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 2262772641,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -1755,7 +2308,7 @@
       "osm_type": "way",
       "osm_id": 437595031,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.647Z"
     }
   },
   {
@@ -1798,7 +2351,7 @@
       "osm_type": "node",
       "osm_id": 558514803,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.800Z"
+      "fetched_at": "2026-04-29T13:58:57.639Z"
     }
   },
   {
@@ -1847,7 +2400,7 @@
       "osm_type": "node",
       "osm_id": 3335122693,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -1892,7 +2445,7 @@
       "osm_type": "node",
       "osm_id": 3335129193,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -1932,7 +2485,41 @@
       "osm_type": "node",
       "osm_id": 4298702900,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.804Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/6766866885",
+    "name": "Duha",
+    "address": "Müllerstraße 51A, 13349, Berlin",
+    "district": "Wedding",
+    "lat": 52.552869,
+    "lon": 13.348143,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "f1c70503000eaa8d84af7920046f4c8d01421779",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "51A",
+      "addr:postcode": "13349",
+      "addr:street": "Müllerstraße",
+      "addr:suburb": "Wedding",
+      "name": "Duha",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 6766866885,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -1968,7 +2555,7 @@
       "osm_type": "node",
       "osm_id": 3081222957,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -2016,7 +2603,7 @@
       "osm_type": "way",
       "osm_id": 43364093,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.647Z"
     }
   },
   {
@@ -2057,7 +2644,7 @@
       "osm_type": "node",
       "osm_id": 1370691440,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -2118,7 +2705,7 @@
       "osm_type": "node",
       "osm_id": 8693899527,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -2154,7 +2741,46 @@
       "osm_type": "node",
       "osm_id": 7612272366,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/3140301717",
+    "name": "Elektro-Kiosk An- Verkauf",
+    "address": "Müllerstraße 164, 13353, Berlin",
+    "district": "Wedding",
+    "lat": 52.543139,
+    "lon": 13.364398,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 10:00-18:00; Sa 11:00-16:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "921fd3274dd16c1e202c8943811cd405f9295b32",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "164",
+      "addr:postcode": "13353",
+      "addr:street": "Müllerstraße",
+      "addr:suburb": "Wedding",
+      "check_date": "2025-01-04",
+      "check_date:opening_hours": "2025-01-04",
+      "name": "Elektro-Kiosk An- Verkauf",
+      "opening_hours": "Mo-Fr 10:00-18:00; Sa 11:00-16:00",
+      "second_hand": "yes",
+      "shop": "electronics",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 3140301717,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -2190,7 +2816,7 @@
       "osm_type": "node",
       "osm_id": 6766866985,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -2228,7 +2854,72 @@
       "osm_type": "node",
       "osm_id": 4351511596,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/7616345663",
+    "name": "Ernsting's family",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.54904,
+    "lon": 13.353871,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 09:00-20:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "ab21502ef3136ff0c4c346093769b545a4f8d854",
+    "is_useful": true,
+    "raw_tags": {
+      "brand": "Ernsting's family",
+      "brand:wikidata": "Q1361016",
+      "brand:wikipedia": "de:Ernsting’s family",
+      "check_date:opening_hours": "2025-07-21",
+      "level": "0",
+      "name": "Ernsting's family",
+      "opening_hours": "Mo-Sa 09:00-20:00",
+      "shop": "clothes",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 7616345663,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/2303055180",
+    "name": "Esin",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.550615,
+    "lon": 13.36639,
+    "osm_category": "tailor",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 10:00-18:00; Sa 10:00-14:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "08992163701406ebcc83c82fea63acadaa2ccc3d",
+    "is_useful": true,
+    "raw_tags": {
+      "craft": "tailor",
+      "description": "Änderungsschneiderei, Damen und Herren",
+      "name": "Esin",
+      "opening_hours": "Mo-Fr 10:00-18:00; Sa 10:00-14:00"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 2303055180,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -2261,7 +2952,7 @@
       "osm_type": "node",
       "osm_id": 346137917,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.799Z"
+      "fetched_at": "2026-04-29T13:58:57.638Z"
     }
   },
   {
@@ -2293,7 +2984,41 @@
       "osm_type": "node",
       "osm_id": 1659884040,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4351511597",
+    "name": "Expert Repair",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.545814,
+    "lon": 13.358706,
+    "osm_category": "electronics",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 08:30-21:00; Sa 09:00-21:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "0c648c456a233967fb121b2f0dca8d4ad741cba9",
+    "is_useful": true,
+    "raw_tags": {
+      "brand": "Expert",
+      "brand:wikidata": "Q680990",
+      "brand:wikipedia": "de:Expert International",
+      "check_date:opening_hours": "2024-02-09",
+      "name": "Expert Repair",
+      "opening_hours": "Mo-Fr 08:30-21:00; Sa 09:00-21:00",
+      "shop": "electronics",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4351511597,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -2325,7 +3050,100 @@
       "osm_type": "node",
       "osm_id": 3683023907,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4828048439",
+    "name": "Fahrrad Köhler",
+    "address": "Müllerstraße 59A, 13349, Berlin",
+    "district": "Wedding",
+    "lat": 52.554731,
+    "lon": 13.344873,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Tu-Fr 10:00-18:00; Sa 10:00-14:00; Su,PH off",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "fc926d818cd5f1ffe958b505989ff4cbd8f6e872",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "59A",
+      "addr:postcode": "13349",
+      "addr:street": "Müllerstraße",
+      "addr:suburb": "Wedding",
+      "check_date:opening_hours": "2025-07-19",
+      "contact:phone": "+49 30 417 297 80",
+      "name": "Fahrrad Köhler",
+      "opening_hours": "Tu-Fr 10:00-18:00; Sa 10:00-14:00; Su,PH off",
+      "opening_hours:signed": "no",
+      "service:bicycle:pump": "yes",
+      "service:bicycle:repair": "yes",
+      "service:bicycle:retail": "yes",
+      "service:bicycle:second_hand": "only",
+      "shop": "bicycle",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4828048439,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/8733016379",
+    "name": "Fahrrad Service Station Plötzensee i.G.",
+    "address": "Nordufer 26, 13351, Berlin",
+    "district": "Wedding",
+    "lat": 52.541561,
+    "lon": 13.329758,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "5a785389fb4c5ed451be60b940841e0f7aacfd07",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "26",
+      "addr:postcode": "13351",
+      "addr:street": "Nordufer",
+      "addr:suburb": "Wedding",
+      "contact:email": "fahrradstationploetzensee@gmail.com",
+      "contact:mobile": "+49 163 9109576",
+      "contact:website": "https://fss-ploetzensee.de/",
+      "name": "Fahrrad Service Station Plötzensee i.G.",
+      "operator": "Benjamin Weißstern",
+      "service:bicycle:bike": "yes",
+      "service:bicycle:chain_tool": "yes",
+      "service:bicycle:cleaning": "yes",
+      "service:bicycle:parts": "yes",
+      "service:bicycle:pump": "yes",
+      "service:bicycle:repair": "yes",
+      "service:bicycle:screwdriver": "yes",
+      "service:bicycle:service": "yes",
+      "service:bicycle:stand": "yes",
+      "service:bicycle:tools": "yes",
+      "shop": "bicycle",
+      "start_date": "2021-05-15",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 8733016379,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -2356,7 +3174,7 @@
       "osm_type": "node",
       "osm_id": 2300052118,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -2392,7 +3210,45 @@
       "osm_type": "node",
       "osm_id": 6712455251,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/5961687089",
+    "name": "Frese",
+    "address": "Luxemburger Straße, 13353, Berlin",
+    "district": "Wedding",
+    "lat": 52.545424,
+    "lon": 13.357115,
+    "osm_category": "key_cutter",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Th 08:30-17:00; Fr 08:30-16:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "ddd4b81631706a9b0e200835e2bf0cc88c9ed4ca",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:postcode": "13353",
+      "addr:street": "Luxemburger Straße",
+      "addr:suburb": "Wedding",
+      "check_date": "2026-02-26",
+      "check_date:opening_hours": "2024-11-07",
+      "craft": "key_cutter",
+      "name": "Frese",
+      "opening_hours": "Mo-Th 08:30-17:00; Fr 08:30-16:00",
+      "payment:mastercard": "yes",
+      "payment:visa": "yes",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 5961687089,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -2420,7 +3276,73 @@
       "osm_type": "node",
       "osm_id": 6723764587,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/7615954975",
+    "name": "Fundgrube",
+    "address": "Barfusstraße 21, 13349, Berlin",
+    "district": "Wedding",
+    "lat": 52.55601,
+    "lon": 13.347415,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "cac2fa45d3648bb84bb3ed0fa5d812a6f95247c1",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "21",
+      "addr:postcode": "13349",
+      "addr:street": "Barfusstraße",
+      "addr:suburb": "Wedding",
+      "name": "Fundgrube",
+      "post_office:brand": "DHL",
+      "post_office:type": "partner",
+      "shop": "second_hand",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 7615954975,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/6610291466",
+    "name": "futurekom",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.54998,
+    "lon": 13.352401,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "2bdb06fab18069e5a2bfd414e4fe755f02c5c5da",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2024-11-30",
+      "name": "futurekom",
+      "shop": "mobile_phone"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 6610291466,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -2461,7 +3383,7 @@
       "osm_type": "node",
       "osm_id": 1653588605,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -2496,7 +3418,7 @@
       "osm_type": "node",
       "osm_id": 4412294194,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -2540,7 +3462,7 @@
       "osm_type": "node",
       "osm_id": 4774716422,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -2583,7 +3505,7 @@
       "osm_type": "node",
       "osm_id": 1659325636,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -2617,7 +3539,7 @@
       "osm_type": "node",
       "osm_id": 2108116781,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -2646,7 +3568,7 @@
       "osm_type": "node",
       "osm_id": 12194458801,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -2679,7 +3601,7 @@
       "osm_type": "node",
       "osm_id": 832835292,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -2719,7 +3641,7 @@
       "osm_type": "node",
       "osm_id": 2759623440,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -2750,7 +3672,50 @@
       "osm_type": "node",
       "osm_id": 13373970320,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.647Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/601092929",
+    "name": "H&M",
+    "address": "Müllerstraße 36, 13353, Berlin",
+    "district": "Wedding",
+    "lat": 52.549195,
+    "lon": 13.354733,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-20:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "fc3d2675b8560ae94de7eef0e34cd474bce3ae7c",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "36",
+      "addr:postcode": "13353",
+      "addr:street": "Müllerstraße",
+      "addr:suburb": "Wedding",
+      "brand": "H&M",
+      "brand:wikidata": "Q188326",
+      "brand:wikipedia": "en:H&M",
+      "check_date": "2025-04-09",
+      "check_date:opening_hours": "2025-04-09",
+      "name": "H&M",
+      "opening_hours": "Mo-Sa 10:00-20:00",
+      "payment:mastercard": "yes",
+      "payment:visa": "yes",
+      "shop": "clothes",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 601092929,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.639Z"
     }
   },
   {
@@ -2786,7 +3751,7 @@
       "osm_type": "node",
       "osm_id": 7766335064,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -2824,7 +3789,102 @@
       "osm_type": "node",
       "osm_id": 7633023881,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/1170360482",
+    "name": "Handy Doktor",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.551031,
+    "lon": 13.3673,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:30-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "2c99ea93c0a11989092199daa7edffdc8d923169",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2023-04-04",
+      "name": "Handy Doktor",
+      "opening_hours": "Mo-Sa 10:30-19:00",
+      "shop": "mobile_phone",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 1170360482,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.641Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/13373935765",
+    "name": "Handy Point",
+    "address": "Brüsseler Straße 2, Berlin",
+    "district": "Wedding",
+    "lat": 52.548956,
+    "lon": 13.353119,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Su-Fr 10:30-18:45; Sa 10:30-15:45",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "b5dc24cc321237123e2bb4bb4584740d3d72d933",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "2",
+      "addr:street": "Brüsseler Straße",
+      "check_date": "2025-12-13",
+      "name": "Handy Point",
+      "opening_hours": "Su-Fr 10:30-18:45; Sa 10:30-15:45",
+      "shop": "mobile_phone"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 13373935765,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/9903501366",
+    "name": "Handyshop - Spätkauf",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.553559,
+    "lon": 13.34692,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Th 09:00-01:00, Fr,Sa 09:00-02:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "773bc2329ff9bfae578dde9c95ad3557df6e23e1",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2026-02-04",
+      "check_date:opening_hours": "2026-02-04",
+      "name": "Handyshop - Spätkauf",
+      "opening_hours": "Mo-Th 09:00-01:00, Fr,Sa 09:00-02:00",
+      "shop": "mobile_phone",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 9903501366,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -2873,7 +3933,7 @@
       "osm_type": "node",
       "osm_id": 530715872,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.800Z"
+      "fetched_at": "2026-04-29T13:58:57.639Z"
     }
   },
   {
@@ -2902,7 +3962,161 @@
       "osm_type": "node",
       "osm_id": 12309280670,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/728285528",
+    "name": "Haushalts- und Elektrogeräte",
+    "address": "Reinickendorfer Straße 112, Berlin",
+    "district": "Wedding",
+    "lat": 52.543429,
+    "lon": 13.369411,
+    "osm_category": "electronics",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "2a1858b9b523af4ea75e9ce35e23024eb9b37b38",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "112",
+      "addr:street": "Reinickendorfer Straße",
+      "check_date": "2026-01-22",
+      "check_date:opening_hours": "2026-01-22",
+      "level": "0",
+      "name": "Haushalts- und Elektrogeräte",
+      "opening_hours:signed": "no",
+      "shop": "electronics",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 728285528,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.641Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/2913166406",
+    "name": "Henna Mode",
+    "address": "Müllerstraße 22A, 13353, Berlin",
+    "district": "Wedding",
+    "lat": 52.545185,
+    "lon": 13.361776,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "39e1faabe72116fad7e5d7e2c6b2705cea48dfd0",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "22A",
+      "addr:postcode": "13353",
+      "addr:street": "Müllerstraße",
+      "addr:suburb": "Wedding",
+      "check_date": "2025-05-27",
+      "check_date:opening_hours": "2024-01-24",
+      "name": "Henna Mode",
+      "opening_hours:signed": "no",
+      "payment:credit_cards": "yes",
+      "payment:debit_cards": "yes",
+      "shop": "clothes",
+      "toilets:wheelchair": "no",
+      "wheelchair": "limited"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 2913166406,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.643Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/1496188293",
+    "name": "Hill Pack Partyartikel",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.557054,
+    "lon": 13.340802,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": "https://www.hill-party.de/",
+    "phone": "+49 30 50180930",
+    "opening_hours": "Mo-Fr 10:00-17:00; Sa 10:00-13:30",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "8bf6d5d09ff16286baf18208839816616e2b137e",
+    "is_useful": true,
+    "raw_tags": {
+      "clothes": "costumes",
+      "name": "Hill Pack Partyartikel",
+      "opening_hours": "Mo-Fr 10:00-17:00; Sa 10:00-13:30",
+      "phone": "+49 30 50180930",
+      "shop": "clothes",
+      "website": "https://www.hill-party.de/",
+      "wheelchair": "limited",
+      "wheelchair:description": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 1496188293,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.641Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/1901746292",
+    "name": "HOPPE Repro",
+    "address": "Oudenarder Straße 16, 13347, Berlin",
+    "district": "Wedding",
+    "lat": 52.552692,
+    "lon": 13.361629,
+    "osm_category": "copyshop",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 8:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "855068c2e724eeb5299204b7823281c90159417c",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "16",
+      "addr:postcode": "13347",
+      "addr:street": "Oudenarder Straße",
+      "addr:suburb": "Wedding",
+      "alt_name": "Hoppe Reprografieunternehmungen GmbH",
+      "contact:email": "ch@hoppe-repro.de",
+      "contact:fax": "+49 30 284 96 720",
+      "contact:phone": "+49 30 284 96 70",
+      "contact:website": "http://www.hoppe-repro.de/",
+      "description:address": "Carrée Seestrasse, Geb.B, Aufg. 12/13; 3.OG",
+      "name": "HOPPE Repro",
+      "opening_hours": "Mo-Fr 8:00-18:00",
+      "service:print": "yes",
+      "shop": "copyshop",
+      "toilets:wheelchair": "no",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 1901746292,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -2940,7 +4154,7 @@
       "osm_type": "node",
       "osm_id": 1471202665,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -2977,7 +4191,7 @@
       "osm_type": "node",
       "osm_id": 3081225430,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -3012,7 +4226,7 @@
       "osm_type": "node",
       "osm_id": 6735980499,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -3043,7 +4257,69 @@
       "osm_type": "node",
       "osm_id": 1988055925,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/10241646109",
+    "name": "Jade Umzüge Berlin",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.550966,
+    "lon": 13.361484,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "32be891789c6de7e17e992285751aca6e7e87ea3",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "Jade Umzüge Berlin",
+      "shop": "second_hand"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 10241646109,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11295295062",
+    "name": "Jade Umzüge Berlin",
+    "address": "Maxstraße 18, Berlin",
+    "district": "Wedding",
+    "lat": 52.550484,
+    "lon": 13.362505,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": "+4915121083666",
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "65926e80b7446236d75395b408116417a39de959",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "18",
+      "addr:street": "Maxstraße",
+      "check_date:opening_hours": "2024-02-15",
+      "contact:email": "info@jade-entruempelung.berlin",
+      "name": "Jade Umzüge Berlin",
+      "opening_hours:signed": "no",
+      "phone": "+4915121083666",
+      "shop": "second_hand"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11295295062,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -3073,7 +4349,7 @@
       "osm_type": "node",
       "osm_id": 4381394733,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -3111,7 +4387,7 @@
       "osm_type": "node",
       "osm_id": 1988000838,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -3155,7 +4431,7 @@
       "osm_type": "node",
       "osm_id": 707409445,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.800Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -3189,7 +4465,7 @@
       "osm_type": "node",
       "osm_id": 6532305042,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -3239,7 +4515,7 @@
       "osm_type": "node",
       "osm_id": 2966075122,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -3269,7 +4545,7 @@
       "osm_type": "node",
       "osm_id": 12133504472,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -3297,7 +4573,40 @@
       "osm_type": "node",
       "osm_id": 10241646110,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/7616345665",
+    "name": "KiK",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.548749,
+    "lon": 13.353635,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 09:00-20:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "7cea6acf6299a35a81600642a362b43c903a18ec",
+    "is_useful": true,
+    "raw_tags": {
+      "brand": "KiK",
+      "brand:wikidata": "Q883965",
+      "brand:wikipedia": "de:KiK",
+      "level": "1",
+      "name": "KiK",
+      "opening_hours": "Mo-Sa 09:00-20:00",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 7616345665,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -3329,7 +4638,7 @@
       "osm_type": "node",
       "osm_id": 6761500187,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -3368,7 +4677,7 @@
       "osm_type": "node",
       "osm_id": 1269798909,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -3403,7 +4712,7 @@
       "osm_type": "node",
       "osm_id": 4351511613,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -3437,7 +4746,39 @@
       "osm_type": "node",
       "osm_id": 8759425992,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/13726049225",
+    "name": "Klamotte",
+    "address": "Nazarethkirchstraße 40, Berlin",
+    "district": "Wedding",
+    "lat": 52.549628,
+    "lon": 13.361906,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "e2438ad9cacb156839d2ece2571b14275d50d4b6",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "40",
+      "addr:street": "Nazarethkirchstraße",
+      "check_date": "2026-04-12",
+      "name": "Klamotte",
+      "second_hand": "only",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 13726049225,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.647Z"
     }
   },
   {
@@ -3477,7 +4818,7 @@
       "osm_type": "node",
       "osm_id": 4737978945,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -3508,7 +4849,7 @@
       "osm_type": "node",
       "osm_id": 2303055237,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -3537,7 +4878,7 @@
       "osm_type": "node",
       "osm_id": 4315470226,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -3572,7 +4913,7 @@
       "osm_type": "node",
       "osm_id": 832835278,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -3605,7 +4946,7 @@
       "osm_type": "node",
       "osm_id": 3374665796,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -3640,7 +4981,7 @@
       "osm_type": "node",
       "osm_id": 3149431447,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -3674,7 +5015,7 @@
       "osm_type": "node",
       "osm_id": 2308657239,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -3716,7 +5057,7 @@
       "osm_type": "node",
       "osm_id": 5548816495,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -3760,7 +5101,7 @@
       "osm_type": "node",
       "osm_id": 3683023909,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -3802,7 +5143,7 @@
       "osm_type": "node",
       "osm_id": 307983960,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.799Z"
+      "fetched_at": "2026-04-29T13:58:57.638Z"
     }
   },
   {
@@ -3837,7 +5178,7 @@
       "osm_type": "node",
       "osm_id": 3283808615,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -3882,7 +5223,7 @@
       "osm_type": "node",
       "osm_id": 4224268256,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.804Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -3927,7 +5268,7 @@
       "osm_type": "way",
       "osm_id": 100574668,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.647Z"
     }
   },
   {
@@ -3963,7 +5304,7 @@
       "osm_type": "node",
       "osm_id": 4244678197,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.804Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -3993,7 +5334,7 @@
       "osm_type": "node",
       "osm_id": 12830933172,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -4030,7 +5371,7 @@
       "osm_type": "node",
       "osm_id": 6712455252,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -4079,7 +5420,7 @@
       "osm_type": "node",
       "osm_id": 7613183877,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -4109,7 +5450,7 @@
       "osm_type": "node",
       "osm_id": 6610291461,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -4151,7 +5492,7 @@
       "osm_type": "node",
       "osm_id": 3081225429,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -4191,7 +5532,7 @@
       "osm_type": "node",
       "osm_id": 1659884034,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -4222,7 +5563,69 @@
       "osm_type": "node",
       "osm_id": 2300052127,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/7609092406",
+    "name": "Mazanli",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.553257,
+    "lon": 13.346407,
+    "osm_category": "key_cutter",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 09:00-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "697dd792577f7fdc32aa53ce4e8c9e866e8139f8",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2025-07-22",
+      "craft": "key_cutter",
+      "level": "1",
+      "name": "Mazanli",
+      "opening_hours": "Mo-Sa 09:00-19:00"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 7609092406,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/2303114799",
+    "name": "Media Center",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.549193,
+    "lon": 13.36465,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "c2e2d540a5a230150e0c83feb09fbb4187e03dbc",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date:opening_hours": "2024-02-13",
+      "name": "Media Center",
+      "opening_hours:signed": "no",
+      "shop": "mobile_phone",
+      "wheelchair": "limited"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 2303114799,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -4256,7 +5659,7 @@
       "osm_type": "node",
       "osm_id": 939667458,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -4289,7 +5692,7 @@
       "osm_type": "node",
       "osm_id": 9672153450,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -4326,7 +5729,7 @@
       "osm_type": "node",
       "osm_id": 3264389933,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -4364,7 +5767,7 @@
       "osm_type": "node",
       "osm_id": 9826214791,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -4395,7 +5798,7 @@
       "osm_type": "node",
       "osm_id": 440971671,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.799Z"
+      "fetched_at": "2026-04-29T13:58:57.638Z"
     }
   },
   {
@@ -4425,7 +5828,7 @@
       "osm_type": "node",
       "osm_id": 280244277,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.799Z"
+      "fetched_at": "2026-04-29T13:58:57.638Z"
     }
   },
   {
@@ -4458,7 +5861,7 @@
       "osm_type": "node",
       "osm_id": 9091314041,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -4487,7 +5890,7 @@
       "osm_type": "node",
       "osm_id": 11225237887,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -4519,7 +5922,7 @@
       "osm_type": "node",
       "osm_id": 4964049302,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -4549,7 +5952,72 @@
       "osm_type": "node",
       "osm_id": 6610291459,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/6727133389",
+    "name": "Möbelspendenlager Hilfe mit Herz",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.54406,
+    "lon": 13.349589,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": "https://www.moebelspenden.de",
+    "phone": "+49 30 4539054",
+    "opening_hours": "Mo-Th 10:00-16:00; Fr 10:00-14:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "648d3c61d442d19d3dd227bc9b4bd441e5d77a11",
+    "is_useful": true,
+    "raw_tags": {
+      "embankment": "hmh@moebelspenden.de",
+      "name": "Möbelspendenlager Hilfe mit Herz",
+      "opening_hours": "Mo-Th 10:00-16:00; Fr 10:00-14:00",
+      "phone": "+49 30 4539054",
+      "shop": "second_hand",
+      "website": "https://www.moebelspenden.de",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 6727133389,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/2303055239",
+    "name": "Mobile@Com",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.550664,
+    "lon": 13.367496,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "c4835e998a5ee3e49a05cc6f4f8b226530a246aa",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2023-04-04",
+      "check_date:opening_hours": "2023-11-17",
+      "name": "Mobile@Com",
+      "opening_hours:signed": "no",
+      "shop": "mobile_phone",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 2303055239,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -4577,7 +6045,7 @@
       "osm_type": "node",
       "osm_id": 6532305047,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -4610,7 +6078,7 @@
       "osm_type": "node",
       "osm_id": 10733516692,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -4645,7 +6113,7 @@
       "osm_type": "node",
       "osm_id": 3140301723,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -4687,7 +6155,7 @@
       "osm_type": "node",
       "osm_id": 459799715,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.800Z"
+      "fetched_at": "2026-04-29T13:58:57.639Z"
     }
   },
   {
@@ -4725,7 +6193,7 @@
       "osm_type": "node",
       "osm_id": 3780185339,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -4755,7 +6223,7 @@
       "osm_type": "node",
       "osm_id": 3803590073,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -4786,7 +6254,7 @@
       "osm_type": "node",
       "osm_id": 7612272374,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -4827,7 +6295,7 @@
       "osm_type": "way",
       "osm_id": 23286115,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.647Z"
     }
   },
   {
@@ -4858,7 +6326,7 @@
       "osm_type": "node",
       "osm_id": 13555500626,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.647Z"
     }
   },
   {
@@ -4887,7 +6355,7 @@
       "osm_type": "node",
       "osm_id": 7428911687,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -4921,7 +6389,7 @@
       "osm_type": "node",
       "osm_id": 5961690034,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -4951,7 +6419,7 @@
       "osm_type": "node",
       "osm_id": 7609092398,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -4997,7 +6465,7 @@
       "osm_type": "way",
       "osm_id": 27162702,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.647Z"
     }
   },
   {
@@ -5039,7 +6507,7 @@
       "osm_type": "node",
       "osm_id": 678968266,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.800Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -5074,7 +6542,7 @@
       "osm_type": "node",
       "osm_id": 13353253188,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -5102,7 +6570,7 @@
       "osm_type": "node",
       "osm_id": 1659884026,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -5132,7 +6600,7 @@
       "osm_type": "node",
       "osm_id": 11061327338,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -5169,7 +6637,84 @@
       "osm_type": "node",
       "osm_id": 7318162468,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4619058194",
+    "name": "O2",
+    "address": "Müllerstraße 138B, Berlin",
+    "district": "Wedding",
+    "lat": 52.549377,
+    "lon": 13.353377,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 10:00-18:30; Sa 10:00-14:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "94389b586621288ad59d2a08c9aa0060d5a0ee51",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "138B",
+      "addr:street": "Müllerstraße",
+      "brand": "O2",
+      "brand:wikidata": "Q1759255",
+      "name": "O2",
+      "opening_hours": "Mo-Fr 10:00-18:30; Sa 10:00-14:00",
+      "shop": "mobile_phone"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4619058194,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/2308524443",
+    "name": "O₂",
+    "address": "Müllerstraße 28, 13353, Berlin",
+    "district": "Wedding",
+    "lat": 52.547212,
+    "lon": 13.35813,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-18:30",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "f03119257d5806da2e0588b416440df3bdbb6724",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "28",
+      "addr:postcode": "13353",
+      "addr:street": "Müllerstraße",
+      "addr:suburb": "Wedding",
+      "check_date": "2026-02-10",
+      "check_date:opening_hours": "2026-02-10",
+      "level": "0",
+      "name": "O₂",
+      "opening_hours": "Mo-Sa 10:00-18:30",
+      "payment:credit_cards": "yes",
+      "payment:girocard": "yes",
+      "payment:mastercard": "yes",
+      "payment:visa": "yes",
+      "shop": "mobile_phone",
+      "toilets:wheelchair": "no",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 2308524443,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -5211,7 +6756,7 @@
       "osm_type": "node",
       "osm_id": 2125049422,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -5248,7 +6793,7 @@
       "osm_type": "node",
       "osm_id": 1234501223,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -5294,7 +6839,7 @@
       "osm_type": "node",
       "osm_id": 832835260,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -5336,7 +6881,7 @@
       "osm_type": "node",
       "osm_id": 1234547262,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -5380,7 +6925,117 @@
       "osm_type": "node",
       "osm_id": 4234162693,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.804Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/2913166407",
+    "name": "Phoneprofi 24",
+    "address": "Müllerstraße 22A, 13353, Berlin",
+    "district": "Wedding",
+    "lat": 52.545133,
+    "lon": 13.361865,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 09:00-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "79cc4ab368d2753a1596d24ef0b228c4a1466bef",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "22A",
+      "addr:postcode": "13353",
+      "addr:street": "Müllerstraße",
+      "addr:suburb": "Wedding",
+      "check_date": "2024-12-10",
+      "check_date:opening_hours": "2024-12-10",
+      "name": "Phoneprofi 24",
+      "opening_hours": "Mo-Sa 09:00-19:00",
+      "shop": "mobile_phone",
+      "toilets:wheelchair": "no",
+      "wheelchair": "limited"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 2913166407,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.643Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/6605069780",
+    "name": "PhoneTec",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.551236,
+    "lon": 13.350201,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "ea81f049827b7361774f0d142e5708fe138b5c83",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "PhoneTec",
+      "shop": "mobile_phone",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 6605069780,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/9690671234",
+    "name": "Plattenladen",
+    "address": "Tegeler Straße 38, 13353, Berlin",
+    "district": "Wedding",
+    "lat": 52.541199,
+    "lon": 13.357242,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": "https://www.plattenladen-fahrradservice.de",
+    "phone": "+49 30 52545930",
+    "opening_hours": "Mo-Th 09:30-11:30,14:00-17:30; Fr 13:30-15:30",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "01487bb7aee26be5a9a3d38b1b1e05d4f9a1c777",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:housenumber": "38",
+      "addr:postcode": "13353",
+      "addr:street": "Tegeler Straße",
+      "name": "Plattenladen",
+      "opening_hours": "Mo-Th 09:30-11:30,14:00-17:30; Fr 13:30-15:30",
+      "phone": "+49 30 52545930",
+      "service:bicycle:parts": "yes",
+      "service:bicycle:pump": "yes",
+      "service:bicycle:repair": "yes",
+      "service:bicycle:retail": "yes",
+      "service:bicycle:second_hand": "yes",
+      "service:bicycle:service": "yes",
+      "shop": "bicycle",
+      "website": "https://www.plattenladen-fahrradservice.de",
+      "wheelchair": "limited"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 9690671234,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -5424,7 +7079,7 @@
       "osm_type": "node",
       "osm_id": 1236581643,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -5465,7 +7120,7 @@
       "osm_type": "node",
       "osm_id": 602531459,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.800Z"
+      "fetched_at": "2026-04-29T13:58:57.639Z"
     }
   },
   {
@@ -5505,7 +7160,7 @@
       "osm_type": "node",
       "osm_id": 2125023467,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -5544,7 +7199,50 @@
       "osm_type": "node",
       "osm_id": 1236581632,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/2741884901",
+    "name": "Rad-Core Berlin",
+    "address": "Brüsseler Straße 46, 13353, Berlin",
+    "district": "Wedding",
+    "lat": 52.547663,
+    "lon": 13.351556,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": "https://www.rad-core-berlin.de/",
+    "phone": null,
+    "opening_hours": "Mo,Tu,Th,Fr 09:00-18:00; Sa 10:00-14:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "8430dc1f13fa90a929dc54f0d193eee9e9d7fc90",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "46",
+      "addr:postcode": "13353",
+      "addr:street": "Brüsseler Straße",
+      "addr:suburb": "Wedding",
+      "alt_name": "Doc Schimano",
+      "contact:fax": "+49 30 3965283",
+      "contact:phone": "+49 30 3965283",
+      "name": "Rad-Core Berlin",
+      "opening_hours": "Mo,Tu,Th,Fr 09:00-18:00; Sa 10:00-14:00",
+      "service:bicycle:pump": "no",
+      "service:bicycle:repair": "yes",
+      "service:bicycle:retail": "yes",
+      "service:bicycle:second_hand": "yes",
+      "shop": "bicycle",
+      "website": "https://www.rad-core-berlin.de/"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 2741884901,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -5574,7 +7272,7 @@
       "osm_type": "node",
       "osm_id": 13524152575,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.647Z"
     }
   },
   {
@@ -5622,7 +7320,7 @@
       "osm_type": "node",
       "osm_id": 2829271312,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -5654,7 +7352,7 @@
       "osm_type": "node",
       "osm_id": 6766861688,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -5693,7 +7391,43 @@
       "osm_type": "node",
       "osm_id": 6146723586,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/7612272365",
+    "name": "Riki's Internetshop",
+    "address": "Müllerstraße 61, 13349, Berlin",
+    "district": "Wedding",
+    "lat": 52.555499,
+    "lon": 13.34357,
+    "osm_category": "internet_cafe",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 08:00-20:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "ac5dc1983a66e030cefcbe43e73b8cd5659142f6",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "61",
+      "addr:postcode": "13349",
+      "addr:street": "Müllerstraße",
+      "addr:suburb": "Wedding",
+      "amenity": "internet_cafe",
+      "name": "Riki's Internetshop",
+      "opening_hours": "Mo-Sa 08:00-20:00",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 7612272365,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -5743,7 +7477,7 @@
       "osm_type": "node",
       "osm_id": 1236581630,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -5791,7 +7525,38 @@
       "osm_type": "node",
       "osm_id": 8693899528,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4521594175",
+    "name": "Roy Dunn’s Western Store",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.551714,
+    "lon": 13.348372,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 11:00-17:00; Sa 10:00-14:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "004ec4fe28071a108313049bcb0882ff961d86b6",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date:opening_hours": "2024-05-30",
+      "clothes": "denim",
+      "name": "Roy Dunn’s Western Store",
+      "opening_hours": "Mo-Fr 11:00-17:00; Sa 10:00-14:00",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4521594175,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -5822,7 +7587,7 @@
       "osm_type": "node",
       "osm_id": 7605882335,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -5861,7 +7626,7 @@
       "osm_type": "node",
       "osm_id": 3149431448,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -5900,7 +7665,7 @@
       "osm_type": "node",
       "osm_id": 11146789679,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -5928,7 +7693,47 @@
       "osm_type": "node",
       "osm_id": 8307364241,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/3140302229",
+    "name": "SatCom Berlin",
+    "address": "Müllerstraße 167, 13353, Berlin",
+    "district": "Wedding",
+    "lat": 52.54267,
+    "lon": 13.365212,
+    "osm_category": "electronics",
+    "app_categories": [],
+    "website": "http://www.satcom-berlin.de/",
+    "phone": null,
+    "opening_hours": "Mo-Fr 10:30-17:00; Sa 10:30-14:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "38ac2574ba940baa2d16378dc7810897a44b43d2",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "167",
+      "addr:postcode": "13353",
+      "addr:street": "Müllerstraße",
+      "addr:suburb": "Wedding",
+      "check_date": "2024-11-29",
+      "name": "SatCom Berlin",
+      "opening_hours": "Mo-Fr 10:30-17:00; Sa 10:30-14:00",
+      "payment:credit_cards": "yes",
+      "payment:debit_cards": "yes",
+      "shop": "electronics",
+      "website": "http://www.satcom-berlin.de/",
+      "wheelchair": "limited"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 3140302229,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -5962,7 +7767,41 @@
       "osm_type": "node",
       "osm_id": 4423466261,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/7992505500",
+    "name": "Schlüsseldienst am Leo",
+    "address": "Nazarethkirchstraße 52, Berlin",
+    "district": "Wedding",
+    "lat": 52.547423,
+    "lon": 13.358562,
+    "osm_category": "key_cutter",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 11:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "6a6ef3d43d79059c29c8108d14f568addafa6076",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "52",
+      "addr:street": "Nazarethkirchstraße",
+      "check_date": "2025-02-09",
+      "craft": "key_cutter",
+      "level": "0",
+      "name": "Schlüsseldienst am Leo",
+      "opening_hours": "Mo-Fr 11:00-18:00",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 7992505500,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -5992,7 +7831,7 @@
       "osm_type": "node",
       "osm_id": 6532305039,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -6021,7 +7860,46 @@
       "osm_type": "node",
       "osm_id": 12100669182,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4339053548",
+    "name": "Second Hemd",
+    "address": "Plantagenstraße 43, 13347, Berlin",
+    "district": "Wedding",
+    "lat": 52.546026,
+    "lon": 13.369049,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": "http://www.second-hemd-berlin.de/",
+    "phone": null,
+    "opening_hours": "Tu,Th 14:30-17:00; Sa 12:30-15:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "94cb4da862c56b09be86758b2962bec28d8d68f9",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "43",
+      "addr:postcode": "13347",
+      "addr:street": "Plantagenstraße",
+      "addr:suburb": "Wedding",
+      "check_date:opening_hours": "2025-06-27",
+      "name": "Second Hemd",
+      "opening_hours": "Tu,Th 14:30-17:00; Sa 12:30-15:00",
+      "second_hand": "yes",
+      "shop": "clothes",
+      "website": "http://www.second-hemd-berlin.de/",
+      "wheelchair": "limited"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4339053548,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -6058,7 +7936,7 @@
       "osm_type": "node",
       "osm_id": 2301610392,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -6095,7 +7973,7 @@
       "osm_type": "node",
       "osm_id": 2482984708,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -6131,7 +8009,36 @@
       "osm_type": "node",
       "osm_id": 7612272373,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/7609092404",
+    "name": "SIMARENA",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.553153,
+    "lon": 13.346796,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "9aebf56923754f0e8f2eaf079a47795bb4e602d7",
+    "is_useful": true,
+    "raw_tags": {
+      "level": "0",
+      "name": "SIMARENA",
+      "shop": "mobile_phone"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 7609092404,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -6169,7 +8076,45 @@
       "osm_type": "node",
       "osm_id": 4234162689,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.804Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/9816418795",
+    "name": "sos.hofladen",
+    "address": "Oudenarder Straße 16, 13347, Berlin",
+    "district": "Wedding",
+    "lat": 52.552672,
+    "lon": 13.359955,
+    "osm_category": "charity",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Tu 09:30-14:00; Th-Fr 09:30-14:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "bd2d735e451ce7809c7389dd571bbd9e35813fb4",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "16",
+      "addr:postcode": "13347",
+      "addr:street": "Oudenarder Straße",
+      "addr:suburb": "Wedding",
+      "check_date": "2024-06-18",
+      "contact:website": "https://www.sos-kinderdorf.de/kinderdorf-berlin/angebote/aktuelle-foerderprojekte/sos-hofladen",
+      "name": "sos.hofladen",
+      "opening_hours": "Tu 09:30-14:00; Th-Fr 09:30-14:00",
+      "operator": "SOS-Kinderdorf Berlin",
+      "shop": "charity"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 9816418795,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -6206,7 +8151,7 @@
       "osm_type": "node",
       "osm_id": 2301610475,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -6246,7 +8191,7 @@
       "osm_type": "node",
       "osm_id": 10015418517,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -6279,7 +8224,7 @@
       "osm_type": "node",
       "osm_id": 4304633635,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -6314,7 +8259,7 @@
       "osm_type": "node",
       "osm_id": 4783313906,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -6347,7 +8292,7 @@
       "osm_type": "node",
       "osm_id": 530715910,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.800Z"
+      "fetched_at": "2026-04-29T13:58:57.639Z"
     }
   },
   {
@@ -6380,7 +8325,7 @@
       "osm_type": "node",
       "osm_id": 6596977798,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -6408,7 +8353,7 @@
       "osm_type": "node",
       "osm_id": 13290329193,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -6441,7 +8386,7 @@
       "osm_type": "node",
       "osm_id": 9262040839,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -6479,7 +8424,7 @@
       "osm_type": "node",
       "osm_id": 2301610395,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -6507,7 +8452,7 @@
       "osm_type": "node",
       "osm_id": 11796133141,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -6540,7 +8485,7 @@
       "osm_type": "node",
       "osm_id": 459785177,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.799Z"
+      "fetched_at": "2026-04-29T13:58:57.638Z"
     }
   },
   {
@@ -6578,7 +8523,7 @@
       "osm_type": "node",
       "osm_id": 3760539861,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -6617,7 +8562,36 @@
       "osm_type": "node",
       "osm_id": 1659884041,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11793332156",
+    "name": "Studio Annika Oe",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.549677,
+    "lon": 13.361722,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Th-Sa 12:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "62a329335ae8a7749f7056fd92725f58f46fd690",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "Studio Annika Oe",
+      "opening_hours": "Th-Sa 12:00-18:00",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11793332156,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -6653,7 +8627,7 @@
       "osm_type": "node",
       "osm_id": 6331082241,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -6705,7 +8679,7 @@
       "osm_type": "node",
       "osm_id": 1234107297,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -6736,7 +8710,7 @@
       "osm_type": "node",
       "osm_id": 4351511591,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -6767,7 +8741,41 @@
       "osm_type": "node",
       "osm_id": 3393947819,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/10181066261",
+    "name": "TAHA Wohnungsauflösungen",
+    "address": "Utrechter Straße 46, Berlin",
+    "district": "Wedding",
+    "lat": 52.550719,
+    "lon": 13.361636,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": "+49 176 63235371",
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "5e0225637bf3ca391f7654e8058f8e4ccb32caba",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "46",
+      "addr:street": "Utrechter Straße",
+      "check_date": "2024-08-04",
+      "check_date:opening_hours": "2024-08-04",
+      "name": "TAHA Wohnungsauflösungen",
+      "opening_hours:signed": "no",
+      "phone": "+49 176 63235371",
+      "shop": "second_hand"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 10181066261,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -6803,7 +8811,36 @@
       "osm_type": "node",
       "osm_id": 3140302231,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.803Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4381394757",
+    "name": "Telly Center",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.541329,
+    "lon": 13.350205,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "5a9fc44718da9d3df3850ac1dcfc0a5bc23d1695",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "Telly Center",
+      "shop": "mobile_phone",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4381394757,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -6844,7 +8881,7 @@
       "osm_type": "node",
       "osm_id": 1980037176,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -6886,7 +8923,7 @@
       "osm_type": "node",
       "osm_id": 1296447141,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -6926,7 +8963,7 @@
       "osm_type": "node",
       "osm_id": 2308524462,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -6966,7 +9003,7 @@
       "osm_type": "node",
       "osm_id": 7633023873,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -6999,7 +9036,7 @@
       "osm_type": "node",
       "osm_id": 5648395321,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -7036,7 +9073,7 @@
       "osm_type": "node",
       "osm_id": 2297383210,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.642Z"
     }
   },
   {
@@ -7077,7 +9114,7 @@
       "osm_type": "node",
       "osm_id": 854996274,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.801Z"
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -7111,7 +9148,43 @@
       "osm_type": "node",
       "osm_id": 6712455232,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.810Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11180883818",
+    "name": "Velo-Klinik Charité",
+    "address": "Triftstraße 38, 13353, Berlin",
+    "district": "Wedding",
+    "lat": 52.541965,
+    "lon": 13.350781,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Th 08:00-12:00,13:00-16:00; Fr 08:00-12:00,13:00-15:00; PH off",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "e7d288622aa13c48ee3867c41092556dd28b6e30",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:housenumber": "38",
+      "addr:postcode": "13353",
+      "addr:street": "Triftstraße",
+      "name": "Velo-Klinik Charité",
+      "opening_hours": "Mo-Th 08:00-12:00,13:00-16:00; Fr 08:00-12:00,13:00-15:00; PH off",
+      "operator": "Charité Facility Management",
+      "service:bicycle:pump": "yes",
+      "service:bicycle:repair": "yes",
+      "shop": "bicycle"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11180883818,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -7156,7 +9229,7 @@
       "osm_type": "node",
       "osm_id": 2748240260,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.802Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -7199,7 +9272,7 @@
       "osm_type": "node",
       "osm_id": 251737915,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.799Z"
+      "fetched_at": "2026-04-29T13:58:57.638Z"
     }
   },
   {
@@ -7230,7 +9303,38 @@
       "osm_type": "node",
       "osm_id": 6596706590,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/6715269668",
+    "name": "VS Mobile",
+    "address": "Berlin",
+    "district": "Wedding",
+    "lat": 52.548817,
+    "lon": 13.354455,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "be841839f16795b68af7d82191dcd2197c2e8db7",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date:opening_hours": "2024-02-15",
+      "name": "VS Mobile",
+      "opening_hours:signed": "no",
+      "shop": "mobile_phone",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 6715269668,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
     }
   },
   {
@@ -7276,7 +9380,47 @@
       "osm_type": "node",
       "osm_id": 4095220011,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.804Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/12384876922",
+    "name": "Wedding Wheels",
+    "address": "Müllerstraße 159A, Berlin",
+    "district": "Wedding",
+    "lat": 52.544246,
+    "lon": 13.362475,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 09:30-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "436784ba4b37399588c1a3a47269419f2ebac602",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "159A",
+      "addr:street": "Müllerstraße",
+      "check_date": "2025-05-18",
+      "check_date:opening_hours": "2025-05-18",
+      "check_date:service:bicycle:pump": "2025-01-04",
+      "check_date:service:bicycle:repair": "2025-01-04",
+      "check_date:service:bicycle:retail": "2025-05-18",
+      "name": "Wedding Wheels",
+      "opening_hours": "Mo-Sa 09:30-18:00",
+      "service:bicycle:pump": "yes",
+      "service:bicycle:repair": "yes",
+      "service:bicycle:retail": "yes",
+      "service:bicycle:second_hand": "yes",
+      "shop": "bicycle"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 12384876922,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -7317,7 +9461,7 @@
       "osm_type": "node",
       "osm_id": 7877976455,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
     }
   },
   {
@@ -7350,7 +9494,86 @@
       "osm_type": "node",
       "osm_id": 11017803879,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.811Z"
+      "fetched_at": "2026-04-29T13:58:57.646Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/3152593407",
+    "name": "Wetterkleidung",
+    "address": "Tegeler Straße 36, 13353, Berlin",
+    "district": "Wedding",
+    "lat": 52.541602,
+    "lon": 13.357003,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Tu,We,Fr 08:45-18:00; Sa 08:30-13:00; Th 08:45-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "113e01a883d2b89f392985715177e58f5d2f0a3e",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "36",
+      "addr:postcode": "13353",
+      "addr:street": "Tegeler Straße",
+      "addr:suburb": "Wedding",
+      "check_date": "2023-08-03",
+      "name": "Wetterkleidung",
+      "opening_hours": "Tu,We,Fr 08:45-18:00; Sa 08:30-13:00; Th 08:45-19:00",
+      "shop": "clothes",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 3152593407,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.643Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4220012306",
+    "name": "workerfashion",
+    "address": "Müllerstraße 159A, 13353, Berlin",
+    "district": "Wedding",
+    "lat": 52.544198,
+    "lon": 13.362568,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": "+49 30 46507555",
+    "opening_hours": "Mo-Fr 09:00-13:00,14:00-19:00; Sa 10:00-14:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "eb317076a83e2bed961477a8919e705b3ae98a57",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "159A",
+      "addr:postcode": "13353",
+      "addr:street": "Müllerstraße",
+      "addr:suburb": "Wedding",
+      "check_date": "2024-11-29",
+      "clothes": "workwear",
+      "email": "mul@mmteam.de",
+      "fax": "+49 30 46507545",
+      "name": "workerfashion",
+      "opening_hours": "Mo-Fr 09:00-13:00,14:00-19:00; Sa 10:00-14:00",
+      "operator": "M.M.-Team GmbH",
+      "phone": "+49 30 46507555",
+      "shop": "clothes",
+      "wheelchair": "limited"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4220012306,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.643Z"
     }
   },
   {
@@ -7384,7 +9607,78 @@
       "osm_type": "node",
       "osm_id": 4315470239,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.809Z"
+      "fetched_at": "2026-04-29T13:58:57.643Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/6610291465",
+    "name": "Zeeman",
+    "address": "Seestraße 44a, Berlin",
+    "district": "Wedding",
+    "lat": 52.550013,
+    "lon": 13.351945,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 09:00-19:00; Sa 10:00-16:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "1116a3696b2beefd2defe25b785f194f1e9a4c55",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "44a",
+      "addr:street": "Seestraße",
+      "brand": "Zeeman",
+      "brand:wikidata": "Q184399",
+      "brand:wikipedia": "en:Zeeman (store)",
+      "check_date": "2025-11-09",
+      "level": "0",
+      "name": "Zeeman",
+      "opening_hours": "Mo-Fr 09:00-19:00; Sa 10:00-16:00",
+      "shop": "clothes",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 6610291465,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.644Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/728285536",
+    "name": "Zeitloses Gut",
+    "address": "Reinickendorfer Straße 113, Berlin",
+    "district": "Wedding",
+    "lat": 52.543374,
+    "lon": 13.369418,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "3132449a7efaf4a1d2b47b86e702b32fd02e3326",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "113",
+      "addr:street": "Reinickendorfer Straße",
+      "check_date": "2025-11-21",
+      "check_date:opening_hours": "2024-04-21",
+      "name": "Zeitloses Gut",
+      "opening_hours:signed": "no",
+      "shop": "second_hand",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 728285536,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:58:57.641Z"
     }
   },
   {
@@ -7426,7 +9720,7 @@
       "osm_type": "node",
       "osm_id": 459166572,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:54:29.799Z"
+      "fetched_at": "2026-04-29T13:58:57.638Z"
     }
   }
 ]

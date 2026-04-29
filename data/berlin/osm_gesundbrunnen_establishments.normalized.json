@@ -36,7 +36,7 @@
       "osm_type": "node",
       "osm_id": 10658455542,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -75,7 +75,7 @@
       "osm_type": "node",
       "osm_id": 9937044800,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -109,7 +109,7 @@
       "osm_type": "node",
       "osm_id": 7955521982,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -146,7 +146,7 @@
       "osm_type": "node",
       "osm_id": 4139464889,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -174,7 +174,7 @@
       "osm_type": "node",
       "osm_id": 13410539139,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -216,7 +216,7 @@
       "osm_type": "node",
       "osm_id": 604939149,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.380Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -253,7 +253,37 @@
       "osm_type": "node",
       "osm_id": 2752211152,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/9693577410",
+    "name": "Aktiv Schlüsseldienst",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.551471,
+    "lon": 13.381736,
+    "osm_category": "key_cutter",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "\"by appointment\"",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "1aa0747fe81bda2bca7e98eede02ad544b69199e",
+    "is_useful": true,
+    "raw_tags": {
+      "craft": "key_cutter",
+      "name": "Aktiv Schlüsseldienst",
+      "opening_hours": "\"by appointment\"",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 9693577410,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -281,7 +311,7 @@
       "osm_type": "node",
       "osm_id": 4539206648,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -318,7 +348,7 @@
       "osm_type": "node",
       "osm_id": 646601544,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -352,7 +382,7 @@
       "osm_type": "node",
       "osm_id": 4317555810,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -394,7 +424,7 @@
       "osm_type": "node",
       "osm_id": 707425912,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -423,7 +453,111 @@
       "osm_type": "node",
       "osm_id": 4436482287,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11757773351",
+    "name": "alz handy",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.550521,
+    "lon": 13.385267,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:30-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "ae73f5b1fc16ab10c378f8956bfffba83a1b0006",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "alz handy",
+      "opening_hours": "Mo-Sa 10:30-19:00",
+      "shop": "mobile_phone",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11757773351,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/9309752751",
+    "name": "An- & Verkauf",
+    "address": "Koloniestraße 31, 13359, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.559403,
+    "lon": 13.379654,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "b4f87c831447e9e2ff13504bc2ccabcbe943164e",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "31",
+      "addr:postcode": "13359",
+      "addr:street": "Koloniestraße",
+      "addr:suburb": "Gesundbrunnen",
+      "check_date": "2025-02-12",
+      "name": "An- & Verkauf",
+      "shop": "second_hand",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 9309752751,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/9395585861",
+    "name": "Ankauf & Verkauf Technik",
+    "address": "Schönwalder Straße 18, 13347, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.541763,
+    "lon": 13.370625,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "24da401baba342a0e925aedec06bd352d40f7732",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:housenumber": "18",
+      "addr:postcode": "13347",
+      "addr:street": "Schönwalder Straße",
+      "check_date": "2025-05-17",
+      "check_date:opening_hours": "2024-04-12",
+      "level": "0",
+      "name": "Ankauf & Verkauf Technik",
+      "opening_hours:signed": "no",
+      "second_hand": "only",
+      "shop": "electronics",
+      "wheelchair": "limited"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 9395585861,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -463,7 +597,7 @@
       "osm_type": "node",
       "osm_id": 4899394021,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -496,7 +630,7 @@
       "osm_type": "node",
       "osm_id": 1298511709,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -536,7 +670,7 @@
       "osm_type": "node",
       "osm_id": 576608994,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.379Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -565,7 +699,7 @@
       "osm_type": "node",
       "osm_id": 5031751087,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -595,7 +729,74 @@
       "osm_type": "node",
       "osm_id": 5248627030,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.435Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/8890286246",
+    "name": "Aviax Elektronic",
+    "address": "Brunnenstraße 113, 13355, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.542135,
+    "lon": 13.392692,
+    "osm_category": "electronics",
+    "app_categories": [],
+    "website": null,
+    "phone": "+49 30 460 69 605",
+    "opening_hours": "Mo-Fr 10:00-19:00; Sa 10:00-17:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "a63d7bd1fa1ac5fa50fd9976fb077283b3311823",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:housenumber": "113",
+      "addr:postcode": "13355",
+      "addr:street": "Brunnenstraße",
+      "check_date": "2025-12-27",
+      "name": "Aviax Elektronic",
+      "opening_hours": "Mo-Fr 10:00-19:00; Sa 10:00-17:00",
+      "phone": "+49 30 460 69 605",
+      "shop": "electronics",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 8890286246,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/10709325642",
+    "name": "Baby und Kinderkleidung",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.561033,
+    "lon": 13.38124,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "90fb4a87a61c8134bc13ff1a4eb18abaedfeac10",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date:opening_hours": "2025-04-12",
+      "name": "Baby und Kinderkleidung",
+      "opening_hours:signed": "no",
+      "shop": "clothes",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 10709325642,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -625,7 +826,7 @@
       "osm_type": "node",
       "osm_id": 2566382658,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -659,7 +860,7 @@
       "osm_type": "node",
       "osm_id": 4318477522,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -692,7 +893,7 @@
       "osm_type": "node",
       "osm_id": 3086242561,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -728,7 +929,7 @@
       "osm_type": "node",
       "osm_id": 5923190751,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -762,7 +963,7 @@
       "osm_type": "node",
       "osm_id": 5257750955,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.435Z"
     }
   },
   {
@@ -777,14 +978,14 @@
     "app_categories": [],
     "website": null,
     "phone": null,
-    "opening_hours": "Mo-Sa 04:30-18:00; Su 07:00-18:00",
+    "opening_hours": "Mo-Sa 04:00-19:00; Su 05:00-19:00",
     "description": "Imported from OSM Overpass for Berlin.",
     "active_status": "active",
     "checksum": "d122444bde42d93e40f5976ea14b13cb509b6b51",
     "is_useful": true,
     "raw_tags": {
       "name": "Backshop",
-      "opening_hours": "Mo-Sa 04:30-18:00; Su 07:00-18:00",
+      "opening_hours": "Mo-Sa 04:00-19:00; Su 05:00-19:00",
       "shop": "convenience",
       "wheelchair": "no"
     },
@@ -792,7 +993,7 @@
       "osm_type": "node",
       "osm_id": 7710976602,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -830,7 +1031,7 @@
       "osm_type": "node",
       "osm_id": 707452472,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -872,7 +1073,7 @@
       "osm_type": "node",
       "osm_id": 4139417218,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -906,7 +1107,7 @@
       "osm_type": "node",
       "osm_id": 2752211158,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -937,7 +1138,7 @@
       "osm_type": "node",
       "osm_id": 10029073665,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -972,7 +1173,7 @@
       "osm_type": "node",
       "osm_id": 316056224,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.379Z"
+      "fetched_at": "2026-04-29T13:59:14.431Z"
     }
   },
   {
@@ -1002,7 +1203,7 @@
       "osm_type": "node",
       "osm_id": 13483961854,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -1039,7 +1240,7 @@
       "osm_type": "node",
       "osm_id": 4877987621,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -1071,7 +1272,7 @@
       "osm_type": "node",
       "osm_id": 2110645717,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.402Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -1106,7 +1307,7 @@
       "osm_type": "node",
       "osm_id": 5032732330,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -1179,7 +1380,7 @@
       "osm_type": "node",
       "osm_id": 312854886,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.379Z"
+      "fetched_at": "2026-04-29T13:59:14.431Z"
     }
   },
   {
@@ -1220,7 +1421,44 @@
       "osm_type": "node",
       "osm_id": 577383675,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.380Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4317555791",
+    "name": "BONITA",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.549829,
+    "lon": 13.388712,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": "https://www.bonita.de",
+    "phone": "+4930 49309266",
+    "opening_hours": "Mo-Sa 09:00-21:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "ec9d1424043f83554f7f68ae6eb141a4dd1d3e17",
+    "is_useful": true,
+    "raw_tags": {
+      "brand": "BONITA",
+      "brand:wikidata": "Q892598",
+      "brand:wikipedia": "de:Bonita (Unternehmen)",
+      "clothes": "women",
+      "level": "0",
+      "name": "BONITA",
+      "opening_hours": "Mo-Sa 09:00-21:00",
+      "phone": "+4930 49309266",
+      "shop": "clothes",
+      "website": "https://www.bonita.de",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4317555791,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -1261,7 +1499,7 @@
       "osm_type": "node",
       "osm_id": 581322478,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.380Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -1295,7 +1533,41 @@
       "osm_type": "node",
       "osm_id": 6480348199,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/646593042",
+    "name": "C&A",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.549565,
+    "lon": 13.388018,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "7f9ab36a0f435f1ca7aba5b3ad15ac2ac5492cf6",
+    "is_useful": true,
+    "raw_tags": {
+      "brand": "C&A",
+      "brand:wikidata": "Q701338",
+      "brand:wikipedia": "en:C&A",
+      "check_date": "2025-01-23",
+      "level": "0;-1",
+      "name": "C&A",
+      "shop": "clothes",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 646593042,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -1342,7 +1614,7 @@
       "osm_type": "node",
       "osm_id": 607756448,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.380Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -1370,7 +1642,7 @@
       "osm_type": "node",
       "osm_id": 11534658751,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -1400,7 +1672,37 @@
       "osm_type": "node",
       "osm_id": 4317462782,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4813100968",
+    "name": "Casa Barata",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.563658,
+    "lon": 13.391269,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo,We-Fr 10:00-14:30",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "8f804d0076c83adc52923476158a00a7ebc74637",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2026-01-19",
+      "name": "Casa Barata",
+      "opening_hours": "Mo,We-Fr 10:00-14:30",
+      "shop": "second_hand"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4813100968,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -1430,7 +1732,7 @@
       "osm_type": "node",
       "osm_id": 12582221923,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -1460,7 +1762,78 @@
       "osm_type": "node",
       "osm_id": 4351511594,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/3471425375",
+    "name": "Copy Press",
+    "address": "Koloniestraße 13, 13357, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.555983,
+    "lon": 13.37756,
+    "osm_category": "copyshop",
+    "app_categories": [],
+    "website": "https://www.copy-press.de/",
+    "phone": "+49 30 4944691",
+    "opening_hours": "Mo-Fr 10:00-16:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "d7203a4c6541f7be82069aadec1b3ac75c73e8a1",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:housenumber": "13",
+      "addr:postcode": "13357",
+      "addr:street": "Koloniestraße",
+      "name": "Copy Press",
+      "opening_hours": "Mo-Fr 10:00-16:00",
+      "phone": "+49 30 4944691",
+      "shop": "copyshop",
+      "website": "https://www.copy-press.de/",
+      "wheelchair": "limited"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 3471425375,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.433Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/2419330374",
+    "name": "Crystal Phone",
+    "address": "Residenzstraße 85, 13409, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.558717,
+    "lon": 13.372993,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 09:00-20:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "ce33fe1bd25b358af6fb3aa4c5a34fad4db80cca",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:housenumber": "85",
+      "addr:postcode": "13409",
+      "addr:street": "Residenzstraße",
+      "check_date:opening_hours": "2023-10-30",
+      "name": "Crystal Phone",
+      "opening_hours": "Mo-Sa 09:00-20:00",
+      "shop": "mobile_phone",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 2419330374,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -1501,7 +1874,7 @@
       "osm_type": "node",
       "osm_id": 4388732495,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -1543,7 +1916,7 @@
       "osm_type": "node",
       "osm_id": 4388735295,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -1578,7 +1951,39 @@
       "osm_type": "way",
       "osm_id": 438501232,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/7840293990",
+    "name": "D & D",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.55194,
+    "lon": 13.381742,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 11:00-20:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "12b210702783eae515daf00611375f2a131c9617",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2026-02-26",
+      "check_date:opening_hours": "2026-02-26",
+      "name": "D & D",
+      "opening_hours": "Mo-Sa 11:00-20:00",
+      "shop": "clothes",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 7840293990,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -1617,7 +2022,36 @@
       "osm_type": "node",
       "osm_id": 4436482370,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/9198286178",
+    "name": "Denimholics",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.555667,
+    "lon": 13.374629,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "f341ad392a75e96bdbbc6ed6127fac0984c8727b",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "Denimholics",
+      "shop": "clothes",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 9198286178,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -1660,7 +2094,7 @@
       "osm_type": "node",
       "osm_id": 4791546521,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -1709,7 +2143,7 @@
       "osm_type": "node",
       "osm_id": 3906099257,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -1749,7 +2183,7 @@
       "osm_type": "node",
       "osm_id": 646593040,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -1785,7 +2219,7 @@
       "osm_type": "node",
       "osm_id": 3221929062,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -1820,7 +2254,7 @@
       "osm_type": "node",
       "osm_id": 4197401453,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -1865,7 +2299,7 @@
       "osm_type": "way",
       "osm_id": 392605419,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -1911,7 +2345,7 @@
       "osm_type": "node",
       "osm_id": 2147041012,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -1962,7 +2396,7 @@
       "osm_type": "node",
       "osm_id": 2423076594,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -1994,7 +2428,7 @@
       "osm_type": "node",
       "osm_id": 13483894831,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -2041,7 +2475,7 @@
       "osm_type": "node",
       "osm_id": 9395604410,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -2075,7 +2509,38 @@
       "osm_type": "node",
       "osm_id": 332964520,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.379Z"
+      "fetched_at": "2026-04-29T13:59:14.431Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4100572578",
+    "name": "e-motion",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.544218,
+    "lon": 13.3905,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Tu-Fr 10:00-18:00; Sa 10:00-16:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "b8d654f3fcf5774fe6a4de05e3879f5d032e5594",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date:opening_hours": "2026-02-26",
+      "name": "e-motion",
+      "opening_hours": "Tu-Fr 10:00-18:00; Sa 10:00-16:00",
+      "service:bicycle:pump": "no",
+      "shop": "bicycle"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4100572578,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -2104,7 +2569,36 @@
       "osm_type": "node",
       "osm_id": 5887756717,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/10739622428",
+    "name": "Elfida Shop",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.542955,
+    "lon": 13.392729,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "f05cfde58d12b0f4202362ad67edc65b32f05e85",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2025-12-27",
+      "name": "Elfida Shop",
+      "shop": "mobile_phone"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 10739622428,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -2142,7 +2636,79 @@
       "osm_type": "node",
       "osm_id": 626859062,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.380Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/2752211167",
+    "name": "Fahrrad Laden & Service",
+    "address": "Wollankstraße 74, 13359, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.561459,
+    "lon": 13.389116,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": null,
+    "phone": "+49 30 94889633",
+    "opening_hours": "Mo-Fr 10:00-18:00; Sa 10:00-16:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "412e45d1e65fb0665c6975bee03f730d25f8ab93",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "74",
+      "addr:postcode": "13359",
+      "addr:street": "Wollankstraße",
+      "addr:suburb": "Gesundbrunnen",
+      "name": "Fahrrad Laden & Service",
+      "opening_hours": "Mo-Fr 10:00-18:00; Sa 10:00-16:00",
+      "phone": "+49 30 94889633",
+      "phone:mobile": "+49 176 26607366",
+      "service:bicycle:pump": "yes",
+      "service:bicycle:repair": "yes",
+      "service:bicycle:retail": "yes",
+      "service:bicycle:second_hand": "yes",
+      "shop": "bicycle",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 2752211167,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.433Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11050787211",
+    "name": "fAP Computerservice",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.55781,
+    "lon": 13.385962,
+    "osm_category": "electronics",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 10:00-19:30; Sa 11:00-17:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "20b46ac48cf59ef9b987f19a490795f609f2ac14",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "fAP Computerservice",
+      "opening_hours": "Mo-Fr 10:00-19:30; Sa 11:00-17:00",
+      "shop": "electronics",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11050787211,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -2183,7 +2749,7 @@
       "osm_type": "node",
       "osm_id": 5377715288,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.435Z"
     }
   },
   {
@@ -2219,7 +2785,7 @@
       "osm_type": "node",
       "osm_id": 5287822222,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.435Z"
     }
   },
   {
@@ -2256,7 +2822,7 @@
       "osm_type": "node",
       "osm_id": 5887756704,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -2289,7 +2855,43 @@
       "osm_type": "node",
       "osm_id": 9823829854,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/6533440076",
+    "name": "FoxTec Handyreparatur",
+    "address": "Residenzstraße 89, 13409, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.559286,
+    "lon": 13.370834,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-22:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "8e90caa36358bbf047d737240bf7a289242c8bad",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "89",
+      "addr:postcode": "13409",
+      "addr:street": "Residenzstraße",
+      "addr:suburb": "Gesundbrunnen",
+      "check_date": "2025-03-28",
+      "name": "FoxTec Handyreparatur",
+      "opening_hours": "Mo-Sa 10:00-22:00",
+      "shop": "mobile_phone"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 6533440076,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -2323,7 +2925,7 @@
       "osm_type": "node",
       "osm_id": 4439716022,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -2357,7 +2959,7 @@
       "osm_type": "node",
       "osm_id": 4439716024,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -2385,7 +2987,42 @@
       "osm_type": "node",
       "osm_id": 8929005318,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11008619718",
+    "name": "gemeinnützige Fahrradwerkstatt",
+    "address": "Prinzenallee 52, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.559104,
+    "lon": 13.386241,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": "https://www.puk-amalta.de/index.php/unsere-angebote/bildungsmassnahmen/pa/werkstaetten",
+    "phone": null,
+    "opening_hours": "Mo-Fr 09:00-14:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "09dd470406203582b1175b55b9a07de020dcc683",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "52",
+      "addr:street": "Prinzenallee",
+      "name": "gemeinnützige Fahrradwerkstatt",
+      "opening_hours": "Mo-Fr 09:00-14:00",
+      "operator": "puk a malta",
+      "service:bicycle:pump": "no",
+      "service:bicycle:repair": "yes",
+      "shop": "bicycle",
+      "website": "https://www.puk-amalta.de/index.php/unsere-angebote/bildungsmassnahmen/pa/werkstaetten"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11008619718,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -2425,7 +3062,7 @@
       "osm_type": "node",
       "osm_id": 627415668,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.380Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -2483,7 +3120,7 @@
       "osm_type": "way",
       "osm_id": 20980117,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -2519,7 +3156,7 @@
       "osm_type": "node",
       "osm_id": 4061948095,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -2557,7 +3194,7 @@
       "osm_type": "node",
       "osm_id": 1847155514,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.402Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -2592,7 +3229,7 @@
       "osm_type": "node",
       "osm_id": 4931617824,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -2628,7 +3265,135 @@
       "osm_type": "node",
       "osm_id": 1948766225,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.402Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/13483966289",
+    "name": "H&M",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.549696,
+    "lon": 13.389596,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "d8c62a04f9b524294834e6a5e7ddbfff1f898fd8",
+    "is_useful": true,
+    "raw_tags": {
+      "brand": "H&M",
+      "brand:wikidata": "Q188326",
+      "check_date": "2026-01-25",
+      "level": "0",
+      "name": "H&M",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 13483966289,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/5506852021",
+    "name": "Handy Service Osloer",
+    "address": "Schwedenstraße 14, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.555471,
+    "lon": 13.374864,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 11:00-20:00; Sa 11:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "e6d50586f710dcc89120e2499c87821a7616a17b",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "14",
+      "addr:street": "Schwedenstraße",
+      "name": "Handy Service Osloer",
+      "opening_hours": "Mo-Fr 11:00-20:00; Sa 11:00-18:00",
+      "shop": "mobile_phone",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 5506852021,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.435Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/9198286179",
+    "name": "Handy Service Osloer Straße",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.555501,
+    "lon": 13.374829,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 11:00-20:00; Sa 11:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "10010dd804750584daced123dc079bb60eabcaa9",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "Handy Service Osloer Straße",
+      "opening_hours": "Mo-Fr 11:00-20:00; Sa 11:00-18:00",
+      "shop": "mobile_phone",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 9198286179,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/8999222415",
+    "name": "Handyreparatur",
+    "address": "Badstraße 61, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.550899,
+    "lon": 13.383749,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "d5f209dfe8e9df3e26182d2d180f3864b44e6f72",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "61",
+      "addr:street": "Badstraße",
+      "check_date": "2025-06-07",
+      "check_date:opening_hours": "2024-04-19",
+      "name": "Handyreparatur",
+      "opening_hours:signed": "no",
+      "shop": "mobile_phone",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 8999222415,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -2664,7 +3429,7 @@
       "osm_type": "node",
       "osm_id": 4095732757,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -2696,7 +3461,7 @@
       "osm_type": "node",
       "osm_id": 5887756719,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -2741,7 +3506,7 @@
       "osm_type": "node",
       "osm_id": 419545768,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.379Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -2770,7 +3535,120 @@
       "osm_type": "node",
       "osm_id": 4436491041,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/3409675298",
+    "name": "Hofatex - Selbsthilfe-Fahrradwerkstatt",
+    "address": "Drontheimer Straße 36, 13359, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.558322,
+    "lon": 13.375275,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "closed",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "5fafd1644ae786e390e319d2aa50f05e9d637e02",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "36",
+      "addr:postcode": "13359",
+      "addr:street": "Drontheimer Straße",
+      "check_date": "2026-01-21",
+      "contact:fax": "+49 30 4911153",
+      "contact:mobile": "+49 157 82666826",
+      "contact:phone": "+49 30 4911016",
+      "fixme": "closed until further notice",
+      "name": "Hofatex - Selbsthilfe-Fahrradwerkstatt",
+      "opening_hours": "closed",
+      "operator": "puk a malta gGmbH",
+      "shop": "bicycle",
+      "url": "https://www.puk-amalta.de/index.php/unsere-angebote/bildungsmassnahmen/pa/werkstaetten"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 3409675298,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.433Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4453604479",
+    "name": "Humana",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.550146,
+    "lon": 13.387536,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": "http://www.humana-second-hand.de",
+    "phone": "+49 30 32530999",
+    "opening_hours": "Mo-Fr 10:00-19:00; Sa 10:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "6c2e00342af1854cb06d94c8d1f3fcfdb28b2e64",
+    "is_useful": true,
+    "raw_tags": {
+      "brand": "Humana",
+      "brand:wikidata": "Q1636581",
+      "brand:wikipedia": "de:Humana People to People",
+      "check_date": "2025-06-07",
+      "check_date:opening_hours": "2025-06-07",
+      "level": "0",
+      "name": "Humana",
+      "opening_hours": "Mo-Fr 10:00-19:00; Sa 10:00-18:00",
+      "phone": "+49 30 32530999",
+      "second_hand": "only",
+      "shop": "clothes",
+      "website": "http://www.humana-second-hand.de",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4453604479,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/13483914750",
+    "name": "Hunkemöller",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.549944,
+    "lon": 13.38984,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "b272446993cee552325ecf772d47b32f05f8b9a0",
+    "is_useful": true,
+    "raw_tags": {
+      "brand": "Hunkemöller",
+      "brand:wikidata": "Q2604175",
+      "check_date": "2026-01-25",
+      "clothes": "underwear",
+      "level": "0",
+      "name": "Hunkemöller",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 13483914750,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -2799,7 +3677,7 @@
       "osm_type": "node",
       "osm_id": 10604555729,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -2850,7 +3728,7 @@
       "osm_type": "node",
       "osm_id": 2264296523,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -2887,7 +3765,7 @@
       "osm_type": "node",
       "osm_id": 4318477525,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -2916,7 +3794,39 @@
       "osm_type": "node",
       "osm_id": 4899206821,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/5887756701",
+    "name": "iMobil",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.553222,
+    "lon": 13.382702,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "2d08e0626b2acc0a618806ed8fe93d2f4cc23112",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2023-07-16",
+      "check_date:opening_hours": "2024-04-28",
+      "name": "iMobil",
+      "opening_hours:signed": "no",
+      "shop": "mobile_phone",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 5887756701,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.435Z"
     }
   },
   {
@@ -2948,7 +3858,7 @@
       "osm_type": "node",
       "osm_id": 5057333521,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -2990,7 +3900,7 @@
       "osm_type": "node",
       "osm_id": 3941585864,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -3023,7 +3933,7 @@
       "osm_type": "node",
       "osm_id": 1161375510,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -3064,7 +3974,7 @@
       "osm_type": "node",
       "osm_id": 644658975,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.380Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -3100,7 +4010,7 @@
       "osm_type": "node",
       "osm_id": 7728924601,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -3143,7 +4053,111 @@
       "osm_type": "node",
       "osm_id": 2546237577,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4437574123",
+    "name": "Kankardesler",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.553938,
+    "lon": 13.382553,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "71996c65bfe3a88b5e8214f51af43700e1a02b84",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date:opening_hours": "2024-05-24",
+      "name": "Kankardesler",
+      "opening_hours:signed": "no",
+      "shop": "mobile_phone"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4437574123,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/12250341954",
+    "name": "Karina Wäschevermietung",
+    "address": "Hochstraße 44, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.543792,
+    "lon": 13.377618,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "87754fd1b667bf860422dda394a53d837758865b",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "44",
+      "addr:street": "Hochstraße",
+      "check_date": "2024-10-14",
+      "clothes": "workwear",
+      "level": "0",
+      "name": "Karina Wäschevermietung",
+      "shop": "clothes",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 12250341954,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/6031783742",
+    "name": "Kauf Dich Glücklich Outlet",
+    "address": "Gerichtstraße 23, 13347, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.545144,
+    "lon": 13.374015,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Th-Fr 11:00-19:00; Sa 11:00-20:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "4ee77cfc28cd0588c791453ff71dd21d7d407ca4",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:floor": "0",
+      "addr:housenumber": "23",
+      "addr:postcode": "13347",
+      "addr:street": "Gerichtstraße",
+      "check_date": "2025-10-10",
+      "check_date:opening_hours": "2025-10-10",
+      "level": "0",
+      "name": "Kauf Dich Glücklich Outlet",
+      "opening_hours": "Th-Fr 11:00-19:00; Sa 11:00-20:00",
+      "payment:credit_cards": "yes",
+      "payment:debit_cards": "yes",
+      "second_hand": "yes",
+      "shop": "clothes",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 6031783742,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -3188,7 +4202,7 @@
       "osm_type": "node",
       "osm_id": 498839307,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.379Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -3238,7 +4252,39 @@
       "osm_type": "way",
       "osm_id": 28704816,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/729587082",
+    "name": "Kavkas Mobile",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.551807,
+    "lon": 13.382089,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "ffde4845c6c2d79dd81430f160875dd045a92817",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2026-02-26",
+      "check_date:opening_hours": "2024-04-21",
+      "name": "Kavkas Mobile",
+      "opening_hours:signed": "no",
+      "shop": "mobile_phone",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 729587082,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -3269,7 +4315,7 @@
       "osm_type": "node",
       "osm_id": 9737000356,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -3315,7 +4361,7 @@
       "osm_type": "node",
       "osm_id": 1298512923,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -3343,7 +4389,50 @@
       "osm_type": "node",
       "osm_id": 13511969933,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4825870147",
+    "name": "KiK",
+    "address": "Brunnenstraße 105-109, 13355, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.547751,
+    "lon": 13.389815,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 09:00-20:00; Su,PH off",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "b22437e10b328fb7a9ee6c93fa0b7d94051c54e4",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "105-109",
+      "addr:postcode": "13355",
+      "addr:street": "Brunnenstraße",
+      "addr:suburb": "Gesundbrunnen",
+      "brand": "KiK",
+      "brand:wikidata": "Q883965",
+      "brand:wikipedia": "de:KiK",
+      "check_date:opening_hours": "2023-03-16",
+      "contact:website": "https://www.kik.de",
+      "level": "1",
+      "name": "KiK",
+      "opening_hours": "Mo-Sa 09:00-20:00; Su,PH off",
+      "operator": "KiK Textilien und Non-Food GmbH",
+      "shop": "clothes",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4825870147,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -3378,7 +4467,7 @@
       "osm_type": "node",
       "osm_id": 674019820,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -3415,7 +4504,7 @@
       "osm_type": "node",
       "osm_id": 707490367,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -3449,7 +4538,7 @@
       "osm_type": "node",
       "osm_id": 10982675038,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -3485,7 +4574,86 @@
       "osm_type": "node",
       "osm_id": 4139402061,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/10302371178",
+    "name": "KLC mobile store",
+    "address": "Badstraße 20, 13357, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.55178,
+    "lon": 13.383148,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": "+49 177 4241400",
+    "opening_hours": "Mo-Sa 10:00-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "b68125d6adb683f6c4f14f8d9c958f1393bdfe92",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:housenumber": "20",
+      "addr:postcode": "13357",
+      "addr:street": "Badstraße",
+      "check_date": "2025-12-01",
+      "level": "0",
+      "name": "KLC mobile store",
+      "opening_hours": "Mo-Sa 10:00-19:00",
+      "operator": "Ayyildiz",
+      "payment:cash": "yes",
+      "phone": "+49 177 4241400",
+      "post_office": "yes",
+      "post_office:brand": "Deutsche Post",
+      "ref": "678",
+      "shop": "mobile_phone",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 10302371178,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/2887017001",
+    "name": "Kleiderkammer Caritas",
+    "address": "Residenzstraße 90, 13409, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.559452,
+    "lon": 13.370807,
+    "osm_category": "charity",
+    "app_categories": [],
+    "website": "http://www.caritas-spenden-berlin.de",
+    "phone": null,
+    "opening_hours": "Mo-Fr 09:00-13:00, We 09:00-16:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "482a281568846b2f23f90b28b58be51b9054274f",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "90",
+      "addr:postcode": "13409",
+      "addr:street": "Residenzstraße",
+      "addr:suburb": "Gesundbrunnen",
+      "name": "Kleiderkammer Caritas",
+      "opening_hours": "Mo-Fr 09:00-13:00, We 09:00-16:00",
+      "operator": "Caritasverband für das Erzbistum Berlin eV",
+      "shop": "charity",
+      "website": "http://www.caritas-spenden-berlin.de"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 2887017001,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -3529,7 +4697,7 @@
       "osm_type": "node",
       "osm_id": 271282692,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.376Z"
+      "fetched_at": "2026-04-29T13:59:14.431Z"
     }
   },
   {
@@ -3569,7 +4737,7 @@
       "osm_type": "node",
       "osm_id": 3341588831,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -3602,7 +4770,7 @@
       "osm_type": "way",
       "osm_id": 438501244,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -3640,7 +4808,7 @@
       "osm_type": "node",
       "osm_id": 979502650,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -3675,7 +4843,7 @@
       "osm_type": "node",
       "osm_id": 2756763449,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -3708,7 +4876,7 @@
       "osm_type": "node",
       "osm_id": 2752211171,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -3738,7 +4906,41 @@
       "osm_type": "node",
       "osm_id": 10078364349,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4119519558",
+    "name": "La Paris",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.553982,
+    "lon": 13.376566,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": "+49 176 80504396",
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "958fdc4bff05ba5fa57ec44b21644d12e7fbcbf4",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date:opening_hours": "2023-07-13",
+      "clothes": "women",
+      "name": "La Paris",
+      "opening_hours:signed": "no",
+      "operator": "Ahmed Maqbool",
+      "phone": "+49 176 80504396",
+      "shop": "clothes",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4119519558,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -3770,7 +4972,7 @@
       "osm_type": "way",
       "osm_id": 268315922,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -3804,7 +5006,7 @@
       "osm_type": "node",
       "osm_id": 4317462788,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -3840,7 +5042,7 @@
       "osm_type": "node",
       "osm_id": 3081222947,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -3886,7 +5088,7 @@
       "osm_type": "node",
       "osm_id": 585473264,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.380Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -3929,7 +5131,7 @@
       "osm_type": "node",
       "osm_id": 301787391,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.376Z"
+      "fetched_at": "2026-04-29T13:59:14.431Z"
     }
   },
   {
@@ -3971,7 +5173,7 @@
       "osm_type": "node",
       "osm_id": 419545765,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.379Z"
+      "fetched_at": "2026-04-29T13:59:14.431Z"
     }
   },
   {
@@ -4013,7 +5215,7 @@
       "osm_type": "node",
       "osm_id": 707456082,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -4063,7 +5265,7 @@
       "osm_type": "way",
       "osm_id": 27849630,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -4104,7 +5306,88 @@
       "osm_type": "way",
       "osm_id": 105805611,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/332967255",
+    "name": "Little John Bikes",
+    "address": "Grüntaler Straße 2, 13357, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.550818,
+    "lon": 13.385279,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": "https://www.littlejohnbikes.de/shops/berlin-gesundbrunnen.html",
+    "phone": "+49 30 49308080",
+    "opening_hours": "Mo-Fr 10:00-19:00; Sa 10:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "aaf661c9b83af14083b9c440b830becf937e2e97",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "2",
+      "addr:postcode": "13357",
+      "addr:street": "Grüntaler Straße",
+      "addr:suburb": "Gesundbrunnen",
+      "brand": "Little John Bikes",
+      "brand:wikidata": "Q99976320",
+      "email": "berlin-gesundbrunnen@littlejohnbikes.de",
+      "fax": "+49 30 49308012",
+      "name": "Little John Bikes",
+      "opening_hours": "Mo-Fr 10:00-19:00; Sa 10:00-18:00",
+      "phone": "+49 30 49308080",
+      "service:bicycle:pump": "yes",
+      "service:bicycle:repair": "yes",
+      "shop": "bicycle",
+      "website": "https://www.littlejohnbikes.de/shops/berlin-gesundbrunnen.html",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 332967255,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.431Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/626868231",
+    "name": "Londoner",
+    "address": "Badstraße 14, 13357, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.551008,
+    "lon": 13.384482,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-20:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "e46ded9d234ec3a074a1233a46233529299b0ece",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "14",
+      "addr:postcode": "13357",
+      "addr:street": "Badstraße",
+      "addr:suburb": "Gesundbrunnen",
+      "check_date:opening_hours": "2024-05-01",
+      "name": "Londoner",
+      "opening_hours": "Mo-Sa 10:00-20:00",
+      "shop": "clothes",
+      "wheelchair": "limited"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 626868231,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -4134,7 +5417,7 @@
       "osm_type": "node",
       "osm_id": 10012569603,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -4169,7 +5452,7 @@
       "osm_type": "node",
       "osm_id": 9408430208,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -4207,7 +5490,41 @@
       "osm_type": "node",
       "osm_id": 4200389800,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/10982675037",
+    "name": "M&H Textilien",
+    "address": "Badstraße 65, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.55042,
+    "lon": 13.384568,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 10:00-18:00; Sa 10:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "e410777ae92aff36da63aad5f6d4560e1974ec08",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "65",
+      "addr:street": "Badstraße",
+      "check_date": "2026-02-26",
+      "check_date:opening_hours": "2026-02-26",
+      "name": "M&H Textilien",
+      "opening_hours": "Mo-Fr 10:00-18:00; Sa 10:00-18:00",
+      "shop": "clothes",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 10982675037,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -4236,7 +5553,7 @@
       "osm_type": "node",
       "osm_id": 4339053529,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -4273,7 +5590,7 @@
       "osm_type": "node",
       "osm_id": 4437578137,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -4313,7 +5630,232 @@
       "osm_type": "node",
       "osm_id": 11146008755,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/10314826081",
+    "name": "Media Center",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.550018,
+    "lon": 13.387026,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "40519f918067563ed19de971a9bf0bc3e3848424",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2025-01-23",
+      "level": "0",
+      "name": "Media Center",
+      "shop": "mobile_phone"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 10314826081,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "way/27159946",
+    "name": "MediaMarkt",
+    "address": "Pankstraße 32-39, 13357, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.549409,
+    "lon": 13.377887,
+    "osm_category": "electronics",
+    "app_categories": [],
+    "website": "https://www.mediamarkt.de/de/store/berlin-wedding-406",
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "4ee30f59d61706858b7b906169367754715f9c32",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "32-39",
+      "addr:postcode": "13357",
+      "addr:street": "Pankstraße",
+      "addr:suburb": "Gesundbrunnen",
+      "air_conditioning": "yes",
+      "brand": "MediaMarkt",
+      "brand:wikidata": "Q2381223",
+      "brand:wikipedia": "en:Media Markt",
+      "building": "retail",
+      "building:levels": "4",
+      "check_date": "2025-05-16",
+      "check_date:opening_hours": "2025-05-16",
+      "contact:phone": "+49 30 46 90 10",
+      "level": "1",
+      "name": "MediaMarkt",
+      "opening_hours": "Mo-Sa 10:00-19:00",
+      "payment:cash": "yes",
+      "payment:credit_cards": "yes",
+      "payment:debit_cards": "yes",
+      "payment:girocard": "yes",
+      "payment:mastercard": "yes",
+      "payment:visa": "yes",
+      "roof:levels": "0",
+      "roof:shape": "flat",
+      "shop": "electronics",
+      "source": "survey",
+      "website": "https://www.mediamarkt.de/de/store/berlin-wedding-406",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "way",
+      "osm_id": 27159946,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/5640403350",
+    "name": "MELDA",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.551098,
+    "lon": 13.385027,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 10:00-19:30; Sa 10:00-18:30",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "96ff934a60015d9ac1622a4238730ea55920cd16",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date:opening_hours": "2025-04-05",
+      "clothes": "women",
+      "description": "Kostüme, Mäntel, Röcke, Braut- und Abendkleider",
+      "name": "MELDA",
+      "opening_hours": "Mo-Fr 10:00-19:30; Sa 10:00-18:30",
+      "shop": "clothes",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 5640403350,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.435Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/12347033185",
+    "name": "Mercatino",
+    "address": "Neue Hochstraße 24, 13347, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.542708,
+    "lon": 13.376193,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "We-Sa 14:00-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "170273a3bbf03a34f6dc969bb8938b73f64b1150",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:housenumber": "24",
+      "addr:postcode": "13347",
+      "addr:street": "Neue Hochstraße",
+      "check_date": "2025-10-10",
+      "check_date:opening_hours": "2025-10-10",
+      "level": "0",
+      "name": "Mercatino",
+      "opening_hours": "We-Sa 14:00-19:00",
+      "second_hand": "only",
+      "shop": "clothes",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 12347033185,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11165906109",
+    "name": "Mert Mobile",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.552582,
+    "lon": 13.380199,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "cf3dd57254aec2cb7289064b534976b2270ed8bd",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2023-10-18",
+      "name": "Mert Mobile",
+      "shop": "mobile_phone",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11165906109,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/9198286163",
+    "name": "Migrakom Rad",
+    "address": "Schwedenstraße 15b, 13357, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.555215,
+    "lon": 13.375167,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "c56156cc722d1eb2b49d1a66e25d981571ec7ae8",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "15b",
+      "addr:postcode": "13357",
+      "addr:street": "Schwedenstraße",
+      "addr:suburb": "Gesundbrunnen",
+      "contact:mobile": "+49 178 9130733",
+      "name": "Migrakom Rad",
+      "opening_hours": "Mo-Sa 10:00-19:00",
+      "service:bicycle:pump": "no",
+      "shop": "bicycle",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 9198286163,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -4349,7 +5891,7 @@
       "osm_type": "node",
       "osm_id": 2752211175,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -4378,7 +5920,38 @@
       "osm_type": "node",
       "osm_id": 5569263931,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.435Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/10012680616",
+    "name": "Missy",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.549852,
+    "lon": 13.3884,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "2ef02f2cc90f2484f446dd2973768b4ab6838b45",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2026-01-25",
+      "disused:name": "Blume 2000",
+      "level": "-1",
+      "name": "Missy",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 10012680616,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -4407,7 +5980,7 @@
       "osm_type": "node",
       "osm_id": 4339053530,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -4438,7 +6011,7 @@
       "osm_type": "node",
       "osm_id": 674019823,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -4476,7 +6049,46 @@
       "osm_type": "node",
       "osm_id": 4290884742,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/631480658",
+    "name": "Moser Datentechnik",
+    "address": "Bornholmer Straße 50, 13359, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.554797,
+    "lon": 13.392698,
+    "osm_category": "computer",
+    "app_categories": [],
+    "website": "https://www.moser-datentechnik.de/",
+    "phone": null,
+    "opening_hours": "Mo-We,Fr 14:00-20:00; Th 14:00-17:45",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "04d9bb88445c1714f134417662eaa6a1461b1499",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "50",
+      "addr:postcode": "13359",
+      "addr:street": "Bornholmer Straße",
+      "addr:suburb": "Gesundbrunnen",
+      "contact:phone": "+49 30 49771071;+49 151 50702353",
+      "fax": "+49 30 4945043",
+      "name": "Moser Datentechnik",
+      "opening_hours": "Mo-We,Fr 14:00-20:00; Th 14:00-17:45",
+      "shop": "computer",
+      "website": "https://www.moser-datentechnik.de/",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 631480658,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -4510,7 +6122,7 @@
       "osm_type": "node",
       "osm_id": 9741661166,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -4547,7 +6159,36 @@
       "osm_type": "node",
       "osm_id": 7627025801,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/5887756712",
+    "name": "My Store",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.553949,
+    "lon": 13.383208,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 10:00-19:00; Sa 10:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "a2b8b556f6acf9d523eb1ee4915778a23993f82c",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "My Store",
+      "opening_hours": "Mo-Fr 10:00-19:00; Sa 10:00-18:00",
+      "shop": "mobile_phone"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 5887756712,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -4584,7 +6225,7 @@
       "osm_type": "node",
       "osm_id": 8890286245,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -4618,7 +6259,7 @@
       "osm_type": "node",
       "osm_id": 4109578506,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -4674,7 +6315,7 @@
       "osm_type": "way",
       "osm_id": 24964657,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -4718,7 +6359,42 @@
       "osm_type": "way",
       "osm_id": 147432145,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "way/1266882963",
+    "name": "New Yorker",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.549543,
+    "lon": 13.388805,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-20:00; PH off",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "6f4b850c212ca5a74e09795dd507b7e9bc3be63f",
+    "is_useful": true,
+    "raw_tags": {
+      "brand": "New Yorker",
+      "brand:wikidata": "Q706421",
+      "contact:phone": "+49 30 41 71 97 50",
+      "contact:website": "https://www.newyorker.de/",
+      "level": "1",
+      "name": "New Yorker",
+      "opening_hours": "Mo-Sa 10:00-20:00; PH off",
+      "second_hand": "no",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "way",
+      "osm_id": 1266882963,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -4762,7 +6438,38 @@
       "osm_type": "node",
       "osm_id": 3350477701,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/6695117188",
+    "name": "O2",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.552464,
+    "lon": 13.37877,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "f7046bbba709bc2d80f7d214091907f85b84e82d",
+    "is_useful": true,
+    "raw_tags": {
+      "brand": "O2",
+      "brand:wikidata": "Q1759255",
+      "brand:wikipedia": "en:O2 (brand)",
+      "name": "O2",
+      "shop": "mobile_phone"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 6695117188,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -4807,7 +6514,76 @@
       "osm_type": "way",
       "osm_id": 180687339,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/2756763465",
+    "name": "Online-Telecafé",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.558655,
+    "lon": 13.385843,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "800ed7e2de08b5dc9d79f1e7343e3cd6468a510e",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2025-08-04",
+      "check_date:opening_hours": "2023-07-12",
+      "name": "Online-Telecafé",
+      "opening_hours:signed": "no",
+      "post_office": "post_partner",
+      "post_office:service_provider": "DHL;Deutsche Post",
+      "shop": "mobile_phone",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 2756763465,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.433Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "way/1266882966",
+    "name": "ONLY",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.549968,
+    "lon": 13.389521,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-20:00; PH off",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "f8854a46d9f1789bfab9ed9d587afe32d95929f3",
+    "is_useful": true,
+    "raw_tags": {
+      "brand": "ONLY",
+      "brand:wikidata": "Q61799370",
+      "contact:website": "https://www.only.com/de-de",
+      "level": "1",
+      "name": "ONLY",
+      "opening_hours": "Mo-Sa 10:00-20:00; PH off",
+      "second_hand": "no",
+      "shop": "clothes",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "way",
+      "osm_id": 1266882966,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -4844,7 +6620,7 @@
       "osm_type": "node",
       "osm_id": 2752211176,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -4878,7 +6654,7 @@
       "osm_type": "node",
       "osm_id": 4155950167,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -4907,7 +6683,7 @@
       "osm_type": "way",
       "osm_id": 1242783008,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -4947,7 +6723,7 @@
       "osm_type": "node",
       "osm_id": 2917279001,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -4979,7 +6755,7 @@
       "osm_type": "node",
       "osm_id": 5248627028,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.435Z"
     }
   },
   {
@@ -5015,7 +6791,79 @@
       "osm_type": "node",
       "osm_id": 4317462785,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/7160668101",
+    "name": "Pank Records",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.550838,
+    "lon": 13.379477,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 10:00-19:00; Sa 10:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "de2f7e7753b57b231c778a77284069ee68247c3a",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2024-03-24",
+      "name": "Pank Records",
+      "opening_hours": "Mo-Fr 10:00-19:00; Sa 10:00-18:00",
+      "shop": "mobile_phone",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 7160668101,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4193676996",
+    "name": "Pankbike",
+    "address": "Pankstraße 62, 13357, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.550727,
+    "lon": 13.378526,
+    "osm_category": "bicycle",
+    "app_categories": [],
+    "website": null,
+    "phone": "+49 176 92868645",
+    "opening_hours": "Mo-Fr 10:00-19:00; Sa 11:00-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "18a01850cb6bacb1c682f66514159d39e326307d",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:housenumber": "62",
+      "addr:postcode": "13357",
+      "addr:street": "Pankstraße",
+      "cash_withdrawal:operator": "Mesut Ceylan",
+      "check_date:opening_hours": "2023-12-06",
+      "name": "Pankbike",
+      "opening_hours": "Mo-Fr 10:00-19:00; Sa 11:00-19:00",
+      "phone": "+49 176 92868645",
+      "service:bicycle:pump": "yes",
+      "service:bicycle:repair": "yes",
+      "service:bicycle:retail": "yes",
+      "service:bicycle:second_hand": "only",
+      "shop": "bicycle",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4193676996,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -5056,7 +6904,7 @@
       "osm_type": "node",
       "osm_id": 473611934,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.379Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -5100,7 +6948,7 @@
       "osm_type": "node",
       "osm_id": 2026168141,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.402Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -5149,7 +6997,7 @@
       "osm_type": "way",
       "osm_id": 53542190,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -5188,7 +7036,7 @@
       "osm_type": "node",
       "osm_id": 2259025211,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -5224,7 +7072,7 @@
       "osm_type": "node",
       "osm_id": 3954780447,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -5261,7 +7109,68 @@
       "osm_type": "node",
       "osm_id": 4318477528,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/12204988222",
+    "name": "phone connect",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.558181,
+    "lon": 13.386221,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "e5ffcc3e7ee4b9fe35cac0c8e603a143174338e6",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "phone connect",
+      "shop": "mobile_phone"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 12204988222,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/3885853475",
+    "name": "Phonetouch",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.557076,
+    "lon": 13.373609,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "614e9a63ae698d321780e91489c21c793bb04d78",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date:opening_hours": "2026-04-01",
+      "layer": "-1",
+      "level": "-1",
+      "name": "Phonetouch",
+      "opening_hours:signed": "no",
+      "shop": "mobile_phone",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 3885853475,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -5302,7 +7211,7 @@
       "osm_type": "node",
       "osm_id": 522780551,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.379Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -5336,7 +7245,7 @@
       "osm_type": "node",
       "osm_id": 3757302128,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -5371,7 +7280,38 @@
       "osm_type": "node",
       "osm_id": 4449775882,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/8285839575",
+    "name": "Pro X Corporation",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.559763,
+    "lon": 13.376708,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": "+49 176 46173798",
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "e60353fc60dffb8840f15845fd2baf608901d036",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2023-07-13",
+      "name": "Pro X Corporation",
+      "phone": "+49 176 46173798",
+      "shop": "mobile_phone",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 8285839575,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -5406,7 +7346,7 @@
       "osm_type": "node",
       "osm_id": 3506086153,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -5448,7 +7388,7 @@
       "osm_type": "node",
       "osm_id": 427043045,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.379Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -5476,7 +7416,7 @@
       "osm_type": "node",
       "osm_id": 5031751090,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -5516,7 +7456,45 @@
       "osm_type": "node",
       "osm_id": 1550422326,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/5265015741",
+    "name": "Resales Secondhand",
+    "address": "Brunnenstraße 132, 13355, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.539,
+    "lon": 13.395084,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 10:00-19:00; Sa 10:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "1a0163c6400afd331b0af06728f46c47b6440cc8",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:housenumber": "132",
+      "addr:postcode": "13355",
+      "addr:street": "Brunnenstraße",
+      "check_date": "2023-03-16",
+      "name": "Resales Secondhand",
+      "opening_hours": "Mo-Fr 10:00-19:00; Sa 10:00-18:00",
+      "payment:credit_cards": "yes",
+      "payment:debit_cards": "yes",
+      "second_hand": "yes",
+      "shop": "clothes",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 5265015741,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.435Z"
     }
   },
   {
@@ -5563,7 +7541,7 @@
       "osm_type": "node",
       "osm_id": 419545767,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.379Z"
+      "fetched_at": "2026-04-29T13:59:14.431Z"
     }
   },
   {
@@ -5621,7 +7599,7 @@
       "osm_type": "node",
       "osm_id": 10873128906,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -5670,7 +7648,7 @@
       "osm_type": "way",
       "osm_id": 1266882969,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -5702,7 +7680,7 @@
       "osm_type": "node",
       "osm_id": 13483894832,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -5730,7 +7708,7 @@
       "osm_type": "node",
       "osm_id": 12136109874,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -5760,7 +7738,7 @@
       "osm_type": "node",
       "osm_id": 4449115011,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -5808,7 +7786,152 @@
       "osm_type": "node",
       "osm_id": 1308915486,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11165906112",
+    "name": "Sabalan",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.552769,
+    "lon": 13.37907,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "79a3ca711f191ca31a0e0ad7a3f99d0cdbfd3008",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "Sabalan",
+      "shop": "mobile_phone",
+      "wheelchair": "limited"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11165906112,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/646601548",
+    "name": "Saturn",
+    "address": "13357, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.549811,
+    "lon": 13.390575,
+    "osm_category": "electronics",
+    "app_categories": [],
+    "website": "https://www.saturn.de/de/store/berlin-gesundbrunnen-221",
+    "phone": "+49304998720",
+    "opening_hours": "Mo-Sa 10:00-20:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "241b169707b7e3269f4c6d1520e38d9f4bf49684",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:postcode": "13357",
+      "branch": "Berlin Gesundbrunnen",
+      "brand": "Saturn",
+      "brand:wikidata": "Q2543504",
+      "brand:wikipedia": "en:Saturn (store)",
+      "check_date": "2024-11-20",
+      "check_date:opening_hours": "2024-11-20",
+      "email": "berlin-gesundbrunnen@saturn.de",
+      "internet_access": "wlan",
+      "level": "-1",
+      "name": "Saturn",
+      "opening_hours": "Mo-Sa 10:00-20:00",
+      "operator": "Robert Kochan, Kristian Schönemann",
+      "payment:credit_cards": "yes",
+      "payment:debit_cards": "yes",
+      "phone": "+49304998720",
+      "shop": "electronics",
+      "website": "https://www.saturn.de/de/store/berlin-gesundbrunnen-221",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 646601548,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.432Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/9487148767",
+    "name": "Schuh + Schlüsseldienst",
+    "address": "Brunnenstraße 74, 13355, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.542191,
+    "lon": 13.393543,
+    "osm_category": "key_cutter",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 09:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "66e8ce9fdfbc4d7e0cdae808f51505a7e7bc89e3",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:housenumber": "74",
+      "addr:postcode": "13355",
+      "addr:street": "Brunnenstraße",
+      "check_date": "2025-12-27",
+      "craft": "key_cutter",
+      "name": "Schuh + Schlüsseldienst",
+      "opening_hours": "Mo-Fr 09:00-18:00"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 9487148767,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/5887756703",
+    "name": "Second Hemd",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.555157,
+    "lon": 13.383413,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "27b1a45592dddf6efe2b4ce9fd4150b44b681108",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2023-07-16",
+      "check_date:opening_hours": "2024-05-24",
+      "clothes": "women;men",
+      "description:de": "Zweite Hand Kleidung",
+      "description:en": "Second hand clothing",
+      "name": "Second Hemd",
+      "opening_hours:signed": "no",
+      "payment:cash": "yes",
+      "second_hand": "only",
+      "shop": "clothes",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 5887756703,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -5846,7 +7969,7 @@
       "osm_type": "node",
       "osm_id": 2752211184,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -5876,7 +7999,7 @@
       "osm_type": "node",
       "osm_id": 10655854843,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -5905,7 +8028,7 @@
       "osm_type": "node",
       "osm_id": 4061948101,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -5940,7 +8063,44 @@
       "osm_type": "node",
       "osm_id": 2752211177,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11046785722",
+    "name": "Smart Repair 4 Berlin",
+    "address": "Wollankstraße 74, 13359, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.56139,
+    "lon": 13.389024,
+    "osm_category": "electronics",
+    "app_categories": [],
+    "website": "www.smartrepair4berlin.de",
+    "phone": "+493054619110",
+    "opening_hours": "Mo-Sa 09:00-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "51df002e8833895b5827cf5fcfed2088ef18c5eb",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:housenumber": "74",
+      "addr:postcode": "13359",
+      "addr:street": "Wollankstraße",
+      "craft": "electronics_repair",
+      "name": "Smart Repair 4 Berlin",
+      "opening_hours": "Mo-Sa 09:00-19:00",
+      "operator": "Mustapha",
+      "phone": "+493054619110",
+      "shop": "electronics",
+      "website": "www.smartrepair4berlin.de"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11046785722,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -5978,7 +8138,7 @@
       "osm_type": "node",
       "osm_id": 707353011,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -6015,7 +8175,7 @@
       "osm_type": "node",
       "osm_id": 473629401,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.379Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -6044,7 +8204,7 @@
       "osm_type": "node",
       "osm_id": 6695121386,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -6072,7 +8232,7 @@
       "osm_type": "node",
       "osm_id": 4351511606,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -6108,7 +8268,45 @@
       "osm_type": "node",
       "osm_id": 4799571388,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/2756763428",
+    "name": "Spartell",
+    "address": "Wollankstraße 24, 13359, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.564412,
+    "lon": 13.392609,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "08b9f7d7120437644ae3f1dc83a49b5c7bb93862",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "24",
+      "addr:postcode": "13359",
+      "addr:street": "Wollankstraße",
+      "addr:suburb": "Gesundbrunnen",
+      "check_date": "2026-01-19",
+      "check_date:opening_hours": "2023-07-04",
+      "name": "Spartell",
+      "opening_hours:signed": "no",
+      "shop": "mobile_phone",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 2756763428,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -6145,7 +8343,7 @@
       "osm_type": "node",
       "osm_id": 2736043858,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -6182,7 +8380,7 @@
       "osm_type": "node",
       "osm_id": 4109584179,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -6212,7 +8410,7 @@
       "osm_type": "node",
       "osm_id": 4437587810,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -6242,7 +8440,7 @@
       "osm_type": "node",
       "osm_id": 8890286247,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -6282,7 +8480,7 @@
       "osm_type": "node",
       "osm_id": 312820851,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.378Z"
+      "fetched_at": "2026-04-29T13:59:14.431Z"
     }
   },
   {
@@ -6312,7 +8510,7 @@
       "osm_type": "node",
       "osm_id": 1170348050,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -6344,7 +8542,7 @@
       "osm_type": "node",
       "osm_id": 2756763474,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -6374,7 +8572,7 @@
       "osm_type": "node",
       "osm_id": 4139411321,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -6407,7 +8605,7 @@
       "osm_type": "node",
       "osm_id": 4351511616,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -6436,7 +8634,7 @@
       "osm_type": "node",
       "osm_id": 4436486384,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -6465,7 +8663,7 @@
       "osm_type": "node",
       "osm_id": 6135203779,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -6502,7 +8700,7 @@
       "osm_type": "node",
       "osm_id": 8516433535,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -6533,7 +8731,7 @@
       "osm_type": "node",
       "osm_id": 9198286166,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -6567,7 +8765,46 @@
       "osm_type": "node",
       "osm_id": 707353241,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4100572572",
+    "name": "Stadt-Rad",
+    "address": "Brunnenstraße 100, 13355, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.546573,
+    "lon": 13.389922,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "9050fcfd476de3c747834321551be61e8d541cf7",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "100",
+      "addr:postcode": "13355",
+      "addr:street": "Brunnenstraße",
+      "addr:suburb": "Gesundbrunnen",
+      "check_date:opening_hours": "2024-05-14",
+      "contact:facebook": "https://www.facebook.com/stadtradBerlin/",
+      "name": "Stadt-Rad",
+      "opening_hours:signed": "no",
+      "second_hand": "yes",
+      "service:bicycle:pump": "yes",
+      "shop": "bicycle"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4100572572,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -6597,7 +8834,7 @@
       "osm_type": "node",
       "osm_id": 646593064,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -6636,7 +8873,7 @@
       "osm_type": "node",
       "osm_id": 5339216377,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.435Z"
     }
   },
   {
@@ -6675,7 +8912,7 @@
       "osm_type": "node",
       "osm_id": 707452479,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -6718,7 +8955,7 @@
       "osm_type": "node",
       "osm_id": 6895858795,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -6757,7 +8994,7 @@
       "osm_type": "node",
       "osm_id": 3081225427,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -6787,7 +9024,7 @@
       "osm_type": "node",
       "osm_id": 8000678063,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -6816,7 +9053,7 @@
       "osm_type": "node",
       "osm_id": 13410561610,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -6852,7 +9089,7 @@
       "osm_type": "node",
       "osm_id": 644658972,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.380Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -6887,7 +9124,7 @@
       "osm_type": "node",
       "osm_id": 2730990672,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -6923,7 +9160,7 @@
       "osm_type": "node",
       "osm_id": 6700773085,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -6955,7 +9192,7 @@
       "osm_type": "node",
       "osm_id": 729587081,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -6992,7 +9229,157 @@
       "osm_type": "node",
       "osm_id": 1847156092,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.402Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/627415717",
+    "name": "Technic ASS",
+    "address": "Badstraße 14-15, 13357, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.551035,
+    "lon": 13.384394,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 10:00-19:30; Sa 10:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "b7a60f8690fd776831ed76b79e9edde48e432392",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "14-15",
+      "addr:postcode": "13357",
+      "addr:street": "Badstraße",
+      "addr:suburb": "Gesundbrunnen",
+      "check_date": "2023-01-03",
+      "contact:website": "http://technicass.de/",
+      "fixme": "position/house, opening_hours",
+      "level": "0",
+      "name": "Technic ASS",
+      "opening_hours": "Mo-Fr 10:00-19:30; Sa 10:00-18:00",
+      "payment:mastercard": "yes",
+      "payment:paypal": "yes",
+      "payment:visa": "yes",
+      "shop": "mobile_phone",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 627415717,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.432Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/7160668100",
+    "name": "Technikcenter Jan Jan",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.550909,
+    "lon": 13.379598,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 11:00-19:00; Sa 11:00-16:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "35dd7eb8c7879f6f3a9258aebfca4f1fc19cee26",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date": "2025-09-02",
+      "name": "Technikcenter Jan Jan",
+      "opening_hours": "Mo-Fr 11:00-19:00; Sa 11:00-16:00",
+      "second_hand": "yes",
+      "shop": "second_hand"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 7160668100,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/5887756702",
+    "name": "Telecafé Internetcafé",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.554079,
+    "lon": 13.383297,
+    "osm_category": "internet_cafe",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "10:00-24:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "6b9167b35246ab32ec1ab748dfa100022798f930",
+    "is_useful": true,
+    "raw_tags": {
+      "amenity": "internet_cafe",
+      "check_date": "2023-07-16",
+      "internet_access": "yes",
+      "name": "Telecafé Internetcafé",
+      "opening_hours": "10:00-24:00"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 5887756702,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/6052783185",
+    "name": "Telekom Shop",
+    "address": "Badstraße 4, 13357, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.549892,
+    "lon": 13.388174,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": "https://shopseite.telekom.de/nord-ost/berlin/badstr-4",
+    "phone": "+49 30 49309286",
+    "opening_hours": "Mo-Sa 10:00-20:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "d95d012e63be7dec3b328bdab9e4139ceb3bf009",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:housenumber": "4",
+      "addr:postcode": "13357",
+      "addr:street": "Badstraße",
+      "alt_name": "T-Shop",
+      "branch": "Gesundbrunnen-Center",
+      "brand": "Deutsche Telekom",
+      "brand:wikidata": "Q9396",
+      "brand:wikipedia": "en:Deutsche Telekom",
+      "check_date": "2022-10-30",
+      "level": "1",
+      "name": "Telekom Shop",
+      "opening_hours": "Mo-Sa 10:00-20:00",
+      "payment:credit_cards": "yes",
+      "payment:debit_cards": "yes",
+      "phone": "+49 30 49309286",
+      "shop": "mobile_phone",
+      "website": "https://shopseite.telekom.de/nord-ost/berlin/badstr-4",
+      "wheelchair": "limited"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 6052783185,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -7028,7 +9415,7 @@
       "osm_type": "node",
       "osm_id": 9286872873,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -7072,7 +9459,7 @@
       "osm_type": "node",
       "osm_id": 606949415,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.380Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -7111,7 +9498,43 @@
       "osm_type": "node",
       "osm_id": 5064174322,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/2308429864",
+    "name": "Tita Berlin",
+    "address": "Eulerstraße 18, 13357, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.5534,
+    "lon": 13.39045,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": "https://www.tita-berlin.de/",
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "afa4b36dc2594c0554971d336f6c82d77496861f",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:city": "Berlin",
+      "addr:country": "DE",
+      "addr:housenumber": "18",
+      "addr:postcode": "13357",
+      "addr:street": "Eulerstraße",
+      "addr:suburb": "Gesundbrunnen",
+      "name": "Tita Berlin",
+      "shop": "clothes",
+      "source": "www.tita-berlin.de/",
+      "website": "https://www.tita-berlin.de/"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 2308429864,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -7144,7 +9567,7 @@
       "osm_type": "node",
       "osm_id": 12666591626,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -7179,7 +9602,7 @@
       "osm_type": "node",
       "osm_id": 4100572574,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -7210,7 +9633,70 @@
       "osm_type": "node",
       "osm_id": 419545764,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.379Z"
+      "fetched_at": "2026-04-29T13:59:14.431Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/12372318340",
+    "name": "trendy handy",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.550667,
+    "lon": 13.38416,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "341fd3b20ad8ba24f28335869a19b1844320fd47",
+    "is_useful": true,
+    "raw_tags": {
+      "name": "trendy handy",
+      "shop": "mobile_phone"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 12372318340,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/3081226520",
+    "name": "Trödel Bernauer",
+    "address": "Neue Hochstraße 31, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.54207,
+    "lon": 13.375271,
+    "osm_category": "second_hand",
+    "app_categories": [],
+    "website": "http://troedel-bernauer.de",
+    "phone": null,
+    "opening_hours": "Mo-Fr 12:00-18:00; Sa 13:00-18:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "7152baca6364428ee225ad4a6028df9a4d5b0d90",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "31",
+      "addr:street": "Neue Hochstraße",
+      "check_date": "2025-01-17",
+      "level": "0",
+      "name": "Trödel Bernauer",
+      "opening_hours": "Mo-Fr 12:00-18:00; Sa 13:00-18:00",
+      "shop": "second_hand",
+      "website": "http://troedel-bernauer.de",
+      "wheelchair": "no"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 3081226520,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -7242,7 +9728,40 @@
       "osm_type": "node",
       "osm_id": 9844946878,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4317555812",
+    "name": "Vero Moda",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.549836,
+    "lon": 13.389025,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": null,
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "a166064b7219b7239662d50c5280271a10ec79d2",
+    "is_useful": true,
+    "raw_tags": {
+      "brand": "Vero Moda",
+      "brand:wikidata": "Q640418",
+      "check_date": "2026-01-25",
+      "clothes": "women",
+      "level": "0",
+      "name": "Vero Moda",
+      "shop": "clothes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4317555812,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -7283,7 +9802,7 @@
       "osm_type": "node",
       "osm_id": 1298246171,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.381Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -7314,7 +9833,44 @@
       "osm_type": "node",
       "osm_id": 5248627026,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/11766872169",
+    "name": "Vodafone",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.549886,
+    "lon": 13.388319,
+    "osm_category": "mobile_phone",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-20:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "dc9ac707222beac21f7999aacefab6ad9ae3c168",
+    "is_useful": true,
+    "raw_tags": {
+      "brand": "Vodafone",
+      "brand:wikidata": "Q122141",
+      "contact:email": "Fil.2028@vodafone.com",
+      "contact:facebook": "https://www.facebook.com/199280050504473",
+      "contact:phone": "+49 173 205 00 45",
+      "contact:website": "https://shops.vodafone.de/berlin/badstr.-4",
+      "level": "1",
+      "name": "Vodafone",
+      "opening_hours": "Mo-Sa 10:00-20:00",
+      "shop": "mobile_phone",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 11766872169,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -7365,7 +9921,7 @@
       "osm_type": "way",
       "osm_id": 392606750,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   },
   {
@@ -7408,7 +9964,7 @@
       "osm_type": "node",
       "osm_id": 1845158730,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.402Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -7444,7 +10000,7 @@
       "osm_type": "node",
       "osm_id": 1847159132,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.402Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -7472,7 +10028,7 @@
       "osm_type": "node",
       "osm_id": 9423354156,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -7514,7 +10070,7 @@
       "osm_type": "node",
       "osm_id": 2423076739,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -7560,7 +10116,38 @@
       "osm_type": "node",
       "osm_id": 7430297886,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.436Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/5887756716",
+    "name": "Yaman Esarp ve Ceyiz Evi",
+    "address": "Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.553575,
+    "lon": 13.382936,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Sa 10:00-19:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "31e5f7785873ee1c2559d5cff53e767bc3b0f6a8",
+    "is_useful": true,
+    "raw_tags": {
+      "check_date:opening_hours": "2024-04-28",
+      "name": "Yaman Esarp ve Ceyiz Evi",
+      "opening_hours": "Mo-Sa 10:00-19:00",
+      "shop": "clothes",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 5887756716,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.436Z"
     }
   },
   {
@@ -7592,7 +10179,7 @@
       "osm_type": "node",
       "osm_id": 2756763461,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -7628,7 +10215,45 @@
       "osm_type": "node",
       "osm_id": 4100572573,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
+    }
+  },
+  {
+    "external_source": "osm-overpass",
+    "external_id": "node/4455470037",
+    "name": "Zeeman",
+    "address": "Badstraße 23, Berlin",
+    "district": "Gesundbrunnen",
+    "lat": 52.552104,
+    "lon": 13.382392,
+    "osm_category": "clothes",
+    "app_categories": [],
+    "website": null,
+    "phone": null,
+    "opening_hours": "Mo-Fr 09:00-19:00; Sa 10:00-16:00",
+    "description": "Imported from OSM Overpass for Berlin.",
+    "active_status": "active",
+    "checksum": "881d92fe0576a6e0fb8b8bf31bbd5fb9b4a3b3d6",
+    "is_useful": true,
+    "raw_tags": {
+      "addr:housenumber": "23",
+      "addr:street": "Badstraße",
+      "brand": "Zeeman",
+      "brand:wikidata": "Q184399",
+      "brand:wikipedia": "en:Zeeman (store)",
+      "check_date": "2023-01-03",
+      "level": "0",
+      "name": "Zeeman",
+      "opening_hours": "Mo-Fr 09:00-19:00; Sa 10:00-16:00",
+      "second_hand": "no",
+      "shop": "clothes",
+      "wheelchair": "yes"
+    },
+    "source_payload": {
+      "osm_type": "node",
+      "osm_id": 4455470037,
+      "source": "overpass",
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -7661,7 +10286,7 @@
       "osm_type": "node",
       "osm_id": 4899075822,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.434Z"
     }
   },
   {
@@ -7705,7 +10330,7 @@
       "osm_type": "node",
       "osm_id": 644659553,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.380Z"
+      "fetched_at": "2026-04-29T13:59:14.432Z"
     }
   },
   {
@@ -7744,7 +10369,7 @@
       "osm_type": "node",
       "osm_id": 3757314996,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.403Z"
+      "fetched_at": "2026-04-29T13:59:14.433Z"
     }
   },
   {
@@ -7776,7 +10401,7 @@
       "osm_type": "node",
       "osm_id": 11199678483,
       "source": "overpass",
-      "fetched_at": "2026-04-26T08:56:03.404Z"
+      "fetched_at": "2026-04-29T13:59:14.437Z"
     }
   }
 ]
